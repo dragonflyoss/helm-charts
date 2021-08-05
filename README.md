@@ -1,2 +1,3 @@
-# helm-charts
-Dragonfly2 Helm Charts
+# Dragonfly Helm Charts
+
+Dragonfly Helm Charts
