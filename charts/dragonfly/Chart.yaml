@@ -20,12 +20,19 @@ annotations:
   artifacthub.io/changes: |
     - Upgrade to the latest template
   artifacthub.io/links: |
-    - name: Homepage
-      url: https://d7y.io
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
     - name: Source
       url: https://github.com/dragonflyoss/Dragonfly2
+  artifacthub.io/images: |
+    - name: dragonflyoss/manager
+      image: dragonflyoss/manager:v0.1.0
+    - name: dragonflyoss/cdn
+      image: dragonflyoss/cdn:v0.1.0
+    - name: dragonflyoss/dfdaemon
+      image: dragonflyoss/dfdaemon:v0.1.0
+    - name: dragonflyoss/scheduler
+      image: dragonflyoss/scheduler:v0.1.0
 
 dependencies:
 - name: mysql
