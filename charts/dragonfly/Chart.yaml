@@ -1,0 +1,38 @@
+apiVersion: v2
+name: dragonfly
+description: Dragonfly is an intelligent P2P based image and file distribution system
+icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+type: application
+version: "0.1.0"
+appVersion: "0.1.0"
+keywords:
+- dragonfly
+- d7y
+- P2P
+- image
+
+home: https://d7y.io/
+
+sources:
+- https://github.com/dragonflyoss/Dragonfly2
+
+annotations:
+  artifacthub.io/changes: |
+    - Upgrade to the latest template
+  artifacthub.io/links: |
+    - name: Homepage
+      url: https://d7y.io
+    - name: Chart Source
+      url: https://github.com/dragonflyoss/helm-charts
+    - name: Source
+      url: https://github.com/dragonflyoss/Dragonfly2
+
+dependencies:
+- name: mysql
+  version: "8.0.0"
+  repository: "https://charts.bitnami.com/bitnami"
+  condition: mysql.enable
+- name: redis-cluster
+  version: "5.0.0"
+  repository: "https://charts.bitnami.com/bitnami"
+  condition: redis.enable
