@@ -6,7 +6,7 @@ Provide efficient, stable, secure, low-cost file and image distribution services
 
 ```bash
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install my-release dragonfly/dragonfly
+$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
 ```
 
 ## Introduction
@@ -26,7 +26,7 @@ Install dragonfly chart with release name `my-release`:
 
 ```bash
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install my-release dragonfly/dragonfly
+$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
 ```
 
 ## Uninstall
