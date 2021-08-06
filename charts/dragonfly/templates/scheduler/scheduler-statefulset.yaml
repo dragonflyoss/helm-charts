@@ -35,6 +35,7 @@ spec:
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
     spec:
+      serviceAccountName: {{template "dragonfly.scheduler.fullname" . }}
       {{- if .Values.scheduler.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.scheduler.nodeSelector | indent 8 }}
