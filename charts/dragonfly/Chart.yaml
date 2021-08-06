@@ -19,7 +19,6 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Upgrade to the latest template
-    - Add README.md
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
