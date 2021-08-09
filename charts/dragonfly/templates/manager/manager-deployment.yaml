@@ -62,7 +62,7 @@ spec:
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} {{ .Values.mysql.primary.service.port }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
       {{- end }}
       {{- end }}
       containers:
