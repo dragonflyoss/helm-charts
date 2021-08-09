@@ -55,11 +55,8 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-manager
-        image: toschneck/wait-for-it:latest
-        args:
-          - "-t"
-          - "0"
-          - {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.restPort }}
+        image: busybox:latest
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }} && nc -vz {{ template "dragonfly.manager.fullname" . }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
       containers:
       - name: scheduler
         image: "{{ .Values.scheduler.image }}:{{ .Values.scheduler.tag }}"
