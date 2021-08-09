@@ -35,7 +35,6 @@ spec:
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      serviceAccountName: {{template "dragonfly.scheduler.fullname" . }}
       {{- if .Values.scheduler.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.scheduler.nodeSelector | indent 8 }}
@@ -60,7 +59,7 @@ spec:
         args:
           - "-t"
           - "0"
-          - {{ template "dragonfly.cdn.fullname" . }}-0:{{ .Values.cdn.nginxContiainerPort }}
+          - {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.restPort }}
       containers:
       - name: scheduler
         image: "{{ .Values.scheduler.image }}:{{ .Values.scheduler.tag }}"
