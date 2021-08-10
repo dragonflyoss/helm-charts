@@ -1,5 +1,10 @@
+# -- Override dragonfly system name
 nameOverride: ""
+
+# -- Override dragonfly system namespace
 namespaceOverride: "dragonfly-system"
+
+# -- Override dragonfly fullname
 fullnameOverride: ""
 
 # -- Values for dragonfly installation
