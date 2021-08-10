@@ -1,6 +1,8 @@
-# Dragonfly Helm Chart
+# Dragonfly Helm Charts
 
-Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/search?repo=dragonfly)
+
+Helm charts for Dragonfly.
 
 ## Introduction
 
@@ -13,22 +15,10 @@ Dragonfly is an open source intelligent P2P based image and file distribution sy
 
 Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an Incubating Level Project. Originally it was born to solve all kinds of distribution at very large scales, such as application distribution, cache distribution, log distribution, image distribution, and so on.
 
-## Documentation
-You can find the Dragonfly documentation [on the website][website].
-
-## Community
+## Contact
 Welcome developers to actively participate in community discussions and contribute code to Dragonfly. We will remain concerned about the issues discussed in the community and respond quickly.
 
 - Discussions: [Github Discussion Forum][discussion]
 - DingTalk: 23304666
 
-## Contributing
-You should check out our [CONTRIBUTING][contributing] and develop the project together.
-
-## Code of Conduct
-Please refer to our [Code of Conduct][codeconduct].
-
-[website]: https://d7y.io
 [discussion]: https://github.com/dragonflyoss/Dragonfly2/discussions
-[contributing]: CONTRIBUTING.md
-[codeconduct]: CODE_OF_CONDUCT.md
