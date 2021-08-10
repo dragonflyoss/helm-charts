@@ -1,13 +1,8 @@
-# Dragonfly Helm Chart
+# Dragonfly Helm Charts
 
-Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/search?repo=dragonfly)
 
-## TL;DR
-
-```bash
-$ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
-```
+Helm charts for Dragonfly.
 
 ## Introduction
 
@@ -20,29 +15,15 @@ Dragonfly is an open source intelligent P2P based image and file distribution sy
 
 Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an Incubating Level Project. Originally it was born to solve all kinds of distribution at very large scales, such as application distribution, cache distribution, log distribution, image distribution, and so on.
 
-## Install
+## Contact
+Welcome developers to actively participate in community discussions and contribute code to Dragonfly. We will remain concerned about the issues discussed in the community and respond quickly.
 
-Install dragonfly chart with release name `my-release`:
+- Discussions: [Github Discussion Forum][discussion]
+- DingTalk: 23304666
 
-```bash
-$ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
-```
+## License
 
-## Uninstall
+Apache 2.0 License. Please see [License File][license] for more information.
 
-Uninstall the `my-release` deployment:
-
-```bash
-$ helm delete my-release
-```
-
-## [TODO] Configuration
-
-The following table lists the configurable parameters of the dragonfly chart, and their default values.
-
-| Parameter                                 | Description                                                  | Default                       |
-| ----------------------------------------- | ------------------------------------------------------------ | ----------------------------- |
-| `installation.jaeger`                     | whether enable an all in one jaeger for tracing              | `false`                       |
-
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+[discussion]: https://github.com/dragonflyoss/Dragonfly2/discussions
+[license]: LICENSE
