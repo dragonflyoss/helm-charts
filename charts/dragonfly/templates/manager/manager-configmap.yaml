@@ -11,7 +11,7 @@ metadata:
 data:
   manager.yaml: |-
     server:
-      rest: 
+      rest:
         addr: :{{ .Values.manager.restPort }}
       grpc:
         port:
@@ -32,7 +32,7 @@ data:
       redis:
         password: {{ .Values.redis.password }}
         {{- if .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis-cluster" .Values.redis.fullnameOverride }}
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}

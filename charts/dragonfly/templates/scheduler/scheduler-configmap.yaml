@@ -20,5 +20,14 @@ data:
     manager:
       addr: {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.grpcPort }}
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
-      keepAlive: 
+      keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
+    task:
+      redis:
+        password: {{ .Values.redis.password }}
+        {{- if .Values.redis.enable }}
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master
+        {{- else }}
+        host: {{ .Values.redis.host }}
+        {{- end }}
+        port: {{ .Values.redis.service.port }}

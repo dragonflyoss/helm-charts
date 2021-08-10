@@ -389,6 +389,8 @@ mysql:
 redis:
   # -- Enable redis cluster with docker container
   enable: true
+  # -- Use password authentication
+  usePassword: true
   # -- Redis password
   password: dragonfly
   service:

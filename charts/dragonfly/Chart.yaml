@@ -39,7 +39,7 @@ dependencies:
   version: "8.0.0"
   repository: "https://charts.bitnami.com/bitnami"
   condition: mysql.enable
-- name: redis-cluster
-  version: "5.0.0"
+- name: redis
+  version: "12.1.0"
   repository: "https://charts.bitnami.com/bitnami"
   condition: redis.enable

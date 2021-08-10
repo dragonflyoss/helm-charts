@@ -152,6 +152,7 @@ $ helm delete my-release
 | redis.enable | bool | `true` | Enable redis cluster with docker container |
 | redis.password | string | `"dragonfly"` | Redis password |
 | redis.service.port | int | `6379` | Redis port |
+| redis.usePassword | bool | `true` | Use password authentication |
 | scheduler.config.debug | bool | `false` | Enable debug mode |
 | scheduler.config.dynconfig.type | string | `"manager"` | Dynamic configuration pull source, pull from manager service by default |
 | scheduler.config.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
@@ -181,4 +182,4 @@ $ helm delete my-release
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 8.0.0 |
-| https://charts.bitnami.com/bitnami | redis-cluster | 5.0.0 |
+| https://charts.bitnami.com/bitnami | redis | 12.1.0 |

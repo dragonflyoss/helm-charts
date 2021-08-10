@@ -57,7 +57,7 @@ spec:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis-cluster" .Values.redis.fullnameOverride }} && nc -vz {{ .Release.Name }}-{{ default "redis-cluster" .Values.redis.fullnameOverride }} {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
@@ -91,7 +91,6 @@ spec:
             port: {{ .Values.manager.restPort }}
           initialDelaySeconds: 15
           periodSeconds: 20
-          terminationGracePeriodSeconds: 60
       {{- if .Values.manager.sidecar }}
       - name: {{ .Values.manager.sidecar.name }}
         image: {{ .Values.manager.sidecar.image }}:{{ .Values.manager.sidecar.tag }}
