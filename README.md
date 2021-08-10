@@ -21,4 +21,9 @@ Welcome developers to actively participate in community discussions and contribu
 - Discussions: [Github Discussion Forum][discussion]
 - DingTalk: 23304666
 
+## License
+
+Apache 2.0 License. Please see [License File][license] for more information.
+
 [discussion]: https://github.com/dragonflyoss/Dragonfly2/discussions
+[license]: LICENSE
