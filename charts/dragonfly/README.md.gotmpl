@@ -8,7 +8,7 @@ Provide efficient, stable, secure, low-cost file and image distribution services
 
 ```bash
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
+$ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
 ```
 
 ## Introduction
@@ -24,19 +24,19 @@ Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an In
 
 ## Install
 
-Install dragonfly chart with release name `my-release`:
+Install dragonfly chart with release name `dragonfly`:
 
 ```bash
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system my-release dragonfly/dragonfly
+$ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
 ```
 
 ## Uninstall
 
-Uninstall the `my-release` deployment:
+Uninstall the `dragonfly` deployment:
 
 ```bash
-$ helm delete my-release
+$ helm delete dragonfly
 ```
 
 {{ template "chart.valuesSection" . }}
