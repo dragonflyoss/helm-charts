@@ -1,5 +1,7 @@
 # Dragonfly Helm Chart
 
+{{ template "chart.badgesSection" . }}
+
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
 ## TL;DR
@@ -36,10 +38,6 @@ Uninstall the `my-release` deployment:
 ```bash
 $ helm delete my-release
 ```
-
-## Configuration
-
-The following table lists the configurable parameters of the dragonfly chart, and their default values.
 
 {{ template "chart.valuesSection" . }}
 

@@ -1,26 +1,33 @@
-# -- Override dragonfly system name
+# Dragonfly Helm Chart Values
+
+# -- Override dragonfly name
 nameOverride: ""
-
-# -- Override dragonfly system namespace
+# -- Override dragonfly namespace
 namespaceOverride: "dragonfly-system"
-
 # -- Override dragonfly fullname
 fullnameOverride: ""
-
-# -- Values for dragonfly installation
 installation:
+  # -- Install application cluster domain
   clusterDomain: ""
   # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
   jaeger: false
 
 scheduler:
+  # -- Scheduler name
   name: scheduler
+  # -- Override scheduler name
   nameOverride: ""
+  # -- Override scheduler fullname
   fullnameOverride: ""
+  # -- Number of Pods to launch
   replicas: 3
+  # -- Image repository
   image: dragonflyoss/scheduler
+  # -- Image tag
   tag: v0.1.0
+  # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Pod resource requests and limits
   resources:
     requests:
       cpu: "0"
@@ -28,30 +35,45 @@ scheduler:
     limits:
       cpu: "4"
       memory: "8Gi"
+  # -- Pod priorityClassName
   priorityClassName: ""
+  # -- Node labels for pod assignment
   nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
   terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
   tolerations: []
+  # -- Pod annotations
   podAnnotations: {}
+  # -- Pod labels
   podLabels: {}
+  # -- Service annotations
   serviceAnnotations: {}
+  # -- Statefulset annotations
   statefulsetAnnotations: {}
+  # -- Pod containerPort
   containerPort: 8002
+  # -- Service configuration
   service:
     type: ClusterIP
     port: 8002
     targetPort: 8002
   config:
+    # -- Enable debug mode
     debug: false
+    # -- Scheduling queue configuration
     worker:
       workerNum: 4
       workerJobPoolSize: 10000
       senderNum: 10
       senderJobPoolSize: 10000
     dynconfig:
+      # -- Dynamic configuration pull source, pull from manager service by default
       type: manager
     manager:
+      # -- Associated scheduler cluster id
       schedulerClusterID: 0
+      # -- KeepAlive configuration report manager
       keepAlive:
         interval: 5s
         retryMaxAttempts: 100000000
@@ -59,13 +81,21 @@ scheduler:
         retryMaxBackOff: 10
 
 cdn:
+  # -- CDN name
   name: cdn
+  # -- Override scheduler name
   nameOverride: ""
+  # -- Override scheduler fullname
   fullnameOverride: ""
+  # -- Number of Pods to launch
   replicas: 3
+  # -- Image repository
   image: dragonflyoss/cdn
+  # -- Image tag
   tag: v0.1.0
+  # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Pod resource requests and limits
   resources:
     requests:
       cpu: "0"
@@ -73,15 +103,25 @@ cdn:
     limits:
       cpu: "4"
       memory: "8Gi"
+  # -- Pod priorityClassName
   priorityClassName: ""
+  # -- Node labels for pod assignment
   nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
   terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
   tolerations: []
+  # -- Pod annotations
   podAnnotations: {}
+  # -- Pod labels
   podLabels: {}
+  # -- Statefulset annotations
   statefulsetAnnotations: {}
+  # -- Pod containerPort
   containerPort: 8003
+  # -- Nginx containerPort for downloading
   nginxContiainerPort: 8001
+  # -- Service configuration
   service:
     type: ClusterIP
     port: 8003
@@ -92,29 +132,41 @@ cdn:
         targetPort: 8001
   config:
     base:
+      # -- SystemReservedBandwidth is the network bandwidth reserved for system software
       systemReservedBandwidth: 20M
+      # -- MaxBandwidth is the network bandwidth that cdn can use
       maxBandwidth: 200M
+      # -- Enable profiler for data
       enableProfiler: false
+      # -- FailAccessInterval is the interval time after failed to access the URL
       failAccessInterval: 3m
+      # -- GCInitialDelay is the delay time from the start to the first GC execution
       gcInitialDelay: 6s
+      # -- GCMetaInterval is the interval time to execute GC meta
       gcMetaInterval: 2m
+      # -- gcStorageInterval is the interval time to execute GC storage
       gcStorageInterval: 15s
+      # -- TaskExpireTime when a task is not accessed within the taskExpireTime and it will be treated to be expired
       taskExpireTime: 3m
+      # -- StoragePattern is the pattern of storage policy
       storagePattern: disk
       manager:
+        # -- Associated cdn cluster id
         cdnClusterID: 0
+        # -- KeepAlive configuration report manager
         keepAlive:
           interval: 5s
           retryMaxAttempts: 100000000
           retryInitBackOff: 5
           retryMaxBackOff: 10
-      console: false
     plugins:
+      # -- CDN storage driver configuration
       storageDriver:
         - name: disk
           enable: true
           config:
             baseDir: /tmp/cdn
+      # -- CDN storage manager configuration
       storageManager:
         - name: disk
           enable: true
@@ -130,12 +182,19 @@ cdn:
                   intervalThreshold: 2h
 
 dfdaemon:
+  # -- Dfdaemon name
   name: dfdaemon
+  # -- Override dfdaemon name
   nameOverride: ""
+  # -- Override dfdaemon fullname
   fullnameOverride: ""
+  # -- Image repository
   image: dragonflyoss/dfdaemon
+  # -- Image tag
   tag: v0.1.0
+  # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Pod resource requests and limits
   resources:
     requests:
       cpu: "0"
@@ -143,80 +202,141 @@ dfdaemon:
     limits:
       cpu: "2"
       memory: "2Gi"
+  # -- Pod priorityClassName
   priorityClassName: ""
+  # -- Node labels for pod assignment
   nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
   terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
   tolerations: []
+  # -- Pod annotations
   podAnnotations: {}
+  # -- Pod labels
   podLabels: {}
+  # -- Daemonset annotations
   daemonsetAnnotations: {}
+  # -- Pod containerPort
   containerPort: 65001
-  # hostPort is used when .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
+  # -- hostPort is used when .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
   # many network add-ons do not yet support hostPort
   # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work
   # by default, dfdaemon injects the 65001 port to host network by sharing host network namespace,
   # if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false
   # for performance, injecting the 65001 port to host network is better than hostPort
   hostPort: 65001
-  # using hostNetwork when pod with host network can communicate with normal pods with cni network
+  # -- Using hostNetwork when pod with host network can communicate with normal pods with cni network
   hostNetwork: false
   config:
+    # -- Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running
     aliveTime: 0s
+    # -- Daemon gc task running interval
     gcInterval: 1m0s
+    # -- When daemon exit, keep peer task data or not
+    # it is usefully when upgrade daemon service, all local cache will be saved
+    # default is false
     keepStorage: false
+    # -- When enable, pprof will be enabled
     verbose: true
-    jaeger: "" # customize jaeger like: http://localhost:14268/api/traces
+    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268
+    jaeger: ""
     host:
+      # -- TCP service listen address
+      # port should be set by other options
       listenIP: 0.0.0.0
+      # -- Access ip for other peers
+      # when local ip is different with access ip, advertiseIP should be set
       advertiseIP: 0.0.0.0
     download:
+      # -- Download limit per second
       rateLimit: 200Mi
       downloadGRPC:
+        # -- Download grpc security option
         security:
           insecure: true
+        # -- Download service listen address
+        # current, only support unix domain socket
         unixListen:
           socket: /tmp/dfdamon.sock
       peerGRPC:
+        # -- Peer grpc security option
         security:
           insecure: true
         tcpListen:
+          # -- listen address
           listen: 0.0.0.0
+          # -- Listen port
           port: 65000
     upload:
+      # -- upload limit per second
       rateLimit: 100Mi
+      # -- Upload grpc security option
       security:
         insecure: true
       tcpListen:
+        # -- listen address
         listen: 0.0.0.0
+        # -- Listen port
         port: 65002
     storage:
+      # -- Task data expire time
+      # when there is no access to a task data, this task will be gc.
       taskExpireTime: 3m0s
+      # -- storage strategy when process task data
+      # io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action
+      #                           the download file in date directory will be the peer data for uploading to other peers
+      # io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,
+      #                            avoid copy to output path, fast than simple strategy, but:
+      #                            the output file with postfix will be the peer data for uploading to other peers
+      #                            when user delete or change this file, this peer data will be corrupted
+      # default is io.d7y.storage.v2.advance
       strategy: io.d7y.storage.v2.simple
+      # -- Set to ture for reusing underlying storage for same task id
       multiplex: true
     proxy:
+      # -- Filter for hash url
+      # when defaultFilter: "Expires&Signature", for example:
+      #  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999
+      # is same task
       defaultFilter: "Expires&Signature"
+      # -- Proxy security option
       security:
         insecure: true
       tcpListen:
+        # -- Namespace stands the linux net namespace, like /proc/1/ns/net
+        # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
+        # Linux only
         namespace: /run/dragonfly/net
+        # -- listen address
         listen: 0.0.0.0
         # if you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
       registryMirror:
+        # -- When enable, using header "X-Dragonfly-Registry" for remote instead of url
         dynamic: true
+        # -- URL for the registry mirror
         url: https://index.docker.io
       proxies:
+        # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*
 
 manager:
+  # -- Manager name
   name: manager
+  # -- Override manager name
   nameOverride: ""
+  # -- Override manager fullname
   fullnameOverride: ""
+  # -- Number of Pods to launch
   replicas: 3
+  # -- Image repository
   image: dragonflyoss/manager
+  # -- Image tag
   tag: v0.1.0
+  # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Pod resource requests and limits
   resources:
     requests:
       cpu: "0"
@@ -224,31 +344,53 @@ manager:
     limits:
       cpu: "2"
       memory: "4Gi"
+  # -- Pod priorityClassName
   priorityClassName: ""
+  # -- Node labels for pod assignment
   nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
   terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
   tolerations: []
+  # -- Pod annotations
   podAnnotations: {}
+  # -- Pod labels
   podLabels: {}
+  # -- Service annotations
   serviceAnnotations: {}
-  statefulsetAnnotations: {}
+  # -- Deployment annotations
+  deploymentAnnotations: {}
+  # -- REST service port
   restPort: 8080
+  # -- GRPC service port
   grpcPort: 65003
 
 mysql:
+  # -- Enable mysql with docker container
   enable: true
+  # -- Running GORM migration
   migrate: true
   auth:
+    # -- Mysql host name
+    host: ""
+    # -- Mysql root password
     rootPassword: dragonfly-root
+    # -- Mysql username
     username: dragonfly
+    # -- Mysql password
     password: dragonfly
+    # -- Mysql database name
     database: manager
   primary:
     service:
+      # -- Mysql port
       port: 3306
 
 redis:
+  # -- Enable redis cluster with docker container
   enable: true
+  # -- Redis password
   password: dragonfly
   service:
+    # -- Redis port
     port: 6379

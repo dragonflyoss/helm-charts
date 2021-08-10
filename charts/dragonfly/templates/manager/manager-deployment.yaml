@@ -9,9 +9,9 @@ metadata:
     release: {{ .Release.Name }}
   name: {{ template "dragonfly.manager.fullname" . }}
   namespace: {{ template "dragonfly.namespace" . }}
-  {{- if .Values.manager.statefulsetAnnotations }}
+  {{- if .Values.manager.deploymentAnnotations }}
   annotations:
-{{ toYaml .Values.manager.statefulsetAnnotations | indent 4 }}
+{{ toYaml .Values.manager.deploymentAnnotations | indent 4 }}
   {{- end }}
 spec:
   replicas: {{ .Values.manager.replicas }}
