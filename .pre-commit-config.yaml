@@ -4,5 +4,3 @@ repos:
     hooks:
       - id: helm-docs
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
-        args:
-          - --chart-search-root=charts
