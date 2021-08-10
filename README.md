@@ -1,5 +1,7 @@
 # Dragonfly Helm Chart
 
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
 ## TL;DR
@@ -37,12 +39,146 @@ Uninstall the `my-release` deployment:
 $ helm delete my-release
 ```
 
-## [TODO] Configuration
+## Values
 
-The following table lists the configurable parameters of the dragonfly chart, and their default values.
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| cdn.config.base.enableProfiler | bool | `false` | Enable profiler for data |
+| cdn.config.base.failAccessInterval | string | `"3m"` | FailAccessInterval is the interval time after failed to access the URL |
+| cdn.config.base.gcInitialDelay | string | `"6s"` | GCInitialDelay is the delay time from the start to the first GC execution |
+| cdn.config.base.gcMetaInterval | string | `"2m"` | GCMetaInterval is the interval time to execute GC meta |
+| cdn.config.base.gcStorageInterval | string | `"15s"` | gcStorageInterval is the interval time to execute GC storage |
+| cdn.config.base.manager.cdnClusterID | int | `0` | Associated cdn cluster id |
+| cdn.config.base.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
+| cdn.config.base.maxBandwidth | string | `"200M"` | MaxBandwidth is the network bandwidth that cdn can use |
+| cdn.config.base.storagePattern | string | `"disk"` | StoragePattern is the pattern of storage policy |
+| cdn.config.base.systemReservedBandwidth | string | `"20M"` | SystemReservedBandwidth is the network bandwidth reserved for system software |
+| cdn.config.base.taskExpireTime | string | `"3m"` | TaskExpireTime when a task is not accessed within the taskExpireTime and it will be treated to be expired |
+| cdn.config.plugins.storageDriver | list | `[{"config":{"baseDir":"/tmp/cdn"},"enable":true,"name":"disk"}]` | CDN storage driver configuration |
+| cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | CDN storage manager configuration |
+| cdn.containerPort | int | `8003` | Pod containerPort |
+| cdn.fullnameOverride | string | `""` | Override scheduler fullname |
+| cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
+| cdn.name | string | `"cdn"` | CDN name |
+| cdn.nameOverride | string | `""` | Override scheduler name |
+| cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
+| cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
+| cdn.podAnnotations | object | `{}` | Pod annotations |
+| cdn.podLabels | object | `{}` | Pod labels |
+| cdn.priorityClassName | string | `""` | Pod priorityClassName |
+| cdn.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| cdn.replicas | int | `3` | Number of Pods to launch |
+| cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
+| cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
+| cdn.tag | string | `"v0.1.0"` | Image tag |
+| cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| cdn.tolerations | list | `[]` | List of node taints to tolerate |
+| dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
+| dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
+| dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
+| dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
+| dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | listen address |
+| dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
+| dfdaemon.config.download.rateLimit | string | `"200Mi"` | Download limit per second |
+| dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
+| dfdaemon.config.host.advertiseIP | string | `"0.0.0.0"` | Access ip for other peers when local ip is different with access ip, advertiseIP should be set |
+| dfdaemon.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
+| dfdaemon.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268 |
+| dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
+| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
+| dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
+| dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enable, using header "X-Dragonfly-Registry" for remote instead of url |
+| dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
+| dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
+| dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | listen address |
+| dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
+| dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
+| dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
+| dfdaemon.config.storage.taskExpireTime | string | `"3m0s"` | Task data expire time when there is no access to a task data, this task will be gc. |
+| dfdaemon.config.upload.rateLimit | string | `"100Mi"` | upload limit per second |
+| dfdaemon.config.upload.security | object | `{"insecure":true}` | Upload grpc security option |
+| dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | listen address |
+| dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
+| dfdaemon.config.verbose | bool | `true` | When enable, pprof will be enabled |
+| dfdaemon.containerPort | int | `65001` | Pod containerPort |
+| dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
+| dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname |
+| dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
+| dfdaemon.hostPort | int | `65001` | hostPort is used when .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
+| dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
+| dfdaemon.name | string | `"dfdaemon"` | Dfdaemon name |
+| dfdaemon.nameOverride | string | `""` | Override dfdaemon name |
+| dfdaemon.nodeSelector | object | `{}` | Node labels for pod assignment |
+| dfdaemon.podAnnotations | object | `{}` | Pod annotations |
+| dfdaemon.podLabels | object | `{}` | Pod labels |
+| dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
+| dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| dfdaemon.tag | string | `"v0.1.0"` | Image tag |
+| dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
+| fullnameOverride | string | `""` | Override dragonfly fullname |
+| installation.clusterDomain | string | `""` | Install application cluster domain |
+| installation.jaeger | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
+| manager.deploymentAnnotations | object | `{}` | Deployment annotations |
+| manager.fullnameOverride | string | `""` | Override manager fullname |
+| manager.grpcPort | int | `65003` | GRPC service port |
+| manager.image | string | `"dragonflyoss/manager"` | Image repository |
+| manager.name | string | `"manager"` | Manager name |
+| manager.nameOverride | string | `""` | Override manager name |
+| manager.nodeSelector | object | `{}` | Node labels for pod assignment |
+| manager.podAnnotations | object | `{}` | Pod annotations |
+| manager.podLabels | object | `{}` | Pod labels |
+| manager.priorityClassName | string | `""` | Pod priorityClassName |
+| manager.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| manager.replicas | int | `3` | Number of Pods to launch |
+| manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| manager.restPort | int | `8080` | REST service port |
+| manager.serviceAnnotations | object | `{}` | Service annotations |
+| manager.tag | string | `"v0.1.0"` | Image tag |
+| manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| manager.tolerations | list | `[]` | List of node taints to tolerate |
+| mysql.auth.database | string | `"manager"` | Mysql database name |
+| mysql.auth.host | string | `""` | Mysql host name |
+| mysql.auth.password | string | `"dragonfly"` | Mysql password |
+| mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password |
+| mysql.auth.username | string | `"dragonfly"` | Mysql username |
+| mysql.enable | bool | `true` | Enable mysql with docker container |
+| mysql.migrate | bool | `true` | Running GORM migration |
+| mysql.primary.service.port | int | `3306` | Mysql port |
+| nameOverride | string | `""` | Override dragonfly name |
+| namespaceOverride | string | `"dragonfly-system"` | Override dragonfly namespace |
+| redis.enable | bool | `true` | Enable redis cluster with docker container |
+| redis.password | string | `"dragonfly"` | Redis password |
+| redis.service.port | int | `6379` | Redis port |
+| scheduler.config.debug | bool | `false` | Enable debug mode |
+| scheduler.config.dynconfig.type | string | `"manager"` | Dynamic configuration pull source, pull from manager service by default |
+| scheduler.config.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
+| scheduler.config.manager.schedulerClusterID | int | `0` | Associated scheduler cluster id |
+| scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |
+| scheduler.containerPort | int | `8002` | Pod containerPort |
+| scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
+| scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
+| scheduler.name | string | `"scheduler"` | Scheduler name |
+| scheduler.nameOverride | string | `""` | Override scheduler name |
+| scheduler.nodeSelector | object | `{}` | Node labels for pod assignment |
+| scheduler.podAnnotations | object | `{}` | Pod annotations |
+| scheduler.podLabels | object | `{}` | Pod labels |
+| scheduler.priorityClassName | string | `""` | Pod priorityClassName |
+| scheduler.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| scheduler.replicas | int | `3` | Number of Pods to launch |
+| scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
+| scheduler.serviceAnnotations | object | `{}` | Service annotations |
+| scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
+| scheduler.tag | string | `"v0.1.0"` | Image tag |
+| scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
-| Parameter                                 | Description                                                  | Default                       |
-| ----------------------------------------- | ------------------------------------------------------------ | ----------------------------- |
-| `installation.jaeger`                     | whether enable an all in one jaeger for tracing              | `false`                       |
+## Chart dependencies
 
-Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+| Repository | Name | Version |
+|------------|------|---------|
+| https://charts.bitnami.com/bitnami | mysql | 8.0.0 |
+| https://charts.bitnami.com/bitnami | redis-cluster | 5.0.0 |
