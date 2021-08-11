@@ -1,8 +1,8 @@
+{{- if .Values.dfdaemon.enable }}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "dragonfly.dfdaemon.fullname" . }}
-  namespace: {{ template "dragonfly.namespace" . }}
   labels:
     app: {{ template "dragonfly.dfdaemon.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -124,3 +124,4 @@ spec:
           path: /run/dragonfly
           type: DirectoryOrCreate
       {{- end }}
+{{- end }}

@@ -7,17 +7,6 @@ Expand the name of the chart.
 {{- end -}}
 
 {{/*
-Allow the release namespace to be overridden for multi-namespace in combined charts
-*/}}
-{{- define "dragonfly.namespace" -}}
-  {{- if ne .Release.Namespace "default" -}}
-    {{- .Release.Namespace -}}
-  {{- else if .Values.namespaceOverride -}}
-    {{- .Values.namespaceOverride -}}
-  {{- end -}}
-{{- end -}}
-
-{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
@@ -73,4 +62,3 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "dragonfly.dfdaemon.fullname" -}}
 {{ template "dragonfly.fullname" . }}-{{ .Values.dfdaemon.name }}
 {{- end -}}
-

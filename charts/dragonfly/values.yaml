@@ -2,8 +2,6 @@
 
 # -- Override dragonfly name
 nameOverride: ""
-# -- Override dragonfly namespace
-namespaceOverride: "dragonfly-system"
 # -- Override dragonfly fullname
 fullnameOverride: ""
 installation:
@@ -13,6 +11,8 @@ installation:
   jaeger: false
 
 scheduler:
+  # -- Enable scheduler
+  enable: true
   # -- Scheduler name
   name: scheduler
   # -- Override scheduler name
@@ -81,6 +81,8 @@ scheduler:
         retryMaxBackOff: 10
 
 cdn:
+  # -- Enable scheduler
+  enable: true
   # -- CDN name
   name: cdn
   # -- Override scheduler name
@@ -132,23 +134,23 @@ cdn:
         targetPort: 8001
   config:
     base:
-      # -- SystemReservedBandwidth is the network bandwidth reserved for system software
+      # -- Network bandwidth reserved for system software
       systemReservedBandwidth: 20M
-      # -- MaxBandwidth is the network bandwidth that cdn can use
+      # -- Network bandwidth that cdn can use
       maxBandwidth: 200M
       # -- Enable profiler for data
       enableProfiler: false
-      # -- FailAccessInterval is the interval time after failed to access the URL
+      # -- Interval time after failed to access the URL
       failAccessInterval: 3m
-      # -- GCInitialDelay is the delay time from the start to the first GC execution
+      # -- Delay time from the start to the first GC execution
       gcInitialDelay: 6s
-      # -- GCMetaInterval is the interval time to execute GC meta
+      # -- Interval time to execute GC meta
       gcMetaInterval: 2m
-      # -- gcStorageInterval is the interval time to execute GC storage
+      # -- Interval time to execute GC storage
       gcStorageInterval: 15s
-      # -- TaskExpireTime when a task is not accessed within the taskExpireTime and it will be treated to be expired
+      # -- When a task is not accessed within the taskExpireTime and it will be treated to be expired
       taskExpireTime: 3m
-      # -- StoragePattern is the pattern of storage policy
+      # -- Pattern of storage policy
       storagePattern: disk
       manager:
         # -- Associated cdn cluster id
@@ -160,13 +162,13 @@ cdn:
           retryInitBackOff: 5
           retryMaxBackOff: 10
     plugins:
-      # -- CDN storage driver configuration
+      # -- Storage driver configuration
       storageDriver:
         - name: disk
           enable: true
           config:
             baseDir: /tmp/cdn
-      # -- CDN storage manager configuration
+      # -- Storage manager configuration
       storageManager:
         - name: disk
           enable: true
@@ -182,6 +184,8 @@ cdn:
                   intervalThreshold: 2h
 
 dfdaemon:
+  # -- Enable scheduler
+  enable: true
   # -- Dfdaemon name
   name: dfdaemon
   # -- Override dfdaemon name
@@ -218,7 +222,7 @@ dfdaemon:
   daemonsetAnnotations: {}
   # -- Pod containerPort
   containerPort: 65001
-  # -- hostPort is used when .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
+  # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
   # many network add-ons do not yet support hostPort
   # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work
   # by default, dfdaemon injects the 65001 port to host network by sharing host network namespace,
@@ -263,18 +267,18 @@ dfdaemon:
         security:
           insecure: true
         tcpListen:
-          # -- listen address
+          # -- Listen address
           listen: 0.0.0.0
           # -- Listen port
           port: 65000
     upload:
-      # -- upload limit per second
+      # -- Upload limit per second
       rateLimit: 100Mi
       # -- Upload grpc security option
       security:
         insecure: true
       tcpListen:
-        # -- listen address
+        # -- Listen address
         listen: 0.0.0.0
         # -- Listen port
         port: 65002
@@ -282,7 +286,7 @@ dfdaemon:
       # -- Task data expire time
       # when there is no access to a task data, this task will be gc.
       taskExpireTime: 3m0s
-      # -- storage strategy when process task data
+      # -- Storage strategy when process task data
       # io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action
       #                           the download file in date directory will be the peer data for uploading to other peers
       # io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,
@@ -307,9 +311,9 @@ dfdaemon:
         # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
         # Linux only
         namespace: /run/dragonfly/net
-        # -- listen address
+        # -- Listen address
         listen: 0.0.0.0
-        # if you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
+        # If you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
       registryMirror:
@@ -322,6 +326,8 @@ dfdaemon:
         - regx: blobs/sha256.*
 
 manager:
+  # -- Enable scheduler
+  enable: true
   # -- Manager name
   name: manager
   # -- Override manager name
@@ -365,13 +371,24 @@ manager:
   # -- GRPC service port
   grpcPort: 65003
 
+externalManager:
+  # -- Use external manager and disable internal manager
+  enable: false
+  # -- Manager hostname
+  host: ""
+  # -- REST service port
+  restPort: 8080
+  # -- GRPC service port
+  grpcPort: 65003
+
 mysql:
-  # -- Enable mysql with docker container
+  # -- Enable mysql with docker container.
+  # if you want to use external mysql, please update enable to false
   enable: true
   # -- Running GORM migration
   migrate: true
   auth:
-    # -- Mysql host name
+    # -- Mysql hostname
     host: ""
     # -- Mysql root password
     rootPassword: dragonfly-root
@@ -388,7 +405,10 @@ mysql:
 
 redis:
   # -- Enable redis cluster with docker container
+  # if you want to use external redis, please update enable to false
   enable: true
+  # -- Redis hostname
+  host: ""
   # -- Use password authentication
   usePassword: true
   # -- Redis password

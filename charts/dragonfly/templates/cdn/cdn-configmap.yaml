@@ -1,8 +1,8 @@
+{{- if .Values.cdn.enable }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "dragonfly.cdn.fullname" . }}
-  namespace: {{ template "dragonfly.namespace" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -22,10 +22,16 @@ data:
       gcStorageInterval: {{ .Values.cdn.config.base.gcStorageInterval }}
       taskExpireTime: {{ .Values.cdn.config.base.taskExpireTime }}
       storagePattern: {{ .Values.cdn.config.base.storagePattern }}
+      nodeSelector:
+{{ toYaml .Values.cdn.nodeSelector | indent 8 }}
       manager:
+        {{- if .Values.externalManager.enable }}
+        addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+        {{- else }}
         addr: {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.grpcPort }}
-        schedulerClusterID: {{ .Values.cdn.config.base.manager.cdnClusterID }}
-        keepAlive: 
+        {{- end }}
+        cdnClusterID: {{ .Values.cdn.config.base.manager.cdnClusterID }}
+        keepAlive:
 {{ toYaml .Values.cdn.config.base.manager.keepAlive | indent 10 }}
       console: {{ .Values.cdn.config.base.console }}
     plugins:
@@ -82,3 +88,4 @@ data:
             }
         }
     }
+{{- end }}

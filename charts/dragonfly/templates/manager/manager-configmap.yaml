@@ -1,8 +1,8 @@
+{{- if and (not .Values.externalManager.enable) .Values.dfdaemon.enable }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
-  namespace: {{ template "dragonfly.namespace" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -37,3 +37,4 @@ data:
         host: {{ .Values.redis.host }}
         {{- end }}
         port: {{ .Values.redis.service.port }}
+{{- end }}

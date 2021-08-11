@@ -1,8 +1,8 @@
+{{- if and (not .Values.externalManager.enable) .Values.dfdaemon.enable }}
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
-  namespace: {{ template "dragonfly.namespace" . }}
   labels:
     app: {{ template "dragonfly.name" . }}
     chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
@@ -28,3 +28,4 @@ spec:
     component: "{{ $.Values.manager.name }}"
     release: {{ $.Release.Name }}
   type: ClusterIP
+{{- end }}

@@ -1,8 +1,8 @@
+{{- if .Values.scheduler.enable }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ template "dragonfly.scheduler.fullname" . }}
-  namespace: {{ template "dragonfly.namespace" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
@@ -18,16 +18,21 @@ data:
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
     manager:
+      {{- if .Values.externalManager.enable }}
+      addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+      {{- else }}
       addr: {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.grpcPort }}
+      {{- end }}
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
     task:
       redis:
         password: {{ .Values.redis.password }}
-        {{- if .Values.redis.enable }}
+        {{- if and (not .Values.externalManager.enable) .Values.redis.enable }}
         host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}
         port: {{ .Values.redis.service.port }}
+{{- end }}
