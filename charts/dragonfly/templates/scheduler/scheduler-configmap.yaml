@@ -26,7 +26,7 @@ data:
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
-    task:
+    job:
       redis:
         password: {{ .Values.redis.password }}
         {{- if and (not .Values.externalManager.enable) .Values.redis.enable }}
