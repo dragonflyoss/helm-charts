@@ -48,7 +48,7 @@ $ helm delete dragonfly
 | cdn.config.base.gcInitialDelay | string | `"6s"` | Delay time from the start to the first GC execution |
 | cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
 | cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
-| cdn.config.base.manager.cdnClusterID | int | `0` | Associated cdn cluster id |
+| cdn.config.base.manager.cdnClusterID | int | `1` | Associated cdn cluster id |
 | cdn.config.base.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
 | cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
@@ -163,7 +163,7 @@ $ helm delete dragonfly
 | scheduler.config.debug | bool | `false` | Enable debug mode |
 | scheduler.config.dynconfig.type | string | `"manager"` | Dynamic configuration pull source, pull from manager service by default |
 | scheduler.config.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
-| scheduler.config.manager.schedulerClusterID | int | `0` | Associated scheduler cluster id |
+| scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
 | scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |

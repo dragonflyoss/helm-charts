@@ -72,7 +72,7 @@ scheduler:
       type: manager
     manager:
       # -- Associated scheduler cluster id
-      schedulerClusterID: 0
+      schedulerClusterID: 1
       # -- KeepAlive configuration report manager
       keepAlive:
         interval: 5s
@@ -154,7 +154,7 @@ cdn:
       storagePattern: disk
       manager:
         # -- Associated cdn cluster id
-        cdnClusterID: 0
+        cdnClusterID: 1
         # -- KeepAlive configuration report manager
         keepAlive:
           interval: 5s
