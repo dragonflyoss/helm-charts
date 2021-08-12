@@ -6,9 +6,9 @@ Provide efficient, stable, secure, low-cost file and image distribution services
 
 ## TL;DR
 
-```bash
-$ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
+```shell
+helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
 ```
 
 ## Introduction
@@ -26,9 +26,9 @@ Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an In
 
 ### Install with default configuration
 
-```bash
-$ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
+```shell
+helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
 ```
 
 ### Install with custom configuration
@@ -59,9 +59,9 @@ redis:
 
 Install dragonfly with `values.yaml`.
 
-```bash
-$ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
+```shell
+helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
 ```
 
 ### Install with an existing manager
@@ -103,8 +103,8 @@ mysql:
 
 Uninstall the `dragonfly` deployment:
 
-```bash
-$ helm delete dragonfly
+```shell
+helm delete dragonfly
 ```
 
 ## Values
