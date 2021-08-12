@@ -84,7 +84,7 @@ cdn:
 
 externalManager:
   enable: true
-  host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
+  host: mysql-host
   restPort: 8080
   grpcPort: 65003
 
