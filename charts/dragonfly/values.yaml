@@ -4,9 +4,10 @@
 nameOverride: ""
 # -- Override dragonfly fullname
 fullnameOverride: ""
+# -- Install application cluster domain
+clusterDomain: "cluster.local"
+
 installation:
-  # -- Install application cluster domain
-  clusterDomain: ""
   # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
   jaeger: false
 
@@ -385,6 +386,8 @@ mysql:
   # -- Enable mysql with docker container.
   # if you want to use external mysql, please update enable to false
   enable: true
+  # -- Cluster domain
+  clusterDomain: "cluster.local"
   # -- Running GORM migration
   migrate: true
   auth:
@@ -407,6 +410,8 @@ redis:
   # -- Enable redis cluster with docker container
   # if you want to use external redis, please update enable to false
   enable: true
+  # -- Cluster domain
+  clusterDomain: "cluster.local"
   # -- Redis hostname
   host: ""
   # -- Use password authentication

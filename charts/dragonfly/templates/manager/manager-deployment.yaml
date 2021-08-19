@@ -57,12 +57,12 @@ spec:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
       {{- end }}
       {{- end }}
       containers:

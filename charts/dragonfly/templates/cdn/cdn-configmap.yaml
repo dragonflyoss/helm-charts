@@ -28,7 +28,7 @@ data:
         {{- if .Values.externalManager.enable }}
         addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- else }}
-        addr: {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.grpcPort }}
+        addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
         {{- end }}
         cdnClusterID: {{ .Values.cdn.config.base.manager.cdnClusterID }}
         keepAlive:
