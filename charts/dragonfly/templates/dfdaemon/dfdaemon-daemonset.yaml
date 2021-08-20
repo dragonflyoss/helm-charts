@@ -4,11 +4,11 @@ kind: DaemonSet
 metadata:
   name: {{ template "dragonfly.dfdaemon.fullname" . }}
   labels:
-    app: {{ template "dragonfly.dfdaemon.fullname" . }}
+    app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    component: "{{ .Values.dfdaemon.name }}"
-    heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: "{{ .Values.dfdaemon.name }}"
   {{- if .Values.dfdaemon.daemonsetAnnotations }}
   annotations:
 {{ toYaml .Values.dfdaemon.daemonsetAnnotations | indent 4 }}
@@ -16,13 +16,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: {{ template "dragonfly.dfdaemon.fullname" . }}
+      app: {{ template "dragonfly.fullname" . }}
       component: "{{ .Values.dfdaemon.name }}"
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "dragonfly.dfdaemon.fullname" . }}
+        app: {{ template "dragonfly.fullname" . }}
         component: "{{ .Values.dfdaemon.name }}"
         release: {{ .Release.Name }}
         {{- if .Values.dfdaemon.podLabels }}

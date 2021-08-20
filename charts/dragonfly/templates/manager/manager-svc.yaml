@@ -6,9 +6,8 @@ metadata:
   labels:
     app: {{ template "dragonfly.name" . }}
     chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
-    component: "{{ $.Values.manager.name }}"
-    heritage: {{ $.Release.Service }}
     release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
 {{- if .Values.manager.serviceAnnotations }}
   annotations:
 {{ toYaml .Values.manager.serviceAnnotations | indent 4 }}

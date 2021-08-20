@@ -30,7 +30,7 @@ data:
       redis:
         password: {{ .Values.redis.password }}
         {{- if and (not .Values.externalManager.enable) .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}

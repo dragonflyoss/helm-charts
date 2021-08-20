@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: {{ template "dragonfly.cdn.fullname" . }}
+    app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    component: "{{ .Values.cdn.name }}"
-    heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.cdn.name }}
   name: {{ template "dragonfly.cdn.fullname" . }}
   {{- if .Values.cdn.statefulsetAnnotations }}
   annotations:
@@ -17,15 +17,15 @@ spec:
   replicas: {{ .Values.cdn.replicas }}
   selector:
     matchLabels:
-      app: {{ template "dragonfly.cdn.fullname" . }}
-      component: "{{ .Values.cdn.name }}"
+      app: {{ template "dragonfly.fullname" . }}
+      component: {{ .Values.cdn.name }}
       release: {{ .Release.Name }}
   serviceName: cdn
   template:
     metadata:
       labels:
-        app: {{ template "dragonfly.cdn.fullname" . }}
-        component: "{{ .Values.cdn.name }}"
+        app: {{ template "dragonfly.fullname" . }}
+        component: {{ .Values.cdn.name }}
         release: {{ .Release.Name }}
         {{- if .Values.cdn.podLabels }}
 {{ toYaml .Values.cdn.podLabels | indent 8 }}

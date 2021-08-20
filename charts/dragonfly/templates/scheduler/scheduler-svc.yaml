@@ -8,9 +8,8 @@ metadata:
   labels:
     app: {{ template "dragonfly.name" $ }}
     chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
-    component: "{{ $.Values.scheduler.name }}"
-    heritage: {{ $.Release.Service }}
     release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
 {{- if $.serviceAnnotations }}
   annotations:
 {{ toYaml $.Values.scheduler.serviceAnnotations | indent 4 }}

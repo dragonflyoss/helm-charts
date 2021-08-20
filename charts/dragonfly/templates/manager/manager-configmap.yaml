@@ -22,7 +22,7 @@ data:
         user: {{ .Values.mysql.auth.username }}
         password: {{ .Values.mysql.auth.password }}
         {{- if .Values.mysql.enable }}
-        host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+        host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.mysql.auth.host }}
         {{- end }}
@@ -32,7 +32,7 @@ data:
       redis:
         password: {{ .Values.redis.password }}
         {{- if .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}

@@ -2,13 +2,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  labels:
-    app: {{ template "dragonfly.scheduler.fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    component: "{{ .Values.scheduler.name }}"
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
   name: {{ template "dragonfly.scheduler.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: "{{ .Values.scheduler.name }}"
   {{- if .Values.scheduler.statefulsetAnnotations }}
   annotations:
 {{ toYaml .Values.scheduler.statefulsetAnnotations | indent 4 }}
@@ -17,16 +17,16 @@ spec:
   replicas: {{ .Values.scheduler.replicas }}
   selector:
     matchLabels:
-      app: {{ template "dragonfly.scheduler.fullname" . }}
-      component: "{{ .Values.scheduler.name }}"
+      app: {{ template "dragonfly.fullname" . }}
       release: {{ .Release.Name }}
+      component: "{{ .Values.scheduler.name }}"
   serviceName: scheduler
   template:
     metadata:
       labels:
-        app: {{ template "dragonfly.scheduler.fullname" . }}
-        component: "{{ .Values.scheduler.name }}"
+        app: {{ template "dragonfly.fullname" . }}
         release: {{ .Release.Name }}
+        component: "{{ .Values.scheduler.name }}"
         {{- if .Values.scheduler.podLabels }}
 {{ toYaml .Values.scheduler.podLabels | indent 8 }}
         {{- end }}
