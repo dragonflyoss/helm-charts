@@ -7,10 +7,6 @@ fullnameOverride: ""
 # -- Install application cluster domain
 clusterDomain: "cluster.local"
 
-installation:
-  # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
-  jaeger: false
-
 scheduler:
   # -- Enable scheduler
   enable: true
@@ -432,3 +428,7 @@ redis:
   service:
     # -- Redis port
     port: 6379
+
+jaeger:
+  # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
+  enable: false

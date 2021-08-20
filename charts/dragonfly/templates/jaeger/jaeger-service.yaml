@@ -1,0 +1,127 @@
+{{- if .Values.jaeger.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: service-collector
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-collector
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-collector-headless
+spec:
+  clusterIP: None
+  ports:
+  - name: http-zipkin
+    port: 9411
+    targetPort: 0
+  - name: http-grpc
+    port: 14250
+    targetPort: 0
+  - name: c-tchan-trft
+    port: 14267
+    targetPort: 0
+  - name: http-c-binary-trft
+    port: 14268
+    targetPort: 0
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one
+    app.kubernetes.io/part-of: jaeger
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: service-collector
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-collector
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-collector
+spec:
+  ports:
+  - name: http-zipkin
+    port: 9411
+    targetPort: 0
+  - name: http-grpc
+    port: 14250
+    targetPort: 0
+  - name: c-tchan-trft
+    port: 14267
+    targetPort: 0
+  - name: http-c-binary-trft
+    port: 14268
+    targetPort: 0
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one
+    app.kubernetes.io/part-of: jaeger
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: service-query
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-query
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-query
+spec:
+  ports:
+  - name: http-query
+    port: 16686
+    targetPort: 16686
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one
+    app.kubernetes.io/part-of: jaeger
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: service-agent
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-agent
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-agent
+spec:
+  clusterIP: None
+  ports:
+  - name: zk-compact-trft
+    port: 5775
+    protocol: UDP
+    targetPort: 0
+  - name: config-rest
+    port: 5778
+    targetPort: 0
+  - name: jg-compact-trft
+    port: 6831
+    protocol: UDP
+    targetPort: 0
+  - name: jg-binary-trft
+    port: 6832
+    protocol: UDP
+    targetPort: 0
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one
+    app.kubernetes.io/part-of: jaeger
+{{- end }}
