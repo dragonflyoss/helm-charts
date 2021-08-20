@@ -5,9 +5,10 @@ metadata:
   name: {{ template "dragonfly.scheduler.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.scheduler.name }}
 data:
   scheduler.yaml: |-
     deubug: {{ .Values.scheduler.config.debug }}

@@ -5,9 +5,10 @@ metadata:
   name: {{ template "dragonfly.dfdaemon.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.dfdaemon.name }}
 data:
   dfget.yaml: |-
     aliveTime: {{ .Values.dfdaemon.config.aliveTime }}

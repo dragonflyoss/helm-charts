@@ -8,7 +8,7 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: "{{ .Values.scheduler.name }}"
+    component: {{ .Values.scheduler.name }}
   {{- if .Values.scheduler.statefulsetAnnotations }}
   annotations:
 {{ toYaml .Values.scheduler.statefulsetAnnotations | indent 4 }}
@@ -19,14 +19,14 @@ spec:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
       release: {{ .Release.Name }}
-      component: "{{ .Values.scheduler.name }}"
+      component: {{ .Values.scheduler.name }}
   serviceName: scheduler
   template:
     metadata:
       labels:
         app: {{ template "dragonfly.fullname" . }}
         release: {{ .Release.Name }}
-        component: "{{ .Values.scheduler.name }}"
+        component: {{ .Values.scheduler.name }}
         {{- if .Values.scheduler.podLabels }}
 {{ toYaml .Values.scheduler.podLabels | indent 8 }}
         {{- end }}

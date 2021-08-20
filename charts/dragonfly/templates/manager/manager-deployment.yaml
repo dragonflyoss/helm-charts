@@ -7,7 +7,7 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: "{{ .Values.manager.name }}"
+    component: {{ .Values.manager.name }}
   name: {{ template "dragonfly.manager.fullname" . }}
   {{- if .Values.manager.deploymentAnnotations }}
   annotations:
@@ -18,13 +18,13 @@ spec:
   selector:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
-      component: "{{ .Values.manager.name }}"
+      component: {{ .Values.manager.name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "dragonfly.fullname" . }}
-        component: "{{ .Values.manager.name }}"
+        component: {{ .Values.manager.name }}
         release: {{ .Release.Name }}
         {{- if .Values.manager.podLabels }}
 {{ toYaml .Values.manager.podLabels | indent 8 }}
