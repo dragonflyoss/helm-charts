@@ -25,7 +25,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -95,7 +95,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -196,7 +196,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -340,7 +340,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -371,6 +371,17 @@ manager:
   restPort: 8080
   # -- GRPC service port
   grpcPort: 65003
+  ingress:
+    # -- Enable ingress
+    enabled: false
+    # -- Ingress annotations
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    # -- Manager ingress hostnames
+    hosts: []
+    # -- Ingress TLS configuration
+    tls: []
 
 externalManager:
   # -- Use external manager and disable internal manager
