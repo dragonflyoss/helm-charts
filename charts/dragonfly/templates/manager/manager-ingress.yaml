@@ -29,9 +29,9 @@ spec:
     - host: {{ . }}
       http:
         paths:
-          - path: {{ .Values.manager.ingress.path }}
+          - path: {{ $.Values.manager.ingress.path }}
             backend:
-              serviceName: {{ template "dragonfly.manager.fullname" . }}
-              servicePort: {{ .Values.manager.restPort }}
+              serviceName: {{ template "dragonfly.manager.fullname" $ }}
+              servicePort: {{ $.Values.manager.restPort }}
   {{- end }}
 {{- end }}
