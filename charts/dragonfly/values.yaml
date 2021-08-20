@@ -378,7 +378,7 @@ manager:
     annotations: {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
-    # -- Manager ingress hostnames
+    # -- Manager ingress hosts
     hosts: []
     # -- Ingress TLS configuration
     tls: []

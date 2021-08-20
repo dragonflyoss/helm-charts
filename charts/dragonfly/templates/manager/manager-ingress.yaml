@@ -1,0 +1,37 @@
+{{- if .Values.manager.ingress.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "dragonfly.manager.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.manager.name }}
+{{- if .Values.manager.ingress.annotations }}
+  annotations:
+{{ toYaml .Values.manager.ingress.annotations | indent 4 }}
+{{- end }}
+spec:
+{{- if .Values.manager.ingress.tls }}
+  tls:
+  {{- range .Values.manager.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.manager.ingress.hosts }}
+    - host: {{ . }}
+      http:
+        paths:
+          - path: {{ .Values.manager.ingress.path }}
+            backend:
+              serviceName: {{ template "dragonfly.manager.fullname" . }}
+              servicePort: {{ .Values.manager.restPort }}
+  {{- end }}
+{{- end }}
