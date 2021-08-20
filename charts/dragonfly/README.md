@@ -72,7 +72,7 @@ helm delete dragonfly
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v0.1.0"` | Image tag |
+| cdn.tag | string | `"v0.2.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -117,7 +117,7 @@ helm delete dragonfly
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v0.1.0"` | Image tag |
+| dfdaemon.tag | string | `"v0.2.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.enable | bool | `false` | Use external manager and disable internal manager |
@@ -143,7 +143,7 @@ helm delete dragonfly
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
 | manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v0.1.0"` | Image tag |
+| manager.tag | string | `"v0.2.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -181,7 +181,7 @@ helm delete dragonfly
 | scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
 | scheduler.serviceAnnotations | object | `{}` | Service annotations |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v0.1.0"` | Image tag |
+| scheduler.tag | string | `"v0.2.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
