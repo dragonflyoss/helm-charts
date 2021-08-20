@@ -75,6 +75,7 @@ helm delete dragonfly
 | cdn.tag | string | `"v0.2.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
+| clusterDomain | string | `"cluster.local"` | Install application cluster domain |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
@@ -125,13 +126,17 @@ helm delete dragonfly
 | externalManager.host | string | `""` | Manager hostname |
 | externalManager.restPort | int | `8080` | REST service port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
-| installation.clusterDomain | string | `""` | Install application cluster domain |
-| installation.jaeger | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
+| jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable scheduler |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
+| manager.ingress.annotations | object | `{}` | Ingress annotations |
+| manager.ingress.enabled | bool | `false` | Enable ingress |
+| manager.ingress.hosts | list | `[]` | Manager ingress hosts |
+| manager.ingress.path | string | `"/"` | Ingress host path |
+| manager.ingress.tls | list | `[]` | Ingress TLS configuration |
 | manager.name | string | `"manager"` | Manager name |
 | manager.nameOverride | string | `""` | Override manager name |
 | manager.nodeSelector | object | `{}` | Node labels for pod assignment |
@@ -151,10 +156,12 @@ helm delete dragonfly
 | mysql.auth.password | string | `"dragonfly"` | Mysql password |
 | mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password |
 | mysql.auth.username | string | `"dragonfly"` | Mysql username |
+| mysql.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | mysql.enable | bool | `true` | Enable mysql with docker container. if you want to use external mysql, please update enable to false |
 | mysql.migrate | bool | `true` | Running GORM migration |
 | mysql.primary.service.port | int | `3306` | Mysql port |
 | nameOverride | string | `""` | Override dragonfly name |
+| redis.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | redis.enable | bool | `true` | Enable redis cluster with docker container if you want to use external redis, please update enable to false |
 | redis.host | string | `""` | Redis hostname |
 | redis.password | string | `"dragonfly"` | Redis password |

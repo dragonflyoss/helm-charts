@@ -21,7 +21,7 @@ annotations:
     - Upgrade to the latest template
     - Support manager service
     - Add manager ingress
-    - Support cluster domain attribute
+    - Support cluster domain
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
