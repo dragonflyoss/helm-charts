@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.0](https://img.shields.io/badge/AppVersion-0.2.0-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -72,9 +72,10 @@ helm delete dragonfly
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v0.1.0"` | Image tag |
+| cdn.tag | string | `"v0.2.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
+| clusterDomain | string | `"cluster.local"` | Install application cluster domain |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
@@ -117,7 +118,7 @@ helm delete dragonfly
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v0.1.0"` | Image tag |
+| dfdaemon.tag | string | `"v0.2.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.enable | bool | `false` | Use external manager and disable internal manager |
@@ -125,13 +126,17 @@ helm delete dragonfly
 | externalManager.host | string | `""` | Manager hostname |
 | externalManager.restPort | int | `8080` | REST service port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
-| installation.clusterDomain | string | `""` | Install application cluster domain |
-| installation.jaeger | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
+| jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable scheduler |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
+| manager.ingress.annotations | object | `{}` | Ingress annotations |
+| manager.ingress.enabled | bool | `false` | Enable ingress |
+| manager.ingress.hosts | list | `[]` | Manager ingress hosts |
+| manager.ingress.path | string | `"/"` | Ingress host path |
+| manager.ingress.tls | list | `[]` | Ingress TLS configuration |
 | manager.name | string | `"manager"` | Manager name |
 | manager.nameOverride | string | `""` | Override manager name |
 | manager.nodeSelector | object | `{}` | Node labels for pod assignment |
@@ -143,7 +148,7 @@ helm delete dragonfly
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
 | manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v0.1.0"` | Image tag |
+| manager.tag | string | `"v0.2.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -151,10 +156,12 @@ helm delete dragonfly
 | mysql.auth.password | string | `"dragonfly"` | Mysql password |
 | mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password |
 | mysql.auth.username | string | `"dragonfly"` | Mysql username |
+| mysql.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | mysql.enable | bool | `true` | Enable mysql with docker container. if you want to use external mysql, please update enable to false |
 | mysql.migrate | bool | `true` | Running GORM migration |
 | mysql.primary.service.port | int | `3306` | Mysql port |
 | nameOverride | string | `""` | Override dragonfly name |
+| redis.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | redis.enable | bool | `true` | Enable redis cluster with docker container if you want to use external redis, please update enable to false |
 | redis.host | string | `""` | Redis hostname |
 | redis.password | string | `"dragonfly"` | Redis password |
@@ -181,7 +188,7 @@ helm delete dragonfly
 | scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
 | scheduler.serviceAnnotations | object | `{}` | Service annotations |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v0.1.0"` | Image tag |
+| scheduler.tag | string | `"v0.2.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 

@@ -8,9 +8,9 @@ metadata:
   labels:
     app: {{ template "dragonfly.name" $ }}
     chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
-    component: "{{ $.Values.scheduler.name }}"
-    heritage: {{ $.Release.Service }}
     release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    component: {{ $.Values.scheduler.name }}
 {{- if $.serviceAnnotations }}
   annotations:
 {{ toYaml $.Values.scheduler.serviceAnnotations | indent 4 }}
@@ -29,7 +29,7 @@ spec:
       targetPort: {{ $port.port }}
 {{- end }}
   selector:
-    app: {{ template "dragonfly.scheduler.fullname" $ }}
+    app: {{ template "dragonfly.fullname" $ }}
     component: "{{ $.Values.scheduler.name }}"
     release: {{ $.Release.Name }}
     statefulset.kubernetes.io/pod-name: {{ template "dragonfly.scheduler.fullname" $ }}-{{ $i }}

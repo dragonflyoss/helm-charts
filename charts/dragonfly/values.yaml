@@ -4,11 +4,8 @@
 nameOverride: ""
 # -- Override dragonfly fullname
 fullnameOverride: ""
-installation:
-  # -- Install application cluster domain
-  clusterDomain: ""
-  # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
-  jaeger: false
+# -- Install application cluster domain
+clusterDomain: "cluster.local"
 
 scheduler:
   # -- Enable scheduler
@@ -24,7 +21,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -94,7 +91,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -195,7 +192,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -339,7 +336,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v0.1.0
+  tag: v0.2.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -370,6 +367,17 @@ manager:
   restPort: 8080
   # -- GRPC service port
   grpcPort: 65003
+  ingress:
+    # -- Enable ingress
+    enabled: false
+    # -- Ingress annotations
+    annotations: {}
+    # -- Ingress host path
+    path: /
+    # -- Manager ingress hosts
+    hosts: []
+    # -- Ingress TLS configuration
+    tls: []
 
 externalManager:
   # -- Use external manager and disable internal manager
@@ -385,6 +393,8 @@ mysql:
   # -- Enable mysql with docker container.
   # if you want to use external mysql, please update enable to false
   enable: true
+  # -- Cluster domain
+  clusterDomain: "cluster.local"
   # -- Running GORM migration
   migrate: true
   auth:
@@ -407,6 +417,8 @@ redis:
   # -- Enable redis cluster with docker container
   # if you want to use external redis, please update enable to false
   enable: true
+  # -- Cluster domain
+  clusterDomain: "cluster.local"
   # -- Redis hostname
   host: ""
   # -- Use password authentication
@@ -416,3 +428,7 @@ redis:
   service:
     # -- Redis port
     port: 6379
+
+jaeger:
+  # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
+  enable: false

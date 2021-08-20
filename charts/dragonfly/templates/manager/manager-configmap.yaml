@@ -5,9 +5,10 @@ metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.manager.name }}
 data:
   manager.yaml: |-
     server:
@@ -22,7 +23,7 @@ data:
         user: {{ .Values.mysql.auth.username }}
         password: {{ .Values.mysql.auth.password }}
         {{- if .Values.mysql.enable }}
-        host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }}
+        host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.mysql.auth.host }}
         {{- end }}
@@ -32,7 +33,7 @@ data:
       redis:
         password: {{ .Values.redis.password }}
         {{- if .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}

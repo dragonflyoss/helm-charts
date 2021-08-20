@@ -5,10 +5,10 @@ metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
   labels:
     app: {{ template "dragonfly.name" . }}
-    chart: {{ $.Chart.Name }}-{{ $.Chart.Version }}
-    component: "{{ $.Values.manager.name }}"
-    heritage: {{ $.Release.Service }}
-    release: {{ $.Release.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.manager.name }}
 {{- if .Values.manager.serviceAnnotations }}
   annotations:
 {{ toYaml .Values.manager.serviceAnnotations | indent 4 }}
@@ -24,8 +24,8 @@ spec:
       protocol: TCP
       targetPort: {{ .Values.manager.grpcPort }}
   selector:
-    app: {{ template "dragonfly.manager.fullname" . }}
-    component: "{{ $.Values.manager.name }}"
-    release: {{ $.Release.Name }}
+    app: {{ template "dragonfly.fullname" . }}
+    component: {{ .Values.manager.name }}
+    release: {{ .Release.Name }}
   type: ClusterIP
 {{- end }}

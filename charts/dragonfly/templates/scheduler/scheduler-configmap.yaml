@@ -5,9 +5,10 @@ metadata:
   name: {{ template "dragonfly.scheduler.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
-    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.scheduler.name }}
 data:
   scheduler.yaml: |-
     deubug: {{ .Values.scheduler.config.debug }}
@@ -21,7 +22,7 @@ data:
       {{- if .Values.externalManager.enable }}
       addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- else }}
-      addr: {{ template "dragonfly.manager.fullname" . }}:{{ .Values.manager.grpcPort }}
+      addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
       {{- end }}
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
@@ -30,7 +31,7 @@ data:
       redis:
         password: {{ .Values.redis.password }}
         {{- if and (not .Values.externalManager.enable) .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
         host: {{ .Values.redis.host }}
         {{- end }}

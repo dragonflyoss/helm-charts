@@ -1,0 +1,48 @@
+{{- if .Values.jaeger.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: ui-configuration
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-ui-configuration
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-ui-configuration
+data:
+  ui: |-
+    {
+      "menu": [
+        {
+          "items": [
+            {
+              "label": "Documentation",
+              "url": "https://www.jaegertracing.io/docs/1.23"
+            }
+          ],
+          "label": "About"
+        }
+      ]
+    }
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: sampling-configuration
+    app.kubernetes.io/instance: jaeger-all-in-one
+    app.kubernetes.io/name: jaeger-all-in-one-sampling-configuration
+    app.kubernetes.io/part-of: jaeger
+  name: jaeger-all-in-one-sampling-configuration
+data:
+  sampling: |-
+    {
+      "default_strategy": {
+        "param": 1,
+        "type": "probabilistic"
+      }
+    }
+{{- end }}

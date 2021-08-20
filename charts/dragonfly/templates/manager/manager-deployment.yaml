@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ template "dragonfly.manager.fullname" . }}
+    app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    component: "{{ .Values.manager.name }}"
-    heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.manager.name }}
   name: {{ template "dragonfly.manager.fullname" . }}
   {{- if .Values.manager.deploymentAnnotations }}
   annotations:
@@ -17,14 +17,14 @@ spec:
   replicas: {{ .Values.manager.replicas }}
   selector:
     matchLabels:
-      app: {{ template "dragonfly.manager.fullname" . }}
-      component: "{{ .Values.manager.name }}"
+      app: {{ template "dragonfly.fullname" . }}
+      component: {{ .Values.manager.name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "dragonfly.manager.fullname" . }}
-        component: "{{ .Values.manager.name }}"
+        app: {{ template "dragonfly.fullname" . }}
+        component: {{ .Values.manager.name }}
         release: {{ .Release.Name }}
         {{- if .Values.manager.podLabels }}
 {{ toYaml .Values.manager.podLabels | indent 8 }}
@@ -57,12 +57,12 @@ spec:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullnameOverride }}-master {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
         image: busybox:latest
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullnameOverride }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
       {{- end }}
       {{- end }}
       containers:
