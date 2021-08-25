@@ -21,7 +21,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v0.2.0
+  tag: v0.3.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -70,12 +70,9 @@ scheduler:
     manager:
       # -- Associated scheduler cluster id
       schedulerClusterID: 1
-      # -- KeepAlive configuration report manager
       keepAlive:
+        # -- Manager keepalive interval
         interval: 5s
-        retryMaxAttempts: 100000000
-        retryInitBackOff: 5
-        retryMaxBackOff: 10
 
 cdn:
   # -- Enable scheduler
@@ -91,7 +88,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v0.2.0
+  tag: v0.3.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -152,12 +149,9 @@ cdn:
       manager:
         # -- Associated cdn cluster id
         cdnClusterID: 1
-        # -- KeepAlive configuration report manager
         keepAlive:
+          # -- Manager keepalive interval
           interval: 5s
-          retryMaxAttempts: 100000000
-          retryInitBackOff: 5
-          retryMaxBackOff: 10
     plugins:
       # -- Storage driver configuration
       storageDriver:
@@ -192,7 +186,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v0.2.0
+  tag: v0.3.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -336,7 +330,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v0.2.0
+  tag: v0.3.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
