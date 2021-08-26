@@ -80,7 +80,6 @@ spec:
           subPath: "nginx.conf"
         - name: storage
           mountPath: {{ (index .Values.cdn.config.plugins.storageDriver 0).config.baseDir }}
-      {{- if .Values.cdn.persistence.enabled }}
       volumes:
       - name: config
         configMap:
@@ -91,19 +90,9 @@ spec:
       - name: nginx-config
         configMap:
           name: {{ template "dragonfly.cdn.fullname" $ }}
-      {{- else }}
-      volumes:
+      {{- if not (.Values.cdn.persistence.enabled) }}
       - name: storage
         emptyDir: {}
-      - name: config
-        configMap:
-          name: {{ template "dragonfly.cdn.fullname" $ }}
-          items:
-          - key: cdn.yaml
-            path: cdn.yaml
-      - name: nginx-config
-        configMap:
-          name: {{ template "dragonfly.cdn.fullname" $ }}
       {{- end }}
   {{- if .Values.cdn.persistence.enabled }}
   volumeClaimTemplates:
