@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.0](https://img.shields.io/badge/AppVersion-0.2.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -24,11 +24,75 @@ Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an In
 
 ## Install
 
+### Install with custom configuration
+
+Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers. This example uses external mysql and redis.
+
+```yaml
+mysql:
+  enable: false
+  auth:
+    host: mysql-host
+    username: dragonfly
+    password: dragonfly
+    database: manager
+  primary:
+    service:
+      port: 3306
+
+redis:
+  enable: false
+  host: redis-host
+  password: dragonfly
+  service:
+    port: 6379
+```
+
 Install dragonfly chart with release name `dragonfly`:
 
 ```shell
 helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
+```
+
+### Install with an existing manager
+
+Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and cdn. This example is to deploy a cluster using the existing manager and redis.
+
+```yaml
+scheduler:
+  config:
+    manager:
+      schedulerClusterID: 1
+
+cdn:
+  config:
+    base:
+      manager:
+        cdnClusterID: 1
+
+externalManager:
+  enable: true
+  host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
+  restPort: 8080
+  grpcPort: 65003
+
+redis:
+  enable: false
+  host: redis-host
+  password: dragonfly
+  service:
+    port: 6379
+
+mysql:
+  enable: false
+```
+
+Install dragonfly chart with release name `dragonfly`:
+
+```shell
+helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
 ```
 
 ## Uninstall
@@ -49,7 +113,7 @@ helm delete dragonfly
 | cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
 | cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
 | cdn.config.base.manager.cdnClusterID | int | `1` | Associated cdn cluster id |
-| cdn.config.base.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
+| cdn.config.base.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
 | cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
@@ -64,6 +128,10 @@ helm delete dragonfly
 | cdn.nameOverride | string | `""` | Override scheduler name |
 | cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
 | cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
+| cdn.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
+| cdn.persistence.annotations | object | `{}` | Persistence annotations |
+| cdn.persistence.enabled | bool | `true` | Enable persistence for cdn |
+| cdn.persistence.size | string | `"8Gi"` | Persistence persistence size |
 | cdn.podAnnotations | object | `{}` | Pod annotations |
 | cdn.podLabels | object | `{}` | Pod labels |
 | cdn.priorityClassName | string | `""` | Pod priorityClassName |
@@ -72,7 +140,7 @@ helm delete dragonfly
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v0.2.0"` | Image tag |
+| cdn.tag | string | `"v0.3.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -118,7 +186,7 @@ helm delete dragonfly
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v0.2.0"` | Image tag |
+| dfdaemon.tag | string | `"v0.3.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.enable | bool | `false` | Use external manager and disable internal manager |
@@ -148,7 +216,7 @@ helm delete dragonfly
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
 | manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v0.2.0"` | Image tag |
+| manager.tag | string | `"v0.3.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -169,7 +237,7 @@ helm delete dragonfly
 | redis.usePassword | bool | `true` | Use password authentication |
 | scheduler.config.debug | bool | `false` | Enable debug mode |
 | scheduler.config.dynconfig.type | string | `"manager"` | Dynamic configuration pull source, pull from manager service by default |
-| scheduler.config.manager.keepAlive | object | `{"interval":"5s","retryInitBackOff":5,"retryMaxAttempts":100000000,"retryMaxBackOff":10}` | KeepAlive configuration report manager |
+| scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
 | scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
@@ -188,7 +256,7 @@ helm delete dragonfly
 | scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
 | scheduler.serviceAnnotations | object | `{}` | Service annotations |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v0.2.0"` | Image tag |
+| scheduler.tag | string | `"v0.3.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
