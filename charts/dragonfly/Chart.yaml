@@ -23,6 +23,7 @@ annotations:
     - Add manager ingress
     - Support cluster domain
     - Remove keepalive retry configuration
+    - Add CDN PersistentVolumeClaim
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

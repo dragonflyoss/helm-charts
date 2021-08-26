@@ -33,9 +33,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with custom configuration
 
-Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers.
-
-The example uses external mysql and redis. Refer to the document for [configuration](https://artifacthub.io/packages/helm/dragonfly/dragonfly#todo-configuration).
+Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers. This example uses external mysql and redis.
 
 ```yaml
 mysql:
@@ -66,9 +64,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with an existing manager
 
-Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and cdn.
-
-The example is to deploy a cluster using the existing manager and redis. Refer to the document for [configuration](https://artifacthub.io/packages/helm/dragonfly/dragonfly#todo-configuration).
+Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and cdn. This example is to deploy a cluster using the existing manager and redis.
 
 ```yaml
 scheduler:
