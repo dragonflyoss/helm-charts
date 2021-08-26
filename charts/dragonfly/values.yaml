@@ -126,6 +126,21 @@ cdn:
       - name: http-nginx
         port: 8001
         targetPort: 8001
+  persistence:
+    # -- Enable persistence for cdn
+    enabled: true
+    # -- Persistence access mode
+    accessMode: ReadWriteOnce
+    # -- Persistence persistence size
+    size: 8Gi
+    ## CDN data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
   config:
     base:
       # -- Network bandwidth reserved for system software

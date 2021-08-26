@@ -78,6 +78,8 @@ spec:
         - name: nginx-config
           mountPath: "/etc/nginx/nginx.conf"
           subPath: "nginx.conf"
+        - name: storage
+          mountPath: /home/admin/ftp
       volumes:
       - name: config
         configMap:
@@ -89,3 +91,10 @@ spec:
         configMap:
           name: {{ template "dragonfly.cdn.fullname" . }}
 {{- end }}
+      - name: storage
+      {{- if .Values.cdn.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "dragonfly.cdn.fullname" . }}
+      {{- else }}
+        emptyDir: {}
+      {{- end -}}
