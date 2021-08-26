@@ -24,13 +24,6 @@ Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an In
 
 ## Install
 
-### Install with default configuration
-
-```shell
-helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly
-```
-
 ### Install with custom configuration
 
 Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers. This example uses external mysql and redis.
