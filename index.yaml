@@ -7,6 +7,56 @@ entries:
         - Support manager service
         - Add manager ingress
         - Support cluster domain
+        - Remove keepalive retry configuration
+        - Add CDN PersistentVolumeClaim
+      artifacthub.io/images: |
+        - name: dragonflyoss/manager
+          image: dragonflyoss/manager:v0.3.0
+        - name: dragonflyoss/cdn
+          image: dragonflyoss/cdn:v0.3.0
+        - name: dragonflyoss/dfdaemon
+          image: dragonflyoss/dfdaemon:v0.3.0
+        - name: dragonflyoss/scheduler
+          image: dragonflyoss/scheduler:v0.3.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.3.0
+    created: "2021-08-26T07:38:41.910003568Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: 8d5955acd15b28f61d8bfb75c9d7a18f5163d01dc58d5027e0b51435d4e8ca6b
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.3.0/dragonfly-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - Upgrade to the latest template
+        - Support manager service
+        - Add manager ingress
+        - Support cluster domain
       artifacthub.io/images: |
         - name: dragonflyoss/manager
           image: dragonflyoss/manager:v0.2.0
