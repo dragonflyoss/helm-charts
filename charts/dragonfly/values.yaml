@@ -129,8 +129,11 @@ cdn:
   persistence:
     # -- Enable persistence for cdn
     enabled: true
-    # -- Persistence access mode
-    accessMode: ReadWriteOnce
+    # -- Persistence annotations
+    annotations: {}
+    # -- Persistence access modes
+    accessModes:
+      - ReadWriteOnce
     # -- Persistence persistence size
     size: 8Gi
     ## CDN data Persistent Volume Storage Class

@@ -79,22 +79,53 @@ spec:
           mountPath: "/etc/nginx/nginx.conf"
           subPath: "nginx.conf"
         - name: storage
-          mountPath: /home/admin/ftp
+          mountPath: {{ (index .Values.cdn.config.plugins.storageDriver 0).config.baseDir }}
+      {{- if .Values.cdn.persistence.enabled }}
       volumes:
       - name: config
         configMap:
-          name: {{ template "dragonfly.cdn.fullname" . }}
+          name: {{ template "dragonfly.cdn.fullname" $ }}
           items:
           - key: cdn.yaml
             path: cdn.yaml
       - name: nginx-config
         configMap:
-          name: {{ template "dragonfly.cdn.fullname" . }}
-{{- end }}
-      - name: storage
-      {{- if .Values.cdn.persistence.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ template "dragonfly.cdn.fullname" . }}
+          name: {{ template "dragonfly.cdn.fullname" $ }}
       {{- else }}
+      volumes:
+      - name: storage
         emptyDir: {}
-      {{- end -}}
+      - name: config
+        configMap:
+          name: {{ template "dragonfly.cdn.fullname" $ }}
+          items:
+          - key: cdn.yaml
+            path: cdn.yaml
+      - name: nginx-config
+        configMap:
+          name: {{ template "dragonfly.cdn.fullname" $ }}
+      {{- end }}
+  {{- if .Values.cdn.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: storage
+        {{- range $key, $value := .Values.cdn.persistence.annotations }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      spec:
+        accessModes:
+          {{- range .Values.cdn.persistence.accessModes }}
+          - {{ . | quote }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.cdn.persistence.size | quote }}
+      {{- if .Values.cdn.persistence.storageClass }}
+      {{- if (eq "-" .Values.cdn.persistence.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.cdn.persistence.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+{{- end }}

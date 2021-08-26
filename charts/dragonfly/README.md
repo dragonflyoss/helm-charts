@@ -139,7 +139,8 @@ helm delete dragonfly
 | cdn.nameOverride | string | `""` | Override scheduler name |
 | cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
 | cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
-| cdn.persistence.accessMode | string | `"ReadWriteOnce"` | Persistence access mode |
+| cdn.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
+| cdn.persistence.annotations | object | `{}` | Persistence annotations |
 | cdn.persistence.enabled | bool | `true` | Enable persistence for cdn |
 | cdn.persistence.size | string | `"8Gi"` | Persistence persistence size |
 | cdn.podAnnotations | object | `{}` | Pod annotations |
