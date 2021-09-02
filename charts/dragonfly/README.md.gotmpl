@@ -31,21 +31,22 @@ Create the `values.yaml` configuration file. It is recommended to use external r
 ```yaml
 mysql:
   enable: false
-  auth:
-    host: mysql-host
-    username: dragonfly
-    password: dragonfly
-    database: manager
-  primary:
-    service:
-      port: 3306
+
+externalMysql:
+  migrate: true
+  host: mysql-host
+  username: dragonfly
+  password: dragonfly
+  database: manager
+  port: 3306
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 ```
 
 Install dragonfly chart with release name `dragonfly`:
@@ -71,6 +72,9 @@ cdn:
       manager:
         cdnClusterID: 1
 
+manager:
+  enable: false
+
 externalManager:
   enable: true
   host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
@@ -79,10 +83,11 @@ externalManager:
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 
 mysql:
   enable: false

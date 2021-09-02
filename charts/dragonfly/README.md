@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.0](https://img.shields.io/badge/AppVersion-0.4.0-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -31,21 +31,22 @@ Create the `values.yaml` configuration file. It is recommended to use external r
 ```yaml
 mysql:
   enable: false
-  auth:
-    host: mysql-host
-    username: dragonfly
-    password: dragonfly
-    database: manager
-  primary:
-    service:
-      port: 3306
+
+externalMysql:
+  migrate: true
+  host: mysql-host
+  username: dragonfly
+  password: dragonfly
+  database: manager
+  port: 3306
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 ```
 
 Install dragonfly chart with release name `dragonfly`:
@@ -71,6 +72,9 @@ cdn:
       manager:
         cdnClusterID: 1
 
+manager:
+  enable: false
+
 externalManager:
   enable: true
   host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
@@ -79,10 +83,11 @@ externalManager:
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 
 mysql:
   enable: false
@@ -140,7 +145,7 @@ helm delete dragonfly
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v0.3.0"` | Image tag |
+| cdn.tag | string | `"v0.4.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -186,7 +191,7 @@ helm delete dragonfly
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v0.3.0"` | Image tag |
+| dfdaemon.tag | string | `"v0.4.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | GRPC service port |
@@ -224,7 +229,7 @@ helm delete dragonfly
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
 | manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v0.3.0"` | Image tag |
+| manager.tag | string | `"v0.4.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -264,7 +269,7 @@ helm delete dragonfly
 | scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
 | scheduler.serviceAnnotations | object | `{}` | Service annotations |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v0.3.0"` | Image tag |
+| scheduler.tag | string | `"v0.4.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
