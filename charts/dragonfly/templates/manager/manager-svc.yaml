@@ -1,4 +1,4 @@
-{{- if and (not .Values.externalManager.enable) .Values.dfdaemon.enable }}
+{{- if and .Values.manager.enable (empty .Values.externalManager.host) }}
 apiVersion: v1
 kind: Service
 metadata:

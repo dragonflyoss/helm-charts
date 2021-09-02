@@ -43,8 +43,8 @@ dependencies:
 - name: mysql
   version: "8.0.0"
   repository: "https://charts.bitnami.com/bitnami"
-  condition: mysql.enable
+  condition: mysql.enable,externalMysql.host == ""
 - name: redis
   version: "12.1.0"
   repository: "https://charts.bitnami.com/bitnami"
-  condition: redis.enable
+  condition: redis.enable,externalRedis.host == ""

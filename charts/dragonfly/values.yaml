@@ -75,7 +75,7 @@ scheduler:
         interval: 5s
 
 cdn:
-  # -- Enable scheduler
+  # -- Enable cdn
   enable: true
   # -- CDN name
   name: cdn
@@ -193,7 +193,7 @@ cdn:
                   intervalThreshold: 2h
 
 dfdaemon:
-  # -- Enable scheduler
+  # -- Enable dfdaemon
   enable: true
   # -- Dfdaemon name
   name: dfdaemon
@@ -335,7 +335,7 @@ dfdaemon:
         - regx: blobs/sha256.*
 
 manager:
-  # -- Enable scheduler
+  # -- Enable manager
   enable: true
   # -- Manager name
   name: manager
@@ -392,10 +392,8 @@ manager:
     tls: []
 
 externalManager:
-  # -- Use external manager and disable internal manager
-  enable: false
   # -- Manager hostname
-  host: ""
+  host:
   # -- REST service port
   restPort: 8080
   # -- GRPC service port
@@ -403,7 +401,6 @@ externalManager:
 
 mysql:
   # -- Enable mysql with docker container.
-  # if you want to use external mysql, please update enable to false
   enable: true
   # -- Cluster domain
   clusterDomain: "cluster.local"
@@ -425,9 +422,22 @@ mysql:
       # -- Mysql port
       port: 3306
 
+externalMysql:
+  # -- Running GORM migration
+  migrate: true
+  # -- Mysql hostname
+  host:
+  # -- Mysql username
+  username: dragonfly
+  # -- Mysql password
+  password: dragonfly
+  # -- Mysql database name
+  database: manager
+  # -- Mysql port
+  port: 3306
+
 redis:
   # -- Enable redis cluster with docker container
-  # if you want to use external redis, please update enable to false
   enable: true
   # -- Cluster domain
   clusterDomain: "cluster.local"
@@ -440,6 +450,14 @@ redis:
   service:
     # -- Redis port
     port: 6379
+
+externalRedis:
+  # -- Redis hostname
+  host: ""
+  # -- Redis password
+  password: dragonfly
+  # -- Redis port
+  port: 6379
 
 jaeger:
   # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
