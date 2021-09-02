@@ -21,7 +21,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v0.3.0
+  tag: v0.4.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -75,7 +75,7 @@ scheduler:
         interval: 5s
 
 cdn:
-  # -- Enable scheduler
+  # -- Enable cdn
   enable: true
   # -- CDN name
   name: cdn
@@ -88,7 +88,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v0.3.0
+  tag: v0.4.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -193,7 +193,7 @@ cdn:
                   intervalThreshold: 2h
 
 dfdaemon:
-  # -- Enable scheduler
+  # -- Enable dfdaemon
   enable: true
   # -- Dfdaemon name
   name: dfdaemon
@@ -204,7 +204,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v0.3.0
+  tag: v0.4.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -335,7 +335,7 @@ dfdaemon:
         - regx: blobs/sha256.*
 
 manager:
-  # -- Enable scheduler
+  # -- Enable manager
   enable: true
   # -- Manager name
   name: manager
@@ -348,7 +348,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v0.3.0
+  tag: v0.4.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -392,18 +392,15 @@ manager:
     tls: []
 
 externalManager:
-  # -- Use external manager and disable internal manager
-  enable: false
-  # -- Manager hostname
-  host: ""
-  # -- REST service port
+  # -- External manager hostname
+  host:
+  # -- External REST service port
   restPort: 8080
-  # -- GRPC service port
+  # -- External GRPC service port
   grpcPort: 65003
 
 mysql:
   # -- Enable mysql with docker container.
-  # if you want to use external mysql, please update enable to false
   enable: true
   # -- Cluster domain
   clusterDomain: "cluster.local"
@@ -425,9 +422,22 @@ mysql:
       # -- Mysql port
       port: 3306
 
+externalMysql:
+  # -- Running GORM migration
+  migrate: true
+  # -- External mysql hostname
+  host:
+  # -- External mysql username
+  username: dragonfly
+  # -- External mysql password
+  password: dragonfly
+  # -- External mysql database name
+  database: manager
+  # -- External mysql port
+  port: 3306
+
 redis:
   # -- Enable redis cluster with docker container
-  # if you want to use external redis, please update enable to false
   enable: true
   # -- Cluster domain
   clusterDomain: "cluster.local"
@@ -440,6 +450,14 @@ redis:
   service:
     # -- Redis port
     port: 6379
+
+externalRedis:
+  # -- External redis hostname
+  host: ""
+  # -- External redis password
+  password: dragonfly
+  # -- External redis port
+  port: 6379
 
 jaeger:
   # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment

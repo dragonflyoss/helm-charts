@@ -19,21 +19,23 @@ data:
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
     manager:
-      {{- if .Values.externalManager.enable }}
-      addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
-      {{- else }}
+      {{- if .Values.manager.enable }}
       addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+      {{- else }}
+      addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- end }}
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
     job:
       redis:
+        {{- if .Values.redis.enable }}
         password: {{ .Values.redis.password }}
-        {{- if and (not .Values.externalManager.enable) .Values.redis.enable }}
         host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-        {{- else }}
-        host: {{ .Values.redis.host }}
-        {{- end }}
         port: {{ .Values.redis.service.port }}
+        {{- else }}
+        password: {{ .Values.externalRedis.password }}
+        host: {{ .Values.externalRedis.host }}
+        port: {{ .Values.externalRedis.port }}
+        {{- end }}
 {{- end }}

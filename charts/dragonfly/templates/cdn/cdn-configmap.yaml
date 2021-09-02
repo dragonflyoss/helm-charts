@@ -26,10 +26,10 @@ data:
       nodeSelector:
 {{ toYaml .Values.cdn.nodeSelector | indent 8 }}
       manager:
-        {{- if .Values.externalManager.enable }}
-        addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
-        {{- else }}
+        {{- if .Values.manager.enable }}
         addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+        {{- else }}
+        addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- end }}
         cdnClusterID: {{ .Values.cdn.config.base.manager.cdnClusterID }}
         keepAlive:

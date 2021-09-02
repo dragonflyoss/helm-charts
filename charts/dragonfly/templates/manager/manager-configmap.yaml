@@ -1,4 +1,4 @@
-{{- if and (not .Values.externalManager.enable) .Values.dfdaemon.enable }}
+{{- if .Values.manager.enable }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -20,22 +20,29 @@ data:
           end: {{ .Values.manager.grpcPort }}
     database:
       mysql:
+        {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
         password: {{ .Values.mysql.auth.password }}
-        {{- if .Values.mysql.enable }}
         host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-        {{- else }}
-        host: {{ .Values.mysql.auth.host }}
-        {{- end }}
         port: {{ .Values.mysql.primary.service.port }}
         dbname: {{ .Values.mysql.auth.database }}
         migrate: {{ .Values.mysql.migrate }}
-      redis:
-        password: {{ .Values.redis.password }}
-        {{- if .Values.redis.enable }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         {{- else }}
-        host: {{ .Values.redis.host }}
+        user: {{ .Values.externalMysql.username }}
+        password: {{ .Values.externalMysql.password }}
+        host: {{ .Values.externalMysql.host }}
+        port: {{ .Values.externalMysql.port }}
+        dbname: {{ .Values.externalMysql.database }}
+        migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
+      redis:
+        {{- if and .Values.redis.enable (empty .Values.externalRedis.host) }}
+        password: {{ .Values.redis.password }}
+        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.redis.service.port }}
+        {{- else }}
+        password: {{ .Values.externalRedis.password }}
+        host: {{ .Values.externalRedis.host }}
+        port: {{ .Values.externalRedis.port }}
+        {{- end }}
 {{- end }}

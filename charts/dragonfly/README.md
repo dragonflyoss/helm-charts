@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.0](https://img.shields.io/badge/AppVersion-0.4.0-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -31,21 +31,22 @@ Create the `values.yaml` configuration file. It is recommended to use external r
 ```yaml
 mysql:
   enable: false
-  auth:
-    host: mysql-host
-    username: dragonfly
-    password: dragonfly
-    database: manager
-  primary:
-    service:
-      port: 3306
+
+externalMysql:
+  migrate: true
+  host: mysql-host
+  username: dragonfly
+  password: dragonfly
+  database: manager
+  port: 3306
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 ```
 
 Install dragonfly chart with release name `dragonfly`:
@@ -71,6 +72,9 @@ cdn:
       manager:
         cdnClusterID: 1
 
+manager:
+  enable: false
+
 externalManager:
   enable: true
   host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
@@ -79,10 +83,11 @@ externalManager:
 
 redis:
   enable: false
+
+externalRedis:
   host: redis-host
   password: dragonfly
-  service:
-    port: 6379
+  port: 6379
 
 mysql:
   enable: false
@@ -121,7 +126,7 @@ helm delete dragonfly
 | cdn.config.plugins.storageDriver | list | `[{"config":{"baseDir":"/tmp/cdn"},"enable":true,"name":"disk"}]` | Storage driver configuration |
 | cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | Storage manager configuration |
 | cdn.containerPort | int | `8003` | Pod containerPort |
-| cdn.enable | bool | `true` | Enable scheduler |
+| cdn.enable | bool | `true` | Enable cdn |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
 | cdn.name | string | `"cdn"` | CDN name |
@@ -140,7 +145,7 @@ helm delete dragonfly
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v0.3.0"` | Image tag |
+| cdn.tag | string | `"v0.4.0"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -173,7 +178,7 @@ helm delete dragonfly
 | dfdaemon.config.verbose | bool | `true` | When enable, pprof will be enabled |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
-| dfdaemon.enable | bool | `true` | Enable scheduler |
+| dfdaemon.enable | bool | `true` | Enable dfdaemon |
 | dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname |
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
@@ -186,17 +191,25 @@ helm delete dragonfly
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v0.3.0"` | Image tag |
+| dfdaemon.tag | string | `"v0.4.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
-| externalManager.enable | bool | `false` | Use external manager and disable internal manager |
-| externalManager.grpcPort | int | `65003` | GRPC service port |
-| externalManager.host | string | `""` | Manager hostname |
-| externalManager.restPort | int | `8080` | REST service port |
+| externalManager.grpcPort | int | `65003` | External GRPC service port |
+| externalManager.host | string | `nil` | External manager hostname |
+| externalManager.restPort | int | `8080` | External REST service port |
+| externalMysql.database | string | `"manager"` | External mysql database name |
+| externalMysql.host | string | `nil` | External mysql hostname |
+| externalMysql.migrate | bool | `true` | Running GORM migration |
+| externalMysql.password | string | `"dragonfly"` | External mysql password |
+| externalMysql.port | int | `3306` | External mysql port |
+| externalMysql.username | string | `"dragonfly"` | External mysql username |
+| externalRedis.host | string | `""` | External redis hostname |
+| externalRedis.password | string | `"dragonfly"` | External redis password |
+| externalRedis.port | int | `6379` | External redis port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
 | jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
-| manager.enable | bool | `true` | Enable scheduler |
+| manager.enable | bool | `true` | Enable manager |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
@@ -216,7 +229,7 @@ helm delete dragonfly
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
 | manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v0.3.0"` | Image tag |
+| manager.tag | string | `"v0.4.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -225,12 +238,12 @@ helm delete dragonfly
 | mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password |
 | mysql.auth.username | string | `"dragonfly"` | Mysql username |
 | mysql.clusterDomain | string | `"cluster.local"` | Cluster domain |
-| mysql.enable | bool | `true` | Enable mysql with docker container. if you want to use external mysql, please update enable to false |
+| mysql.enable | bool | `true` | Enable mysql with docker container. |
 | mysql.migrate | bool | `true` | Running GORM migration |
 | mysql.primary.service.port | int | `3306` | Mysql port |
 | nameOverride | string | `""` | Override dragonfly name |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain |
-| redis.enable | bool | `true` | Enable redis cluster with docker container if you want to use external redis, please update enable to false |
+| redis.enable | bool | `true` | Enable redis cluster with docker container |
 | redis.host | string | `""` | Redis hostname |
 | redis.password | string | `"dragonfly"` | Redis password |
 | redis.service.port | int | `6379` | Redis port |
@@ -256,7 +269,7 @@ helm delete dragonfly
 | scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
 | scheduler.serviceAnnotations | object | `{}` | Service annotations |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v0.3.0"` | Image tag |
+| scheduler.tag | string | `"v0.4.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
