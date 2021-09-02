@@ -19,7 +19,7 @@ data:
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
     manager:
-      {{- if and .Values.manager.enable (empty .Values.externalManager.host)}}
+      {{- if .Values.manager.enable }}
       addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
       {{- else }}
       addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
@@ -29,7 +29,7 @@ data:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
     job:
       redis:
-        {{- if and .Values.redis.enable (empty .Values.externalRedis.host)}}
+        {{- if .Values.redis.enable }}
         password: {{ .Values.redis.password }}
         host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.redis.service.port }}

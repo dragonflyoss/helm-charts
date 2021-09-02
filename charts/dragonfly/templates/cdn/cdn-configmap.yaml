@@ -26,7 +26,7 @@ data:
       nodeSelector:
 {{ toYaml .Values.cdn.nodeSelector | indent 8 }}
       manager:
-        {{- if and .Values.manager.enable (empty .Values.externalManager.host) }}
+        {{- if .Values.manager.enable }}
         addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
         {{- else }}
         addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
