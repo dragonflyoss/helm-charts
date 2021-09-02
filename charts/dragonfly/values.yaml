@@ -392,11 +392,11 @@ manager:
     tls: []
 
 externalManager:
-  # -- Manager hostname
+  # -- External manager hostname
   host:
-  # -- REST service port
+  # -- External REST service port
   restPort: 8080
-  # -- GRPC service port
+  # -- External GRPC service port
   grpcPort: 65003
 
 mysql:
@@ -425,15 +425,15 @@ mysql:
 externalMysql:
   # -- Running GORM migration
   migrate: true
-  # -- Mysql hostname
+  # -- External mysql hostname
   host:
-  # -- Mysql username
+  # -- External mysql username
   username: dragonfly
-  # -- Mysql password
+  # -- External mysql password
   password: dragonfly
-  # -- Mysql database name
+  # -- External mysql database name
   database: manager
-  # -- Mysql port
+  # -- External mysql port
   port: 3306
 
 redis:
@@ -452,11 +452,11 @@ redis:
     port: 6379
 
 externalRedis:
-  # -- Redis hostname
+  # -- External redis hostname
   host: ""
-  # -- Redis password
+  # -- External redis password
   password: dragonfly
-  # -- Redis port
+  # -- External redis port
   port: 6379
 
 jaeger:

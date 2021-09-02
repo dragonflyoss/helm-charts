@@ -194,18 +194,18 @@ helm delete dragonfly
 | dfdaemon.tag | string | `"v0.4.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
-| externalManager.grpcPort | int | `65003` | GRPC service port |
-| externalManager.host | string | `nil` | Manager hostname |
-| externalManager.restPort | int | `8080` | REST service port |
-| externalMysql.database | string | `"manager"` | Mysql database name |
-| externalMysql.host | string | `nil` | Mysql hostname |
+| externalManager.grpcPort | int | `65003` | External GRPC service port |
+| externalManager.host | string | `nil` | External manager hostname |
+| externalManager.restPort | int | `8080` | External REST service port |
+| externalMysql.database | string | `"manager"` | External mysql database name |
+| externalMysql.host | string | `nil` | External mysql hostname |
 | externalMysql.migrate | bool | `true` | Running GORM migration |
-| externalMysql.password | string | `"dragonfly"` | Mysql password |
-| externalMysql.port | int | `3306` | Mysql port |
-| externalMysql.username | string | `"dragonfly"` | Mysql username |
-| externalRedis.host | string | `""` | Redis hostname |
-| externalRedis.password | string | `"dragonfly"` | Redis password |
-| externalRedis.port | int | `6379` | Redis port |
+| externalMysql.password | string | `"dragonfly"` | External mysql password |
+| externalMysql.port | int | `3306` | External mysql port |
+| externalMysql.username | string | `"dragonfly"` | External mysql username |
+| externalRedis.host | string | `""` | External redis hostname |
+| externalRedis.password | string | `"dragonfly"` | External redis password |
+| externalRedis.port | int | `6379` | External redis port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
 | jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
