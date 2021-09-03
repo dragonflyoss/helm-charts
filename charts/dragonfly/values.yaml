@@ -240,6 +240,45 @@ dfdaemon:
   hostPort: 65001
   # -- Using hostNetwork when pod with host network can communicate with normal pods with cni network
   hostNetwork: false
+  # -- Support docker, when use docker-shim in Kubernetes, please set dfdaemon.dockerSupport.enable to true.
+  # For supporting docker, we need generate CA and update certs, then hijack registries traffic,
+  #
+  # By default, it's unnecessary to restart docker daemon when pull image from private registries,
+  # this feature is support explicit registries in dfdaemon.dockerSupport.registry.domains, default domains is ghcr.io, quay.io,
+  # please update your registries by --set dfdaemon.dockerSupport.registry.domains='{harbor.example.com,harbor.example.net}' --set dfdaemon.dockerSupport.registry.injectHosts=true --set dfdaemon.dockerSupport.enable=true
+  #
+  # Caution: docker hub image is not supported without restart docker daemon.
+  #
+  # When need pull image from docker hub or any other registries not in dfdaemon.dockerSupport.registry.domains, set dfdaemon.dockerSupport.restart=true
+  # this feature will inject proxy config into docker.service and restart docker daemon.
+  #
+  # Caution: set restart to true only when live restore is enable.
+  #
+  # Requirement: Docker Engine v1.2.0+ without Rootless.
+  dockerSupport:
+    # -- Enable docker support
+    enable: false
+    # -- The image name of openssl
+    image: dragonflyoss/openssl
+    # When dfdaemon.dockerSupport.restart=true, dfdaemon.dockerSupport.registry.injectHosts and dfdaemon.dockerSupport.registry.domains is ignore
+    restart: false
+    registry:
+      # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
+      # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than v0.4.0
+      injectHosts: true
+      # -- Inject ca cert into /etc/docker/certs.d/ by domain.
+      # Refer: https://docs.docker.com/engine/security/certificates/.
+      # When use certs and inject hosts in docker, no necessary to restart docker daemon
+      domains:
+      - "ghcr.io"
+      - "quay.io"
+    # -- CA cert info for generating
+    caCert:
+      countryName: CN
+      stateOrProvinceName: Hangzhou
+      localityName: Hangzhou
+      organizationName: Dragonfly
+      commonName: "Dragonfly Authority CA"
   config:
     # -- Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running
     aliveTime: 0s
@@ -326,7 +365,7 @@ dfdaemon:
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
       registryMirror:
-        # -- When enable, using header "X-Dragonfly-Registry" for remote instead of url
+        # -- When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host
         dynamic: true
         # -- URL for the registry mirror
         url: https://index.docker.io

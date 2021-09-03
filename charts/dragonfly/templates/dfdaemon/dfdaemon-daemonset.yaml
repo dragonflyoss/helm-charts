@@ -38,6 +38,7 @@ spec:
 {{ toYaml .Values.dfdaemon.nodeSelector | indent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.dfdaemon.hostNetwork }}
+      hostPID: {{ .Values.dfdaemon.dockerSupport.restart }}
       {{- if .Values.dfdaemon.tolerations }}
       tolerations:
 {{ toYaml .Values.dfdaemon.tolerations | indent 8 }}
@@ -71,13 +72,18 @@ spec:
         {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
         - name: run
           mountPath: /run/dragonfly
+        {{- if .Values.dfdaemon.dockerSupport.enable }}
+        - name: d7y-ca
+          mountPath: /etc/dragonfly-ca
+        {{- end }}
         securityContext:
           capabilities:
             add:
             - SYS_ADMIN
         {{- end }}
-      {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
+      {{- if or (and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace) .Values.dfdaemon.dockerSupport }}
       initContainers:
+      {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
       - name: mount-netns
         image: "{{ .Values.dfdaemon.image }}:{{ .Values.dfdaemon.tag }}"
         imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
@@ -111,6 +117,137 @@ spec:
           # open /proc/1/ns need privilege permission
           privileged: true
       {{- end }}
+      {{- if .Values.dfdaemon.dockerSupport.enable }}
+      - name: update-docker-cert
+        image: "{{ .Values.dfdaemon.dockerSupport.image }}"
+        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.dfdaemon.resources | indent 12 }}
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          mkdir -p /tmp/dragonfly-ca
+          cd /tmp/dragonfly-ca
+
+          openssl genrsa -out cakey.pem 2048
+
+          cat << EOF > root.conf
+          [ req ]
+          default_bits        = 2048
+          default_keyfile     = key.pem
+          default_md          = sha256
+          distinguished_name  = req_distinguished_name
+          req_extensions      = req_ext
+          string_mask         = nombstr
+          x509_extensions     = x509_ext
+          [ req_distinguished_name ]
+          countryName                 = Country Name (2 letter code)
+          countryName_default         = {{.Values.dfdaemon.dockerSupport.caCert.countryName}}
+          stateOrProvinceName         = State or Province Name (full name)
+          stateOrProvinceName_default = {{.Values.dfdaemon.dockerSupport.caCert.stateOrProvinceName}}
+          localityName                = Locality Name (eg, city)
+          localityName_default        = {{.Values.dfdaemon.dockerSupport.caCert.localityName}}
+          organizationName            = Organization Name (eg, company)
+          organizationName_default    = {{.Values.dfdaemon.dockerSupport.caCert.organizationName}}
+          commonName                  = Common Name (e.g. server FQDN or YOUR name)
+          commonName_max              = 64
+          commonName_default          = {{.Values.dfdaemon.dockerSupport.caCert.commonName}}
+          [ x509_ext ]
+          authorityKeyIdentifier = keyid,issuer
+          basicConstraints       = CA:TRUE
+          keyUsage               = digitalSignature, keyEncipherment, keyCertSign, cRLSign
+          subjectKeyIdentifier   = hash
+          [ req_ext ]
+          basicConstraints     = CA:TRUE
+          keyUsage             = digitalSignature, keyEncipherment, keyCertSign, cRLSign
+          subjectKeyIdentifier = hash
+          EOF
+
+          openssl req -batch -new -x509 -key ./cakey.pem -out ./cacert.pem -days 65536 -config ./root.conf
+          openssl x509 -inform PEM -in ./cacert.pem -outform DER -out ./CA.cer
+
+          openssl x509 -in ./cacert.pem -noout -text
+          # update ca for golang program(docker in host), refer: https://github.com/golang/go/blob/go1.17/src/crypto/x509/root_linux.go#L8
+          ca_list="/etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt /etc/ssl/ca-bundle.pem /etc/pki/tls/cacert.pem /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem /etc/ssl/cert.pem"
+          for ca in $ca_list; do
+            ca="/host$ca"
+            if [[ -e "$ca" ]]; then
+              echo "CA $ca" found
+              if grep "Dragonfly Authority CA" "$ca"; then
+                echo "Dragonfly Authority CA Found"
+                if [[ -e /host/etc/dragonfly-ca/cakey.pem && -e /host/etc/dragonfly-ca/cacert.pem ]]; then
+                  echo "CA cert and key ready"
+                  break
+                else
+                  echo "Warning: CA cert and key not ready"
+                fi
+              fi
+              echo "Try to add Dragonfly CA"
+              echo "# Dragonfly Authority CA" > cacert.toadd.pem
+              cat cacert.pem >> cacert.toadd.pem
+              cat cacert.toadd.pem >> "$ca"
+              echo "Dragonfly CA added"
+              cp -f ./cakey.pem ./cacert.pem /host/etc/dragonfly-ca/
+              break
+            fi
+          done
+
+          {{- if not .Values.dfdaemon.dockerSupport.restart }}
+          domains="{{- join " " .Values.dfdaemon.dockerSupport.registry.domains }}"
+          if [[ -n "$domains"  ]]; then
+            for domain in $domains; do
+              # inject docker cert by registry domain
+              dir=/host/etc/docker/certs.d/$domain
+              mkdir -p "$dir"
+              echo copy CA cert to $dir
+              cp -f /host/etc/dragonfly-ca/cacert.pem "$dir/ca.crt"
+
+              {{- if .Values.dfdaemon.dockerSupport.registry.injectHosts }}
+              # inject static dns into /etc/hosts
+              if grep "127.0.0.1 $domain" /host/etc/hosts; then
+                echo "Dragonfly SNI Host $domain Found in /host/etc/hosts"
+                continue
+              else
+                echo "Try to add dragonfly SNI host $domain"
+                echo "127.0.0.1 $domain # Dragonfly SNI Host $domain" >> /host/etc/hosts
+                echo "Dragonfly SNI host $domain added"
+              fi
+              {{- end }}
+            done
+          fi
+          {{- end }}
+          {{- if .Values.dfdaemon.dockerSupport.restart }}
+          # inject docker proxy setting and restart docker
+          # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
+          status=$(nsenter -t 1 -m systemctl -- status docker --no-pager | grep http-proxy.conf)
+          if [[ -n "$status" ]]; then
+            echo Docker proxy already enalbed, skip
+          else
+            echo Try to inject proxy and restart docker
+            path=$(nsenter -t 1 -m systemctl -- show -p FragmentPath docker.service | grep -o "/.*")
+            if [[ -z "$path" ]]; then
+                echo docker.service not found
+                exit 1
+            fi
+            nsenter -t 1 -m mkdir -- -p "$path".d
+            nsenter -t 1 -m sh -- -c "echo '[Service]' > $path.d/http-proxy.conf"
+            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:65001\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:65001\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m systemctl -- daemon-reload
+            nsenter -t 1 -m systemctl -- restart docker.service
+          fi
+          {{- end }}
+        volumeMounts:
+        - name: etc
+          mountPath: /host/etc
+        {{- if .Values.dfdaemon.dockerSupport.restart }}
+        securityContext:
+          # nsenter need privilege permission
+          privileged: true
+        {{- end }}
+      {{- end }}
+      {{- end }}
       volumes:
       - name: config
         configMap:
@@ -122,6 +259,15 @@ spec:
       - name: run
         hostPath:
           path: /run/dragonfly
+          type: DirectoryOrCreate
+      {{- end }}
+      {{- if .Values.dfdaemon.dockerSupport.enable }}
+      - name: etc
+        hostPath:
+          path: /etc
+      - name: d7y-ca
+        hostPath:
+          path: /etc/dragonfly-ca
           type: DirectoryOrCreate
       {{- end }}
 {{- end }}

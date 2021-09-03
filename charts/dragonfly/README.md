@@ -163,7 +163,7 @@ helm delete dragonfly
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
-| dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enable, using header "X-Dragonfly-Registry" for remote instead of url |
+| dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
 | dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
@@ -178,6 +178,12 @@ helm delete dragonfly
 | dfdaemon.config.verbose | bool | `true` | When enable, pprof will be enabled |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
+| dfdaemon.dockerSupport | object | `{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"image":"dragonflyoss/openssl","registry":{"domains":["ghcr.io","quay.io"],"injectHosts":true},"restart":false}` | Support docker, when use docker-shim in Kubernetes, please set dfdaemon.dockerSupport.enable to true. For supporting docker, we need generate CA and update certs, then hijack registries traffic, By default, it's unnecessary to restart docker daemon when pull image from private registries, this feature is support explicit registries in dfdaemon.dockerSupport.registry.domains, default domains is ghcr.io, quay.io, please update your registries by --set dfdaemon.dockerSupport.registry.domains='{harbor.example.com,harbor.example.net}' --set dfdaemon.dockerSupport.registry.injectHosts=true --set dfdaemon.dockerSupport.enable=true Caution: docker hub image is not supported without restart docker daemon. When need pull image from docker hub or any other registries not in dfdaemon.dockerSupport.registry.domains, set dfdaemon.dockerSupport.restart=true this feature will inject proxy config into docker.service and restart docker daemon. Caution: set restart to true only when live restore is enable. Requirement: Docker Engine v1.2.0+ without Rootless. |
+| dfdaemon.dockerSupport.caCert | object | `{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"}` | CA cert info for generating |
+| dfdaemon.dockerSupport.enable | bool | `false` | Enable docker support |
+| dfdaemon.dockerSupport.image | string | `"dragonflyoss/openssl"` | The image name of openssl |
+| dfdaemon.dockerSupport.registry.domains | list | `["ghcr.io","quay.io"]` | Inject ca cert into /etc/docker/certs.d/ by domain. Refer: https://docs.docker.com/engine/security/certificates/. When use certs and inject hosts in docker, no necessary to restart docker daemon |
+| dfdaemon.dockerSupport.registry.injectHosts | bool | `true` | Inject domains into /etc/hosts to force redirect traffic to dfdaemon. Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than v0.4.0 |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
 | dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname |
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
