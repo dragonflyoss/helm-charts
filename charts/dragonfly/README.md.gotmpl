@@ -105,7 +105,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 Uninstall the `dragonfly` deployment:
 
 ```shell
-helm delete dragonfly
+helm delete dragonfly --namespace dragonfly-system
 ```
 
 {{ template "chart.valuesSection" . }}

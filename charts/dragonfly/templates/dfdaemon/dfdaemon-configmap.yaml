@@ -50,13 +50,13 @@ data:
 {{ toYaml .Values.dfdaemon.config.proxy.registryMirror | indent 8 }}
       proxies:
 {{ toYaml .Values.dfdaemon.config.proxy.proxies | indent 8 }}
-      {{- if .Values.dfdaemon.dockerSupport.enable }}
+      {{- if .Values.containerRuntime.docker.enable }}
       hijackHTTPS:
         cert: /etc/dragonfly-ca/cacert.pem
         key: /etc/dragonfly-ca/cakey.pem
         hosts:
         - regx: .*
-        {{- if and .Values.dfdaemon.dockerSupport.registry.injectHosts (not .Values.dfdaemon.dockerSupport.restart) }}
+        {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.containerRuntime.docker.restart) }}
         sni:
         - listen: 127.0.0.1
           port: 443
