@@ -20,6 +20,7 @@ annotations:
   artifacthub.io/changes: |
     - Support config docker in daemonset
     - Support config containerd in daemonset
+    - Support config CRI-O in daemonset
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

@@ -73,6 +73,16 @@ containerRuntime:
     - "https://ghcr.io"
     - "https://quay.io"
     - "https://harbor.example.com:8443"
+  # -- [Experimental] CRI-O support
+  crio:
+    # -- Enable CRI-O support
+    # Inject drop-in mirror config into /etc/containers/registries.conf.d.
+    enable: false
+    # Registries full urls
+    registries:
+    - "https://ghcr.io"
+    - "https://quay.io"
+    - "https://harbor.example.com:8443"
   # -- The image name of init container, need include openssl for ca generating
   initContainerImage: dragonflyoss/openssl
 
