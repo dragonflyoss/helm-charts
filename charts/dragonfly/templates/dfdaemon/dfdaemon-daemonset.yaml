@@ -38,7 +38,7 @@ spec:
 {{ toYaml .Values.dfdaemon.nodeSelector | indent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.dfdaemon.hostNetwork }}
-      hostPID: {{ or (and .Values.containerRuntime.docker.enable .Values.containerRuntime.docker.restart) .Values.containerRuntime.containerd.enable }}
+      hostPID: {{ or (and .Values.containerRuntime.docker.enable .Values.containerRuntime.docker.restart) .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable }}
       {{- if .Values.dfdaemon.tolerations }}
       tolerations:
 {{ toYaml .Values.dfdaemon.tolerations | indent 8 }}
@@ -232,8 +232,8 @@ spec:
             fi
             nsenter -t 1 -m mkdir -- -p "$path".d
             nsenter -t 1 -m sh -- -c "echo '[Service]' > $path.d/http-proxy.conf"
-            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:65001\"' >> $path.d/http-proxy.conf"
-            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:65001\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
             nsenter -t 1 -m systemctl -- daemon-reload
             nsenter -t 1 -m systemctl -- restart docker.service
           fi
@@ -293,7 +293,7 @@ spec:
               else
                 cat << EOF >> $etcContainerd/config.toml
           [plugins."io.containerd.grpc.v1.cri".registry.mirrors."$domain"]
-            endpoint = ["http://127.0.0.1:65001","$registry"]
+            endpoint = ["http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}","$registry"]
           EOF
                 echo "Registry $domain added"
                 need_restart=1
@@ -312,7 +312,7 @@ spec:
               mkdir -p $etcContainerd/certs.d
               for registry in $registries; do
                 # parse registry domain
-                domain=$(echo $registry | sed -e "s,https://,," | sed "s,:.*,,")
+                domain=$(echo $registry | sed -e "s,http.://,," | sed "s,:.*,,")
                 # inject registry
                 mkdir -p $etcContainerd/certs.d/$domain
                 if [[ -e "$etcContainerd/certs.d/$domain/hosts.toml" ]]; then
@@ -321,9 +321,9 @@ spec:
                 else
                   cat << EOF >> $etcContainerd/certs.d/$domain/hosts.toml
           server = "$registry"
-          [host."http://127.0.0.1:65001"]
+          [host."http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}"]
             capabilities = ["pull", "resolve"]
-            [host."http://127.0.0.1:65001".header]
+            [host."http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}".header]
             X-Dragonfly-Registry = ["$registry"]
           EOF
                   echo "Registry $domain added"
@@ -345,7 +345,7 @@ spec:
             else
                 cat << EOF >> $etcContainerd/config.toml
           [plugins.cri.registry.mirrors."$domain"]
-            endpoint = ["http://127.0.0.1:65001","$registry"]
+            endpoint = ["http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}","$registry"]
           EOF
                 echo "Registry $domain added"
                 need_restart=1
@@ -357,6 +357,68 @@ spec:
           if [[ "$need_restart" -gt 0 ]]; then
             nsenter -t 1 -m systemctl -- restart containerd.service
           fi
+        volumeMounts:
+        - name: etc
+          mountPath: /host/etc
+        securityContext:
+          # nsenter need privilege permission
+          privileged: true
+      {{- else if .Values.containerRuntime.crio.enable }}
+      - name: update-crio
+        image: "{{ .Values.containerRuntime.initContainerImage }}"
+        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.dfdaemon.resources | indent 12 }}
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          registries="{{- join " " .Values.containerRuntime.crio.registries }}"
+          if [[ -n "$domains" ]]; then
+            echo Empty registry domains
+            exit 1
+          fi
+
+          confd="/host/etc/containers/registries.conf.d"
+          if [[ ! -e "$confd" ]]; then
+            mkdir -p "$confd"
+          fi
+
+          for registry in $registries; do
+            # parse registry domain
+            domain=$(echo $registry | sed "s,http.://,," | sed "s,:.*,,")
+            schema=$(echo $registry | sed "s,://.*,,")
+            port=$(echo $registry | sed "s,http.://,," | sed "s,[^:]*,," | sed "s,:,,")
+            insecure=false
+            if [[ "$schema" == "http" ]]; then
+              insecure=true
+            fi
+            if [[ -z "$port" ]]; then
+              if [[ "$schema" == "https" ]]; then
+                port=443
+              elif [[ "$schema" == "http" ]]; then
+                port=80
+              fi
+            fi
+            echo schema: $schema, domain: $domain, port: $port
+            # inject registry
+            if [[ -e "$confd/$domain.conf" ]]; then
+              echo "registry $registry found in $confd, skip"
+              continue
+            else
+              cat << EOF > "$confd/$domain.conf"
+          [[registry]]
+          prefix = "$domain"
+          location = "$domain:$port"
+          insecure = $insecure
+          [[registry.mirror]]
+          location = "127.0.0.1:{{ .Values.dfdaemon.hostPort}}"
+          insecure = true
+          EOF
+              echo "Registry $domain added"
+            fi
+          done
+          nsenter -t 1 -m systemctl -- reload crio.service
         volumeMounts:
         - name: etc
           mountPath: /host/etc
@@ -386,7 +448,7 @@ spec:
         hostPath:
           path: /etc/dragonfly-ca
           type: DirectoryOrCreate
-      {{- else if .Values.containerRuntime.containerd.enable }}
+      {{- else if or .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable }}
       - name: etc
         hostPath:
           path: /etc
