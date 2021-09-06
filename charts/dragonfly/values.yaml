@@ -7,6 +7,85 @@ fullnameOverride: ""
 # -- Install application cluster domain
 clusterDomain: "cluster.local"
 
+# -- [Experimental] Container runtime support
+# Choose special container runtime in Kubernetes.
+# Support: Containerd, Docker
+containerRuntime:
+  # -- [Experimental] Support docker, when use docker-shim in Kubernetes, please set containerRuntime.docker.enable to true.
+  # For supporting docker, we need generate CA and update certs, then hijack registries traffic,
+  #
+  # By default, it's unnecessary to restart docker daemon when pull image from private registries,
+  # this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io,
+  # please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true
+  #
+  # Caution: docker hub image is not supported without restart docker daemon.
+  #
+  # When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true
+  # this feature will inject proxy config into docker.service and restart docker daemon.
+  #
+  # Caution: set restart to true only when live restore is enable.
+  #
+  # Requirement: Docker Engine v1.2.0+ without Rootless.
+  docker:
+    # -- Enable docker support
+    # Inject ca cert into /etc/docker/certs.d/, Refer: https://docs.docker.com/engine/security/certificates/.
+    enable: false
+    # -- Restart docker daemon to redirect traffic to dfdaemon
+    # When containerRuntime.docker.restart=true, containerRuntime.docker.injectHosts and containerRuntime.registry.domains is ignored.
+    # If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true.
+    restart: false
+    # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
+    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than v0.4.0.
+    # When use certs and inject hosts in docker, no necessary to restart docker daemon.
+    injectHosts: true
+    # -- Registry domains
+    # By default, docker pull image via https, currently, only support default 443 port with https.
+    registryDomains:
+    - "ghcr.io"
+    - "quay.io"
+    # -- CA cert info for generating
+    caCert:
+      countryName: CN
+      stateOrProvinceName: Hangzhou
+      localityName: Hangzhou
+      organizationName: Dragonfly
+      commonName: "Dragonfly Authority CA"
+  # -- [Experimental] Containerd support
+  containerd:
+    # -- Enable containerd support
+    # Inject mirror config into /etc/containerd/config.toml,
+    # if config_path is enabled in /etc/containerd/config.toml, the config take effect real time,
+    # but if config_path is not enabled in /etc/containerd/config.toml, need restart containerd to take effect.
+    # When the version in /etc/containerd/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    # When the version in /etc/containerd/config.toml is "2":
+    #   1. when config_path is enabled in /etc/containerd/config.toml, inject containerRuntime.containerd.registries into config_path,
+    #   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into /etc/containerd/config.toml and inject containerRuntime.containerd.registries into config_path,
+    #   3. when not config_path in /etc/containerd/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    enable: false
+    # -- Config path for multiple registries
+    # By default, init container will check /etc/containerd/config.toml, whether is config_path configured,
+    # if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror.
+    # When configPath is true, init container will inject config_path=/etc/containerd/certs.d and configure all registries.
+    injectConfigPath: false
+    # Registries full urls
+    # Only used when config_path is enabled in /etc/containerd/config.toml or containerRuntime.containerd.injectConfigPath=true
+    registries:
+    - "https://ghcr.io"
+    - "https://quay.io"
+    - "https://harbor.example.com:8443"
+  # -- [Experimental] CRI-O support
+  crio:
+    # -- Enable CRI-O support
+    # Inject drop-in mirror config into /etc/containers/registries.conf.d.
+    enable: false
+    # Registries full urls
+    registries:
+    - "https://ghcr.io"
+    - "https://quay.io"
+    - "https://harbor.example.com:8443"
+  # -- The image name of init container, need include openssl for ca generating
+  initContainerImage: dragonflyoss/openssl
+
 scheduler:
   # -- Enable scheduler
   enable: true
@@ -326,10 +405,10 @@ dfdaemon:
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
       registryMirror:
-        # -- When enable, using header "X-Dragonfly-Registry" for remote instead of url
+        # -- When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host
         dynamic: true
         # -- URL for the registry mirror
-        url: https://index.docker.io
+        url: https://docker.io
       proxies:
         # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*

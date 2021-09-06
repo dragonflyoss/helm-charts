@@ -18,8 +18,9 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add external configuration
-    - Update dragonfly version to v0.4.0
+    - Support config docker in daemonset
+    - Support config containerd in daemonset
+    - Support config CRI-O in daemonset
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
