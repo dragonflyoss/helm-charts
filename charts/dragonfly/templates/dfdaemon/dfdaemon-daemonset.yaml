@@ -38,6 +38,9 @@ spec:
 {{ toYaml .Values.dfdaemon.nodeSelector | indent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.dfdaemon.hostNetwork }}
+      {{- if .Values.dfdaemon.hostNetwork }}
+      dnsPolicy: "ClusterFirstWithHostNet"
+      {{- end }}
       hostPID: {{ or (and .Values.containerRuntime.docker.enable .Values.containerRuntime.docker.restart) .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable }}
       {{- if .Values.dfdaemon.tolerations }}
       tolerations:
@@ -69,13 +72,13 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
-        {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
-        - name: run
-          mountPath: /run/dragonfly
         {{- if .Values.containerRuntime.docker.enable }}
         - name: d7y-ca
           mountPath: /etc/dragonfly-ca
         {{- end }}
+        {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
+        - name: run
+          mountPath: /run/dragonfly
         securityContext:
           capabilities:
             add:
@@ -343,13 +346,13 @@ spec:
               # TODO merge mirrors
               echo "registry $registry found in config.toml, skip"
             else
-                cat << EOF >> $etcContainerd/config.toml
+              cat << EOF >> $etcContainerd/config.toml
           [plugins.cri.registry.mirrors."$domain"]
             endpoint = ["http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}","$registry"]
           EOF
-                echo "Registry $domain added"
-                need_restart=1
-              fi
+              echo "Registry $domain added"
+              need_restart=1
+            fi
           fi
 
           # restart containerd
