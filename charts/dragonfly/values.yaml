@@ -35,7 +35,7 @@ containerRuntime:
     # If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true.
     restart: false
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
-    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than v0.4.0.
+    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v0.5.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
     injectHosts: true
     # -- Registry domains
@@ -100,7 +100,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v0.4.0
+  tag: v0.5.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -167,7 +167,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v0.4.0
+  tag: v0.5.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -283,7 +283,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v0.4.0
+  tag: v0.5.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -427,7 +427,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v0.4.0
+  tag: v0.5.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
