@@ -35,7 +35,7 @@ containerRuntime:
     # If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true.
     restart: false
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
-    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than v0.5.0.
+    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v0.5.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
     injectHosts: true
     # -- Registry domains
