@@ -408,7 +408,7 @@ dfdaemon:
         # -- When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host
         dynamic: true
         # -- URL for the registry mirror
-        url: https://docker.io
+        url: https://index.docker.io
       proxies:
         # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*
