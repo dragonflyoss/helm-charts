@@ -177,7 +177,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
-| dfdaemon.config.proxy.registryMirror.url | string | `"https://docker.io"` | URL for the registry mirror |
+| dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
