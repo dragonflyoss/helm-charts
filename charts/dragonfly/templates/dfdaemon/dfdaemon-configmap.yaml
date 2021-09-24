@@ -56,13 +56,16 @@ data:
         key: /etc/dragonfly-ca/cakey.pem
         hosts:
         - regx: .*
+          insecure: {{ .Values.containerRuntime.docker.insecure }}
         {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.containerRuntime.docker.restart) }}
+        {{- if not .Values.dfdaemon.hostNetwork }}
         sni:
         - listen: 127.0.0.1
           port: 443
           {{- if not .Values.dfdaemon.hostNetwork }}
           namespace: {{ .Values.dfdaemon.config.proxy.tcpListen.namespace }}
           {{- end }}
+        {{- end }}
         {{- end }}
       {{- end }}
 {{- end }}

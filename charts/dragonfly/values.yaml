@@ -35,9 +35,15 @@ containerRuntime:
     # If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true.
     restart: false
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
-    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
+    # Caution:
+    #   1. This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
+    #   2. When injectHosts=true, should not use host network, or injectHosts will ignore
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
     injectHosts: true
+    # -- Skip verify remote tls cert in dfdaemon
+    # If registry cert is private or self-signed, set to true.
+    # Caution: this option is test only. When deploy in production, should not skip verify tls cert.
+    insecure: false
     # -- Registry domains
     # By default, docker pull image via https, currently, only support default 443 port with https.
     registryDomains:

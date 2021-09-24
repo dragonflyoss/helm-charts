@@ -206,7 +206,7 @@ spec:
               echo copy CA cert to $dir
               cp -f /host/etc/dragonfly-ca/cacert.pem "$dir/ca.crt"
 
-              {{- if .Values.containerRuntime.docker.injectHosts }}
+              {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
               # inject static dns into /etc/hosts
               if grep "127.0.0.1 $domain" /host/etc/hosts; then
                 echo "Dragonfly SNI Host $domain Found in /host/etc/hosts"
