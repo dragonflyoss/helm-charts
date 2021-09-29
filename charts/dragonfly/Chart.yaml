@@ -26,14 +26,14 @@ annotations:
     - name: Source
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
-    - name: dragonflyoss/manager
-      image: dragonflyoss/manager:v2.0.0
-    - name: dragonflyoss/cdn
-      image: dragonflyoss/cdn:v2.0.0
-    - name: dragonflyoss/dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.0
-    - name: dragonflyoss/scheduler
-      image: dragonflyoss/scheduler:v2.0.0
+    - name: manager
+      image: dragonflyoss/manager:v2.0.1
+    - name: cdn
+      image: dragonflyoss/cdn:v2.0.1
+    - name: dfdaemon
+      image: dragonflyoss/dfdaemon:v2.0.1
+    - name: scheduler
+      image: dragonflyoss/scheduler:v2.0.1
 
 dependencies:
 - name: mysql
