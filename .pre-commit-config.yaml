@@ -5,8 +5,13 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.15
+    hooks:
+      - id: helmlint
+
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.2.0
+    rev: v1.3.0
     hooks:
       - id: helm-docs
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
