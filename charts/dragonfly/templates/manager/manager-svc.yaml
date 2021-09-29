@@ -29,6 +29,6 @@ spec:
       targetPort: {{ .Values.manager.grpcPort }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
-    component: {{ .Values.manager.name }}
     release: {{ .Release.Name }}
+    component: {{ .Values.manager.name }}
 {{- end }}

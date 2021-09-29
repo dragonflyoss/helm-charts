@@ -129,15 +129,15 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.enable | bool | `true` | Enable cdn |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
-| cdn.metrics.enabled | bool | `false` | Enable manager metrics |
+| cdn.metrics.enable | bool | `false` | Enable manager metrics |
 | cdn.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
-| cdn.metrics.prometheusRule.enabled | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| cdn.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
 | cdn.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
 | cdn.metrics.service.annotations | object | `{}` | Service annotations |
 | cdn.metrics.service.labels | object | `{}` | Service labels |
 | cdn.metrics.service.type | string | `"ClusterIP"` | Service type |
 | cdn.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| cdn.metrics.serviceMonitor.enabled | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| cdn.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
 | cdn.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
 | cdn.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | cdn.name | string | `"cdn"` | CDN name |
@@ -146,7 +146,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
 | cdn.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
 | cdn.persistence.annotations | object | `{}` | Persistence annotations |
-| cdn.persistence.enabled | bool | `true` | Enable persistence for cdn |
+| cdn.persistence.enable | bool | `true` | Enable persistence for cdn |
 | cdn.persistence.size | string | `"8Gi"` | Persistence persistence size |
 | cdn.podAnnotations | object | `{}` | Pod annotations |
 | cdn.podLabels | object | `{}` | Pod labels |
@@ -239,19 +239,19 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
 | manager.ingress.annotations | object | `{}` | Ingress annotations |
-| manager.ingress.enabled | bool | `false` | Enable ingress |
+| manager.ingress.enable | bool | `false` | Enable ingress |
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration |
-| manager.metrics.enabled | bool | `false` | Enable manager metrics |
+| manager.metrics.enable | bool | `false` | Enable manager metrics |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
-| manager.metrics.prometheusRule.enabled | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| manager.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
 | manager.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
 | manager.metrics.service.annotations | object | `{}` | Service annotations |
 | manager.metrics.service.labels | object | `{}` | Service labels |
 | manager.metrics.service.type | string | `"ClusterIP"` | Service type |
 | manager.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| manager.metrics.serviceMonitor.enabled | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| manager.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
 | manager.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
 | manager.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | manager.name | string | `"manager"` | Manager name |
@@ -295,15 +295,15 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.enable | bool | `true` | Enable scheduler |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
-| scheduler.metrics.enabled | bool | `false` | Enable manager metrics |
+| scheduler.metrics.enable | bool | `false` | Enable manager metrics |
 | scheduler.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
-| scheduler.metrics.prometheusRule.enabled | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| scheduler.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
 | scheduler.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
 | scheduler.metrics.service.annotations | object | `{}` | Service annotations |
 | scheduler.metrics.service.labels | object | `{}` | Service labels |
 | scheduler.metrics.service.type | string | `"ClusterIP"` | Service type |
 | scheduler.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| scheduler.metrics.serviceMonitor.enabled | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| scheduler.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
 | scheduler.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
 | scheduler.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | scheduler.name | string | `"scheduler"` | Scheduler name |

@@ -8,7 +8,7 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: {{ .Values.scheduler.name }}
+    component: {{ .Values.scheduler.name }}-metrics
 {{- if .Values.scheduler.metrics.service.labels }}
 {{ toYaml .Values.metrics.service.labels | indent 4 }}
 {{- end }}
@@ -21,9 +21,8 @@ spec:
   ports:
   - port: 8000
     name: http-metrics
-    targetPort: 8000
+    targetPort: http-metrics
     protocol: TCP
-
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.scheduler.name }}

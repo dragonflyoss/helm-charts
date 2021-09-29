@@ -30,8 +30,8 @@ spec:
 {{- end }}
   selector:
     app: {{ template "dragonfly.fullname" $ }}
-    component: "{{ $.Values.scheduler.name }}"
     release: {{ $.Release.Name }}
+    component: {{ $.Values.scheduler.name }}
     statefulset.kubernetes.io/pod-name: {{ template "dragonfly.scheduler.fullname" $ }}-{{ $i }}
   type: {{$.Values.scheduler.service.type}}
   {{- if eq $.Values.scheduler.service.type "LoadBalancer" }}

@@ -14,12 +14,12 @@ metadata:
     {{- end }}
 spec:
   endpoints:
-  - port: 8000
-    {{- if .Values.metrics.serviceMonitor.interval }}
-    interval: {{ .Values.metrics.serviceMonitor.interval }}
+  - port: http-metrics
+    {{- if .Values.manager.metrics.serviceMonitor.interval }}
+    interval: {{ .Values.manager.metrics.serviceMonitor.interval }}
     {{- end }}
-    {{- if .Values.metrics.serviceMonitor.scrapeTimeout }}
-    scrapeTimeout: {{ .Values.metrics.serviceMonitor.scrapeTimeout }}
+    {{- if .Values.manager.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.manager.metrics.serviceMonitor.scrapeTimeout }}
     {{- end }}
   namespaceSelector:
     matchNames:
@@ -27,6 +27,6 @@ spec:
   selector:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
-      component: {{ .Values.manager.name }}
       release: {{ .Release.Name }}
+      component: {{ .Values.manager.name }}-metrics
 {{- end }}

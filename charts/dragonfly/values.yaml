@@ -163,7 +163,7 @@ scheduler:
         interval: 5s
   metrics:
     # -- Enable manager metrics
-    enabled: false
+    enable: false
     service:
       # -- Service type
       type: ClusterIP
@@ -174,7 +174,7 @@ scheduler:
     serviceMonitor:
       # -- Enable prometheus service monitor
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Interval at which metrics should be scraped
@@ -184,7 +184,7 @@ scheduler:
     prometheusRule:
       # -- Enable prometheus rule
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Prometheus rules
@@ -244,7 +244,7 @@ cdn:
         targetPort: 8001
   persistence:
     # -- Enable persistence for cdn
-    enabled: true
+    enable: true
     # -- Persistence annotations
     annotations: {}
     # -- Persistence access modes
@@ -309,7 +309,7 @@ cdn:
                   intervalThreshold: 2h
   metrics:
     # -- Enable manager metrics
-    enabled: false
+    enable: false
     service:
       # -- Service type
       type: ClusterIP
@@ -320,7 +320,7 @@ cdn:
     serviceMonitor:
       # -- Enable prometheus service monitor
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Interval at which metrics should be scraped
@@ -330,7 +330,7 @@ cdn:
     prometheusRule:
       # -- Enable prometheus rule
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Prometheus rules
@@ -530,7 +530,7 @@ manager:
     annotations: {}
   ingress:
     # -- Enable ingress
-    enabled: false
+    enable: false
     # -- Ingress annotations
     annotations: {}
     # -- Ingress host path
@@ -541,7 +541,7 @@ manager:
     tls: []
   metrics:
     # -- Enable manager metrics
-    enabled: false
+    enable: false
     service:
       # -- Service type
       type: ClusterIP
@@ -552,7 +552,7 @@ manager:
     serviceMonitor:
       # -- Enable prometheus service monitor
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Interval at which metrics should be scraped
@@ -562,7 +562,7 @@ manager:
     prometheusRule:
       # -- Enable prometheus rule
       # ref: https://github.com/coreos/prometheus-operator
-      enabled: false
+      enable: false
       # -- Additional labels
       additionalLabels: {}
       # -- Prometheus rules
