@@ -72,6 +72,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.cdn.nginxContiainerPort }}
           protocol: TCP
+        {{- if .Values.cdn.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
