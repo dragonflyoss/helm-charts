@@ -165,11 +165,11 @@ scheduler:
     # -- Enable manager metrics
     enabled: false
     service:
-      # -- Metrics service type
+      # -- Service type
       type: ClusterIP
-      # -- Metrics service labels
+      # -- Service labels
       labels: {}
-      # -- Metrics service annotations
+      # -- Service annotations
       annotations: {}
     serviceMonitor:
       # -- Enable prometheus service monitor
@@ -311,11 +311,11 @@ cdn:
     # -- Enable manager metrics
     enabled: false
     service:
-      # -- Metrics service type
+      # -- Service type
       type: ClusterIP
-      # -- Metrics service labels
+      # -- Service labels
       labels: {}
-      # -- Metrics service annotations
+      # -- Service annotations
       annotations: {}
     serviceMonitor:
       # -- Enable prometheus service monitor
@@ -543,11 +543,11 @@ manager:
     # -- Enable manager metrics
     enabled: false
     service:
-      # -- Metrics service type
+      # -- Service type
       type: ClusterIP
-      # -- Metrics service labels
+      # -- Service labels
       labels: {}
-      # -- Metrics service annotations
+      # -- Service annotations
       annotations: {}
     serviceMonitor:
       # -- Enable prometheus service monitor
