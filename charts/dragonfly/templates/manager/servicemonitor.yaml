@@ -14,7 +14,7 @@ metadata:
     {{- end }}
 spec:
   endpoints:
-  - port: http-metrics
+  - port: 8000
     {{- if .Values.metrics.serviceMonitor.interval }}
     interval: {{ .Values.metrics.serviceMonitor.interval }}
     {{- end }}
@@ -29,4 +29,4 @@ spec:
       app: {{ template "dragonfly.fullname" . }}
       component: {{ .Values.manager.name }}
       release: {{ .Release.Name }}
-{{- end }}      
+{{- end }}

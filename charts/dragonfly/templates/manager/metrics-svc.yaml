@@ -20,11 +20,11 @@ spec:
   type: {{ .Values.manager.metrics.service.type }}
   ports:
   - port: 8000
-    targetPort: http-metrics
-    protocol: TCP
     name: http-metrics
+    targetPort: 8000
+    protocol: TCP
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.manager.name }}
     release: {{ .Release.Name }}
-{{- end }} 
+{{- end }}
