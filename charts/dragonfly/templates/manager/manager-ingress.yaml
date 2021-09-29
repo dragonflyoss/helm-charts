@@ -1,4 +1,4 @@
-{{- if .Values.manager.ingress.enabled -}}
+{{- if .Values.manager.ingress.enable -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

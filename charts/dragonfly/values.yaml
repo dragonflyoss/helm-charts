@@ -129,17 +129,20 @@ scheduler:
   podAnnotations: {}
   # -- Pod labels
   podLabels: {}
-  # -- Service annotations
-  serviceAnnotations: {}
   # -- Statefulset annotations
   statefulsetAnnotations: {}
   # -- Pod containerPort
   containerPort: 8002
   # -- Service configuration
   service:
+    # -- Service type
     type: ClusterIP
+    # -- Service port
     port: 8002
+    # -- Service targetPort
     targetPort: 8002
+    # -- Service annotations
+    annotations: {}
   config:
     # -- Enable debug mode
     debug: false
@@ -158,6 +161,34 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval
         interval: 5s
+  metrics:
+    # -- Enable manager metrics
+    enabled: false
+    service:
+      # -- Metrics service type
+      type: ClusterIP
+      # -- Metrics service labels
+      labels: {}
+      # -- Metrics service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped	
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 cdn:
   # -- Enable cdn
@@ -276,6 +307,34 @@ cdn:
                   fullGCThreshold: 5G
                   cleanRatio: 1
                   intervalThreshold: 2h
+  metrics:
+    # -- Enable manager metrics
+    enabled: false
+    service:
+      # -- Metrics service type
+      type: ClusterIP
+      # -- Metrics service labels
+      labels: {}
+      # -- Metrics service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped	
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 dfdaemon:
   # -- Enable dfdaemon
@@ -456,14 +515,19 @@ manager:
   podAnnotations: {}
   # -- Pod labels
   podLabels: {}
-  # -- Service annotations
-  serviceAnnotations: {}
   # -- Deployment annotations
   deploymentAnnotations: {}
   # -- REST service port
   restPort: 8080
   # -- GRPC service port
   grpcPort: 65003
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service labels
+    labels: {}
+    # -- Service annotations
+    annotations: {}
   ingress:
     # -- Enable ingress
     enabled: false
@@ -475,6 +539,34 @@ manager:
     hosts: []
     # -- Ingress TLS configuration
     tls: []
+  metrics:
+    # -- Enable manager metrics
+    enabled: false
+    service:
+      # -- Metrics service type
+      type: ClusterIP
+      # -- Metrics service labels
+      labels: {}
+      # -- Metrics service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped	
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enabled: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 externalManager:
   # -- External manager hostname

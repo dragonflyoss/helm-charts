@@ -9,11 +9,15 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.manager.name }}
-{{- if .Values.manager.serviceAnnotations }}
+{{- if .Values.manager.service.labels }}
+{{ toYaml .Values.manager.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.manager.service.annotations }}
   annotations:
-{{ toYaml .Values.manager.serviceAnnotations | indent 4 }}
+{{ toYaml .Values.manager.service.annotations | indent 4 }}
 {{- end }}
 spec:
+  type: {{ .Values.manager.service.type }}
   ports:
     - port: {{ .Values.manager.restPort }}
       name: http-rest
@@ -27,5 +31,4 @@ spec:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.manager.name }}
     release: {{ .Release.Name }}
-  type: ClusterIP
 {{- end }}
