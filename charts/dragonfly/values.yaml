@@ -177,7 +177,7 @@ scheduler:
       enabled: false
       # -- Additional labels
       additionalLabels: {}
-      # -- Interval at which metrics should be scraped	
+      # -- Interval at which metrics should be scraped
       interval: 30s
       # -- Timeout after which the scrape is ended
       scrapeTimeout: 10s
@@ -323,7 +323,7 @@ cdn:
       enabled: false
       # -- Additional labels
       additionalLabels: {}
-      # -- Interval at which metrics should be scraped	
+      # -- Interval at which metrics should be scraped
       interval: 30s
       # -- Timeout after which the scrape is ended
       scrapeTimeout: 10s
@@ -555,7 +555,7 @@ manager:
       enabled: false
       # -- Additional labels
       additionalLabels: {}
-      # -- Interval at which metrics should be scraped	
+      # -- Interval at which metrics should be scraped
       interval: 30s
       # -- Timeout after which the scrape is ended
       scrapeTimeout: 10s
