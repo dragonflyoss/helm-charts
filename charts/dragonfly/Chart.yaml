@@ -18,8 +18,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Skip inject hosts in host network
-    - Support skip tls verify in dfdaemon for testing
+    - Add prometheus monitor
+    - Update dragonfly image version
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
