@@ -237,6 +237,7 @@ spec:
             nsenter -t 1 -m sh -- -c "echo '[Service]' > $path.d/http-proxy.conf"
             nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
             nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m sh -- -c "echo 'Environment=\"NO_PROXY={{ join "," .Values.containerRuntime.docker.skipHosts }}\"' >> $path.d/http-proxy.conf"
             nsenter -t 1 -m systemctl -- daemon-reload
             nsenter -t 1 -m systemctl -- restart docker.service
           fi
