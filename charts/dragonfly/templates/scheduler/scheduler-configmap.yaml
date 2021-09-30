@@ -38,4 +38,8 @@ data:
         host: {{ .Values.externalRedis.host }}
         port: {{ .Values.externalRedis.port }}
         {{- end }}
+    {{- if .Values.scheduler.metrics.enable }}
+    metrics:
+      addr: ":8000"
+    {{- end }}
 {{- end }}

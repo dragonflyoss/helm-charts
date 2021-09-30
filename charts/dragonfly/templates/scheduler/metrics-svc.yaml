@@ -1,0 +1,30 @@
+{{- if .Values.scheduler.metrics.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.scheduler.fullname" . }}-metrics
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.scheduler.name }}-metrics
+{{- if .Values.scheduler.metrics.service.labels }}
+{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.scheduler.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.scheduler.metrics.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.scheduler.metrics.service.type }}
+  ports:
+  - port: 8000
+    name: http-metrics
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    component: {{ .Values.scheduler.name }}
+    release: {{ .Release.Name }}
+{{- end }}

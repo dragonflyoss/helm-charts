@@ -1,0 +1,30 @@
+{{- if .Values.cdn.metrics.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.cdn.fullname" . }}-metrics
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.cdn.name }}-metrics
+{{- if .Values.cdn.metrics.service.labels }}
+{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.cdn.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.cdn.metrics.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.cdn.metrics.service.type }}
+  ports:
+  - port: 8000
+    name: http-metrics
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    component: {{ .Values.cdn.name }}
+    release: {{ .Release.Name }}
+{{- end }}

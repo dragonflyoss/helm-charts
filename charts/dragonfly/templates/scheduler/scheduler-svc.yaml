@@ -11,9 +11,9 @@ metadata:
     release: {{ $.Release.Name }}
     heritage: {{ $.Release.Service }}
     component: {{ $.Values.scheduler.name }}
-{{- if $.serviceAnnotations }}
+{{- if $.Values.scheduler.service.annotations }}
   annotations:
-{{ toYaml $.Values.scheduler.serviceAnnotations | indent 4 }}
+{{ toYaml $.Values.scheduler.service.annotations | indent 4 }}
 {{- end }}
 spec:
   ports:
@@ -30,8 +30,8 @@ spec:
 {{- end }}
   selector:
     app: {{ template "dragonfly.fullname" $ }}
-    component: "{{ $.Values.scheduler.name }}"
     release: {{ $.Release.Name }}
+    component: {{ $.Values.scheduler.name }}
     statefulset.kubernetes.io/pod-name: {{ template "dragonfly.scheduler.fullname" $ }}-{{ $i }}
   type: {{$.Values.scheduler.service.type}}
   {{- if eq $.Values.scheduler.service.type "LoadBalancer" }}

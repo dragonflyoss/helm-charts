@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.5](https://img.shields.io/badge/Version-0.5.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.5](https://img.shields.io/badge/AppVersion-0.5.5-informational?style=flat-square)
+![Version: 0.5.6](https://img.shields.io/badge/Version-0.5.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.6](https://img.shields.io/badge/AppVersion-0.5.6-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -132,13 +132,24 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.initContainer.image | string | `"busybox"` | Init container image repository |
 | cdn.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
 | cdn.initContainer.tag | string | `"latest"` | Init container image tag |
+| cdn.metrics.enable | bool | `false` | Enable manager metrics |
+| cdn.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
+| cdn.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| cdn.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
+| cdn.metrics.service.annotations | object | `{}` | Service annotations |
+| cdn.metrics.service.labels | object | `{}` | Service labels |
+| cdn.metrics.service.type | string | `"ClusterIP"` | Service type |
+| cdn.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| cdn.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| cdn.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| cdn.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | cdn.name | string | `"cdn"` | CDN name |
 | cdn.nameOverride | string | `""` | Override scheduler name |
 | cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
 | cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
 | cdn.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
 | cdn.persistence.annotations | object | `{}` | Persistence annotations |
-| cdn.persistence.enabled | bool | `true` | Enable persistence for cdn |
+| cdn.persistence.enable | bool | `true` | Enable persistence for cdn |
 | cdn.persistence.size | string | `"8Gi"` | Persistence persistence size |
 | cdn.podAnnotations | object | `{}` | Pod annotations |
 | cdn.podLabels | object | `{}` | Pod labels |
@@ -148,7 +159,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.0"` | Image tag |
+| cdn.tag | string | `"v2.0.1"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -208,7 +219,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.0"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.1"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -231,13 +242,24 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
 | manager.ingress.annotations | object | `{}` | Ingress annotations |
-| manager.ingress.enabled | bool | `false` | Enable ingress |
+| manager.ingress.enable | bool | `false` | Enable ingress |
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration |
 | manager.initContainer.image | string | `"busybox"` | Init container image repository |
 | manager.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
 | manager.initContainer.tag | string | `"latest"` | Init container image tag |
+| manager.metrics.enable | bool | `false` | Enable manager metrics |
+| manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
+| manager.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| manager.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
+| manager.metrics.service.annotations | object | `{}` | Service annotations |
+| manager.metrics.service.labels | object | `{}` | Service labels |
+| manager.metrics.service.type | string | `"ClusterIP"` | Service type |
+| manager.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| manager.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| manager.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| manager.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | manager.name | string | `"manager"` | Manager name |
 | manager.nameOverride | string | `""` | Override manager name |
 | manager.nodeSelector | object | `{}` | Node labels for pod assignment |
@@ -248,8 +270,10 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.replicas | int | `3` | Number of Pods to launch |
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
-| manager.serviceAnnotations | object | `{}` | Service annotations |
-| manager.tag | string | `"v2.0.0"` | Image tag |
+| manager.service.annotations | object | `{}` | Service annotations |
+| manager.service.labels | object | `{}` | Service labels |
+| manager.service.type | string | `"ClusterIP"` | Service type |
+| manager.tag | string | `"v2.0.1"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -280,6 +304,17 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.initContainer.image | string | `"busybox"` | Init container image repository |
 | scheduler.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
 | scheduler.initContainer.tag | string | `"latest"` | Init container image tag |
+| scheduler.metrics.enable | bool | `false` | Enable manager metrics |
+| scheduler.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
+| scheduler.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| scheduler.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
+| scheduler.metrics.service.annotations | object | `{}` | Service annotations |
+| scheduler.metrics.service.labels | object | `{}` | Service labels |
+| scheduler.metrics.service.type | string | `"ClusterIP"` | Service type |
+| scheduler.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| scheduler.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| scheduler.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| scheduler.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | scheduler.name | string | `"scheduler"` | Scheduler name |
 | scheduler.nameOverride | string | `""` | Override scheduler name |
 | scheduler.nodeSelector | object | `{}` | Node labels for pod assignment |
@@ -289,10 +324,13 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| scheduler.service | object | `{"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
-| scheduler.serviceAnnotations | object | `{}` | Service annotations |
+| scheduler.service | object | `{"annotations":{},"port":8002,"targetPort":8002,"type":"ClusterIP"}` | Service configuration |
+| scheduler.service.annotations | object | `{}` | Service annotations |
+| scheduler.service.port | int | `8002` | Service port |
+| scheduler.service.targetPort | int | `8002` | Service targetPort |
+| scheduler.service.type | string | `"ClusterIP"` | Service type |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.0"` | Image tag |
+| scheduler.tag | string | `"v2.0.1"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 

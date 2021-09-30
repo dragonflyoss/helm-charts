@@ -1,0 +1,21 @@
+{{- if and .Values.cdn.metrics.enable .Values.cdn.metrics.prometheusRule.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "dragonfly.cdn.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.cdn.name }}
+    {{- if .Values.cdn.metrics.prometheusRule.additionalLabels }}
+{{ toYaml .Values.cdn.metrics.prometheusRule.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+{{- with .Values.cdn.metrics.prometheusRule.rules }}
+  groups:
+    - name: {{ template "dragonfly.cdn.fullname" $ }}
+      rules: {{ tpl (toYaml .) $ | nindent 8 }}
+{{- end }}
+{{- end }}

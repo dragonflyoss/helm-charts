@@ -106,7 +106,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.0
+  tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -129,8 +129,6 @@ scheduler:
   podAnnotations: {}
   # -- Pod labels
   podLabels: {}
-  # -- Service annotations
-  serviceAnnotations: {}
   # -- Statefulset annotations
   statefulsetAnnotations: {}
   # -- Pod containerPort
@@ -144,9 +142,14 @@ scheduler:
     pullPolicy: IfNotPresent
   # -- Service configuration
   service:
+    # -- Service type
     type: ClusterIP
+    # -- Service port
     port: 8002
+    # -- Service targetPort
     targetPort: 8002
+    # -- Service annotations
+    annotations: {}
   config:
     # -- Enable debug mode
     debug: false
@@ -165,6 +168,34 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval
         interval: 5s
+  metrics:
+    # -- Enable manager metrics
+    enable: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 cdn:
   # -- Enable cdn
@@ -180,7 +211,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.0
+  tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -227,7 +258,7 @@ cdn:
         targetPort: 8001
   persistence:
     # -- Enable persistence for cdn
-    enabled: true
+    enable: true
     # -- Persistence annotations
     annotations: {}
     # -- Persistence access modes
@@ -290,6 +321,34 @@ cdn:
                   fullGCThreshold: 5G
                   cleanRatio: 1
                   intervalThreshold: 2h
+  metrics:
+    # -- Enable manager metrics
+    enable: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 dfdaemon:
   # -- Enable dfdaemon
@@ -303,7 +362,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.0
+  tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -447,7 +506,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.0
+  tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Pod resource requests and limits
@@ -470,14 +529,19 @@ manager:
   podAnnotations: {}
   # -- Pod labels
   podLabels: {}
-  # -- Service annotations
-  serviceAnnotations: {}
   # -- Deployment annotations
   deploymentAnnotations: {}
   # -- REST service port
   restPort: 8080
   # -- GRPC service port
   grpcPort: 65003
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service labels
+    labels: {}
+    # -- Service annotations
+    annotations: {}
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -487,7 +551,7 @@ manager:
     pullPolicy: IfNotPresent
   ingress:
     # -- Enable ingress
-    enabled: false
+    enable: false
     # -- Ingress annotations
     annotations: {}
     # -- Ingress host path
@@ -496,6 +560,34 @@ manager:
     hosts: []
     # -- Ingress TLS configuration
     tls: []
+  metrics:
+    # -- Enable manager metrics
+    enable: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 externalManager:
   # -- External manager hostname

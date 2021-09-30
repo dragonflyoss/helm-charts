@@ -78,6 +78,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.manager.grpcPort }}
           protocol: TCP
+        {{- if .Values.manager.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"

@@ -35,6 +35,10 @@ data:
         keepAlive:
 {{ toYaml .Values.cdn.config.base.manager.keepAlive | indent 10 }}
       console: {{ .Values.cdn.config.base.console }}
+      {{- if .Values.cdn.metrics.enable }}
+      metrics:
+        addr: ":8000"
+      {{- end }}
     plugins:
 {{ toYaml .Values.cdn.config.plugins | indent 6 }}
   nginx.conf: |-

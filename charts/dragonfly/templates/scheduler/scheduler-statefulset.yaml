@@ -71,6 +71,10 @@ spec:
         ports:
         - containerPort: {{ .Values.scheduler.containerPort }}
           protocol: TCP
+        {{- if .Values.scheduler.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"

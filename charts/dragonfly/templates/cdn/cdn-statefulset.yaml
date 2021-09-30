@@ -73,6 +73,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.cdn.nginxContiainerPort }}
           protocol: TCP
+        {{- if .Values.cdn.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
@@ -91,11 +95,11 @@ spec:
       - name: nginx-config
         configMap:
           name: {{ template "dragonfly.cdn.fullname" $ }}
-      {{- if not (.Values.cdn.persistence.enabled) }}
+      {{- if not (.Values.cdn.persistence.enable) }}
       - name: storage
         emptyDir: {}
       {{- end }}
-  {{- if .Values.cdn.persistence.enabled }}
+  {{- if .Values.cdn.persistence.enable }}
   volumeClaimTemplates:
     - metadata:
         name: storage

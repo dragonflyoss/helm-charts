@@ -1,0 +1,30 @@
+{{- if .Values.manager.metrics.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.manager.fullname" . }}-metrics
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.manager.name }}-metrics
+{{- if .Values.manager.metrics.service.labels }}
+{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.manager.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.manager.metrics.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.manager.metrics.service.type }}
+  ports:
+  - port: 8000
+    name: http-metrics
+    targetPort: 8000
+    protocol: TCP
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Values.manager.name }}
+{{- end }}
