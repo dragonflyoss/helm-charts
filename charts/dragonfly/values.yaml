@@ -135,6 +135,13 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort
   containerPort: 8002
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
   # -- Service configuration
   service:
     type: ClusterIP
@@ -202,6 +209,13 @@ cdn:
   containerPort: 8003
   # -- Nginx containerPort for downloading
   nginxContiainerPort: 8001
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
   # -- Service configuration
   service:
     type: ClusterIP
@@ -464,6 +478,13 @@ manager:
   restPort: 8080
   # -- GRPC service port
   grpcPort: 65003
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
   ingress:
     # -- Enable ingress
     enabled: false
