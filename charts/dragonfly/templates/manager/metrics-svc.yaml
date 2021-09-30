@@ -21,7 +21,7 @@ spec:
   ports:
   - port: 8000
     name: http-metrics
-    targetPort: http-metrics
+    targetPort: 8000
     protocol: TCP
   selector:
     app: {{ template "dragonfly.fullname" . }}
