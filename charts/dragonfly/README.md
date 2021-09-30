@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.4](https://img.shields.io/badge/Version-0.5.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.4](https://img.shields.io/badge/AppVersion-0.5.4-informational?style=flat-square)
+![Version: 0.5.5](https://img.shields.io/badge/Version-0.5.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.5](https://img.shields.io/badge/AppVersion-0.5.5-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -129,6 +129,9 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.enable | bool | `true` | Enable cdn |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
+| cdn.initContainer.image | string | `"busybox"` | Init container image repository |
+| cdn.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| cdn.initContainer.tag | string | `"latest"` | Init container image tag |
 | cdn.name | string | `"cdn"` | CDN name |
 | cdn.nameOverride | string | `""` | Override scheduler name |
 | cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
@@ -232,6 +235,9 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration |
+| manager.initContainer.image | string | `"busybox"` | Init container image repository |
+| manager.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| manager.initContainer.tag | string | `"latest"` | Init container image tag |
 | manager.name | string | `"manager"` | Manager name |
 | manager.nameOverride | string | `""` | Override manager name |
 | manager.nodeSelector | object | `{}` | Node labels for pod assignment |
@@ -271,6 +277,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.enable | bool | `true` | Enable scheduler |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
+| scheduler.initContainer.image | string | `"busybox"` | Init container image repository |
+| scheduler.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| scheduler.initContainer.tag | string | `"latest"` | Init container image tag |
 | scheduler.name | string | `"scheduler"` | Scheduler name |
 | scheduler.nameOverride | string | `""` | Override scheduler name |
 | scheduler.nodeSelector | object | `{}` | Node labels for pod assignment |
