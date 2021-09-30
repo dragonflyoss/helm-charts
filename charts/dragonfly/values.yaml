@@ -18,6 +18,12 @@ containerRuntime:
   # this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io,
   # please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true
   #
+  # Caution:
+  #   Because the original daemonset in Kubernetes did not support Surging Rolling Update policy.
+  #   When kill current dfdaemon pod, the new pod image can not be pulled anymore.
+  #   Using Docker with dragonfly, when upgrade dfdaemon, should pull newly dfdaemon image manually, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob).
+  #   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.
+  #
   # Caution: docker hub image is not supported without restart docker daemon.
   #
   # When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true
