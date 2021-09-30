@@ -129,6 +129,9 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.enable | bool | `true` | Enable cdn |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
+| cdn.initContainer.image | string | `"busybox"` | Init container image repository |
+| cdn.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| cdn.initContainer.tag | string | `"latest"` | Init container image tag |
 | cdn.metrics.enable | bool | `false` | Enable manager metrics |
 | cdn.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
 | cdn.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
@@ -243,6 +246,9 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration |
+| manager.initContainer.image | string | `"busybox"` | Init container image repository |
+| manager.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| manager.initContainer.tag | string | `"latest"` | Init container image tag |
 | manager.metrics.enable | bool | `false` | Enable manager metrics |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
 | manager.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
@@ -295,6 +301,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.enable | bool | `true` | Enable scheduler |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
+| scheduler.initContainer.image | string | `"busybox"` | Init container image repository |
+| scheduler.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| scheduler.initContainer.tag | string | `"latest"` | Init container image tag |
 | scheduler.metrics.enable | bool | `false` | Enable manager metrics |
 | scheduler.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
 | scheduler.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |

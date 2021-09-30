@@ -55,7 +55,8 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-manager
-        image: busybox:latest
+        image: {{ .Values.cdn.initContainer.image }}:{{ .Values.cdn.initContainer.tag  }}
+        imagePullPolicy: {{ .Values.cdn.initContainer.pullPolicy }}
         {{- if .Values.manager.enable }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
