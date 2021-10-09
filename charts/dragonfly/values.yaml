@@ -126,6 +126,8 @@ scheduler:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -231,6 +233,8 @@ cdn:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -382,6 +386,8 @@ dfdaemon:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -526,6 +532,8 @@ manager:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
