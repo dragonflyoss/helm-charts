@@ -53,6 +53,10 @@ spec:
       priorityClassName: {{ .Values.manager.priorityClassName }}
       {{- end }}
       {{- if or .Values.redis.enable .Values.mysql.enable }}
+      {{- if .Values.manager.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.manager.hostAliases | indent 8 }}
+      {{- end }}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis

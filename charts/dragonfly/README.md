@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.8](https://img.shields.io/badge/Version-0.5.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.8](https://img.shields.io/badge/AppVersion-0.5.8-informational?style=flat-square)
+![Version: 0.5.9](https://img.shields.io/badge/Version-0.5.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.9](https://img.shields.io/badge/AppVersion-0.5.9-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -138,6 +138,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.containerPort | int | `8003` | Pod containerPort |
 | cdn.enable | bool | `true` | Enable cdn |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
+| cdn.hostAliases | list | `[]` | Host Aliases |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
 | cdn.initContainer.image | string | `"busybox"` | Init container image repository |
 | cdn.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
@@ -219,6 +220,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
 | dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname |
+| dfdaemon.hostAliases | list | `[]` | Host Aliases |
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
@@ -251,6 +253,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.enable | bool | `true` | Enable manager |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
+| manager.hostAliases | list | `[]` | Host Aliases |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
 | manager.ingress.annotations | object | `{}` | Ingress annotations |
 | manager.ingress.enable | bool | `false` | Enable ingress |
@@ -311,6 +314,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
+| scheduler.hostAliases | list | `[]` | Host Aliases |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
 | scheduler.initContainer.image | string | `"busybox"` | Init container image repository |
 | scheduler.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
