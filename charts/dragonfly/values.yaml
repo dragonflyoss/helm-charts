@@ -19,10 +19,12 @@ containerRuntime:
   # please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true
   #
   # Caution:
-  #   Because the original daemonset in Kubernetes did not support Surging Rolling Update policy.
-  #   When kill current dfdaemon pod, the new pod image can not be pulled anymore.
-  #   Using Docker with dragonfly, when upgrade dfdaemon, should pull newly dfdaemon image manually, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob).
   #   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.
+  #   Because the original `daemonset` in Kubernetes did not support `Surging Rolling Update` policy.
+  #   When kill current dfdaemon pod, the new pod image can not be pulled anymore.
+  #   If you can not change runtime from docker to others, remind to choose a plan when upgrade dfdaemon:
+  #     Option 1: pull newly dfdaemon image manually before upgrade dragonfly, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob) to pull image automate.
+  #     Option 2: keep the image registry of dragonfly is different from common registries and add host in `containerRuntime.docker.skipHosts`.
   #
   # Caution: docker hub image is not supported without restart docker daemon.
   #
@@ -40,6 +42,15 @@ containerRuntime:
     # When containerRuntime.docker.restart=true, containerRuntime.docker.injectHosts and containerRuntime.registry.domains is ignored.
     # If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true.
     restart: false
+    # -- Skip hosts
+    # Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself.
+    # The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39.
+    #
+    # Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,
+    #   don't forget add the corresponding backend storage.
+    skipHosts:
+    - "127.0.0.1"
+    - "docker.io" # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
     # Caution:
     #   1. This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
@@ -115,6 +126,8 @@ scheduler:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -222,6 +235,8 @@ cdn:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -376,6 +391,8 @@ dfdaemon:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
@@ -520,6 +537,8 @@ manager:
   tag: v2.0.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
   # -- Pod resource requests and limits
   resources:
     requests:
