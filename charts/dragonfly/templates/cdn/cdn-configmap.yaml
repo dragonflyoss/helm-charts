@@ -39,6 +39,11 @@ data:
       metrics:
         addr: ":8000"
       {{- end }}
+    {{- if .Values.cdn.config.jaeger }}
+    jaeger: {{ .Values.cdn.config.jaeger }}
+    {{- else if .Values.jaeger.enable }}
+    jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    {{- end }}
     plugins:
 {{ toYaml .Values.cdn.config.plugins | indent 6 }}
   nginx.conf: |-

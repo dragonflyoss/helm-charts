@@ -133,6 +133,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
 | cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
 | cdn.config.base.taskExpireTime | string | `"3m"` | When a task is not accessed within the taskExpireTime and it will be treated to be expired |
+| cdn.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | cdn.config.plugins.storageDriver | list | `[{"config":{"baseDir":"/tmp/cdn"},"enable":true,"name":"disk"}]` | Storage driver configuration |
 | cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | Storage manager configuration |
 | cdn.containerPort | int | `8003` | Pod containerPort |
@@ -197,7 +198,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
 | dfdaemon.config.host.advertiseIP | string | `"0.0.0.0"` | Access ip for other peers when local ip is different with access ip, advertiseIP should be set |
 | dfdaemon.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
-| dfdaemon.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268 |
+| dfdaemon.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
@@ -246,6 +247,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.port | int | `6379` | External redis port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
 | jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
+| manager.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
@@ -304,6 +306,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.usePassword | bool | `true` | Use password authentication |
 | scheduler.config.debug | bool | `false` | Enable debug mode |
 | scheduler.config.dynconfig.type | string | `"manager"` | Dynamic configuration pull source, pull from manager service by default |
+| scheduler.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
 | scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |

@@ -49,4 +49,9 @@ data:
     metrics:
       addr: ":8000"
     {{- end }}
+    {{- if .Values.manager.config.jaeger }}
+    jaeger: {{ .Values.manager.config.jaeger }}
+    {{- else if .Values.jaeger.enable }}
+    jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    {{- end }}
 {{- end }}
