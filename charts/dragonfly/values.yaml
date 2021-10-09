@@ -187,6 +187,8 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval
         interval: 5s
+    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    jaeger: ""
   metrics:
     # -- Enable manager metrics
     enable: false
@@ -342,6 +344,9 @@ cdn:
                   fullGCThreshold: 5G
                   cleanRatio: 1
                   intervalThreshold: 2h
+    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    jaeger: ""
+
   metrics:
     # -- Enable manager metrics
     enable: false
@@ -432,7 +437,7 @@ dfdaemon:
     keepStorage: false
     # -- When enable, pprof will be enabled
     verbose: true
-    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268
+    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
     host:
       # -- TCP service listen address
@@ -585,6 +590,9 @@ manager:
     hosts: []
     # -- Ingress TLS configuration
     tls: []
+  config:
+    # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    jaeger: ""
   metrics:
     # -- Enable manager metrics
     enable: false
