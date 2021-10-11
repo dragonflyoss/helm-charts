@@ -73,9 +73,49 @@ spec:
           hostIP: 127.0.0.1
           {{- end }}
           protocol: TCP
+        {{- if and .Values.containerRuntime.docker.enable (not .Values.containerRuntime.docker.restart) }}
+        {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # inject hosts after dfdaemon started
+                domains="{{- join " " .Values.containerRuntime.docker.registryDomains }}"
+                if [[ -n "$domains" ]]; then
+                  for domain in $domains; do
+                    # inject static dns into /etc/hosts
+                    if grep "127.0.0.1 $domain" /host/etc/hosts; then
+                      echo "Dragonfly SNI Host $domain Found in /host/etc/hosts"
+                      continue
+                    else
+                      echo "Try to add dragonfly SNI host $domain"
+                      echo "127.0.0.1 $domain # Dragonfly SNI Host $domain" >> /host/etc/hosts
+                      echo "Dragonfly SNI host $domain added"
+                    fi
+                  done
+                fi
+          preStop:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # when stop dfdaemon, clean up injected hosts info in /etc/hosts for current node
+                sed -i '/# Dragonfly SNI Host/d' /host/etc/hosts
+        {{- end }}
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if and .Values.containerRuntime.docker.enable (not .Values.containerRuntime.docker.restart) }}
+        {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
+        - name: etc
+          mountPath: /host/etc
+        {{- end }}
+        {{- end }}
         {{- if .Values.containerRuntime.docker.enable }}
         - name: d7y-ca
           mountPath: /etc/dragonfly-ca
@@ -209,18 +249,6 @@ spec:
               mkdir -p "$dir"
               echo copy CA cert to $dir
               cp -f /host/etc/dragonfly-ca/cacert.pem "$dir/ca.crt"
-
-              {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
-              # inject static dns into /etc/hosts
-              if grep "127.0.0.1 $domain" /host/etc/hosts; then
-                echo "Dragonfly SNI Host $domain Found in /host/etc/hosts"
-                continue
-              else
-                echo "Try to add dragonfly SNI host $domain"
-                echo "127.0.0.1 $domain # Dragonfly SNI Host $domain" >> /host/etc/hosts
-                echo "Dragonfly SNI host $domain added"
-              fi
-              {{- end }}
             done
           fi
           {{- end }}
