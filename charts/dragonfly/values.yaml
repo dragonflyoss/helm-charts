@@ -426,6 +426,9 @@ dfdaemon:
   hostPort: 65001
   # -- Using hostNetwork when pod with host network can communicate with normal pods with cni network
   hostNetwork: false
+  # -- Mount data directory from host
+  # when enabled, mount host path to dfdaemon, or just emptyDir in dfdaemon
+  mountDataDirAsHostPath: false
   config:
     # -- Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running
     aliveTime: 0s
@@ -435,6 +438,8 @@ dfdaemon:
     # it is usefully when upgrade daemon service, all local cache will be saved
     # default is false
     keepStorage: false
+    # -- Data directory
+    dataDir: /root/.dragonfly/dfget-daemon/
     # -- When enable, pprof will be enabled
     verbose: true
     # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
@@ -492,6 +497,8 @@ dfdaemon:
       strategy: io.d7y.storage.v2.simple
       # -- Set to ture for reusing underlying storage for same task id
       multiplex: true
+      # -- Disk GC Threshold
+      diskGCThreshold: 50Gi
     proxy:
       # -- Filter for hash url
       # when defaultFilter: "Expires&Signature", for example:

@@ -123,6 +123,8 @@ spec:
         {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
         - name: run
           mountPath: /run/dragonfly
+        - name: data
+          mountPath: {{ .Values.dfdaemon.config.dataDir }}
         securityContext:
           capabilities:
             add:
@@ -489,4 +491,12 @@ spec:
         hostPath:
           path: /etc
       {{- end }}
+      - name: data
+        {{- if .Values.dfdaemon.mountDataDirAsHostPath }}
+        hostPath:
+          path: {{ .Values.dfdaemon.config.dataDir }}
+          type: DirectoryOrCreate
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
 {{- end }}
