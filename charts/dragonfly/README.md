@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.11](https://img.shields.io/badge/Version-0.5.11-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.11](https://img.shields.io/badge/AppVersion-0.5.11-informational?style=flat-square)
+![Version: 0.5.12](https://img.shields.io/badge/Version-0.5.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.12](https://img.shields.io/badge/AppVersion-0.5.12-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -191,6 +191,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39. Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,   don't forget add the corresponding backend storage. |
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
+| dfdaemon.config.dataDir | string | `"/root/.dragonfly/dfget-daemon/"` | Data directory |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
@@ -209,6 +210,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
+| dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
 | dfdaemon.config.storage.taskExpireTime | string | `"3m0s"` | Task data expire time when there is no access to a task data, this task will be gc. |
@@ -225,6 +227,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
+| dfdaemon.mountDataDirAsHostPath | bool | `false` | Mount data directory from host when enabled, mount host path to dfdaemon, or just emptyDir in dfdaemon |
 | dfdaemon.name | string | `"dfdaemon"` | Dfdaemon name |
 | dfdaemon.nameOverride | string | `""` | Override dfdaemon name |
 | dfdaemon.nodeSelector | object | `{}` | Node labels for pod assignment |

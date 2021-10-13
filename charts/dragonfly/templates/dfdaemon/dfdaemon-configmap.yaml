@@ -14,6 +14,8 @@ data:
     aliveTime: {{ .Values.dfdaemon.config.aliveTime }}
     gcInterval: {{ .Values.dfdaemon.config.gcInterval }}
     keepStorage: {{ .Values.dfdaemon.config.keepStorage }}
+    dataDir: {{ .Values.dfdaemon.config.dataDir }}
+    workDir: {{ .Values.dfdaemon.config.dataDir }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
     {{- if .Values.dfdaemon.config.jaeger }}
     jaeger: {{ .Values.dfdaemon.config.jaeger }}
