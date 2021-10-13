@@ -3,6 +3,52 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Support customize data directory in dfdaemon
+        - Enable default disk GC Threshold
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.1
+        - name: cdn
+          image: dragonflyoss/cdn:v2.0.1
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.1
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.5.12
+    created: "2021-10-13T09:21:13.649019915Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: b846cc13168e858f08c1fd0b019f71b2d71682aebd1e516b06e2d68905c5b67e
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.5.12/dragonfly-0.5.12.tgz
+    version: 0.5.12
+  - annotations:
+      artifacthub.io/changes: |
         - Drop injected hosts before stop daemonset
       artifacthub.io/images: |
         - name: manager
