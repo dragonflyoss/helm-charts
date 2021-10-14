@@ -82,6 +82,9 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if .Values.scheduler.extraVolumeMounts }}
+        {{- toYaml .Values.scheduler.extraVolumeMounts | nindent 8 }}
+        {{- end }}
       volumes:
       - name: config
         configMap:
@@ -89,4 +92,7 @@ spec:
           items:
           - key: scheduler.yaml
             path: scheduler.yaml
+      {{- if .Values.scheduler.extraVolumes }}
+      {{- toYaml .Values.scheduler.extraVolumes | nindent 6 }}
+      {{- end }}
 {{- end }}

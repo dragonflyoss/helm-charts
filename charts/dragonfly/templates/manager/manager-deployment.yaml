@@ -89,6 +89,9 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if .Values.manager.extraVolumeMounts }}
+        {{- toYaml .Values.manager.extraVolumeMounts | nindent 8 }}
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /healthy
@@ -123,4 +126,7 @@ spec:
           items:
           - key: manager.yaml
             path: manager.yaml
+      {{- if .Values.manager.extraVolumes }}
+      {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
+      {{- end }}
 {{- end }}

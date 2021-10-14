@@ -152,6 +152,10 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort
   containerPort: 8002
+  # -- Extra volumes for scheduler.
+  extraVolumes: []
+  # -- Extra volumeMounts for scheduler.
+  extraVolumeMounts: []
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -259,6 +263,10 @@ cdn:
   podLabels: {}
   # -- Statefulset annotations
   statefulsetAnnotations: {}
+  # -- Extra volumes for cdn.
+  extraVolumes: []
+  # -- Extra volumeMounts for cdn.
+  extraVolumeMounts: []
   # -- Pod containerPort
   containerPort: 8003
   # -- Nginx containerPort for downloading
@@ -415,6 +423,10 @@ dfdaemon:
   podLabels: {}
   # -- Daemonset annotations
   daemonsetAnnotations: {}
+  # -- Extra volumes for dfdaemon.
+  extraVolumes: []
+  # -- Extra volumeMounts for dfdaemon.
+  extraVolumeMounts: []
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -568,6 +580,10 @@ manager:
   podLabels: {}
   # -- Deployment annotations
   deploymentAnnotations: {}
+  # -- Extra volumes for manager.
+  extraVolumes: []
+  # -- Extra volumeMounts for manager.
+  extraVolumeMounts: []
   # -- REST service port
   restPort: 8080
   # -- GRPC service port

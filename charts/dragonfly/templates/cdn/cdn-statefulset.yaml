@@ -89,6 +89,9 @@ spec:
           subPath: "nginx.conf"
         - name: storage
           mountPath: {{ (index .Values.cdn.config.plugins.storageDriver 0).config.baseDir }}
+        {{- if .Values.cdn.extraVolumeMounts }}
+        {{- toYaml .Values.cdn.extraVolumeMounts | nindent 8 }}
+        {{- end }}
       volumes:
       - name: config
         configMap:
@@ -102,6 +105,9 @@ spec:
       {{- if not (.Values.cdn.persistence.enable) }}
       - name: storage
         emptyDir: {}
+      {{- end }}
+      {{- if .Values.cdn.extraVolumes }}
+      {{- toYaml .Values.cdn.extraVolumes | nindent 6 }}
       {{- end }}
   {{- if .Values.cdn.persistence.enable }}
   volumeClaimTemplates:

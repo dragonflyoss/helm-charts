@@ -125,6 +125,9 @@ spec:
           mountPath: /run/dragonfly
         - name: data
           mountPath: {{ .Values.dfdaemon.config.dataDir }}
+        {{- if .Values.dfdaemon.extraVolumeMounts }}
+        {{- toYaml .Values.dfdaemon.extraVolumeMounts | nindent 8 }}
+        {{- end }}
         securityContext:
           capabilities:
             add:
@@ -499,4 +502,7 @@ spec:
         {{- else }}
         emptyDir: {}
         {{- end }}
+      {{- if .Values.dfdaemon.extraVolumes }}
+      {{- toYaml .Values.dfdaemon.extraVolumes | nindent 6 }}
+      {{- end }}
 {{- end }}
