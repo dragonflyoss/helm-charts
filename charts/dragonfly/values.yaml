@@ -599,7 +599,7 @@ manager:
   # -- Extra volumeMounts for manager.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/logs/dragonfly/dfdaemon"
+    mountPath: "/var/logs/dragonfly/manager"
   # -- REST service port
   restPort: 8080
   # -- GRPC service port

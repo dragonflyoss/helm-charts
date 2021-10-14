@@ -260,7 +260,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
-| manager.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/dfdaemon","name":"logs"}]` | Extra volumeMounts for manager. |
+| manager.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
