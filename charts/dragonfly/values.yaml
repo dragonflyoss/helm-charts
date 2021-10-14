@@ -159,7 +159,7 @@ scheduler:
   # -- Extra volumeMounts for scheduler.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/logs/dragonfly/scheduler"
+    mountPath: "/var/log/dragonfly/scheduler"
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -274,7 +274,7 @@ cdn:
   # -- Extra volumeMounts for cdn.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/logs/dragonfly/cdn"
+    mountPath: "/var/log/dragonfly/cdn"
   # -- Pod containerPort
   containerPort: 8003
   # -- Nginx containerPort for downloading
@@ -438,7 +438,7 @@ dfdaemon:
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/logs/dragonfly/dfdaemon"
+    mountPath: "/var/log/dragonfly/dfdaemon"
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -599,7 +599,7 @@ manager:
   # -- Extra volumeMounts for manager.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/logs/dragonfly/manager"
+    mountPath: "/var/log/dragonfly/manager"
   # -- REST service port
   restPort: 8080
   # -- GRPC service port
