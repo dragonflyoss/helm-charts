@@ -153,9 +153,13 @@ scheduler:
   # -- Pod containerPort
   containerPort: 8002
   # -- Extra volumes for scheduler.
-  extraVolumes: []
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
   # -- Extra volumeMounts for scheduler.
-  extraVolumeMounts: []
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/scheduler"
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -264,9 +268,13 @@ cdn:
   # -- Statefulset annotations
   statefulsetAnnotations: {}
   # -- Extra volumes for cdn.
-  extraVolumes: []
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
   # -- Extra volumeMounts for cdn.
-  extraVolumeMounts: []
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/cdn"
   # -- Pod containerPort
   containerPort: 8003
   # -- Nginx containerPort for downloading
@@ -424,9 +432,13 @@ dfdaemon:
   # -- Daemonset annotations
   daemonsetAnnotations: {}
   # -- Extra volumes for dfdaemon.
-  extraVolumes: []
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
   # -- Extra volumeMounts for dfdaemon.
-  extraVolumeMounts: []
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/dfdaemon"
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -581,9 +593,13 @@ manager:
   # -- Deployment annotations
   deploymentAnnotations: {}
   # -- Extra volumes for manager.
-  extraVolumes: []
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
   # -- Extra volumeMounts for manager.
-  extraVolumeMounts: []
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/dfdaemon"
   # -- REST service port
   restPort: 8080
   # -- GRPC service port
