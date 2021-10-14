@@ -152,6 +152,14 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort
   containerPort: 8002
+  # -- Extra volumes for scheduler.
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
+  # -- Extra volumeMounts for scheduler.
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/scheduler"
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -259,6 +267,14 @@ cdn:
   podLabels: {}
   # -- Statefulset annotations
   statefulsetAnnotations: {}
+  # -- Extra volumes for cdn.
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
+  # -- Extra volumeMounts for cdn.
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/cdn"
   # -- Pod containerPort
   containerPort: 8003
   # -- Nginx containerPort for downloading
@@ -415,6 +431,14 @@ dfdaemon:
   podLabels: {}
   # -- Daemonset annotations
   daemonsetAnnotations: {}
+  # -- Extra volumes for dfdaemon.
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
+  # -- Extra volumeMounts for dfdaemon.
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/dfdaemon"
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -568,6 +592,14 @@ manager:
   podLabels: {}
   # -- Deployment annotations
   deploymentAnnotations: {}
+  # -- Extra volumes for manager.
+  extraVolumes:
+  - name: logs
+    emptyDir: {}
+  # -- Extra volumeMounts for manager.
+  extraVolumeMounts:
+  - name: logs
+    mountPath: "/var/logs/dragonfly/manager"
   # -- REST service port
   restPort: 8080
   # -- GRPC service port

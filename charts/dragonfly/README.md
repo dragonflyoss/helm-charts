@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.12](https://img.shields.io/badge/Version-0.5.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.12](https://img.shields.io/badge/AppVersion-0.5.12-informational?style=flat-square)
+![Version: 0.5.13](https://img.shields.io/badge/Version-0.5.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.13](https://img.shields.io/badge/AppVersion-0.5.13-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -138,6 +138,8 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | Storage manager configuration |
 | cdn.containerPort | int | `8003` | Pod containerPort |
 | cdn.enable | bool | `true` | Enable cdn |
+| cdn.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/cdn","name":"logs"}]` | Extra volumeMounts for cdn. |
+| cdn.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for cdn. |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
 | cdn.hostAliases | list | `[]` | Host Aliases |
 | cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
@@ -222,6 +224,8 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
+| dfdaemon.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/dfdaemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
+| dfdaemon.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname |
 | dfdaemon.hostAliases | list | `[]` | Host Aliases |
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
@@ -256,6 +260,8 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
+| manager.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
+| manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname |
 | manager.grpcPort | int | `65003` | GRPC service port |
 | manager.hostAliases | list | `[]` | Host Aliases |
@@ -319,6 +325,8 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
+| scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/logs/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
+| scheduler.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for scheduler. |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname |
 | scheduler.hostAliases | list | `[]` | Host Aliases |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository |
