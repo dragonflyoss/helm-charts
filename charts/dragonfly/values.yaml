@@ -479,8 +479,12 @@ dfdaemon:
       # when local ip is different with access ip, advertiseIP should be set
       advertiseIP: 0.0.0.0
     download:
-      # -- Download limit per second
-      rateLimit: 200Mi
+      # -- Total download limit per second
+      totalRateLimit: 200Mi
+      # -- Per peer task limit per second
+      perPeerRateLimit: 100Mi
+      # -- Calculate digest, when only pull images, can be false to save cpu and memory
+      calculateDigest: true
       downloadGRPC:
         # -- Download grpc security option
         security:

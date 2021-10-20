@@ -19,7 +19,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Support customize sni port
-    - Update default dfdaemon.config.storage.taskExpireTime to 6h
+    - Improve dfdaemon download and storage config
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

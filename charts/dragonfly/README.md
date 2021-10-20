@@ -195,12 +195,14 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
 | dfdaemon.config.dataDir | string | `"/root/.dragonfly/dfget-daemon/"` | Data directory |
+| dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
-| dfdaemon.config.download.rateLimit | string | `"200Mi"` | Download limit per second |
+| dfdaemon.config.download.perPeerRateLimit | string | `"100Mi"` | Per peer task limit per second |
+| dfdaemon.config.download.totalRateLimit | string | `"200Mi"` | Total download limit per second |
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
 | dfdaemon.config.host.advertiseIP | string | `"0.0.0.0"` | Access ip for other peers when local ip is different with access ip, advertiseIP should be set |
 | dfdaemon.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
