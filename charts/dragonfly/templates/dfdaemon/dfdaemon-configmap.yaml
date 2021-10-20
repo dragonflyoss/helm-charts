@@ -62,11 +62,11 @@ data:
         {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.containerRuntime.docker.restart) }}
         {{- if not .Values.dfdaemon.hostNetwork }}
         sni:
+        {{- range .Values.containerRuntime.docker.registryPorts }}
         - listen: 127.0.0.1
-          port: 443
-          {{- if not .Values.dfdaemon.hostNetwork }}
-          namespace: {{ .Values.dfdaemon.config.proxy.tcpListen.namespace }}
-          {{- end }}
+          port: {{ . }}
+          namespace: {{ $.Values.dfdaemon.config.proxy.tcpListen.namespace }}
+        {{- end }}
         {{- end }}
         {{- end }}
       {{- end }}

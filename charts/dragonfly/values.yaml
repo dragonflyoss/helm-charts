@@ -62,10 +62,13 @@ containerRuntime:
     # Caution: this option is test only. When deploy in production, should not skip verify tls cert.
     insecure: false
     # -- Registry domains
-    # By default, docker pull image via https, currently, only support default 443 port with https.
+    # By default, docker pull image via https, currently, by default 443 port with https. If not standard port, update registryPorts.
     registryDomains:
     - "ghcr.io"
     - "quay.io"
+    # -- Registry ports
+    registryPorts:
+    - 443
     # -- CA cert info for generating
     caCert:
       countryName: CN
@@ -476,8 +479,12 @@ dfdaemon:
       # when local ip is different with access ip, advertiseIP should be set
       advertiseIP: 0.0.0.0
     download:
-      # -- Download limit per second
-      rateLimit: 200Mi
+      # -- Total download limit per second
+      totalRateLimit: 200Mi
+      # -- Per peer task limit per second
+      perPeerRateLimit: 100Mi
+      # -- Calculate digest, when only pull images, can be false to save cpu and memory
+      calculateDigest: true
       downloadGRPC:
         # -- Download grpc security option
         security:
@@ -509,7 +516,7 @@ dfdaemon:
     storage:
       # -- Task data expire time
       # when there is no access to a task data, this task will be gc.
-      taskExpireTime: 3m0s
+      taskExpireTime: 6h
       # -- Storage strategy when process task data
       # io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action
       #                           the download file in date directory will be the peer data for uploading to other peers
