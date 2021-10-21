@@ -378,7 +378,8 @@ spec:
             # inject legacy v1 mirror setting
             echo containerd config is version 1, just only support one mirror in config.toml
             # parse registry domain
-            domain=$(echo {{ .Values.dfdaemon.config.proxy.registryMirror.url}} | sed -e "s,https://,," | sed "s,:.*,,")
+            registry={{ .Values.dfdaemon.config.proxy.registryMirror.url}}
+            domain=$(echo {{ .Values.dfdaemon.config.proxy.registryMirror.url}} | sed -e "s,http.://,," | sed "s,:.*,,")
             # inject registry
             if grep "registry.mirrors.\"$domain\"" $etcContainerd/config.toml; then
               # TODO merge mirrors
