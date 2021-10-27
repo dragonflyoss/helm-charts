@@ -74,7 +74,7 @@ spec:
           {{- end }}
           protocol: TCP
         {{- if and .Values.containerRuntime.docker.enable (not .Values.containerRuntime.docker.restart) }}
-        {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
+        {{- if .Values.containerRuntime.docker.injectHosts }}
         lifecycle:
           postStart:
             exec:
@@ -84,9 +84,12 @@ spec:
               - |
                 # inject hosts after dfdaemon started
                 domains="{{- join " " .Values.containerRuntime.docker.registryDomains }}"
+                # remove static dns in pod /etc/hosts, which injected by host network
+                sed -i '/# Dragonfly SNI Host/d' /etc/hosts
+
                 if [[ -n "$domains" ]]; then
                   for domain in $domains; do
-                    # inject static dns into /etc/hosts
+                    # inject static dns into /host/etc/hosts
                     if grep "127.0.0.1 $domain" /host/etc/hosts; then
                       echo "Dragonfly SNI Host $domain Found in /host/etc/hosts"
                       continue
@@ -104,14 +107,14 @@ spec:
               - "-c"
               - |
                 # when stop dfdaemon, clean up injected hosts info in /etc/hosts for current node
-                sed -i '/# Dragonfly SNI Host/d' /host/etc/hosts
+                echo "$(sed '/# Dragonfly SNI Host/d' /host/etc/hosts)" > /host/etc/hosts
         {{- end }}
         {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
         {{- if and .Values.containerRuntime.docker.enable (not .Values.containerRuntime.docker.restart) }}
-        {{- if and .Values.containerRuntime.docker.injectHosts (not .Values.dfdaemon.hostNetwork) }}
+        {{- if and .Values.containerRuntime.docker.injectHosts }}
         - name: etc
           mountPath: /host/etc
         {{- end }}
@@ -120,14 +123,14 @@ spec:
         - name: d7y-ca
           mountPath: /etc/dragonfly-ca
         {{- end }}
+        {{- if .Values.dfdaemon.extraVolumeMounts }}
+        {{- toYaml .Values.dfdaemon.extraVolumeMounts | nindent 8 }}
+        {{- end }}
         {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
         - name: run
           mountPath: /run/dragonfly
         - name: data
           mountPath: {{ .Values.dfdaemon.config.dataDir }}
-        {{- if .Values.dfdaemon.extraVolumeMounts }}
-        {{- toYaml .Values.dfdaemon.extraVolumeMounts | nindent 8 }}
-        {{- end }}
         securityContext:
           capabilities:
             add:
@@ -170,7 +173,7 @@ spec:
           privileged: true
       {{- end }}
       {{- if .Values.containerRuntime.docker.enable }}
-      - name: update-docker-cert
+      - name: update-docker-config
         image: "{{ .Values.containerRuntime.initContainerImage }}"
         imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
         resources:
