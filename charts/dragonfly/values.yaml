@@ -52,9 +52,7 @@ containerRuntime:
     - "127.0.0.1"
     - "docker.io" # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
-    # Caution:
-    #   1. This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
-    #   2. When injectHosts=true, should not use host network, or injectHosts will ignore
+    # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
     injectHosts: true
     # -- Skip verify remote tls cert in dfdaemon
@@ -441,7 +439,7 @@ dfdaemon:
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
   - name: logs
-    mountPath: "/var/log/dragonfly/dfdaemon"
+    mountPath: "/var/log/dragonfly/daemon"
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -469,6 +467,7 @@ dfdaemon:
     dataDir: /root/.dragonfly/dfget-daemon/
     # -- When enable, pprof will be enabled
     verbose: true
+    pprofPort: 0
     # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
     host:
