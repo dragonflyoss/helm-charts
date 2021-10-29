@@ -3,6 +3,51 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Support disable auto back source in dfdaemon
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.1
+        - name: cdn
+          image: dragonflyoss/cdn:v2.0.1
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.1
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.5.18
+    created: "2021-10-29T07:10:26.092825496Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: 5e72189694459876f6e88d6e7de78a7c8424078c96b5c8965ae65b221efbe382
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.5.18/dragonfly-0.5.18.tgz
+    version: 0.5.18
+  - annotations:
+      artifacthub.io/changes: |
         - Support SNI with host network in dfdaemon
         - Fix preStop not work in dfdaemon
         - Fix extraVolumeMounts not work in dfdaemon
