@@ -477,6 +477,10 @@ dfdaemon:
       # -- Access ip for other peers
       # when local ip is different with access ip, advertiseIP should be set
       advertiseIP: 0.0.0.0
+    # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
+    scheduler:
+      # -- Disable auto back source in dfdaemon
+      disableAutoBackSource: false
     download:
       # -- Total download limit per second
       totalRateLimit: 200Mi
@@ -553,6 +557,8 @@ dfdaemon:
         dynamic: true
         # -- URL for the registry mirror
         url: https://index.docker.io
+        # -- When the cert of above url is secure, set insecure to true
+        insecure: false
       proxies:
         # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*

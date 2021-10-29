@@ -33,6 +33,7 @@ data:
         addr: {{template "dragonfly.scheduler.fullname" $ }}-{{$i}}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:{{ $.Values.scheduler.service.port }}
       {{- end }}
       scheduleTimeout: 5m
+      disableAutoBackSource: {{ .Values.dfdaemon.config.scheduler.disableAutoBackSource }}
     host:
 {{ toYaml .Values.dfdaemon.config.host | indent 6 }}
     download:
