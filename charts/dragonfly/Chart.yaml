@@ -18,7 +18,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Update image version to v2.0.1-beta.2
+    - Update image version to v2.0.1-beta.4
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -26,13 +26,13 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.1-beta.2
+      image: dragonflyoss/manager:v2.0.1-beta.4
     - name: cdn
-      image: dragonflyoss/cdn:v2.0.1-beta.2
+      image: dragonflyoss/cdn:v2.0.1-beta.4
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.1-beta.2
+      image: dragonflyoss/dfdaemon:v2.0.1-beta.4
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.1-beta.2
+      image: dragonflyoss/scheduler:v2.0.1-beta.4
 
 dependencies:
 - name: mysql
