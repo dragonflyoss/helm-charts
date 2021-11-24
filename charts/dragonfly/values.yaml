@@ -124,7 +124,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.1-beta.4
+  tag: v2.0.1-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -168,16 +168,6 @@ scheduler:
     tag: latest
     # -- Container image pull policy
     pullPolicy: IfNotPresent
-  # -- Service configuration
-  service:
-    # -- Service type
-    type: ClusterIP
-    # -- Service port
-    port: 8002
-    # -- Service targetPort
-    targetPort: 8002
-    # -- Service annotations
-    annotations: {}
   config:
     # -- Enable debug mode
     debug: false
@@ -241,7 +231,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.1-beta.4
+  tag: v2.0.1-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -405,7 +395,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.1-beta.4
+  tag: v2.0.1-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -477,8 +467,25 @@ dfdaemon:
       # -- Access ip for other peers
       # when local ip is different with access ip, advertiseIP should be set
       advertiseIP: 0.0.0.0
+      # -- Geographical location, separated by "|" characters
+      location: ""
+      # -- IDC deployed by daemon
+      idc: ""
+      # -- Security domain deployed by daemon, network isolation between different security domains
+      securityDomain: ""
+      # -- Network topology, separated by "|" characters
+      netTopology: ""
     # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
     scheduler:
+      manager:
+        # -- Get scheduler list dynamically from manager
+        enable: true
+        # -- Manager service address
+        addr: ""
+        # -- Scheduler list refresh interval
+        refreshInterval: 5m
+      # -- Schedule timeout
+      scheduleTimeout: 30s
       # -- Disable auto back source in dfdaemon
       disableAutoBackSource: false
     download:
@@ -577,7 +584,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.1-beta.4
+  tag: v2.0.1-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
