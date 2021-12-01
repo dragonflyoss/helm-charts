@@ -17,7 +17,7 @@ data:
     dataDir: {{ .Values.dfdaemon.config.dataDir }}
     workDir: {{ .Values.dfdaemon.config.dataDir }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
-    {{ if .Values.dfdaemon.config.verbose }}
+    {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}
     {{- end }}
     {{- if .Values.dfdaemon.config.jaeger }}
@@ -29,10 +29,8 @@ data:
       manager:
         enable: {{ .Values.dfdaemon.config.scheduler.manager.enable }}
         netAddrs:
-        {{ if .Values.dfdaemon.config.scheduler.manager.netAddrs }}
+        {{- if and (.Values.dfdaemon.config.scheduler.manager.enable) (.Values.dfdaemon.config.scheduler.manager.netAddrs) }}
 {{ toYaml .Values.dfdaemon.config.scheduler.manager.netAddrs | indent 10 }}
-        - type: tcp
-          addr: {{ .Values.dfdaemon.config.scheduler.manager.addr }}
         {{- else if .Values.manager.enable }}
         - type: tcp
           addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
