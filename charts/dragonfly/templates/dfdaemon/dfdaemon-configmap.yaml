@@ -28,12 +28,17 @@ data:
     scheduler:
       manager:
         enable: {{ .Values.dfdaemon.config.scheduler.manager.enable }}
-        {{ if .Values.dfdaemon.config.scheduler.manager.addr }}
-        addr: {{ .Values.dfdaemon.config.scheduler.manager.addr }}
+        netAddrs:
+        {{ if .Values.dfdaemon.config.scheduler.manager.netAddrs }}
+{{ toYaml .Values.dfdaemon.config.scheduler.manager.netAddrs | indent 10 }}
+        - type: tcp
+          addr: {{ .Values.dfdaemon.config.scheduler.manager.addr }}
         {{- else if .Values.manager.enable }}
-        addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+        - type: tcp
+          addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
         {{- else }}
-        addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+        - type: tcp
+          addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- end }}
         refreshInterval: {{ .Values.dfdaemon.config.scheduler.manager.refreshInterval }}
       scheduleTimeout: {{ .Values.dfdaemon.config.scheduler.scheduleTimeout }}

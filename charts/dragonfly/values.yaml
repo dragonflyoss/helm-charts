@@ -480,8 +480,8 @@ dfdaemon:
       manager:
         # -- Get scheduler list dynamically from manager
         enable: true
-        # -- Manager service address
-        addr: ""
+        # -- Manager service address, netAddr is a list, there are two fields type and addr
+        netAddrs:
         # -- Scheduler list refresh interval
         refreshInterval: 5m
       # -- Schedule timeout
