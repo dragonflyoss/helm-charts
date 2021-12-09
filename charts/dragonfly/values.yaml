@@ -124,7 +124,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-alpha.2
+  tag: v2.0.2-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -236,7 +236,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-alpha.2
+  tag: v2.0.2-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -402,7 +402,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-alpha.2
+  tag: v2.0.2-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -466,6 +466,8 @@ dfdaemon:
     cacheDir: ""
     # -- Log storage directory
     logDir: ""
+    # -- Daemon data storage directory
+    dataDir: "/var/lib/dragonfly"
     # -- When enable, pprof will be enabled
     verbose: true
     pprofPort: 0
@@ -595,7 +597,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-alpha.2
+  tag: v2.0.2-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases

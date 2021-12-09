@@ -16,6 +16,7 @@ data:
     keepStorage: {{ .Values.dfdaemon.config.keepStorage }}
     workHome: {{ .Values.dfdaemon.config.workHome }}
     cacheDir: {{ .Values.dfdaemon.config.cacheDir }}
+    dataDir: {{ .Values.dfdaemon.config.dataDir }}
     logDir: {{ .Values.dfdaemon.config.logDir }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
     {{- if .Values.dfdaemon.config.verbose }}
