@@ -14,6 +14,8 @@ data:
     deubug: {{ .Values.scheduler.config.debug }}
     server:
       port: {{ .Values.scheduler.containerPort }}
+      cacheDir: {{ .Values.scheduler.config.cacheDir }}
+      logDir: {{ .Values.scheduler.config.logDir }}
     worker:
 {{ toYaml .Values.scheduler.config.worker | indent 6 }}
     dynconfig:

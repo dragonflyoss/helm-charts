@@ -124,7 +124,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.1
+  tag: v2.0.2-alpha.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -171,6 +171,11 @@ scheduler:
   config:
     # -- Enable debug mode
     debug: false
+    server:
+      # -- Dynconfig cache storage directory
+      cacheDir: ""
+      # -- Log storage directory
+      logDir: ""
     # -- Scheduling queue configuration
     worker:
       workerNum: 4
@@ -231,7 +236,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.1
+  tag: v2.0.2-alpha.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -324,6 +329,8 @@ cdn:
       taskExpireTime: 3m
       # -- Pattern of storage policy
       storagePattern: disk
+      # -- Log storage directory
+      logDir: ""
       manager:
         # -- Associated cdn cluster id
         cdnClusterID: 1
@@ -395,7 +402,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.1
+  tag: v2.0.2-alpha.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -453,8 +460,12 @@ dfdaemon:
     # it is usefully when upgrade daemon service, all local cache will be saved
     # default is false
     keepStorage: false
-    # -- Data directory
-    dataDir: /root/.dragonfly/dfget-daemon/
+    # -- Daemon work directory
+    workHome: "/usr/local/dragonfly"
+    # -- Dynconfig cache storage directory
+    cacheDir: ""
+    # -- Log storage directory
+    logDir: ""
     # -- When enable, pprof will be enabled
     verbose: true
     pprofPort: 0
@@ -584,7 +595,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.1
+  tag: v2.0.2-alpha.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases

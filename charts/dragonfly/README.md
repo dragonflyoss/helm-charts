@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.24](https://img.shields.io/badge/Version-0.5.24-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.24](https://img.shields.io/badge/AppVersion-0.5.24-informational?style=flat-square)
+![Version: 0.5.25](https://img.shields.io/badge/Version-0.5.25-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.25](https://img.shields.io/badge/AppVersion-0.5.25-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -127,6 +127,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.base.gcInitialDelay | string | `"6s"` | Delay time from the start to the first GC execution |
 | cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
 | cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
+| cdn.config.base.logDir | string | `""` | Log storage directory |
 | cdn.config.base.manager.cdnClusterID | int | `1` | Associated cdn cluster id |
 | cdn.config.base.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
@@ -173,7 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.1"` | Image tag |
+| cdn.tag | string | `"v2.0.2-alpha.2"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -194,7 +195,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39. Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,   don't forget add the corresponding backend storage. |
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
-| dfdaemon.config.dataDir | string | `"/root/.dragonfly/dfget-daemon/"` | Data directory |
+| dfdaemon.config.cacheDir | string | `""` | Dynconfig cache storage directory |
 | dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
@@ -212,6 +213,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | dfdaemon.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
+| dfdaemon.config.logDir | string | `""` | Log storage directory |
 | dfdaemon.config.pprofPort | int | `0` |  |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
@@ -236,6 +238,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
 | dfdaemon.config.verbose | bool | `true` | When enable, pprof will be enabled |
+| dfdaemon.config.workHome | string | `"/usr/local/dragonfly"` | Daemon work directory |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
@@ -255,7 +258,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.1"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.2-alpha.2"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -313,7 +316,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.1"` | Image tag |
+| manager.tag | string | `"v2.0.2-alpha.2"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -337,6 +340,8 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
+| scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
+| scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.config.worker | object | `{"senderJobPoolSize":10000,"senderNum":10,"workerJobPoolSize":10000,"workerNum":4}` | Scheduling queue configuration |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
@@ -369,7 +374,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.1"` | Image tag |
+| scheduler.tag | string | `"v2.0.2-alpha.2"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
