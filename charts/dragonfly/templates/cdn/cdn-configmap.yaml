@@ -23,6 +23,7 @@ data:
       gcStorageInterval: {{ .Values.cdn.config.base.gcStorageInterval }}
       taskExpireTime: {{ .Values.cdn.config.base.taskExpireTime }}
       storagePattern: {{ .Values.cdn.config.base.storagePattern }}
+      logDir: {{ .Values.cdn.config.base.logDir }}
       nodeSelector:
 {{ toYaml .Values.cdn.nodeSelector | indent 8 }}
       manager:

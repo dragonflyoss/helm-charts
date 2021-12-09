@@ -130,7 +130,7 @@ spec:
         - name: run
           mountPath: /run/dragonfly
         - name: data
-          mountPath: {{ .Values.dfdaemon.config.dataDir }}
+          mountPath: {{ .Values.dfdaemon.config.workHome }}
         securityContext:
           capabilities:
             add:
@@ -501,7 +501,7 @@ spec:
       - name: data
         {{- if .Values.dfdaemon.mountDataDirAsHostPath }}
         hostPath:
-          path: {{ .Values.dfdaemon.config.dataDir }}
+          path: {{ .Values.dfdaemon.config.workHome }}
           type: DirectoryOrCreate
         {{- else }}
         emptyDir: {}

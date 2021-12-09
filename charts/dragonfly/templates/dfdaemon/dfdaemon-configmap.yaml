@@ -14,8 +14,9 @@ data:
     aliveTime: {{ .Values.dfdaemon.config.aliveTime }}
     gcInterval: {{ .Values.dfdaemon.config.gcInterval }}
     keepStorage: {{ .Values.dfdaemon.config.keepStorage }}
-    dataDir: {{ .Values.dfdaemon.config.dataDir }}
-    workDir: {{ .Values.dfdaemon.config.dataDir }}
+    workHome: {{ .Values.dfdaemon.config.workHome }}
+    cacheDir: {{ .Values.dfdaemon.config.cacheDir }}
+    logDir: {{ .Values.dfdaemon.config.logDir }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
     {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}
