@@ -3,6 +3,52 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update image version to v2.0.2-alpha.2
+        - Support custom directory configuration
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.2-alpha.2
+        - name: cdn
+          image: dragonflyoss/cdn:v2.0.2-alpha.2
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.2-alpha.2
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.2-alpha.2
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.5.25
+    created: "2021-12-09T09:08:15.476669516Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: 1d582d7014aae9044b813158470a0b7467d2bf89e03f0485889e4a271a2093da
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.5.25/dragonfly-0.5.25.tgz
+    version: 0.5.25
+  - annotations:
+      artifacthub.io/changes: |
         - Update image version to v2.0.1
       artifacthub.io/images: |
         - name: manager
