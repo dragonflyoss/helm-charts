@@ -44,6 +44,14 @@ data:
     {{- else if .Values.jaeger.enable }}
     jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
     {{- end }}
+    manager:
+      { { - if .Values.manager.enable } }
+      addr: { { template "dragonfly.manager.fullname" . } }.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+      {{- else }}
+      addr: { { .Values.externalManager.host } }:{{ .Values.externalManager.grpcPort }}
+      {{- end }}
+      cdnClusterID: { { .Values.cdn.config.base.manager.cdnClusterID } }
+      keepAlive:
     plugins:
 {{ toYaml .Values.cdn.config.plugins | indent 6 }}
   nginx.conf: |-
