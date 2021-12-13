@@ -10,7 +10,7 @@
   You can use $DFDAEMON_CONTAINER_PORT as a proxy port in Node.
 
 3. Configure runtime to use dragonfly:
-  https://github.com/dragonflyoss/Dragonfly2/blob/main/docs/en/user-guide/quick-start.md
+  https://github.com/dragonflyoss/Dragonfly2/blob/main/docs/en/quick-start.md
 
 {{ if .Values.jaeger.enable }}
 4. Get Jaeger query URL by running these commands:
