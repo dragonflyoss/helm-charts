@@ -194,13 +194,13 @@ scheduler:
       retryInterval: 1s
       gc:
         # -- Peer's gc interval
-        peerGCInterval: 1m
+        peerGCInterval: 10m
         # -- Peer's TTL duration
-        peerTTL: 5m
+        peerTTL: 24h
         # -- Task's gc interval
-        taskGCInterval: 1m
+        taskGCInterval: 10m
         # -- Task's TTL duration
-        taskTTL: 10m
+        taskTTL: 24h
     dynconfig:
       # -- Dynamic config refresh interval
       refreshInterval: 1m

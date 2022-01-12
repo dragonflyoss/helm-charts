@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
 type: application
-version: "0.5.27"
-appVersion: "0.5.27"
+version: "0.5.28"
+appVersion: "0.5.28"
 keywords:
 - dragonfly
 - d7y
