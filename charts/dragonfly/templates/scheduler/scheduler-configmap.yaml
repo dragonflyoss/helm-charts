@@ -14,12 +14,15 @@ data:
     deubug: {{ .Values.scheduler.config.debug }}
     server:
       port: {{ .Values.scheduler.containerPort }}
-      cacheDir: {{ .Values.scheduler.config.cacheDir }}
-      logDir: {{ .Values.scheduler.config.logDir }}
-    worker:
-{{ toYaml .Values.scheduler.config.worker | indent 6 }}
+      listenLimit: {{ .Values.scheduler.config.server.listenLimit }}
+      cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
+      logDir: {{ .Values.scheduler.config.server.logDir }}
+    scheduler:
+{{ toYaml .Values.scheduler.config.scheduler | indent 6 }}
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
+    host:
+{{ toYaml .Values.scheduler.config.host | indent 6 }}
     manager:
       {{- if .Values.manager.enable }}
       addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
@@ -40,10 +43,10 @@ data:
         host: {{ .Values.externalRedis.host }}
         port: {{ .Values.externalRedis.port }}
         {{- end }}
-    {{- if .Values.scheduler.metrics.enable }}
     metrics:
+      enable: {{ .Values.scheduler.metrics.enable }}
       addr: ":8000"
-    {{- end }}
+      enablePeerHost: {{ .Values.scheduler.metrics.enablePeerHost }}
     {{- if .Values.scheduler.config.jaeger }}
     jaeger: {{ .Values.scheduler.config.jaeger }}
     {{- else if .Values.jaeger.enable }}

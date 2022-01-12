@@ -124,7 +124,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-alpha.3
+  tag: v2.0.2-beta.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -172,19 +172,45 @@ scheduler:
     # -- Enable debug mode
     debug: false
     server:
+      # -- Limit the number of requests
+      listenLimit: 1000
       # -- Dynconfig cache storage directory
       cacheDir: ""
       # -- Log storage directory
       logDir: ""
-    # -- Scheduling queue configuration
-    worker:
-      workerNum: 4
-      workerJobPoolSize: 10000
-      senderNum: 10
-      senderJobPoolSize: 10000
+    scheduler:
+      # -- Algorithm configuration to use different scheduling algorithms,
+      # default configuration supports "default" and "ml"
+      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm
+      # It also supports user plugin extension, the algorithm value is "plugin",
+      # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
+      # the dragonfly working directory plugins
+      algorithm: default
+      # -- Number of backsource clients when the CDN is unavailable
+      backSourceCount: 3
+      # -- Retry scheduling limit times
+      retryLimit: 10
+      # -- Retry scheduling interval
+      retryInterval: 1s
+      gc:
+        # -- Peer's gc interval
+        peerGCInterval: 1m
+        # -- Peer's TTL duration
+        peerTTL: 5m
+        # -- Task's gc interval
+        taskGCInterval: 1m
+        # -- Task's TTL duration
+        taskTTL: 10m
     dynconfig:
-      # -- Dynamic configuration pull source, pull from manager service by default
-      type: manager
+      # -- Dynamic config refresh interval
+      refreshInterval: 1m
+    host:
+      # -- IDC is the idc of scheduler instance
+      idc: ""
+      # -- NetTopology is the net topology of scheduler instance
+      netTopology: ""
+      # -- Location is the location of scheduler instance
+      location: ""
     manager:
       # -- Associated scheduler cluster id
       schedulerClusterID: 1
@@ -194,8 +220,10 @@ scheduler:
     # -- Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
   metrics:
-    # -- Enable manager metrics
+    # -- Enable scheduler metrics
     enable: false
+    # -- Enable peer host metrics
+    enablePeerHost: false
     service:
       # -- Service type
       type: ClusterIP
@@ -236,7 +264,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-alpha.3
+  tag: v2.0.2-beta.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -402,7 +430,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-alpha.3
+  tag: v2.0.2-beta.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -597,7 +625,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-alpha.3
+  tag: v2.0.2-beta.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
