@@ -51,7 +51,8 @@ data:
       addr: { { .Values.externalManager.host } }:{{ .Values.externalManager.grpcPort }}
       {{- end }}
       cdnClusterID: { { .Values.cdn.config.base.manager.cdnClusterID } }
-      keepAlive: { { .Values.cdn.config.base.manager.keepAlive.interval } }
+      keepAlive:
+{ { .Values.cdn.config.base.manager.keepAlive | indent 8 } }
     plugins:
 {{ toYaml .Values.cdn.config.plugins | indent 6 }}
   nginx.conf: |-
