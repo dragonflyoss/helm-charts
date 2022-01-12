@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.27](https://img.shields.io/badge/Version-0.5.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.27](https://img.shields.io/badge/AppVersion-0.5.27-informational?style=flat-square)
+![Version: 0.5.28](https://img.shields.io/badge/Version-0.5.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.28](https://img.shields.io/badge/AppVersion-0.5.28-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -346,10 +346,10 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml" "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins |
 | scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the CDN is unavailable |
-| scheduler.config.scheduler.gc.peerGCInterval | string | `"1m"` | Peer's gc interval |
-| scheduler.config.scheduler.gc.peerTTL | string | `"5m"` | Peer's TTL duration |
-| scheduler.config.scheduler.gc.taskGCInterval | string | `"1m"` | Task's gc interval |
-| scheduler.config.scheduler.gc.taskTTL | string | `"10m"` | Task's TTL duration |
+| scheduler.config.scheduler.gc.peerGCInterval | string | `"10m"` | Peer's gc interval |
+| scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | Peer's TTL duration |
+| scheduler.config.scheduler.gc.taskGCInterval | string | `"10m"` | Task's gc interval |
+| scheduler.config.scheduler.gc.taskTTL | string | `"24h"` | Task's TTL duration |
 | scheduler.config.scheduler.retryInterval | string | `"1s"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
