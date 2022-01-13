@@ -202,6 +202,9 @@ scheduler:
         # -- Task's TTL duration
         taskTTL: 24h
     dynconfig:
+      # -- Type is deprecated and is no longer used.
+      # Please remove it from your configuration.
+      type: manager
       # -- Dynamic config refresh interval
       refreshInterval: 1m
     host:
