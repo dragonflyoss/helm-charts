@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.28](https://img.shields.io/badge/Version-0.5.28-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.28](https://img.shields.io/badge/AppVersion-0.5.28-informational?style=flat-square)
+![Version: 0.5.31](https://img.shields.io/badge/Version-0.5.31-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.31](https://img.shields.io/badge/AppVersion-0.5.31-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -174,7 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.2-beta.0"` | Image tag |
+| cdn.tag | string | `"v2.0.2-beta.2"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -259,7 +259,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.2-beta.0"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.2-beta.2"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -317,7 +317,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.2-beta.0"` | Image tag |
+| manager.tag | string | `"v2.0.2-beta.2"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -338,6 +338,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.usePassword | bool | `true` | Use password authentication |
 | scheduler.config.debug | bool | `false` | Enable debug mode |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
+| scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
 | scheduler.config.host.netTopology | string | `""` | NetTopology is the net topology of scheduler instance |
@@ -350,8 +351,8 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | Peer's TTL duration |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"10m"` | Task's gc interval |
 | scheduler.config.scheduler.gc.taskTTL | string | `"24h"` | Task's TTL duration |
-| scheduler.config.scheduler.retryInterval | string | `"1s"` | Retry scheduling interval |
-| scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
+| scheduler.config.scheduler.retryInterval | string | `"200ms"` | Retry scheduling interval |
+| scheduler.config.scheduler.retryLimit | int | `5` | Retry scheduling limit times |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.listenLimit | int | `1000` | Limit the number of requests |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
@@ -387,7 +388,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.2-beta.0"` | Image tag |
+| scheduler.tag | string | `"v2.0.2-beta.2"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 
