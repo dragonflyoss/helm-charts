@@ -191,7 +191,7 @@ scheduler:
       # -- Retry scheduling limit times
       retryLimit: 20
       # -- Retry scheduling interval
-      retryInterval: 200ms
+      retryInterval: 500ms
       gc:
         # -- Peer's gc interval
         peerGCInterval: 10m

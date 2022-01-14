@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.32](https://img.shields.io/badge/Version-0.5.32-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.32](https://img.shields.io/badge/AppVersion-0.5.32-informational?style=flat-square)
+![Version: 0.5.33](https://img.shields.io/badge/Version-0.5.33-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.33](https://img.shields.io/badge/AppVersion-0.5.33-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -351,7 +351,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | Peer's TTL duration |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"10m"` | Task's gc interval |
 | scheduler.config.scheduler.gc.taskTTL | string | `"24h"` | Task's TTL duration |
-| scheduler.config.scheduler.retryInterval | string | `"200ms"` | Retry scheduling interval |
+| scheduler.config.scheduler.retryInterval | string | `"500ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `20` | Retry scheduling limit times |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.listenLimit | int | `1000` | Limit the number of requests |
