@@ -18,6 +18,7 @@ data:
     cacheDir: {{ .Values.dfdaemon.config.cacheDir }}
     dataDir: {{ .Values.dfdaemon.config.dataDir }}
     logDir: {{ .Values.dfdaemon.config.logDir }}
+    console: {{ .Values.dfdaemon.config.console }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
     {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}

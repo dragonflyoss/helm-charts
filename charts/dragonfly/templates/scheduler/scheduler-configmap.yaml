@@ -47,6 +47,11 @@ data:
       enable: {{ .Values.scheduler.metrics.enable }}
       addr: ":8000"
       enablePeerHost: {{ .Values.scheduler.metrics.enablePeerHost }}
+    console: {{ .Values.scheduler.config.console }}
+    verbose: {{ .Values.scheduler.config.verbose }}
+    {{- if .Values.scheduler.config.verbose }}
+    pprof-port: {{ .Values.scheduler.config.pprofPort }}
+    {{- end }}
     {{- if .Values.scheduler.config.jaeger }}
     jaeger: {{ .Values.scheduler.config.jaeger }}
     {{- else if .Values.jaeger.enable }}

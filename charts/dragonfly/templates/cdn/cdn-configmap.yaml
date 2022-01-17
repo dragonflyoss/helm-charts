@@ -40,6 +40,11 @@ data:
       metrics:
         addr: ":8000"
       {{- end }}
+    console: {{ .Values.cdn.config.console }}
+    verbose: {{ .Values.cdn.config.verbose }}
+    {{- if .Values.cdn.config.verbose }}
+    pprof-port: {{ .Values.cdn.config.pprofPort }}
+    {{- end }}
     {{- if .Values.cdn.config.jaeger }}
     jaeger: {{ .Values.cdn.config.jaeger }}
     {{- else if .Values.jaeger.enable }}
