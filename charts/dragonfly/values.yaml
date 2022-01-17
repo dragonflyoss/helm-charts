@@ -173,7 +173,7 @@ scheduler:
     debug: false
     server:
       # -- Limit the number of requests
-      listenLimit: 1000
+      listenLimit: 10000
       # -- Dynconfig cache storage directory
       cacheDir: ""
       # -- Log storage directory

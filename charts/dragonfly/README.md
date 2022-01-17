@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.33](https://img.shields.io/badge/Version-0.5.33-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.33](https://img.shields.io/badge/AppVersion-0.5.33-informational?style=flat-square)
+![Version: 0.5.34](https://img.shields.io/badge/Version-0.5.34-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.34](https://img.shields.io/badge/AppVersion-0.5.34-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -354,7 +354,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryInterval | string | `"500ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `20` | Retry scheduling limit times |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
-| scheduler.config.server.listenLimit | int | `1000` | Limit the number of requests |
+| scheduler.config.server.listenLimit | int | `10000` | Limit the number of requests |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
