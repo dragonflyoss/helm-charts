@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.34](https://img.shields.io/badge/Version-0.5.34-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.34](https://img.shields.io/badge/AppVersion-0.5.34-informational?style=flat-square)
+![Version: 0.5.35](https://img.shields.io/badge/Version-0.5.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.35](https://img.shields.io/badge/AppVersion-0.5.35-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -134,9 +134,12 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
 | cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
 | cdn.config.base.taskExpireTime | string | `"3m"` | When a task is not accessed within the taskExpireTime and it will be treated to be expired |
-| cdn.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
+| cdn.config.console | bool | `false` | Console shows log on console |
+| cdn.config.jaeger | string | `""` |  |
 | cdn.config.plugins.storageDriver | list | `[{"config":{"baseDir":"/tmp/cdn"},"enable":true,"name":"disk"}]` | Storage driver configuration |
 | cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | Storage manager configuration |
+| cdn.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| cdn.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | cdn.containerPort | int | `8003` | Pod containerPort |
 | cdn.enable | bool | `true` | Enable cdn |
 | cdn.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/cdn","name":"logs"}]` | Extra volumeMounts for cdn. |
@@ -196,6 +199,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
 | dfdaemon.config.cacheDir | string | `""` | Dynconfig cache storage directory |
+| dfdaemon.config.console | bool | `false` | Console shows log on console |
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
@@ -212,10 +216,10 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.host.location | string | `""` | Geographical location, separated by "|" characters |
 | dfdaemon.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
 | dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
-| dfdaemon.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
+| dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
-| dfdaemon.config.pprofPort | int | `0` |  |
+| dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
@@ -238,7 +242,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.upload.security | object | `{"insecure":true}` | Upload grpc security option |
 | dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
-| dfdaemon.config.verbose | bool | `true` | When enable, pprof will be enabled |
+| dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | dfdaemon.config.workHome | string | `"/usr/local/dragonfly"` | Daemon work directory |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
@@ -276,7 +280,10 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.port | int | `6379` | External redis port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
 | jaeger.enable | bool | `false` | Enable an all in one jaeger for tracing every downloading event should not use in production environment |
-| manager.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
+| manager.config.console | bool | `false` | Console shows log on console |
+| manager.config.jaeger | string | `""` |  |
+| manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
@@ -336,15 +343,16 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.password | string | `"dragonfly"` | Redis password |
 | redis.service.port | int | `6379` | Redis port |
 | redis.usePassword | bool | `true` | Use password authentication |
-| scheduler.config.debug | bool | `false` | Enable debug mode |
+| scheduler.config.console | bool | `false` | Console shows log on console |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
 | scheduler.config.host.netTopology | string | `""` | NetTopology is the net topology of scheduler instance |
-| scheduler.config.jaeger | string | `""` | Jaeger url, like: http://jaeger.dragonfly.svc:14268/api/traces |
+| scheduler.config.jaeger | string | `""` |  |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
+| scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml" "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins |
 | scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the CDN is unavailable |
 | scheduler.config.scheduler.gc.peerGCInterval | string | `"10m"` | Peer's gc interval |
@@ -356,6 +364,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.listenLimit | int | `10000` | Limit the number of requests |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
+| scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
