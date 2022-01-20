@@ -124,7 +124,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-beta.2
+  tag: v2.0.2-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -186,10 +186,12 @@ scheduler:
       algorithm: default
       # -- Number of backsource clients when the CDN is unavailable
       backSourceCount: 3
+      # -- Retry scheduling back-to-source limit times
+      retryBackSourceLimit: 5
       # -- Retry scheduling limit times
       retryLimit: 20
       # -- Retry scheduling interval
-      retryInterval: 500ms
+      retryInterval: 200ms
       gc:
         # -- Peer's gc interval
         peerGCInterval: 10m
@@ -272,7 +274,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-beta.2
+  tag: v2.0.2-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -445,7 +447,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-beta.2
+  tag: v2.0.2-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -644,7 +646,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-beta.2
+  tag: v2.0.2-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
