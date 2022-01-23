@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.36](https://img.shields.io/badge/Version-0.5.36-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.36](https://img.shields.io/badge/AppVersion-0.5.36-informational?style=flat-square)
+![Version: 0.5.37](https://img.shields.io/badge/Version-0.5.37-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.37](https://img.shields.io/badge/AppVersion-0.5.37-informational?style=flat-square)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
@@ -219,6 +219,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
+| dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8081 |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
