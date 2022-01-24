@@ -23,6 +23,9 @@ data:
     {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}
     {{- end }}
+    {{- if .Values.dfdaemon.config.metrics }}
+    metrics: {{ .Values.dfdaemon.config.metrics }}
+    {{- end }}
     {{- if .Values.dfdaemon.config.jaeger }}
     jaeger: {{ .Values.dfdaemon.config.jaeger }}
     {{- else if .Values.jaeger.enable }}
