@@ -91,6 +91,9 @@ containerRuntime:
     # if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror.
     # When configPath is true, init container will inject config_path=/etc/containerd/certs.d and configure all registries.
     injectConfigPath: false
+    # -- Custom config path directory ,default is /etc/containerd/
+    # e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd
+    configPathDir: /host/etc/containerd/
     # Registries full urls
     # Only used when config_path is enabled in /etc/containerd/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:

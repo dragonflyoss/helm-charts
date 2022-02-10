@@ -300,7 +300,7 @@ spec:
         - /bin/sh
         - -cx
         - |-
-          etcContainerd=/host/etc/containerd
+          etcContainerd={{ .Values.containerRuntime.containerd.configPathDir }}
           if [[ -e $etcContainerd/config.toml ]]; then
             echo containerd config found
           else
