@@ -405,6 +405,9 @@ spec:
         volumeMounts:
         - name: etc
           mountPath: /host/etc
+        {{- if .Values.dfdaemon.extraVolumeMounts }}
+        {{- toYaml .Values.dfdaemon.extraVolumeMounts | nindent 8 }}
+        {{- end }}
         securityContext:
           # nsenter need privilege permission
           privileged: true
