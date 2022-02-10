@@ -77,25 +77,25 @@ containerRuntime:
   # -- [Experimental] Containerd support
   containerd:
     # -- Enable containerd support
-    # Inject mirror config into /etc/containerd/config.toml,
-    # if config_path is enabled in /etc/containerd/config.toml, the config take effect real time,
-    # but if config_path is not enabled in /etc/containerd/config.toml, need restart containerd to take effect.
-    # When the version in /etc/containerd/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
-    # When the version in /etc/containerd/config.toml is "2":
-    #   1. when config_path is enabled in /etc/containerd/config.toml, inject containerRuntime.containerd.registries into config_path,
-    #   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into /etc/containerd/config.toml and inject containerRuntime.containerd.registries into config_path,
-    #   3. when not config_path in /etc/containerd/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    # Inject mirror config into ${containerRuntime.containerd.configPathDir}/config.toml,
+    # if config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, the config take effect real time,
+    # but if config_path is not enabled in ${containerRuntime.containerd.configPathDir}/config.toml, need restart containerd to take effect.
+    # When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    # When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "2":
+    #   1. when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, inject containerRuntime.containerd.registries into config_path,
+    #   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into ${containerRuntime.containerd.configPathDir}/config.toml and inject containerRuntime.containerd.registries into config_path,
+    #   3. when not config_path in ${containerRuntime.containerd.configPathDir}/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
     enable: false
     # -- Config path for multiple registries
-    # By default, init container will check /etc/containerd/config.toml, whether is config_path configured,
+    # By default, init container will check ${containerRuntime.containerd.configPathDir}/config.toml, whether is config_path configured,
     # if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror.
-    # When configPath is true, init container will inject config_path=/etc/containerd/certs.d and configure all registries.
+    # When configPath is true, init container will inject config_path=${containerRuntime.containerd.configPathDir}/certs.d and configure all registries.
     injectConfigPath: false
-    # -- Custom config path directory ,default is /etc/containerd/
+    # -- Custom config path directory, default is /etc/containerd/
     # e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd
-    configPathDir: /host/etc/containerd/
+    configPathDir: /etc/containerd/
     # Registries full urls
-    # Only used when config_path is enabled in /etc/containerd/config.toml or containerRuntime.containerd.injectConfigPath=true
+    # Only used when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:
     - "https://ghcr.io"
     - "https://quay.io"
