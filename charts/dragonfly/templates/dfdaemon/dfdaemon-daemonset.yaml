@@ -493,13 +493,14 @@ spec:
         hostPath:
           path: /etc/dragonfly-ca
           type: DirectoryOrCreate
-      {{- else if or .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable }}
-      - name: etc
-        hostPath:
-          path: /etc
+      {{- else if .Values.containerRuntime.containerd.enable }}
       - name: containerd-conf
         hostPath:
           path: {{ .Values.containerRuntime.containerd.configPathDir }}
+      {{- else if .Values.containerRuntime.crio.enable }}
+      - name: etc
+        hostPath:
+          path: /etc
       {{- end }}
       - name: data
         {{- if .Values.dfdaemon.mountDataDirAsHostPath }}
