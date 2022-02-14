@@ -300,7 +300,7 @@ spec:
         - /bin/sh
         - -cx
         - |-
-          etcContainerd={{ .Values.containerRuntime.containerd.configPathDir }}
+          etcContainerd=/host{{ .Values.containerRuntime.containerd.configPathDir }}
           if [[ -e $etcContainerd/config.toml ]]; then
             echo containerd config found
           else
@@ -350,7 +350,7 @@ spec:
                 echo inject config_path into $etcContainerd/config.toml
                 cat << EOF >> $etcContainerd/config.toml
           [plugins."io.containerd.grpc.v1.cri".registry]
-            config_path = "/etc/containerd/certs.d"
+            config_path = "$etcContainerd/certs.d"
           EOF
               fi
               mkdir -p $etcContainerd/certs.d
@@ -403,8 +403,8 @@ spec:
             nsenter -t 1 -m systemctl -- restart containerd.service
           fi
         volumeMounts:
-        - name: etc
-          mountPath: /host/etc
+        - name: containerd-conf
+          mountPath: /host{{ .Values.containerRuntime.containerd.configPathDir }}
         securityContext:
           # nsenter need privilege permission
           privileged: true
@@ -497,6 +497,9 @@ spec:
       - name: etc
         hostPath:
           path: /etc
+      - name: containerd-conf
+        hostPath:
+          path: {{ .Values.containerRuntime.containerd.configPathDir }}
       {{- end }}
       - name: data
         {{- if .Values.dfdaemon.mountDataDirAsHostPath }}
