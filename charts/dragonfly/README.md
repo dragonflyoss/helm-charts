@@ -1,6 +1,6 @@
 # Dragonfly Helm Chart
 
-![Version: 0.5.41](https://img.shields.io/badge/Version-0.5.41-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.5.41](https://img.shields.io/badge/AppVersion-0.5.41-informational?style=flat-square)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/search?repo=dragonfly)
 
 Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
 
