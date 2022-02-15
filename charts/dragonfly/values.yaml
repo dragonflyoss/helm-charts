@@ -9,7 +9,7 @@ clusterDomain: "cluster.local"
 
 # -- [Experimental] Container runtime support
 # Choose special container runtime in Kubernetes.
-# Support: Containerd, Docker
+# Support: Containerd, Docker, CRI-O
 containerRuntime:
   # -- [Experimental] Support docker, when use docker-shim in Kubernetes, please set containerRuntime.docker.enable to true.
   # For supporting docker, we need generate CA and update certs, then hijack registries traffic,
@@ -50,7 +50,8 @@ containerRuntime:
     #   don't forget add the corresponding backend storage.
     skipHosts:
     - "127.0.0.1"
-    - "docker.io" # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
+    # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
+    - "docker.io"
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
     # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
@@ -77,22 +78,25 @@ containerRuntime:
   # -- [Experimental] Containerd support
   containerd:
     # -- Enable containerd support
-    # Inject mirror config into /etc/containerd/config.toml,
-    # if config_path is enabled in /etc/containerd/config.toml, the config take effect real time,
-    # but if config_path is not enabled in /etc/containerd/config.toml, need restart containerd to take effect.
-    # When the version in /etc/containerd/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
-    # When the version in /etc/containerd/config.toml is "2":
-    #   1. when config_path is enabled in /etc/containerd/config.toml, inject containerRuntime.containerd.registries into config_path,
-    #   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into /etc/containerd/config.toml and inject containerRuntime.containerd.registries into config_path,
-    #   3. when not config_path in /etc/containerd/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    # Inject mirror config into ${containerRuntime.containerd.configPathDir}/config.toml,
+    # if config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, the config take effect real time,
+    # but if config_path is not enabled in ${containerRuntime.containerd.configPathDir}/config.toml, need restart containerd to take effect.
+    # When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
+    # When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "2":
+    #   1. when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, inject containerRuntime.containerd.registries into config_path,
+    #   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into ${containerRuntime.containerd.configPathDir}/config.toml and inject containerRuntime.containerd.registries into config_path,
+    #   3. when not config_path in ${containerRuntime.containerd.configPathDir}/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd.
     enable: false
     # -- Config path for multiple registries
-    # By default, init container will check /etc/containerd/config.toml, whether is config_path configured,
+    # By default, init container will check ${containerRuntime.containerd.configPathDir}/config.toml, whether is config_path configured,
     # if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror.
-    # When configPath is true, init container will inject config_path=/etc/containerd/certs.d and configure all registries.
+    # When configPath is true, init container will inject config_path=${containerRuntime.containerd.configPathDir}/certs.d and configure all registries.
     injectConfigPath: false
+    # -- Custom config path directory, default is /etc/containerd
+    # e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd
+    configPathDir: /etc/containerd
     # Registries full urls
-    # Only used when config_path is enabled in /etc/containerd/config.toml or containerRuntime.containerd.injectConfigPath=true
+    # Only used when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:
     - "https://ghcr.io"
     - "https://quay.io"
@@ -820,5 +824,5 @@ externalRedis:
   port: 6379
 
 jaeger:
-  # -- Enable an all in one jaeger for tracing every downloading event should not use in production environment
+  # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment
   enable: false

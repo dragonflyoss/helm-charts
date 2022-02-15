@@ -11,6 +11,14 @@ keywords:
 - P2P
 - image
 
+maintainers:
+  - name: jim3ma
+    email: majinjing3@gmail.com
+  - name: gaius-qi
+    email: gaius.qi@gmail.com
+  - name: yxxhero
+    email: aiopsclub@163.com
+
 home: https://d7y.io/
 
 sources:
@@ -18,7 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Update dragonfly image version to v2.0.2-rc.5
+    - Update charts version
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
