@@ -48,3 +48,18 @@ jobs:
 
       - name: Run chart-testing (install)
         run: ct install --config ./.github/ct.yaml
+
+  docs-validate:
+    if: steps.list-changed.outputs.changed == 'true'
+    needs:
+      - lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run helm-docs
+        uses: docker://jnorwood/helm-docs:v1.3.0
+
+      - name: Check for changes
+        run: git diff --quiet charts/*/README.md
