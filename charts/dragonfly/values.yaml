@@ -50,7 +50,8 @@ containerRuntime:
     #   don't forget add the corresponding backend storage.
     skipHosts:
     - "127.0.0.1"
-    - "docker.io" # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
+    # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
+    - "docker.io"
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
     # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.

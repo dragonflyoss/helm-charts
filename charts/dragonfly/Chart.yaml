@@ -3,13 +3,21 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
 type: application
-version: "0.5.40"
-appVersion: "0.5.40"
+version: 0.5.41
+appVersion: 0.5.41
 keywords:
 - dragonfly
 - d7y
 - P2P
 - image
+
+maintainers:
+  - name: jim3ma
+    email: majinjing3@gmail.com
+  - name: gaius-qi
+    email: gaius.qi@gmail.com
+  - name: yxxhero
+    email: aiopsclub@163.com
 
 home: https://d7y.io/
 
@@ -18,7 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Support custom containerd config dir
+    - Update charts version
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -36,10 +44,10 @@ annotations:
 
 dependencies:
 - name: mysql
-  version: "8.0.0"
-  repository: "https://charts.bitnami.com/bitnami"
+  version: 8.0.0
+  repository: https://charts.bitnami.com/bitnami
   condition: mysql.enable
 - name: redis
-  version: "12.1.0"
-  repository: "https://charts.bitnami.com/bitnami"
+  version: 12.1.0
+  repository: https://charts.bitnami.com/bitnami
   condition: redis.enable
