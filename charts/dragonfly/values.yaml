@@ -49,9 +49,9 @@ containerRuntime:
     # Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,
     #   don't forget add the corresponding backend storage.
     skipHosts:
-    - "127.0.0.1"
-    # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
-    - "docker.io"
+      - "127.0.0.1"
+      # Dragonfly use this image registry to upgrade itself, so we need skip it. Change it in real environment.
+      - "docker.io"
     # -- Inject domains into /etc/hosts to force redirect traffic to dfdaemon.
     # Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0.
     # When use certs and inject hosts in docker, no necessary to restart docker daemon.
@@ -63,11 +63,11 @@ containerRuntime:
     # -- Registry domains
     # By default, docker pull image via https, currently, by default 443 port with https. If not standard port, update registryPorts.
     registryDomains:
-    - "ghcr.io"
-    - "quay.io"
+      - "ghcr.io"
+      - "quay.io"
     # -- Registry ports
     registryPorts:
-    - 443
+      - 443
     # -- CA cert info for generating
     caCert:
       countryName: CN
@@ -98,9 +98,9 @@ containerRuntime:
     # Registries full urls
     # Only used when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:
-    - "https://ghcr.io"
-    - "https://quay.io"
-    - "https://harbor.example.com:8443"
+      - "https://ghcr.io"
+      - "https://quay.io"
+      - "https://harbor.example.com:8443"
   # -- [Experimental] CRI-O support
   crio:
     # -- Enable CRI-O support
@@ -108,9 +108,9 @@ containerRuntime:
     enable: false
     # Registries full urls
     registries:
-    - "https://ghcr.io"
-    - "https://quay.io"
-    - "https://harbor.example.com:8443"
+      - "https://ghcr.io"
+      - "https://quay.io"
+      - "https://harbor.example.com:8443"
   # -- The image name of init container, need include openssl for ca generating
   initContainerImage: dragonflyoss/openssl
 
@@ -128,7 +128,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-rc.7
+  tag: v2.0.2-rc.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -159,12 +159,12 @@ scheduler:
   containerPort: 8002
   # -- Extra volumes for scheduler.
   extraVolumes:
-  - name: logs
-    emptyDir: {}
+    - name: logs
+      emptyDir: {}
   # -- Extra volumeMounts for scheduler.
   extraVolumeMounts:
-  - name: logs
-    mountPath: "/var/log/dragonfly/scheduler"
+    - name: logs
+      mountPath: "/var/log/dragonfly/scheduler"
   initContainer:
     # -- Init container image repository
     image: busybox
@@ -224,6 +224,11 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval
         interval: 5s
+    cdn:
+      # --   scheduler enable cdn as P2P peer,
+      # if the value is false, P2P network will not be back-to-source through
+      # cdn but by dfdaemon and preheat feature does not work
+      enable: true
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof
@@ -278,7 +283,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-rc.7
+  tag: v2.0.2-rc.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -307,12 +312,12 @@ cdn:
   statefulsetAnnotations: {}
   # -- Extra volumes for cdn.
   extraVolumes:
-  - name: logs
-    emptyDir: {}
+    - name: logs
+      emptyDir: {}
   # -- Extra volumeMounts for cdn.
   extraVolumeMounts:
-  - name: logs
-    mountPath: "/var/log/dragonfly/cdn"
+    - name: logs
+      mountPath: "/var/log/dragonfly/cdn"
   # -- Pod containerPort
   containerPort: 8003
   # -- Nginx containerPort for downloading
@@ -451,7 +456,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-rc.7
+  tag: v2.0.2-rc.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -480,12 +485,12 @@ dfdaemon:
   daemonsetAnnotations: {}
   # -- Extra volumes for dfdaemon.
   extraVolumes:
-  - name: logs
-    emptyDir: {}
+    - name: logs
+      emptyDir: {}
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
-  - name: logs
-    mountPath: "/var/log/dragonfly/daemon"
+    - name: logs
+      mountPath: "/var/log/dragonfly/daemon"
   # -- Pod containerPort
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty
@@ -652,7 +657,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-rc.7
+  tag: v2.0.2-rc.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -681,12 +686,12 @@ manager:
   deploymentAnnotations: {}
   # -- Extra volumes for manager.
   extraVolumes:
-  - name: logs
-    emptyDir: {}
+    - name: logs
+      emptyDir: {}
   # -- Extra volumeMounts for manager.
   extraVolumeMounts:
-  - name: logs
-    mountPath: "/var/log/dragonfly/manager"
+    - name: logs
+      mountPath: "/var/log/dragonfly/manager"
   # -- REST service port
   restPort: 8080
   # -- GRPC service port

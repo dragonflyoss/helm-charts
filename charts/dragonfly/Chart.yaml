@@ -3,13 +3,13 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
 type: application
-version: 0.5.43
-appVersion: 0.5.43
+version: 0.5.44
+appVersion: 0.5.44
 keywords:
-- dragonfly
-- d7y
-- P2P
-- image
+  - dragonfly
+  - d7y
+  - P2P
+  - image
 
 maintainers:
   - name: jim3ma
@@ -22,11 +22,12 @@ maintainers:
 home: https://d7y.io/
 
 sources:
-- https://github.com/dragonflyoss/Dragonfly2
+  - https://github.com/dragonflyoss/Dragonfly2
 
 annotations:
   artifacthub.io/changes: |
-    - Update dragonfly image version to v2.0.2-rc.7
+    - Update dragonfly image version to v2.0.2-rc.8
+    - Add cdn configuration to scheduler
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -34,20 +35,20 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.2-rc.7
+      image: dragonflyoss/manager:v2.0.2-rc.8
     - name: cdn
-      image: dragonflyoss/cdn:v2.0.2-rc.7
+      image: dragonflyoss/cdn:v2.0.2-rc.8
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.2-rc.7
+      image: dragonflyoss/dfdaemon:v2.0.2-rc.8
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.2-rc.7
+      image: dragonflyoss/scheduler:v2.0.2-rc.8
 
 dependencies:
-- name: mysql
-  version: 8.0.0
-  repository: https://charts.bitnami.com/bitnami
-  condition: mysql.enable
-- name: redis
-  version: 12.1.0
-  repository: https://charts.bitnami.com/bitnami
-  condition: redis.enable
+  - name: mysql
+    version: 8.0.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: mysql.enable
+  - name: redis
+    version: 12.1.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enable
