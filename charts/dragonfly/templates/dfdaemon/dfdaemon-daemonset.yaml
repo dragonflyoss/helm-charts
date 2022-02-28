@@ -173,7 +173,7 @@ spec:
           privileged: true
       {{- end }}
       {{- if .Values.containerRuntime.extraInitContainers }}
-  {{ toYaml .Values.containerRuntime.extraInitContainers | indent 6 }}
+{{ toYaml .Values.containerRuntime.extraInitContainers | indent 6 }}
       {{- else if .Values.containerRuntime.docker.enable }}
       - name: update-docker-config
         image: "{{ .Values.containerRuntime.initContainerImage }}"
