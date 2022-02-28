@@ -113,6 +113,11 @@ containerRuntime:
       - "https://harbor.example.com:8443"
   # -- The image name of init container, need include openssl for ca generating
   initContainerImage: dragonflyoss/openssl
+  # -- Additional init containers
+  extraInitContainers: []
+  # - name: update-containerd
+  #   image: dragonflyoss/openssl
+  #   command: ['echo', 'hey']
 
 scheduler:
   # -- Enable scheduler

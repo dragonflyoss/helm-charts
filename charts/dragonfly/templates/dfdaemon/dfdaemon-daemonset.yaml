@@ -172,7 +172,9 @@ spec:
           # open /proc/1/ns need privilege permission
           privileged: true
       {{- end }}
-      {{- if .Values.containerRuntime.docker.enable }}
+      {{- if .Values.containerRuntime.extraInitContainers }}
+  {{ toYaml .Values.containerRuntime.extraInitContainers | indent 6 }}
+      {{ - else if .Values.containerRuntime.docker.enable }}
       - name: update-docker-config
         image: "{{ .Values.containerRuntime.initContainerImage }}"
         imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
