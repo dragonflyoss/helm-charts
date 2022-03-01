@@ -113,6 +113,11 @@ containerRuntime:
       - "https://harbor.example.com:8443"
   # -- The image name of init container, need include openssl for ca generating
   initContainerImage: dragonflyoss/openssl
+  # -- Additional init containers
+  extraInitContainers: []
+  # - name: update-containerd
+  #   image: dragonflyoss/openssl
+  #   command: ['echo', 'hey']
 
 scheduler:
   # -- Enable scheduler
@@ -128,7 +133,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-rc.9
+  tag: v2.0.2-rc.14
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -283,7 +288,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-rc.9
+  tag: v2.0.2-rc.14
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -456,7 +461,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-rc.9
+  tag: v2.0.2-rc.14
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -657,7 +662,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-rc.9
+  tag: v2.0.2-rc.14
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
