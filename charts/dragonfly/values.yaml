@@ -133,7 +133,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2-rc.14
+  tag: v2.0.2-rc.17
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -179,8 +179,6 @@ scheduler:
     pullPolicy: IfNotPresent
   config:
     server:
-      # -- Limit the number of requests
-      listenLimit: 10000
       # -- Dynconfig cache storage directory
       cacheDir: ""
       # -- Log storage directory
@@ -288,7 +286,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2-rc.14
+  tag: v2.0.2-rc.17
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -461,7 +459,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2-rc.14
+  tag: v2.0.2-rc.17
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -662,7 +660,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2-rc.14
+  tag: v2.0.2-rc.17
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
