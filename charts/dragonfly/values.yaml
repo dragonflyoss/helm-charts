@@ -179,8 +179,6 @@ scheduler:
     pullPolicy: IfNotPresent
   config:
     server:
-      # -- Limit the number of requests
-      listenLimit: 10000
       # -- Dynconfig cache storage directory
       cacheDir: ""
       # -- Log storage directory
@@ -198,9 +196,9 @@ scheduler:
       # -- Retry scheduling back-to-source limit times
       retryBackSourceLimit: 5
       # -- Retry scheduling limit times
-      retryLimit: 20
+      retryLimit: 10
       # -- Retry scheduling interval
-      retryInterval: 200ms
+      retryInterval: 50ms
       gc:
         # -- Peer's gc interval
         peerGCInterval: 10m

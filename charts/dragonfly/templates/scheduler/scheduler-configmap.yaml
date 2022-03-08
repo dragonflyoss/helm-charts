@@ -11,10 +11,8 @@ metadata:
     component: {{ .Values.scheduler.name }}
 data:
   scheduler.yaml: |-
-    deubug: {{ .Values.scheduler.config.debug }}
     server:
       port: {{ .Values.scheduler.containerPort }}
-      listenLimit: {{ .Values.scheduler.config.server.listenLimit }}
       cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
       logDir: {{ .Values.scheduler.config.server.logDir }}
     scheduler:

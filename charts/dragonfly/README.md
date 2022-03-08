@@ -364,10 +364,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"10m"` | Task's gc interval |
 | scheduler.config.scheduler.gc.taskTTL | string | `"24h"` | Task's TTL duration |
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
-| scheduler.config.scheduler.retryInterval | string | `"200ms"` | Retry scheduling interval |
-| scheduler.config.scheduler.retryLimit | int | `20` | Retry scheduling limit times |
+| scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
+| scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
-| scheduler.config.server.listenLimit | int | `10000` | Limit the number of requests |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
