@@ -73,6 +73,16 @@ spec:
           hostIP: 127.0.0.1
           {{- end }}
           protocol: TCP
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr={{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.listen }}:{{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.port }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr={{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.listen }}:{{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.port }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
         {{- if and .Values.containerRuntime.docker.enable (not .Values.containerRuntime.docker.restart) }}
         {{- if .Values.containerRuntime.docker.injectHosts }}
         lifecycle:

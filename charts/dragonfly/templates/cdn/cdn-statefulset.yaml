@@ -92,6 +92,16 @@ spec:
         {{- if .Values.cdn.extraVolumeMounts }}
         {{- toYaml .Values.cdn.extraVolumeMounts | nindent 8 }}
         {{- end }}
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.cdn.containerPort }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.cdn.containerPort }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
       volumes:
       - name: config
         configMap:

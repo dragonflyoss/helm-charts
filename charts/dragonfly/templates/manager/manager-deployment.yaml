@@ -93,17 +93,15 @@ spec:
         {{- toYaml .Values.manager.extraVolumeMounts | nindent 8 }}
         {{- end }}
         readinessProbe:
-          httpGet:
-            path: /healthy
-            port: {{ .Values.manager.restPort }}
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}"]
           initialDelaySeconds: 5
           periodSeconds: 10
         livenessProbe:
-          httpGet:
-            path: /healthy
-            port: {{ .Values.manager.restPort }}
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}"]
           initialDelaySeconds: 15
-          periodSeconds: 20
+          periodSeconds: 10
       {{- if .Values.manager.sidecar }}
       - name: {{ .Values.manager.sidecar.name }}
         image: {{ .Values.manager.sidecar.image }}:{{ .Values.manager.sidecar.tag }}
