@@ -3,6 +3,59 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add livenessProbe and readinessProbe
+        - Update dragonfly image version to v2.0.2-rc.27
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.2-rc.27
+        - name: cdn
+          image: dragonflyoss/cdn:v2.0.2-rc.27
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.2-rc.27
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.2-rc.27
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.5.51
+    created: "2022-03-29T08:23:58.713895035Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: ff7d7536c91b04730224789d65f5d478e07a9a94254deaff995a9de0f1c3d41b
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.5.51/dragonfly-0.5.51.tgz
+    version: 0.5.51
+  - annotations:
+      artifacthub.io/changes: |
         - Update dragonfly image version to v2.0.2-rc.24
       artifacthub.io/images: |
         - name: manager
