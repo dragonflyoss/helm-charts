@@ -1,10 +1,10 @@
 apiVersion: v2
 name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
-icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
+icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.5.51
-appVersion: 0.5.51
+version: 0.5.52
+appVersion: 0.5.52
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add livenessProbe and readinessProbe
-    - Update dragonfly image version to v2.0.2-rc.27
+    - Update dragonfly image version to v2.0.2
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -35,13 +34,13 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.2-rc.27
+      image: dragonflyoss/manager:v2.0.2
     - name: cdn
-      image: dragonflyoss/cdn:v2.0.2-rc.27
+      image: dragonflyoss/cdn:v2.0.2
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.2-rc.27
+      image: dragonflyoss/dfdaemon:v2.0.2
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.2-rc.27
+      image: dragonflyoss/scheduler:v2.0.2
 
 dependencies:
   - name: mysql
