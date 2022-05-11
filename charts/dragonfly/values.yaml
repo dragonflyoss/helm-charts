@@ -272,9 +272,224 @@ scheduler:
       # -- Prometheus rules
       rules: []
 
+seedPeer:
+  # -- Enable dfdaemon seed peer
+  enable: true
+  # -- Seed peer name
+  name: seed-peer
+  # -- Override scheduler name
+  nameOverride: ""
+  # -- Override scheduler fullname
+  fullnameOverride: ""
+  # -- Number of Pods to launch
+  replicas: 3
+  # -- Image repository
+  image: dragonflyoss/dfdaemon
+  # -- Image tag
+  tag: v2.0.3-beta.1
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Host Aliases
+  hostAliases: []
+  # -- Pod resource requests and limits
+  resources:
+    requests:
+      cpu: "0"
+      memory: "0"
+    limits:
+      cpu: "4"
+      memory: "8Gi"
+  # -- Pod priorityClassName
+  priorityClassName: ""
+  # -- Node labels for pod assignment
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
+  terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
+  tolerations: []
+  # -- Pod annotations
+  podAnnotations: {}
+  # -- Pod labels
+  podLabels: {}
+  # -- Statefulset annotations
+  statefulsetAnnotations: {}
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
+  # -- Extra volumes for dfdaemon.
+  extraVolumes:
+    - name: logs
+      emptyDir: {}
+  # -- Extra volumeMounts for dfdaemon.
+  extraVolumeMounts:
+    - name: logs
+      mountPath: "/var/log/dragonfly/daemon"
+  persistence:
+    # -- Enable persistence for seed peer
+    enable: true
+    # -- Persistence annotations
+    annotations: {}
+    # -- Persistence access modes
+    accessModes:
+      - ReadWriteOnce
+    # -- Persistence persistence size
+    size: 8Gi
+    ## Seed peer data Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # storageClass: "-"
+  config:
+    # -- Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running
+    aliveTime: 0s
+    # -- Daemon gc task running interval
+    gcInterval: 1m0s
+    # -- When daemon exit, keep peer task data or not
+    # it is usefully when upgrade daemon service, all local cache will be saved
+    # default is false
+    keepStorage: false
+    # -- Daemon work directory
+    workHome: "/usr/local/dragonfly"
+    # -- Dynconfig cache storage directory
+    cacheDir: ""
+    # -- Log storage directory
+    logDir: ""
+    # -- Daemon data storage directory
+    dataDir: "/var/lib/dragonfly"
+    # -- Console shows log on console
+    console: false
+    # -- Whether to enable debug level logger and enable pprof
+    verbose: false
+    # -- Listen port for pprof, only valid when the verbose option is true
+    # default is -1. If it is 0, pprof will use a random port.
+    pprofPort: -1
+    # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    jaeger: ""
+    host:
+      # -- TCP service listen address
+      # port should be set by other options
+      listenIP: 0.0.0.0
+      # -- Geographical location, separated by "|" characters
+      location: ""
+      # -- IDC deployed by daemon
+      idc: ""
+      # -- Security domain deployed by daemon, network isolation between different security domains
+      securityDomain: ""
+      # -- Network topology, separated by "|" characters
+      netTopology: ""
+    # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
+    scheduler:
+      manager:
+        # -- Get scheduler list dynamically from manager
+        enable: true
+        # -- Manager service address, netAddr is a list, there are two fields type and addr
+        netAddrs:
+        # -- Scheduler list refresh interval
+        refreshInterval: 5m
+        seedPeer:
+          # -- Enable seed peer mode
+          enable: true
+          # -- Seed peer supports "super", "strong" and "weak" types
+          type: "super"
+          # -- Associated seed peer cluster id
+          clusterID: 1
+      # -- Schedule timeout
+      scheduleTimeout: 30s
+      # -- Disable auto back source in dfdaemon
+      disableAutoBackSource: false
+    download:
+      # -- Total download limit per second
+      totalRateLimit: 1024Mi
+      # -- Per peer task limit per second
+      perPeerRateLimit: 300Mi
+      # -- Calculate digest, when only pull images, can be false to save cpu and memory
+      calculateDigest: true
+      downloadGRPC:
+        # -- Download grpc security option
+        security:
+          insecure: true
+        # -- Download service listen address
+        # current, only support unix domain socket
+        unixListen:
+          socket: /tmp/dfdamon.sock
+      peerGRPC:
+        # -- Peer grpc security option
+        security:
+          insecure: true
+        tcpListen:
+          # -- Listen address
+          listen: 0.0.0.0
+          # -- Listen port
+          port: 65000
+    upload:
+      # -- Upload limit per second
+      rateLimit: 1024Mi
+      # -- Upload grpc security option
+      security:
+        insecure: true
+      tcpListen:
+        # -- Listen address
+        listen: 0.0.0.0
+        # -- Listen port
+        port: 65002
+    storage:
+      # -- Task data expire time
+      # when there is no access to a task data, this task will be gc.
+      taskExpireTime: 6h
+      # -- Storage strategy when process task data
+      # io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action
+      #                           the download file in date directory will be the peer data for uploading to other peers
+      # io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,
+      #                            avoid copy to output path, fast than simple strategy, but:
+      #                            the output file with postfix will be the peer data for uploading to other peers
+      #                            when user delete or change this file, this peer data will be corrupted
+      # default is io.d7y.storage.v2.advance
+      strategy: io.d7y.storage.v2.simple
+      # -- Set to ture for reusing underlying storage for same task id
+      multiplex: true
+      # -- Disk GC Threshold
+      diskGCThreshold: 50Gi
+  metrics:
+    # -- Enable scheduler metrics
+    enable: false
+    # -- Enable peer host metrics
+    enablePeerHost: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
+
 cdn:
   # -- Enable cdn
-  enable: true
+  enable: false
   # -- CDN name
   name: cdn
   # -- Override scheduler name
@@ -417,7 +632,6 @@ cdn:
     pprofPort: -1
     # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
-
   metrics:
     # -- Enable manager metrics
     enable: false

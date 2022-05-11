@@ -32,6 +32,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified seed peer name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.seedPeer.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.seedPeer.name }}
+{{- end -}}{
+
+{{/*
 Create a default fully qualified cdn name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
@@ -40,7 +48,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}{
 
 {{/*
-Create a default fully qualified cdn name.
+Create a default fully qualified manager name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "dragonfly.manager.fullname" -}}

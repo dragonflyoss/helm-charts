@@ -1,0 +1,60 @@
+{{- if .Values.seedPeer.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dragonfly.seedPeer.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.seedPeer.name }}
+data:
+  dfget.yaml: |-
+    aliveTime: {{ .Values.seedPeer.config.aliveTime }}
+    gcInterval: {{ .Values.seedPeer.config.gcInterval }}
+    keepStorage: {{ .Values.seedPeer.config.keepStorage }}
+    workHome: {{ .Values.seedPeer.config.workHome }}
+    cacheDir: {{ .Values.seedPeer.config.cacheDir }}
+    dataDir: {{ .Values.seedPeer.config.dataDir }}
+    logDir: {{ .Values.seedPeer.config.logDir }}
+    console: {{ .Values.seedPeer.config.console }}
+    verbose: {{ .Values.seedPeer.config.verbose }}
+    {{- if .Values.seedPeer.config.verbose }}
+    pprof-port: {{ .Values.seedPeer.config.pprofPort }}
+    {{- end }}
+    {{- if .Values.seedPeer.metrics.enable }}
+    metrics: ":8000"
+    {{- end }}
+    {{- if .Values.seedPeer.config.jaeger }}
+    jaeger: {{ .Values.seedPeer.config.jaeger }}
+    {{- else if .Values.jaeger.enable }}
+    jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    {{- end }}
+    scheduler:
+      manager:
+        enable: {{ .Values.seedPeer.config.scheduler.manager.enable }}
+        netAddrs:
+        {{- if and (.Values.seedPeer.config.scheduler.manager.enable) (.Values.seedPeer.config.scheduler.manager.netAddrs) }}
+{{ toYaml .Values.seedPeer.config.scheduler.manager.netAddrs | indent 10 }}
+        {{- else if .Values.manager.enable }}
+        - type: tcp
+          addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+        {{- else }}
+        - type: tcp
+          addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+        {{- end }}
+        refreshInterval: {{ .Values.seedPeer.config.scheduler.manager.refreshInterval }}
+      scheduleTimeout: {{ .Values.seedPeer.config.scheduler.scheduleTimeout }}
+      disableAutoBackSource: {{ .Values.seedPeer.config.scheduler.disableAutoBackSource }}
+      seedPeer:
+{{ toYaml .Values.seedPeer.config.scheduler.manager.seedPeer | indent 8 }}
+    host:
+{{ toYaml .Values.seedPeer.config.host | indent 6 }}
+    download:
+{{ toYaml .Values.seedPeer.config.download | indent 6 }}
+    upload:
+{{ toYaml .Values.seedPeer.config.upload | indent 6 }}
+    storage:
+{{ toYaml .Values.seedPeer.config.storage | indent 6 }}
+{{- end }}
