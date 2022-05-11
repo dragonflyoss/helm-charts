@@ -32,7 +32,7 @@ data:
         {{- else }}
         addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- end }}
-        cdnClusterID: {{ .Values.cdn.config.base.manager.cdnClusterID }}
+        seedPeerClusterID: {{ .Values.cdn.config.base.manager.seedPeerClusterID }}
         keepAlive:
 {{ toYaml .Values.cdn.config.base.manager.keepAlive | indent 10 }}
       console: {{ .Values.cdn.config.base.console }}

@@ -80,7 +80,7 @@ cdn:
   config:
     base:
       manager:
-        cdnClusterID: 1
+        seedPeerClusterID: 1
 
 manager:
   enable: false
@@ -128,8 +128,8 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
 | cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
 | cdn.config.base.logDir | string | `""` | Log storage directory |
-| cdn.config.base.manager.cdnClusterID | int | `1` | Associated cdn cluster id |
 | cdn.config.base.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
+| cdn.config.base.manager.seedPeerClusterID | int | `1` | Associated seed peer cluster id |
 | cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
 | cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
@@ -177,7 +177,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.2"` | Image tag |
+| cdn.tag | string | `"v2.0.3-beta.1"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -231,11 +231,14 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
-| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m"},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | dfdaemon.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | dfdaemon.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
 | dfdaemon.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
+| dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
+| dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
+| dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
@@ -266,7 +269,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.2"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.3-beta.1"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -327,7 +330,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.2"` | Image tag |
+| manager.tag | string | `"v2.0.3-beta.1"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -346,7 +349,6 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.password | string | `"dragonfly"` | Redis password |
 | redis.service.port | int | `6379` | Redis port |
 | redis.usePassword | bool | `true` | Use password authentication |
-| scheduler.config.cdn.enable | bool | `true` | scheduler enable cdn as P2P peer, if the value is false, P2P network will not be back-to-source through cdn but by dfdaemon and preheat feature does not work |
 | scheduler.config.console | bool | `false` | Console shows log on console |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
@@ -366,6 +368,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
+| scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
@@ -401,7 +404,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.2"` | Image tag |
+| scheduler.tag | string | `"v2.0.3-beta.1"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 

@@ -133,7 +133,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.2
+  tag: v2.0.3-beta.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -227,10 +227,10 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval
         interval: 5s
-    cdn:
-      # --   scheduler enable cdn as P2P peer,
+    seedPeer:
+      # --   scheduler enable seed peer as P2P peer,
       # if the value is false, P2P network will not be back-to-source through
-      # cdn but by dfdaemon and preheat feature does not work
+      # seed peer but by dfdaemon and preheat feature does not work
       enable: true
     # -- Console shows log on console
     console: false
@@ -286,7 +286,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.2
+  tag: v2.0.3-beta.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -382,8 +382,8 @@ cdn:
       # -- Log storage directory
       logDir: ""
       manager:
-        # -- Associated cdn cluster id
-        cdnClusterID: 1
+        # -- Associated seed peer cluster id
+        seedPeerClusterID: 1
         keepAlive:
           # -- Manager keepalive interval
           interval: 5s
@@ -459,7 +459,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.2
+  tag: v2.0.3-beta.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -560,6 +560,14 @@ dfdaemon:
         netAddrs:
         # -- Scheduler list refresh interval
         refreshInterval: 5m
+        seedPeer:
+          # -- Enable seed peer mode.
+          enable: false
+          # -- Seed peer supports "super", "strong" and "weak" types.
+          type: "super"
+          # -- Associated seed peer cluster id
+          clusterID: 1
+
       # -- Schedule timeout
       scheduleTimeout: 30s
       # -- Disable auto back source in dfdaemon
@@ -660,7 +668,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.2
+  tag: v2.0.3-beta.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
