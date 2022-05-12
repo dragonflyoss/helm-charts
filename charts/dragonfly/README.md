@@ -174,7 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.priorityClassName | string | `""` | Pod priorityClassName |
 | cdn.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | cdn.replicas | int | `3` | Number of Pods to launch |
-| cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| cdn.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
 | cdn.tag | string | `"v2.0.3-beta.1"` | Image tag |
@@ -350,7 +350,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.service.port | int | `6379` | Redis port |
 | redis.usePassword | bool | `true` | Use password authentication |
 | scheduler.config.console | bool | `false` | Console shows log on console |
-| scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
+| scheduler.config.dynconfig.refreshInterval | string | `"10s"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
@@ -429,13 +429,14 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | seedPeer.config.logDir | string | `""` | Log storage directory |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | seedPeer.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
 | seedPeer.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
 | seedPeer.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
 | seedPeer.config.scheduler.manager.seedPeer.enable | bool | `true` | Enable seed peer mode |
+| seedPeer.config.scheduler.manager.seedPeer.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | seedPeer.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types |
 | seedPeer.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | seedPeer.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
@@ -481,7 +482,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.priorityClassName | string | `""` | Pod priorityClassName |
 | seedPeer.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
-| seedPeer.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
 | seedPeer.tag | string | `"v2.0.3-beta.1"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |

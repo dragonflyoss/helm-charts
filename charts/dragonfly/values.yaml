@@ -213,7 +213,7 @@ scheduler:
       # Please remove it from your configuration.
       type: manager
       # -- Dynamic config refresh interval
-      refreshInterval: 1m
+      refreshInterval: 10s
     host:
       # -- IDC is the idc of scheduler instance
       idc: ""
@@ -297,8 +297,8 @@ seedPeer:
       cpu: "0"
       memory: "0"
     limits:
-      cpu: "4"
-      memory: "8Gi"
+      cpu: "2"
+      memory: "4Gi"
   # -- Pod priorityClassName
   priorityClassName: ""
   # -- Node labels for pod assignment
@@ -400,6 +400,9 @@ seedPeer:
           type: "super"
           # -- Associated seed peer cluster id
           clusterID: 1
+          keepAlive:
+            # -- Manager keepalive interval
+            interval: 5s
       # -- Schedule timeout
       scheduleTimeout: 30s
       # -- Disable auto back source in dfdaemon
@@ -512,8 +515,8 @@ cdn:
       cpu: "0"
       memory: "0"
     limits:
-      cpu: "4"
-      memory: "8Gi"
+      cpu: "2"
+      memory: "4Gi"
   # -- Pod priorityClassName
   priorityClassName: ""
   # -- Node labels for pod assignment

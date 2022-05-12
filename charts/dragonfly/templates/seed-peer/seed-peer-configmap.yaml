@@ -45,10 +45,10 @@ data:
           addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- end }}
         refreshInterval: {{ .Values.seedPeer.config.scheduler.manager.refreshInterval }}
+        seedPeer:
+{{ toYaml .Values.seedPeer.config.scheduler.manager.seedPeer | indent 10 }}
       scheduleTimeout: {{ .Values.seedPeer.config.scheduler.scheduleTimeout }}
       disableAutoBackSource: {{ .Values.seedPeer.config.scheduler.disableAutoBackSource }}
-      seedPeer:
-{{ toYaml .Values.seedPeer.config.scheduler.manager.seedPeer | indent 8 }}
     host:
 {{ toYaml .Values.seedPeer.config.host | indent 6 }}
     download:
