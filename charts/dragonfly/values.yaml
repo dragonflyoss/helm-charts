@@ -133,7 +133,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.3-beta.1
+  tag: v2.0.3-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -191,7 +191,7 @@ scheduler:
       # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
       # the dragonfly working directory plugins
       algorithm: default
-      # -- Number of backsource clients when the CDN is unavailable
+      # -- Number of backsource clients when the seed peer is unavailable
       backSourceCount: 3
       # -- Retry scheduling back-to-source limit times
       retryBackSourceLimit: 5
@@ -286,7 +286,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.3-beta.1
+  tag: v2.0.3-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -409,9 +409,9 @@ seedPeer:
       disableAutoBackSource: false
     download:
       # -- Total download limit per second
-      totalRateLimit: 1024Mi
+      totalRateLimit: 2048Mi
       # -- Per peer task limit per second
-      perPeerRateLimit: 300Mi
+      perPeerRateLimit: 1024Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory
       calculateDigest: true
       downloadGRPC:
@@ -433,7 +433,7 @@ seedPeer:
           port: 65000
     upload:
       # -- Upload limit per second
-      rateLimit: 1024Mi
+      rateLimit: 2048Mi
       # -- Upload grpc security option
       security:
         insecure: true
@@ -457,8 +457,8 @@ seedPeer:
       strategy: io.d7y.storage.v2.simple
       # -- Set to ture for reusing underlying storage for same task id
       multiplex: true
-      # -- Disk GC Threshold
-      diskGCThreshold: 50Gi
+      # -- Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks
+      diskGCThresholdPercent: 90
   metrics:
     # -- Enable scheduler metrics
     enable: false
@@ -504,7 +504,7 @@ cdn:
   # -- Image repository
   image: dragonflyoss/cdn
   # -- Image tag
-  tag: v2.0.3-beta.1
+  tag: v2.0.3-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -676,7 +676,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.3-beta.1
+  tag: v2.0.3-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -885,7 +885,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.3-beta.1
+  tag: v2.0.3-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
