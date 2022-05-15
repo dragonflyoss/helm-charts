@@ -941,10 +941,14 @@ manager:
   ingress:
     # -- Enable ingress
     enable: false
+    # -- Ingress class name
+    className: ""
     # -- Ingress annotations
     annotations: {}
     # -- Ingress host path
     path: /
+    # -- Ingress path type
+    pathType: ImplementationSpecific
     # -- Manager ingress hosts
     hosts: []
     # -- Ingress TLS configuration
