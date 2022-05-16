@@ -362,7 +362,7 @@ spec:
                 echo inject config_path into $etcContainerd/config.toml
                 cat << EOF >> $etcContainerd/config.toml
           [plugins."io.containerd.grpc.v1.cri".registry]
-            config_path = "$etcContainerd/certs.d"
+            config_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"
           EOF
               fi
               mkdir -p $etcContainerd/certs.d
