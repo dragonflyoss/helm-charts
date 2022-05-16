@@ -76,11 +76,13 @@ scheduler:
     manager:
       schedulerClusterID: 1
 
-cdn:
+seedPeer:
   config:
-    base:
+    scheduler:
       manager:
-        cdnClusterID: 1
+        seedPeer:
+          enable: true
+          clusterID: 1
 
 manager:
   enable: false

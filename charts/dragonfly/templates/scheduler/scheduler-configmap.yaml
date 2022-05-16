@@ -30,8 +30,8 @@ data:
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
-    cdn:
-{{ toYaml .Values.scheduler.config.cdn | indent 6 }}
+    seedPeer:
+{{ toYaml .Values.scheduler.config.seedPeer | indent 6 }}
     job:
       redis:
         {{- if .Values.redis.enable }}

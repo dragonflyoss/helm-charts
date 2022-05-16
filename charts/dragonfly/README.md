@@ -76,11 +76,13 @@ scheduler:
     manager:
       schedulerClusterID: 1
 
-cdn:
+seedPeer:
   config:
-    base:
+    scheduler:
       manager:
-        cdnClusterID: 1
+        seedPeer:
+          enable: true
+          clusterID: 1
 
 manager:
   enable: false
@@ -128,8 +130,8 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
 | cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
 | cdn.config.base.logDir | string | `""` | Log storage directory |
-| cdn.config.base.manager.cdnClusterID | int | `1` | Associated cdn cluster id |
 | cdn.config.base.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
+| cdn.config.base.manager.seedPeerClusterID | int | `1` | Associated seed peer cluster id |
 | cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
 | cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
 | cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
@@ -141,7 +143,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | cdn.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | cdn.containerPort | int | `8003` | Pod containerPort |
-| cdn.enable | bool | `true` | Enable cdn |
+| cdn.enable | bool | `false` | Enable cdn |
 | cdn.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/cdn","name":"logs"}]` | Extra volumeMounts for cdn. |
 | cdn.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for cdn. |
 | cdn.fullnameOverride | string | `""` | Override scheduler fullname |
@@ -174,10 +176,10 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.priorityClassName | string | `""` | Pod priorityClassName |
 | cdn.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | cdn.replicas | int | `3` | Number of Pods to launch |
-| cdn.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| cdn.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.2"` | Image tag |
+| cdn.tag | string | `"v2.0.3-beta.2"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -231,11 +233,14 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
-| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m"},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | dfdaemon.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | dfdaemon.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
 | dfdaemon.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
+| dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
+| dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
+| dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
@@ -266,7 +271,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.2"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.3-beta.2"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -327,7 +332,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.2"` | Image tag |
+| manager.tag | string | `"v2.0.3-beta.2"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -346,9 +351,8 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.password | string | `"dragonfly"` | Redis password |
 | redis.service.port | int | `6379` | Redis port |
 | redis.usePassword | bool | `true` | Use password authentication |
-| scheduler.config.cdn.enable | bool | `true` | scheduler enable cdn as P2P peer, if the value is false, P2P network will not be back-to-source through cdn but by dfdaemon and preheat feature does not work |
 | scheduler.config.console | bool | `false` | Console shows log on console |
-| scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
+| scheduler.config.dynconfig.refreshInterval | string | `"10s"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
@@ -358,7 +362,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml" "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins |
-| scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the CDN is unavailable |
+| scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the seed peer is unavailable |
 | scheduler.config.scheduler.gc.peerGCInterval | string | `"10m"` | Peer's gc interval |
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | Peer's TTL duration |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"10m"` | Task's gc interval |
@@ -366,6 +370,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
+| scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
@@ -401,9 +406,89 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.2"` | Image tag |
+| scheduler.tag | string | `"v2.0.3-beta.2"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
+| seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
+| seedPeer.config.cacheDir | string | `""` | Dynconfig cache storage directory |
+| seedPeer.config.console | bool | `false` | Console shows log on console |
+| seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
+| seedPeer.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
+| seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
+| seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
+| seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
+| seedPeer.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
+| seedPeer.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
+| seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second |
+| seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second |
+| seedPeer.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
+| seedPeer.config.host.idc | string | `""` | IDC deployed by daemon |
+| seedPeer.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
+| seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters |
+| seedPeer.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
+| seedPeer.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
+| seedPeer.config.jaeger | string | `""` |  |
+| seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
+| seedPeer.config.logDir | string | `""` | Log storage directory |
+| seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
+| seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
+| seedPeer.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
+| seedPeer.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
+| seedPeer.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
+| seedPeer.config.scheduler.manager.seedPeer.enable | bool | `true` | Enable seed peer mode |
+| seedPeer.config.scheduler.manager.seedPeer.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
+| seedPeer.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types |
+| seedPeer.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
+| seedPeer.config.storage.diskGCThresholdPercent | int | `90` | Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks |
+| seedPeer.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
+| seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
+| seedPeer.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
+| seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second |
+| seedPeer.config.upload.security | object | `{"insecure":true}` | Upload grpc security option |
+| seedPeer.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
+| seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port |
+| seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
+| seedPeer.config.workHome | string | `"/usr/local/dragonfly"` | Daemon work directory |
+| seedPeer.enable | bool | `true` | Enable dfdaemon seed peer |
+| seedPeer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/daemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
+| seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
+| seedPeer.fullnameOverride | string | `""` | Override scheduler fullname |
+| seedPeer.hostAliases | list | `[]` | Host Aliases |
+| seedPeer.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
+| seedPeer.initContainer.image | string | `"busybox"` | Init container image repository |
+| seedPeer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| seedPeer.initContainer.tag | string | `"latest"` | Init container image tag |
+| seedPeer.metrics.enable | bool | `false` | Enable scheduler metrics |
+| seedPeer.metrics.enablePeerHost | bool | `false` | Enable peer host metrics |
+| seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
+| seedPeer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| seedPeer.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
+| seedPeer.metrics.service.annotations | object | `{}` | Service annotations |
+| seedPeer.metrics.service.labels | object | `{}` | Service labels |
+| seedPeer.metrics.service.type | string | `"ClusterIP"` | Service type |
+| seedPeer.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| seedPeer.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| seedPeer.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| seedPeer.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
+| seedPeer.name | string | `"seed-peer"` | Seed peer name |
+| seedPeer.nameOverride | string | `""` | Override scheduler name |
+| seedPeer.nodeSelector | object | `{}` | Node labels for pod assignment |
+| seedPeer.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
+| seedPeer.persistence.annotations | object | `{}` | Persistence annotations |
+| seedPeer.persistence.enable | bool | `true` | Enable persistence for seed peer |
+| seedPeer.persistence.size | string | `"8Gi"` | Persistence persistence size |
+| seedPeer.podAnnotations | object | `{}` | Pod annotations |
+| seedPeer.podLabels | object | `{}` | Pod labels |
+| seedPeer.priorityClassName | string | `""` | Pod priorityClassName |
+| seedPeer.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| seedPeer.replicas | int | `3` | Number of Pods to launch |
+| seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
+| seedPeer.tag | string | `"v2.0.3-beta.2"` | Image tag |
+| seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 
 ## Chart dependencies
 

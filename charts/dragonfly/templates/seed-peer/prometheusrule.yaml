@@ -1,0 +1,21 @@
+{{- if and .Values.seedPeer.metrics.enable .Values.seedPeer.metrics.prometheusRule.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "dragonfly.seedPeer.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.seedPeer.name }}
+    {{- if .Values.seedPeer.metrics.prometheusRule.additionalLabels }}
+{{ toYaml .Values.seedPeer.metrics.prometheusRule.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+{{- with .Values.seedPeer.metrics.prometheusRule.rules }}
+  groups:
+    - name: {{ template "dragonfly.seedPeer.fullname" $ }}
+      rules: {{ tpl (toYaml .) $ | nindent 8 }}
+{{- end }}
+{{- end }}

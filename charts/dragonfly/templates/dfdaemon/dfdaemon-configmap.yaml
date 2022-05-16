@@ -47,6 +47,8 @@ data:
         refreshInterval: {{ .Values.dfdaemon.config.scheduler.manager.refreshInterval }}
       scheduleTimeout: {{ .Values.dfdaemon.config.scheduler.scheduleTimeout }}
       disableAutoBackSource: {{ .Values.dfdaemon.config.scheduler.disableAutoBackSource }}
+      seedPeer:
+{{ toYaml .Values.dfdaemon.config.scheduler.manager.seedPeer | indent 8 }}
     host:
 {{ toYaml .Values.dfdaemon.config.host | indent 6 }}
     download:
