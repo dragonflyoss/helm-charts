@@ -3,6 +3,58 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update dragonfly image version to v2.0.3-beta.3
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.3-beta.3
+        - name: cdn
+          image: dragonflyoss/cdn:v2.0.3-beta.3
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.3-beta.3
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.3-beta.3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.5.55
+    created: "2022-05-17T14:57:52.596079798Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.0.0
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.0
+    description: Dragonfly is an intelligent P2P based image and file distribution system
+    digest: 31d6cd90e712a62a9e00cfbfbf2dc2a86efc421383e9bd567b087db808d4d103
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.5.55/dragonfly-0.5.55.tgz
+    version: 0.5.55
+  - annotations:
+      artifacthub.io/changes: |
         - Update dragonfly image version to v2.0.3-beta.2
       artifacthub.io/images: |
         - name: manager
