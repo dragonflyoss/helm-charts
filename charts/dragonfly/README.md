@@ -302,7 +302,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
 | manager.ingress.annotations | object | `{}` | Ingress annotations |
 | manager.ingress.className | string | `""` | Ingress class name |
-| manager.ingress.enable | bool | `false` | Enable ingres |
+| manager.ingress.enable | bool | `false` | Enable ingress |
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
 | manager.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type |
