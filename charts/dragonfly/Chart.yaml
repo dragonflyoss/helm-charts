@@ -26,11 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-<<<<<<< HEAD
-    - Update dragonfly image version to v2.0.3-beta.3
-=======
     - Adapt ingress to networking/v1
->>>>>>> fa1d3e8 (Add multiple ingress apiVersions)
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

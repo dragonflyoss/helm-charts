@@ -1,7 +1,4 @@
 {{- if .Values.manager.ingress.enable -}}
-<<<<<<< HEAD
-apiVersion: networking.k8s.io/v1
-=======
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
 {{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -9,7 +6,6 @@ apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
 {{- end }}
->>>>>>> fa1d3e8 (Add multiple ingress apiVersions)
 kind: Ingress
 metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
@@ -24,13 +20,8 @@ metadata:
 {{ toYaml .Values.manager.ingress.annotations | indent 4 }}
 {{- end }}
 spec:
-<<<<<<< HEAD
-  {{- if .Values.manager.ingress.className }}
-  ingressClassName: {{ .Values.manager.ingress.className | quote }}
-=======
   {{- if and .Values.manager.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.manager.ingress.className }}
->>>>>>> fa1d3e8 (Add multiple ingress apiVersions)
   {{- end }}
 {{- if .Values.manager.ingress.tls }}
   tls:
