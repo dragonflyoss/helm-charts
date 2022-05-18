@@ -1,5 +1,11 @@
 {{- if .Values.manager.ingress.enable -}}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
 apiVersion: extensions/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
@@ -14,6 +20,9 @@ metadata:
 {{ toYaml .Values.manager.ingress.annotations | indent 4 }}
 {{- end }}
 spec:
+  {{- if and .Values.manager.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.manager.ingress.className }}
+  {{- end }}
 {{- if .Values.manager.ingress.tls }}
   tls:
   {{- range .Values.manager.ingress.tls }}
@@ -30,8 +39,18 @@ spec:
       http:
         paths:
           - path: {{ $.Values.manager.ingress.path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ default "ImplementationSpecific" .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: {{ template "dragonfly.manager.fullname" $ }}
+                port:
+                  number: {{ $.Values.manager.restPort }}
+              {{- else }}
               serviceName: {{ template "dragonfly.manager.fullname" $ }}
               servicePort: {{ $.Values.manager.restPort }}
+              {{- end }}
   {{- end }}
 {{- end }}

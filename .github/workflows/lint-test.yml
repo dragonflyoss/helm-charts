@@ -80,7 +80,7 @@ jobs:
 
       - name: Check for changes
         run: |
-          docker run --rm --volume "$(pwd):/helm-docs" -u "$(id -u)" jnorwood/helm-docs:v1.3.0
+          docker run --rm --volume "$(pwd):/helm-docs" -u "$(id -u)" jnorwood/helm-docs:v1.10.0
           if ! git diff --exit-code; then
               echo "Documentation not up to date. Please run helm-docs and commit changes!" >&2
               exit 1

@@ -941,10 +941,14 @@ manager:
   ingress:
     # -- Enable ingress
     enable: false
+    # -- Ingress class name. Requirement: kubernetes >=1.18
+    className: ""
     # -- Ingress annotations
     annotations: {}
     # -- Ingress host path
     path: /
+    # -- Ingress path type. Requirement: kubernetes >=1.18
+    pathType: ImplementationSpecific
     # -- Manager ingress hosts
     hosts: []
     # -- Ingress TLS configuration
