@@ -301,11 +301,11 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.hostAliases | list | `[]` | Host Aliases |
 | manager.image | string | `"dragonflyoss/manager"` | Image repository |
 | manager.ingress.annotations | object | `{}` | Ingress annotations |
-| manager.ingress.className | string | `""` | Ingress class name |
+| manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18 |
 | manager.ingress.enable | bool | `false` | Enable ingress |
 | manager.ingress.hosts | list | `[]` | Manager ingress hosts |
 | manager.ingress.path | string | `"/"` | Ingress host path |
-| manager.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type |
+| manager.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Requirement: kubernetes >=1.18 |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration |
 | manager.initContainer.image | string | `"busybox"` | Init container image repository |
 | manager.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
