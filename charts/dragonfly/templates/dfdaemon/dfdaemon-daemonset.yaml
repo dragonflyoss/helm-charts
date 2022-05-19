@@ -313,13 +313,13 @@ spec:
         - -cx
         - |-
           etcContainerd=/host{{ .Values.containerRuntime.containerd.configPathDir }}
-          if [[ -e $etcContainerd/config.toml ]]; then
+          if [[ -e $etcContainerd/{{ default "config.toml" .configFileName }} ]]; then
             echo containerd config found
           else
-            echo $etcContainerd/config.toml not found
+            echo $etcContainerd/{{ default "config.toml" .configFileName }} not found
             exit 1
           fi
-          cat $etcContainerd/config.toml
+          cat $etcContainerd/{{ default "config.toml" .configFileName }}
 
           registries="{{- join " " .Values.containerRuntime.containerd.registries }}"
           if [[ -n "$domains" ]]; then
@@ -328,26 +328,26 @@ spec:
           fi
           # detect containerd config version
           need_restart=0
-          if grep "version[^=]*=[^2]*2" $etcContainerd/config.toml; then
+          if grep "version[^=]*=[^2]*2" $etcContainerd/{{ default "config.toml" .configFileName }}; then
             # inject v2 mirror setting
 
             # get config_path if set
             {{- if .Values.containerRuntime.containerd.injectConfigPath }}
             config_path=$etcContainerd/certs.d
             {{- else }}
-            config_path=$(cat $etcContainerd/config.toml | tr '"' ' ' | grep config_path | awk '{print $3}')
+            config_path=$(cat $etcContainerd/{{ default "config.toml" .configFileName }} | tr '"' ' ' | grep config_path | awk '{print $3}')
             {{- end }}
             if [[ -z "$config_path" ]]; then
-              echo config_path is not enabled, just add one mirror in config.toml
+              echo config_path is not enabled, just add one mirror in {{ default "config.toml" .configFileName }}
               # parse registry domain
               registry={{ .Values.dfdaemon.config.proxy.registryMirror.url}}
               domain=$(echo $registry | sed -e "s,https://,," | sed "s,:.*,,")
               # inject registry
-              if grep "registry.mirrors.\"$domain\"" $etcContainerd/config.toml; then
+              if grep "registry.mirrors.\"$domain\"" $etcContainerd/{{ default "config.toml" .configFileName }}; then
                 # TODO merge mirrors
-                echo "registry $registry found in config.toml, skip"
+                echo "registry $registry found in {{ default "config.toml" .configFileName }}, skip"
               else
-                cat << EOF >> $etcContainerd/config.toml
+                cat << EOF >> $etcContainerd/{{ default "config.toml" .configFileName }}
           [plugins."io.containerd.grpc.v1.cri".registry.mirrors."$domain"]
             endpoint = ["http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}","$registry"]
           EOF
@@ -357,10 +357,10 @@ spec:
             else
               echo config_path is enabled, add mirror in $config_path
               # TODO check whether config_path is enabled, if not, add it
-              tmp=$(cat $etcContainerd/config.toml | tr '"' ' ' | grep config_path | awk '{print $3}')
+              tmp=$(cat $etcContainerd/{{ default "config.toml" .configFileName }} | tr '"' ' ' | grep config_path | awk '{print $3}')
               if [[ -z "$tmp" ]]; then
-                echo inject config_path into $etcContainerd/config.toml
-                cat << EOF >> $etcContainerd/config.toml
+                echo inject config_path into $etcContainerd/{{ default "config.toml" .configFileName }}
+                cat << EOF >> $etcContainerd/{{ default "config.toml" .configFileName }}
           [plugins."io.containerd.grpc.v1.cri".registry]
             config_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"
           EOF
@@ -372,7 +372,7 @@ spec:
                 # inject registry
                 mkdir -p $etcContainerd/certs.d/$domain
                 if [[ -e "$etcContainerd/certs.d/$domain/hosts.toml" ]]; then
-                  echo "registry $registry found in config.toml, skip"
+                  echo "registry $registry found in {{ default "config.toml" .configFileName }}, skip"
                   continue
                 else
                   cat << EOF >> $etcContainerd/certs.d/$domain/hosts.toml
@@ -391,16 +391,16 @@ spec:
             fi
           else
             # inject legacy v1 mirror setting
-            echo containerd config is version 1, just only support one mirror in config.toml
+            echo containerd config is version 1, just only support one mirror in {{ default "config.toml" .configFileName }}
             # parse registry domain
             registry={{ .Values.dfdaemon.config.proxy.registryMirror.url}}
             domain=$(echo {{ .Values.dfdaemon.config.proxy.registryMirror.url}} | sed -e "s,http.://,," | sed "s,:.*,,")
             # inject registry
-            if grep "registry.mirrors.\"$domain\"" $etcContainerd/config.toml; then
+            if grep "registry.mirrors.\"$domain\"" $etcContainerd/{{ default "config.toml" .configFileName }}; then
               # TODO merge mirrors
-              echo "registry $registry found in config.toml, skip"
+              echo "registry $registry found in {{ default "config.toml" .configFileName }}, skip"
             else
-              cat << EOF >> $etcContainerd/config.toml
+              cat << EOF >> $etcContainerd/{{ default "config.toml" .configFileName }}
           [plugins.cri.registry.mirrors."$domain"]
             endpoint = ["http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}","$registry"]
           EOF
