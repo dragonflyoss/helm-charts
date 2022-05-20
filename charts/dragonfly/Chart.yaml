@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.5.56
-appVersion: 0.5.56
+version: 0.5.57
+appVersion: 0.5.57
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Adapt ingress to networking/v1
-    - Bump helm-docs to v1.10.0
+    - Make config.toml tweakable
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

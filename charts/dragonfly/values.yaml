@@ -95,6 +95,9 @@ containerRuntime:
     # -- Custom config path directory, default is /etc/containerd
     # e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd
     configPathDir: /etc/containerd
+    # -- Custom config file name, default is config.toml
+    # This is workaround for kops provider, see https://github.com/kubernetes/kops/pull/13090 for more details
+    configFileName: ""
     # Registries full urls
     # Only used when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:
