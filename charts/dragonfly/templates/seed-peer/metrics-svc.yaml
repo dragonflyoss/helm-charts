@@ -1,32 +1,30 @@
-{{- if and .Values.seedPeer.metrics.enable .Values.seedPeer.metrics.serviceMonitor.enable }}
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+{{- if .Values.seedPeer.metrics.enable }}
+apiVersion: v1
+kind: Service
 metadata:
-  name: {{ template "dragonfly.seedPeer.fullname" . }}
+  name: {{ template "dragonfly.seedPeer.fullname" . }}-metrics
   labels:
     app: {{ template "dragonfly.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: {{ .Values.seedPeer.name }}
-    {{- if .Values.seedPeer.metrics.serviceMonitor.additionalLabels }}
-{{ toYaml .Values.seedPeer.metrics.serviceMonitor.additionalLabels | indent 4 }}
-    {{- end }}
+    component: {{ .Values.seedPeer.name }}-metrics
+{{- if .Values.seedPeer.metrics.service.labels }}
+{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.seedPeer.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.seedPeer.metrics.service.annotations | indent 4 }}
+{{- end }}
 spec:
-  endpoints:
-  - port: http-metrics
-    {{- if .Values.seedPeer.metrics.serviceMonitor.interval }}
-    interval: {{ .Values.seedPeer.metrics.serviceMonitor.interval }}
-    {{- end }}
-    {{- if .Values.seedPeer.metrics.serviceMonitor.scrapeTimeout }}
-    scrapeTimeout: {{ .Values.seedPeer.metrics.serviceMonitor.scrapeTimeout }}
-    {{- end }}
-  namespaceSelector:
-    matchNames:
-    - {{ .Release.Namespace }}
+  type: {{ .Values.seedPeer.metrics.service.type }}
+  ports:
+  - port: 8000
+    name: http-metrics
+    targetPort: 8000
+    protocol: TCP
   selector:
-    matchLabels:
-      app: {{ template "dragonfly.fullname" . }}
-      release: {{ .Release.Name }}
-      component: {{ .Values.seedPeer.name }}-metrics
+    app: {{ template "dragonfly.fullname" . }}
+    component: {{ .Values.seedPeer.name }}
+    release: {{ .Release.Name }}
 {{- end }}
