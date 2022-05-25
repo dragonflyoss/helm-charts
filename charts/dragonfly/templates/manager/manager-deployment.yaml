@@ -9,8 +9,9 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.manager.name }}
   name: {{ template "dragonfly.manager.fullname" . }}
-  {{- if .Values.manager.deploymentAnnotations }}
   annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
+  {{- if .Values.manager.deploymentAnnotations }}
 {{ toYaml .Values.manager.deploymentAnnotations | indent 4 }}
   {{- end }}
 spec:

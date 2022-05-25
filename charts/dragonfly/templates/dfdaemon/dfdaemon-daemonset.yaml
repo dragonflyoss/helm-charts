@@ -9,8 +9,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.dfdaemon.name }}
-  {{- if .Values.dfdaemon.daemonsetAnnotations }}
   annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/dfdaemon/dfdaemon-configmap.yaml") . | sha256sum }}
+  {{- if .Values.dfdaemon.daemonsetAnnotations }}
 {{ toYaml .Values.dfdaemon.daemonsetAnnotations | indent 4 }}
   {{- end }}
 spec:

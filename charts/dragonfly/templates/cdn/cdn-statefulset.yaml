@@ -9,8 +9,9 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.cdn.name }}
   name: {{ template "dragonfly.cdn.fullname" . }}
-  {{- if .Values.cdn.statefulsetAnnotations }}
   annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/cdn/cdn-configmap.yaml") . | sha256sum }}
+  {{- if .Values.cdn.statefulsetAnnotations }}
 {{ toYaml .Values.cdn.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:

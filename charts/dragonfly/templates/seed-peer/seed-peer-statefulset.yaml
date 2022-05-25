@@ -9,8 +9,9 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.seedPeer.name }}
   name: {{ template "dragonfly.seedPeer.fullname" . }}
-  {{- if .Values.seedPeer.statefulsetAnnotations }}
   annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/seed-peer/seed-peer-configmap.yaml") . | sha256sum }}
+  {{- if .Values.seedPeer.statefulsetAnnotations }}
 {{ toYaml .Values.seedPeer.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:
