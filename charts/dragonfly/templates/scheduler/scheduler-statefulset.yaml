@@ -9,8 +9,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.scheduler.name }}
-  {{- if .Values.scheduler.statefulsetAnnotations }}
   annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/scheduler/scheduler-configmap.yaml") . | sha256sum }}
+  {{- if .Values.scheduler.statefulsetAnnotations }}
 {{ toYaml .Values.scheduler.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:

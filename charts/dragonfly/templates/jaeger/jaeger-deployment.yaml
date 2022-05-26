@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/name: jaeger-all-in-one
     app.kubernetes.io/part-of: jaeger
   name: jaeger-all-in-one
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/jaeger/jaeger-configmap.yaml") . | sha256sum }}
 spec:
   selector:
     matchLabels:
