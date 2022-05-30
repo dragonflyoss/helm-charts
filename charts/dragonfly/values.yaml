@@ -16,7 +16,7 @@ containerRuntime:
   #
   # By default, it's unnecessary to restart docker daemon when pull image from private registries,
   # this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io,
-  # please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true
+  # please update your registries by `--set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true`
   #
   # Caution:
   #   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.
@@ -27,12 +27,10 @@ containerRuntime:
   #     Option 2: keep the image registry of dragonfly is different from common registries and add host in `containerRuntime.docker.skipHosts`.
   #
   # Caution: docker hub image is not supported without restart docker daemon.
-  #
   # When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true
   # this feature will inject proxy config into docker.service and restart docker daemon.
   #
   # Caution: set restart to true only when live restore is enable.
-  #
   # Requirement: Docker Engine v1.2.0+ without Rootless.
   docker:
     # -- Enable docker support
