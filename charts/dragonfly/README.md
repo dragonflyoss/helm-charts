@@ -179,7 +179,7 @@ helm delete dragonfly --namespace dragonfly-system
 | cdn.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
 | cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.3-beta.3"` | Image tag |
+| cdn.tag | string | `"v2.0.3-beta.7"` | Image tag |
 | cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
@@ -191,7 +191,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.containerd.injectConfigPath | bool | `false` | Config path for multiple registries By default, init container will check ${containerRuntime.containerd.configPathDir}/config.toml, whether is config_path configured, if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror. When configPath is true, init container will inject config_path=${containerRuntime.containerd.configPathDir}/certs.d and configure all registries. |
 | containerRuntime.crio | object | `{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] CRI-O support |
 | containerRuntime.crio.enable | bool | `false` | Enable CRI-O support Inject drop-in mirror config into /etc/containers/registries.conf.d. |
-| containerRuntime.docker | object | `{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]}` | [Experimental] Support docker, when use docker-shim in Kubernetes, please set containerRuntime.docker.enable to true. For supporting docker, we need generate CA and update certs, then hijack registries traffic,  By default, it's unnecessary to restart docker daemon when pull image from private registries, this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io, please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true  Caution:   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.   Because the original `daemonset` in Kubernetes did not support `Surging Rolling Update` policy.   When kill current dfdaemon pod, the new pod image can not be pulled anymore.   If you can not change runtime from docker to others, remind to choose a plan when upgrade dfdaemon:     Option 1: pull newly dfdaemon image manually before upgrade dragonfly, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob) to pull image automate.     Option 2: keep the image registry of dragonfly is different from common registries and add host in `containerRuntime.docker.skipHosts`.  Caution: docker hub image is not supported without restart docker daemon.  When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true this feature will inject proxy config into docker.service and restart docker daemon.  Caution: set restart to true only when live restore is enable.  Requirement: Docker Engine v1.2.0+ without Rootless. |
+| containerRuntime.docker | object | `{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]}` | [Experimental] Support docker, when use docker-shim in Kubernetes, please set containerRuntime.docker.enable to true. For supporting docker, we need generate CA and update certs, then hijack registries traffic, By default, it's unnecessary to restart docker daemon when pull image from private registries, this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io, please update your registries by --set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true Caution:   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.   Because the original `daemonset` in Kubernetes did not support `Surging Rolling Update` policy.   When kill current dfdaemon pod, the new pod image can not be pulled anymore.   If you can not change runtime from docker to others, remind to choose a plan when upgrade dfdaemon:     Option 1: pull newly dfdaemon image manually before upgrade dragonfly, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob) to pull image automate.     Option 2: keep the image registry of dragonfly is different from common registries and add host in `containerRuntime.docker.skipHosts`. Caution: docker hub image is not supported without restart docker daemon. When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true this feature will inject proxy config into docker.service and restart docker daemon. Caution: set restart to true only when live restore is enable. Requirement: Docker Engine v1.2.0+ without Rootless. |
 | containerRuntime.docker.caCert | object | `{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"}` | CA cert info for generating |
 | containerRuntime.docker.enable | bool | `false` | Enable docker support Inject ca cert into /etc/docker/certs.d/, Refer: https://docs.docker.com/engine/security/certificates/. |
 | containerRuntime.docker.injectHosts | bool | `true` | Inject domains into /etc/hosts to force redirect traffic to dfdaemon. Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0. When use certs and inject hosts in docker, no necessary to restart docker daemon. |
@@ -199,7 +199,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.docker.registryDomains | list | `["ghcr.io","quay.io"]` | Registry domains By default, docker pull image via https, currently, by default 443 port with https. If not standard port, update registryPorts. |
 | containerRuntime.docker.registryPorts | list | `[443]` | Registry ports |
 | containerRuntime.docker.restart | bool | `false` | Restart docker daemon to redirect traffic to dfdaemon When containerRuntime.docker.restart=true, containerRuntime.docker.injectHosts and containerRuntime.registry.domains is ignored. If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true. |
-| containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39.  Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,   don't forget add the corresponding backend storage. |
+| containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39. Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts,   don't forget add the corresponding backend storage. |
 | containerRuntime.extraInitContainers | list | `[]` | Additional init containers |
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -272,7 +272,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.3-beta.3"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.3-beta.7"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -335,7 +335,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.3-beta.3"` | Image tag |
+| manager.tag | string | `"v2.0.3-beta.7"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -409,7 +409,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.3-beta.3"` | Image tag |
+| scheduler.tag | string | `"v2.0.3-beta.7"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -489,7 +489,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.3-beta.3"` | Image tag |
+| seedPeer.tag | string | `"v2.0.3-beta.7"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 
