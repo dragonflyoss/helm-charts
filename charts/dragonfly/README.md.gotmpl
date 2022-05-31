@@ -16,7 +16,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 Dragonfly is an open source intelligent P2P based image and file distribution system. Its goal is to tackle all distribution problems in cloud native scenarios. Currently Dragonfly focuses on being:
 
 - Simple: well-defined user-facing API (HTTP), non-invasive to all container engines;
-- Efficient: CDN support, P2P based file distribution to save enterprise bandwidth;
+- Efficient: Seed peer support, P2P based file distribution to save enterprise bandwidth;
 - Intelligent: host level speed limit, intelligent flow control due to host detection;
 - Secure: block transmission encryption, HTTPS connection support.
 
@@ -68,7 +68,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with an existing manager
 
-Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and cdn. This example is to deploy a cluster using the existing manager and redis.
+Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
 
 ```yaml
 scheduler:

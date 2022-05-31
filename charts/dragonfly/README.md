@@ -16,7 +16,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 Dragonfly is an open source intelligent P2P based image and file distribution system. Its goal is to tackle all distribution problems in cloud native scenarios. Currently Dragonfly focuses on being:
 
 - Simple: well-defined user-facing API (HTTP), non-invasive to all container engines;
-- Efficient: CDN support, P2P based file distribution to save enterprise bandwidth;
+- Efficient: Seed peer support, P2P based file distribution to save enterprise bandwidth;
 - Intelligent: host level speed limit, intelligent flow control due to host detection;
 - Secure: block transmission encryption, HTTPS connection support.
 
@@ -68,7 +68,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with an existing manager
 
-Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and cdn. This example is to deploy a cluster using the existing manager and redis.
+Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
 
 ```yaml
 scheduler:
@@ -124,64 +124,6 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| cdn.config.base.enableProfiler | bool | `false` | Enable profiler for data |
-| cdn.config.base.failAccessInterval | string | `"3m"` | Interval time after failed to access the URL |
-| cdn.config.base.gcInitialDelay | string | `"6s"` | Delay time from the start to the first GC execution |
-| cdn.config.base.gcMetaInterval | string | `"2m"` | Interval time to execute GC meta |
-| cdn.config.base.gcStorageInterval | string | `"15s"` | Interval time to execute GC storage |
-| cdn.config.base.logDir | string | `""` | Log storage directory |
-| cdn.config.base.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
-| cdn.config.base.manager.seedPeerClusterID | int | `1` | Associated seed peer cluster id |
-| cdn.config.base.maxBandwidth | string | `"200M"` | Network bandwidth that cdn can use |
-| cdn.config.base.storagePattern | string | `"disk"` | Pattern of storage policy |
-| cdn.config.base.systemReservedBandwidth | string | `"20M"` | Network bandwidth reserved for system software |
-| cdn.config.base.taskExpireTime | string | `"3m"` | When a task is not accessed within the taskExpireTime and it will be treated to be expired |
-| cdn.config.console | bool | `false` | Console shows log on console |
-| cdn.config.jaeger | string | `""` |  |
-| cdn.config.plugins.storageDriver | list | `[{"config":{"baseDir":"/tmp/cdn"},"enable":true,"name":"disk"}]` | Storage driver configuration |
-| cdn.config.plugins.storageManager | list | `[{"config":{"driverConfigs":{"disk":{"gcConfig":{"cleanRatio":1,"fullGCThreshold":"5G","intervalThreshold":"2h","youngGCThreshold":"100G"}}},"gcInitialDelay":"5s","gcInterval":"15s"},"enable":true,"name":"disk"}]` | Storage manager configuration |
-| cdn.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| cdn.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| cdn.containerPort | int | `8003` | Pod containerPort |
-| cdn.enable | bool | `false` | Enable cdn |
-| cdn.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/cdn","name":"logs"}]` | Extra volumeMounts for cdn. |
-| cdn.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for cdn. |
-| cdn.fullnameOverride | string | `""` | Override scheduler fullname |
-| cdn.hostAliases | list | `[]` | Host Aliases |
-| cdn.image | string | `"dragonflyoss/cdn"` | Image repository |
-| cdn.initContainer.image | string | `"busybox"` | Init container image repository |
-| cdn.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
-| cdn.initContainer.tag | string | `"latest"` | Init container image tag |
-| cdn.metrics.enable | bool | `false` | Enable manager metrics |
-| cdn.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
-| cdn.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
-| cdn.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
-| cdn.metrics.service.annotations | object | `{}` | Service annotations |
-| cdn.metrics.service.labels | object | `{}` | Service labels |
-| cdn.metrics.service.type | string | `"ClusterIP"` | Service type |
-| cdn.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| cdn.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
-| cdn.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
-| cdn.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
-| cdn.name | string | `"cdn"` | CDN name |
-| cdn.nameOverride | string | `""` | Override scheduler name |
-| cdn.nginxContiainerPort | int | `8001` | Nginx containerPort for downloading |
-| cdn.nodeSelector | object | `{}` | Node labels for pod assignment |
-| cdn.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes |
-| cdn.persistence.annotations | object | `{}` | Persistence annotations |
-| cdn.persistence.enable | bool | `true` | Enable persistence for cdn |
-| cdn.persistence.size | string | `"8Gi"` | Persistence persistence size |
-| cdn.podAnnotations | object | `{}` | Pod annotations |
-| cdn.podLabels | object | `{}` | Pod labels |
-| cdn.priorityClassName | string | `""` | Pod priorityClassName |
-| cdn.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| cdn.replicas | int | `3` | Number of Pods to launch |
-| cdn.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| cdn.service | object | `{"extraPorts":[{"name":"http-nginx","port":8001,"targetPort":8001}],"port":8003,"targetPort":8003,"type":"ClusterIP"}` | Service configuration |
-| cdn.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| cdn.tag | string | `"v2.0.3-beta.7"` | Image tag |
-| cdn.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
-| cdn.tolerations | list | `[]` | List of node taints to tolerate |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
 | containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainerImage":"dragonflyoss/openssl"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support |
