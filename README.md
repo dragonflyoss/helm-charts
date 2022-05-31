@@ -9,7 +9,7 @@ Helm charts for Dragonfly.
 Dragonfly is an open source intelligent P2P based image and file distribution system. Its goal is to tackle all distribution problems in cloud native scenarios. Currently Dragonfly focuses on being:
 
 - Simple: well-defined user-facing API (HTTP), non-invasive to all container engines;
-- Efficient: CDN support, P2P based file distribution to save enterprise bandwidth;
+- Efficient: Seed peer support, P2P based file distribution to save enterprise bandwidth;
 - Intelligent: host level speed limit, intelligent flow control due to host detection;
 - Secure: block transmission encryption, HTTPS connection support.
 
