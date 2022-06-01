@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.5.61
-appVersion: 0.5.61
+version: 0.5.62
+appVersion: 0.5.62
 keywords:
   - dragonfly
   - d7y
@@ -42,7 +42,7 @@ annotations:
 
 dependencies:
   - name: mysql
-    version: 8.0.0
+    version: 9.1.2
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
   - name: redis
