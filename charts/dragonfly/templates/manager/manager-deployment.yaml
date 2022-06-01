@@ -63,7 +63,7 @@ spec:
       - name: wait-for-redis
         image: {{ .Values.manager.initContainer.image }}:{{ .Values.manager.initContainer.tag  }}
         imagePullPolicy: {{ .Values.manager.initContainer.pullPolicy }}
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.service.port }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.master.service.ports.redis }}; do echo waiting for redis; sleep 2; done;']
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql

@@ -37,9 +37,9 @@ data:
         {{- end }}
       redis:
         {{- if and .Values.redis.enable (empty .Values.externalRedis.host) }}
-        password: {{ .Values.redis.password }}
+        password: {{ .Values.redis.auth.password }}
         host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-        port: {{ .Values.redis.service.port }}
+        port: {{ .Values.redis.master.service.ports.redis }}
         {{- else }}
         password: {{ .Values.externalRedis.password }}
         host: {{ .Values.externalRedis.host }}
@@ -57,6 +57,6 @@ data:
     {{- if .Values.manager.config.jaeger }}
     jaeger: {{ .Values.manager.config.jaeger }}
     {{- else if .Values.jaeger.enable }}
-    jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
     {{- end }}
 {{- end }}

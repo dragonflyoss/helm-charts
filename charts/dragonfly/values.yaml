@@ -869,15 +869,16 @@ redis:
   enable: true
   # -- Cluster domain
   clusterDomain: "cluster.local"
-  # -- Redis hostname
-  host: ""
-  # -- Use password authentication
-  usePassword: true
-  # -- Redis password
-  password: dragonfly
-  service:
-    # -- Redis port
-    port: 6379
+  auth:
+    # -- Enable password authentication
+    enabled: true
+    # -- Redis password
+    password: dragonfly
+  master:
+    service:
+      ports:
+        # -- Redis master service port
+        redis: 6379
 
 externalRedis:
   # -- External redis hostname
@@ -890,3 +891,15 @@ externalRedis:
 jaeger:
   # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment
   enable: false
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+  storage:
+    type: none
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false

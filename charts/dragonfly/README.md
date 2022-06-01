@@ -230,7 +230,13 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.password | string | `"dragonfly"` | External redis password |
 | externalRedis.port | int | `6379` | External redis port |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
+| jaeger.agent.enabled | bool | `false` |  |
+| jaeger.allInOne.enabled | bool | `true` |  |
+| jaeger.collector.enabled | bool | `false` |  |
 | jaeger.enable | bool | `false` | Enable an all-in-one jaeger for tracing every downloading event should not use in production environment |
+| jaeger.provisionDataStore.cassandra | bool | `false` |  |
+| jaeger.query.enabled | bool | `false` |  |
+| jaeger.storage.type | string | `"none"` |  |
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
@@ -290,12 +296,11 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.migrate | bool | `true` | Running GORM migration |
 | mysql.primary.service.port | int | `3306` | Mysql port |
 | nameOverride | string | `""` | Override dragonfly name |
+| redis.auth.enabled | bool | `true` | Enable password authentication |
+| redis.auth.password | string | `"dragonfly"` | Redis password |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | redis.enable | bool | `true` | Enable redis cluster with docker container |
-| redis.host | string | `""` | Redis hostname |
-| redis.password | string | `"dragonfly"` | Redis password |
-| redis.service.port | int | `6379` | Redis port |
-| redis.usePassword | bool | `true` | Use password authentication |
+| redis.master.service.ports.redis | int | `6379` | Redis master service port |
 | scheduler.config.console | bool | `false` | Console shows log on console |
 | scheduler.config.dynconfig.refreshInterval | string | `"10s"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
@@ -439,5 +444,6 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | mysql | 8.0.0 |
-| https://charts.bitnami.com/bitnami | redis | 12.1.0 |
+| https://charts.bitnami.com/bitnami | mysql | 9.1.2 |
+| https://charts.bitnami.com/bitnami | redis | 16.10.1 |
+| https://jaegertracing.github.io/helm-charts | jaeger | 0.56.5 |
