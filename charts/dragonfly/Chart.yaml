@@ -46,6 +46,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
   - name: redis
-    version: 12.1.0
+    version: 16.10.1
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enable

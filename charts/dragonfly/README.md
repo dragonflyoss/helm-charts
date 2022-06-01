@@ -290,12 +290,11 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.migrate | bool | `true` | Running GORM migration |
 | mysql.primary.service.port | int | `3306` | Mysql port |
 | nameOverride | string | `""` | Override dragonfly name |
+| redis.auth.enabled | bool | `true` | Enable password authentication |
+| redis.auth.password | string | `"dragonfly"` | Redis password |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain |
 | redis.enable | bool | `true` | Enable redis cluster with docker container |
-| redis.host | string | `""` | Redis hostname |
-| redis.password | string | `"dragonfly"` | Redis password |
-| redis.service.port | int | `6379` | Redis port |
-| redis.usePassword | bool | `true` | Use password authentication |
+| redis.master.service.ports.redis | int | `6379` | Redis master service port |
 | scheduler.config.console | bool | `false` | Console shows log on console |
 | scheduler.config.dynconfig.refreshInterval | string | `"10s"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
@@ -440,4 +439,4 @@ helm delete dragonfly --namespace dragonfly-system
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 9.1.2 |
-| https://charts.bitnami.com/bitnami | redis | 12.1.0 |
+| https://charts.bitnami.com/bitnami | redis | 16.10.1 |
