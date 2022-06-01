@@ -55,6 +55,6 @@ data:
     {{- if .Values.scheduler.config.jaeger }}
     jaeger: {{ .Values.scheduler.config.jaeger }}
     {{- else if .Values.jaeger.enable }}
-    jaeger: http://jaeger-all-in-one-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
     {{- end }}
 {{- end }}

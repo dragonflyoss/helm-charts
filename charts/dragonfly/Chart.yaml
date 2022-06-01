@@ -26,7 +26,10 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Remove CDN templates
+    - jaeger chart replaces jaeger templates
+    - Update mysql version to v9.1.2
+    - Update redis version to v16.10.1
+
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -49,3 +52,7 @@ dependencies:
     version: 16.10.1
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enable
+  - name: jaeger
+    version: 0.56.5
+    repository: https://jaegertracing.github.io/helm-charts
+    condition: jaeger.enable

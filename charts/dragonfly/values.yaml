@@ -891,3 +891,15 @@ externalRedis:
 jaeger:
   # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment
   enable: false
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+  storage:
+    type: none
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false
