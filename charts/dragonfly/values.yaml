@@ -96,6 +96,14 @@ containerRuntime:
     # -- Custom config file name, default is config.toml
     # This is workaround for kops provider, see https://github.com/kubernetes/kops/pull/13090 for more details
     configFileName: ""
+    # -- Credencials for authenticating to private registries
+    # By default this is aplicable for single registry mode, for reference see docs: https://github.com/containerd/containerd/blob/v1.6.4/docs/cri/registry.md#configure-registry-credentials
+    injectRegistryCredencials:
+      enable: false
+      username: ""
+      password: ""
+      auth: ""
+      identitytoken: ""
     # Registries full urls
     # Only used when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml or containerRuntime.containerd.injectConfigPath=true
     registries:
