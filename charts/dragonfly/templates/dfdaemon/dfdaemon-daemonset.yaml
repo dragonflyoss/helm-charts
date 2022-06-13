@@ -355,6 +355,21 @@ spec:
                 echo "Registry $domain added"
                 need_restart=1
               fi
+              {{- if .Values.containerRuntime.containerd.injectRegistryCredencials.enable}}
+              if grep "registry.config.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
+                  echo "registry auth $registry found in {{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}, skip"
+              else
+                cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
+          [plugins."io.containerd.grpc.v1.cri".registry.configs."$domain".auth]
+            username = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.username }}"
+            password = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.password }}"
+            auth = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.auth }}"
+            identitytoken = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.identitytoken }}"
+          EOF
+                echo "Registry auth $domain added"
+                need_restart=1
+              fi
+              {{- end }}
             else
               echo config_path is enabled, add mirror in $config_path
               # TODO check whether config_path is enabled, if not, add it
@@ -408,8 +423,21 @@ spec:
               echo "Registry $domain added"
               need_restart=1
             fi
+          {{- if .Values.containerRuntime.containerd.injectRegistryCredencials.enable}}
+            if grep "registry.config.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
+                echo "registry auth $registry found in {{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}, skip"
+            else
+              cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
+          [plugins."io.containerd.grpc.v1.cri".registry.configs."$domain".auth]
+            username = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.username }}"
+            password = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.password }}"
+            auth = "{{ .Values.containerRuntime.containerd.injectRegistryCredencials.auth }}"
+          EOF
+              echo "Registry auth $domain added"
+              need_restart=1
+            fi
+          {{- end }}
           fi
-
           # restart containerd
           # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
           if [[ "$need_restart" -gt 0 ]]; then
