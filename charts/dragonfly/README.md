@@ -169,7 +169,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8081 |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature"` | Filter for hash url when defaultFilter: "Expires&Signature", for example:  http://localhost/xyz?Expires=111&Signature=222 and http://localhost/xyz?Expires=333&Signature=999 is same task |
+| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url when defaultFilter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
 | dfdaemon.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
