@@ -15,6 +15,11 @@ Dragonfly is an open source intelligent P2P based image and file distribution sy
 
 Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an Incubating Level Project. Originally it was born to solve all kinds of distribution at very large scales, such as application distribution, cache distribution, log distribution, image distribution, and so on.
 
+## Prerequisites
+
+- Kubernetes cluster 1.20+
+- Helm v3.8.0+
+
 ## Installation
 
 Please follow [this chart document](./charts/dragonfly/README.md)
