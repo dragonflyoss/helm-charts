@@ -45,6 +45,10 @@ data:
         host: {{ .Values.externalRedis.host }}
         port: {{ .Values.externalRedis.port }}
         {{- end }}
+    cache:
+{{ toYaml .Values.manager.config.cache | indent 6 }}
+    objectStorage:
+{{ toYaml .Values.manager.config.objectStorage | indent 6 }}
     {{- if .Values.manager.metrics.enable }}
     metrics:
       addr: ":8000"

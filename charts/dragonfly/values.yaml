@@ -422,6 +422,7 @@ seedPeer:
         # -- Download grpc security option
         security:
           insecure: true
+          tlsVerify: true
         # -- Download service listen address
         # current, only support unix domain socket
         unixListen:
@@ -441,11 +442,24 @@ seedPeer:
       # -- Upload grpc security option
       security:
         insecure: true
+        tlsVerify: false
       tcpListen:
         # -- Listen address
         listen: 0.0.0.0
         # -- Listen port
         port: 65002
+    objectStorage:
+      # -- Enable object storage service
+      enable: false
+      # -- Object storage service security option
+      security:
+        insecure: true
+        tlsVerify: true
+      tcpListen:
+        # -- Listen address
+        listen: 0.0.0.0
+        # -- Listen port
+        port: 65004
     storage:
       # -- Task data expire time
       # when there is no access to a task data, this task will be gc.
@@ -630,6 +644,7 @@ dfdaemon:
         # -- Download grpc security option
         security:
           insecure: true
+          tlsVerify: true
         # -- Download service listen address
         # current, only support unix domain socket
         unixListen:
@@ -649,11 +664,24 @@ dfdaemon:
       # -- Upload grpc security option
       security:
         insecure: true
+        tlsVerify: false
       tcpListen:
         # -- Listen address
         listen: 0.0.0.0
         # -- Listen port
         port: 65002
+    objectStorage:
+      # -- Enable object storage service
+      enable: false
+      # -- Object storage service security option
+      security:
+        insecure: true
+        tlsVerify: true
+      tcpListen:
+        # -- Listen address
+        listen: 0.0.0.0
+        # -- Listen port
+        port: 65004
     storage:
       # -- Task data expire time
       # when there is no access to a task data, this task will be gc.
@@ -680,6 +708,7 @@ dfdaemon:
       # -- Proxy security option
       security:
         insecure: true
+        tlsVerify: false
       tcpListen:
         # -- Namespace stands the linux net namespace, like /proc/1/ns/net
         # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
@@ -784,6 +813,28 @@ manager:
     # -- Ingress TLS configuration
     tls: []
   config:
+    cache:
+      redis:
+        # -- Redis cache TTL duration
+        ttl: 30s
+      local:
+        # -- Size of LFU cache
+        size: 10000
+        # -- Local cache TTL duration
+        ttl: 30s
+    objectStorage:
+      # -- Enable object storage
+      enable: false
+      # -- Object storage name of type, it can be s3 or oss
+      name: s3
+      # -- Storage region
+      region: ""
+      # -- Datacenter endpoint
+      endpoint: ""
+      # -- Access key ID
+      accessKey: ""
+      # -- Access key secret
+      secretKey: ""
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof

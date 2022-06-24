@@ -55,6 +55,8 @@ data:
 {{ toYaml .Values.dfdaemon.config.download | indent 6 }}
     upload:
 {{ toYaml .Values.dfdaemon.config.upload | indent 6 }}
+    objectStorage:
+{{ toYaml .Values.dfdaemon.config.objectStorage | indent 6 }}
     storage:
 {{ toYaml .Values.dfdaemon.config.storage | indent 6 }}
     proxy:
