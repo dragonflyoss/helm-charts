@@ -155,7 +155,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.console | bool | `false` | Console shows log on console |
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
-| dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
+| dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
@@ -173,13 +173,17 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
+| dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
+| dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
+| dfdaemon.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
+| dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url when defaultFilter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
 | dfdaemon.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
 | dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
-| dfdaemon.config.proxy.security | object | `{"insecure":true}` | Proxy security option |
+| dfdaemon.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
 | dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
@@ -196,7 +200,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
 | dfdaemon.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
 | dfdaemon.config.upload.rateLimit | string | `"100Mi"` | Upload limit per second |
-| dfdaemon.config.upload.security | object | `{"insecure":true}` | Upload grpc security option |
+| dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
 | dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
 | dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
@@ -243,8 +247,17 @@ helm delete dragonfly --namespace dragonfly-system
 | jaeger.provisionDataStore.cassandra | bool | `false` |  |
 | jaeger.query.enabled | bool | `false` |  |
 | jaeger.storage.type | string | `"none"` |  |
+| manager.config.cache.local.size | int | `10000` | Size of LFU cache |
+| manager.config.cache.local.ttl | string | `"30s"` | Local cache TTL duration |
+| manager.config.cache.redis.ttl | string | `"30s"` | Redis cache TTL duration |
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
+| manager.config.objectStorage.accessKey | string | `""` | Access key ID |
+| manager.config.objectStorage.enable | bool | `false` | Enable object storage |
+| manager.config.objectStorage.endpoint | string | `""` | Datacenter endpoint |
+| manager.config.objectStorage.name | string | `"s3"` | Object storage name of type, it can be s3 or oss |
+| manager.config.objectStorage.region | string | `""` | Storage region |
+| manager.config.objectStorage.secretKey | string | `""` | Access key secret |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
@@ -370,7 +383,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.console | bool | `false` | Console shows log on console |
 | seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | seedPeer.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
-| seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true}` | Download grpc security option |
+| seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
 | seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
 | seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | seedPeer.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
@@ -386,6 +399,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.jaeger | string | `""` |  |
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | seedPeer.config.logDir | string | `""` | Log storage directory |
+| seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service |
+| seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
+| seedPeer.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
+| seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
@@ -402,7 +419,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
 | seedPeer.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
 | seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second |
-| seedPeer.config.upload.security | object | `{"insecure":true}` | Upload grpc security option |
+| seedPeer.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
 | seedPeer.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port |
 | seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |

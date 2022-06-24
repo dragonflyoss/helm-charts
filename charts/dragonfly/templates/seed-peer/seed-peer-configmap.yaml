@@ -57,4 +57,6 @@ data:
 {{ toYaml .Values.seedPeer.config.upload | indent 6 }}
     storage:
 {{ toYaml .Values.seedPeer.config.storage | indent 6 }}
+    objectStorage:
+{{ toYaml .Values.seedPeer.config.objectStorage | indent 6 }}
 {{- end }}
