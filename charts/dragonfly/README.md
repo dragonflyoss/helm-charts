@@ -412,7 +412,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
 | seedPeer.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | seedPeer.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
-| seedPeer.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only namespace: /run/dragonfly/net -- Listen address |
+| seedPeer.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |

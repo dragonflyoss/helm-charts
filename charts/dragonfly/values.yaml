@@ -495,10 +495,6 @@ seedPeer:
         insecure: true
         tlsVerify: false
       tcpListen:
-        # -- Namespace stands the linux net namespace, like /proc/1/ns/net
-        # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
-        # Linux only
-        # namespace: /run/dragonfly/net
         # -- Listen address
         listen: 0.0.0.0
         # If you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
