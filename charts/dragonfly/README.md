@@ -175,6 +175,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
 | dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | dfdaemon.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
+| dfdaemon.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | dfdaemon.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
@@ -402,6 +403,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.logDir | string | `""` | Log storage directory |
 | seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | seedPeer.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
+| seedPeer.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | seedPeer.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
