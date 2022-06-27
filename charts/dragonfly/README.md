@@ -174,6 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
 | dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
+| dfdaemon.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | dfdaemon.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
@@ -400,10 +401,18 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | seedPeer.config.logDir | string | `""` | Log storage directory |
 | seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service |
+| seedPeer.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | seedPeer.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url when defaultFilter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
+| seedPeer.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
+| seedPeer.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
+| seedPeer.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
+| seedPeer.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
+| seedPeer.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
+| seedPeer.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only namespace: /run/dragonfly/net -- Listen address |
 | seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |

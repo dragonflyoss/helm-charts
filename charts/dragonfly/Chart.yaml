@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.6.5
-appVersion: 0.6.5
+version: 0.6.6
+appVersion: 0.6.6
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add tlsVerify to security option.
-    - Add object storage configuration to manager and dfdaemon.
+    - Add filter to object storage configuration.
+    - Add proxy to seed peer configuration.
 
   artifacthub.io/links: |
     - name: Chart Source
