@@ -458,6 +458,8 @@ seedPeer:
       #  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io
       # is same task
       filter: "Expires&Signature&ns"
+      # -- MaxReplicas is the maximum number of replicas of an object cache in seed peers.
+      maxReplicas: 3
       # -- Object storage service security option
       security:
         insecure: true
@@ -713,6 +715,8 @@ dfdaemon:
       #  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io
       # is same task
       filter: "Expires&Signature&ns"
+      # -- MaxReplicas is the maximum number of replicas of an object cache in seed peers.
+      maxReplicas: 3
       # -- Object storage service security option
       security:
         insecure: true
