@@ -451,6 +451,13 @@ seedPeer:
     objectStorage:
       # -- Enable object storage service
       enable: false
+      # -- Filter is used to generate a unique Task ID by
+      # filtering unnecessary query params in the URL,
+      # it is separated by & character.
+      # When filter: "Expires&Signature&ns", for example:
+      #  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io
+      # is same task
+      filter: "Expires&Signature&ns"
       # -- Object storage service security option
       security:
         insecure: true
@@ -477,6 +484,32 @@ seedPeer:
       multiplex: true
       # -- Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks
       diskGCThresholdPercent: 90
+    proxy:
+      # -- Filter for hash url
+      # when defaultFilter: "Expires&Signature&ns", for example:
+      #  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io
+      # is same task
+      defaultFilter: "Expires&Signature&ns"
+      # -- Proxy security option
+      security:
+        insecure: true
+        tlsVerify: false
+      tcpListen:
+        # -- Listen address
+        listen: 0.0.0.0
+        # If you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
+        # port in configmap is generated from $.Values.dfdaemon.hostPort
+        # port: 65001
+      registryMirror:
+        # -- When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host
+        dynamic: true
+        # -- URL for the registry mirror
+        url: https://index.docker.io
+        # -- When the cert of above url is secure, set insecure to true
+        insecure: false
+      proxies:
+        # -- Proxy all http image layer download requests with dfget
+        - regx: blobs/sha256.*
   metrics:
     # -- Enable scheduler metrics
     enable: false
@@ -673,6 +706,13 @@ dfdaemon:
     objectStorage:
       # -- Enable object storage service
       enable: false
+      # -- Filter is used to generate a unique Task ID by
+      # filtering unnecessary query params in the URL,
+      # it is separated by & character.
+      # When filter: "Expires&Signature&ns", for example:
+      #  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io
+      # is same task
+      filter: "Expires&Signature&ns"
       # -- Object storage service security option
       security:
         insecure: true
