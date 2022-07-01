@@ -35,11 +35,11 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.3
+      image: dragonflyoss/manager:v2.0.4
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.3
+      image: dragonflyoss/dfdaemon:v2.0.4
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.3
+      image: dragonflyoss/scheduler:v2.0.4
 
 dependencies:
   - name: mysql
