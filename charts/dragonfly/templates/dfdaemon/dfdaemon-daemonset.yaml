@@ -74,6 +74,10 @@ spec:
           hostIP: 127.0.0.1
           {{- end }}
           protocol: TCP
+        {{- if .Values.dfdaemon.config.objectStorage.enable }}
+        - containerPort: {{ .Values.dfdaemon.config.objectStorage.tcpListen.port }}
+          protocol: TCP
+        {{- end }}
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr={{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.listen }}:{{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.port }}"]
