@@ -78,6 +78,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.seedPeer.config.upload.tcpListen.port }}
           protocol: TCP
+        {{- if .Values.seedPeer.config.objectStorage.enable }}
+        - containerPort: {{ .Values.seedPeer.config.objectStorage.tcpListen.port }}
+          protocol: TCP
+        {{- end }}
         {{- if .Values.seedPeer.metrics.enable }}
         - containerPort: 8000
           protocol: TCP
