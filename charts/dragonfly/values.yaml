@@ -865,7 +865,7 @@ manager:
         # -- Size of LFU cache
         size: 10000
         # -- Local cache TTL duration
-        ttl: 30s
+        ttl: 10s
     objectStorage:
       # -- Enable object storage
       enable: false

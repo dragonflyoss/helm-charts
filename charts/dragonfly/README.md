@@ -250,7 +250,7 @@ helm delete dragonfly --namespace dragonfly-system
 | jaeger.query.enabled | bool | `false` |  |
 | jaeger.storage.type | string | `"none"` |  |
 | manager.config.cache.local.size | int | `10000` | Size of LFU cache |
-| manager.config.cache.local.ttl | string | `"30s"` | Local cache TTL duration |
+| manager.config.cache.local.ttl | string | `"10s"` | Local cache TTL duration |
 | manager.config.cache.redis.ttl | string | `"30s"` | Redis cache TTL duration |
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
