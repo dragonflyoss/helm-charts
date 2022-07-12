@@ -15,6 +15,7 @@ data:
       port: {{ .Values.scheduler.containerPort }}
       cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
       logDir: {{ .Values.scheduler.config.server.logDir }}
+      dataDir: {{ .Values.scheduler.config.server.dataDir }}
     scheduler:
 {{ toYaml .Values.scheduler.config.scheduler | indent 6 }}
     dynconfig:

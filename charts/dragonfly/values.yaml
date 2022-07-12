@@ -187,6 +187,8 @@ scheduler:
       cacheDir: ""
       # -- Log storage directory
       logDir: ""
+      # -- Storage directory
+      dataDir: ""
     scheduler:
       # -- Algorithm configuration to use different scheduling algorithms,
       # default configuration supports "default" and "ml"
