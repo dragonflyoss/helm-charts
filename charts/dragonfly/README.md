@@ -343,6 +343,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
+| scheduler.config.server.dataDir | string | `""` | Storage directory |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
