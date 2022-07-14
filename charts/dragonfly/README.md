@@ -180,7 +180,8 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url when defaultFilter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
+| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
+| dfdaemon.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
 | dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
 | dfdaemon.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
@@ -409,7 +410,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url when defaultFilter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
+| seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
+| seedPeer.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
 | seedPeer.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget |
 | seedPeer.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host |
 | seedPeer.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |

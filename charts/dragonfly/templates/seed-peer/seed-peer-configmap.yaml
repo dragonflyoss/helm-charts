@@ -59,6 +59,7 @@ data:
 {{ toYaml .Values.seedPeer.config.storage | indent 6 }}
     proxy:
       defaultFilter: {{ .Values.seedPeer.config.proxy.defaultFilter }}
+      defaultTag: {{ .Values.seedPeer.config.proxy.defaultTag }}
       tcpListen:
     {{- if not .Values.seedPeer.hostNetwork }}
         namespace: {{ .Values.seedPeer.config.proxy.tcpListen.namespace }}
