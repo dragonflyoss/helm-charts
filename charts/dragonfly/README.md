@@ -163,6 +163,9 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.download.perPeerRateLimit | string | `"100Mi"` | Per peer task limit per second |
 | dfdaemon.config.download.totalRateLimit | string | `"200Mi"` | Total download limit per second |
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
+| dfdaemon.config.health.path | string | `"/server/ping"` |  |
+| dfdaemon.config.health.tcpListen.listen | string | `"0.0.0.0"` |  |
+| dfdaemon.config.health.tcpListen.port | int | `40901` |  |
 | dfdaemon.config.host.advertiseIP | string | `"0.0.0.0"` | Access ip for other peers when local ip is different with access ip, advertiseIP should be set |
 | dfdaemon.config.host.idc | string | `""` | IDC deployed by daemon |
 | dfdaemon.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
@@ -395,6 +398,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second |
 | seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second |
 | seedPeer.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
+| seedPeer.config.health.path | string | `"/server/ping"` |  |
+| seedPeer.config.health.tcpListen.listen | string | `"0.0.0.0"` |  |
+| seedPeer.config.health.tcpListen.port | int | `40901` |  |
 | seedPeer.config.host.idc | string | `""` | IDC deployed by daemon |
 | seedPeer.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
 | seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters |
