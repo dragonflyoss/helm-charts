@@ -378,6 +378,11 @@ seedPeer:
     pprofPort: -1
     # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
+    health:
+      tcpListen:
+        listen: 0.0.0.0
+        port: 40901
+      path: /server/ping
     host:
       # -- TCP service listen address
       # port should be set by other options
@@ -640,6 +645,11 @@ dfdaemon:
     metrics: ""
     # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
+    health:
+      tcpListen:
+        listen: 0.0.0.0
+        port: 40901
+      path: /server/ping
     host:
       # -- TCP service listen address
       # port should be set by other options
