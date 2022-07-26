@@ -388,7 +388,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | seedPeer.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
 | seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
-| seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
+| seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address current, only support unix domain socket |
 | seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | seedPeer.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |

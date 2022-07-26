@@ -428,7 +428,7 @@ seedPeer:
         # -- Download service listen address
         # current, only support unix domain socket
         unixListen:
-          socket: /tmp/dfdamon.sock
+          socket: ""
       peerGRPC:
         # -- Peer grpc security option
         security:
