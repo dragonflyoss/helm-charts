@@ -19,6 +19,8 @@ data:
     dataDir: {{ .Values.dfdaemon.config.dataDir }}
     logDir: {{ .Values.dfdaemon.config.logDir }}
     console: {{ .Values.dfdaemon.config.console }}
+    health:
+{{ toYaml .Values.dfdaemon.config.health | indent 6 }}
     verbose: {{ .Values.dfdaemon.config.verbose }}
     {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}
