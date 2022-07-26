@@ -362,7 +362,7 @@ seedPeer:
     # default is false
     keepStorage: false
     # -- Daemon work directory
-    workHome: "/usr/local/dragonfly"
+    workHome: ""
     # -- Dynconfig cache storage directory
     cacheDir: ""
     # -- Log storage directory
@@ -627,7 +627,7 @@ dfdaemon:
     # default is false
     keepStorage: false
     # -- Daemon work directory
-    workHome: "/usr/local/dragonfly"
+    workHome: ""
     # -- Dynconfig cache storage directory
     cacheDir: ""
     # -- Log storage directory
@@ -701,7 +701,7 @@ dfdaemon:
         # -- Download service listen address
         # current, only support unix domain socket
         unixListen:
-          socket: /tmp/dfdamon.sock
+          socket: ""
       peerGRPC:
         # -- Peer grpc security option
         security:

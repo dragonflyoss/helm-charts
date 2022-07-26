@@ -156,7 +156,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
-| dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":"/tmp/dfdamon.sock"}` | Download service listen address current, only support unix domain socket |
+| dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address current, only support unix domain socket |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
@@ -210,7 +210,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
 | dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| dfdaemon.config.workHome | string | `"/usr/local/dragonfly"` | Daemon work directory |
+| dfdaemon.config.workHome | string | `""` | Daemon work directory |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
@@ -443,7 +443,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port |
 | seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| seedPeer.config.workHome | string | `"/usr/local/dragonfly"` | Daemon work directory |
+| seedPeer.config.workHome | string | `""` | Daemon work directory |
 | seedPeer.enable | bool | `true` | Enable dfdaemon seed peer |
 | seedPeer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/daemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
