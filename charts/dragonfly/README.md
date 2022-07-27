@@ -349,6 +349,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
 | scheduler.config.server.logDir | string | `""` | Log storage directory |
+| scheduler.config.server.workHome | string | `""` | Service work directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
