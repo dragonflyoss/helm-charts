@@ -13,6 +13,7 @@ data:
   scheduler.yaml: |-
     server:
       port: {{ .Values.scheduler.containerPort }}
+      workHome: {{ .Values.scheduler.config.server.workHome }}
       cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
       logDir: {{ .Values.scheduler.config.server.logDir }}
       dataDir: {{ .Values.scheduler.config.server.dataDir }}

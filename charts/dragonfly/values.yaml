@@ -183,6 +183,8 @@ scheduler:
     pullPolicy: IfNotPresent
   config:
     server:
+      # -- Service work directory
+      workHome: ""
       # -- Dynconfig cache storage directory
       cacheDir: ""
       # -- Log storage directory
