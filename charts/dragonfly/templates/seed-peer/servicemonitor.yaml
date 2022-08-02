@@ -26,7 +26,7 @@ spec:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app: {{ template "dragonfly.fullname" . }}
+      app: {{ template "dragonfly.name" . }}
       release: {{ .Release.Name }}
       component: {{ .Values.seedPeer.name }}-metrics
 {{- end }}
