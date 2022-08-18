@@ -100,7 +100,7 @@ spec:
                 # inject hosts after dfdaemon started
                 domains="{{- join " " .Values.containerRuntime.docker.registryDomains }}"
                 # remove static dns in pod /etc/hosts, which injected by host network
-                sed -i '/# Dragonfly SNI Host/d' /etc/hosts
+                echo "$(sed '/# Dragonfly SNI Host/d' /etc/hosts)" > /etc/hosts
 
                 if [[ -n "$domains" ]]; then
                   for domain in $domains; do
