@@ -77,3 +77,5 @@ data:
     objectStorage:
 {{ toYaml .Values.seedPeer.config.objectStorage | indent 6 }}
 {{- end }}
+    security:
+{{ toYaml .Values.seedPeer.config.security | indent 6 }}
