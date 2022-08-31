@@ -203,6 +203,8 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | dfdaemon.config.security.autoIssueCert | bool | `false` |  |
 | dfdaemon.config.security.caCert | string | `""` |  |
+| dfdaemon.config.security.tlsPolicy | string | `"default"` |  |
+| dfdaemon.config.security.tlsVerify | bool | `false` |  |
 | dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
@@ -267,9 +269,10 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.objectStorage.region | string | `""` | Storage region |
 | manager.config.objectStorage.secretKey | string | `""` | Access key secret |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| manager.config.security.autoIssueCert | bool | `false` |  |
 | manager.config.security.caCert | string | `""` |  |
-| manager.config.security.caKey | string | `""` |  |
-| manager.config.security.enable | bool | `false` |  |
+| manager.config.security.tlsPolicy | string | `"default"` |  |
+| manager.config.security.tlsVerify | bool | `false` |  |
 | manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
@@ -350,6 +353,10 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
+| scheduler.config.security.autoIssueCert | bool | `false` |  |
+| scheduler.config.security.caCert | string | `""` |  |
+| scheduler.config.security.tlsPolicy | string | `"default"` |  |
+| scheduler.config.security.tlsVerify | bool | `false` |  |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
@@ -442,6 +449,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | seedPeer.config.security.autoIssueCert | bool | `false` |  |
 | seedPeer.config.security.caCert | string | `""` |  |
+| seedPeer.config.security.tlsPolicy | string | `"default"` |  |
+| seedPeer.config.security.tlsVerify | bool | `false` |  |
 | seedPeer.config.storage.diskGCThresholdPercent | int | `90` | Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks |
 | seedPeer.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |

@@ -60,3 +60,5 @@ data:
     jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
     {{- end }}
 {{- end }}
+    security:
+{{ toYaml .Values.manager.config.security | indent 6 }}
