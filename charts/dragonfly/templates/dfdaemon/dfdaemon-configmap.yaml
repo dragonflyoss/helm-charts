@@ -94,4 +94,6 @@ data:
         {{- end }}
         {{- end }}
       {{- end }}
+    security:
+{{ toYaml .Values.dfdaemon.config.security | indent 6 }}
 {{- end }}

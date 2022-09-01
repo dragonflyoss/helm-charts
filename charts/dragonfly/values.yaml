@@ -240,6 +240,25 @@ scheduler:
       # if the value is false, P2P network will not be back-to-source through
       # seed peer but by dfdaemon and preheat feature does not work
       enable: true
+    security:
+      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+      # If AutoIssueCert is false, any other option in Security will be ignored.
+      autoIssueCert: false
+      # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
+      caCert: ""
+      # -- TLSVerify indicates to verify certificates.
+      tlsVerify: false
+      # -- TLSPolicy controls the grpc shandshake behaviors:
+      #   force: both ClientHandshake and ServerHandshake are only support tls
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+      tlsPolicy: "prefer"
+      certSpec:
+        # -- ValidityPeriod is the validity period  of certificate.
+        validityPeriod: 4320h
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof
@@ -527,6 +546,25 @@ seedPeer:
       proxies:
         # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*
+    security:
+      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+      # If AutoIssueCert is false, any other option in Security will be ignored.
+      autoIssueCert: false
+      # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
+      caCert: ""
+      # -- TLSVerify indicates to verify certificates.
+      tlsVerify: false
+      # -- TLSPolicy controls the grpc shandshake behaviors:
+      #   force: both ClientHandshake and ServerHandshake are only support tls
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+      tlsPolicy: "prefer"
+      certSpec:
+        # -- ValidityPeriod is the validity period  of certificate.
+        validityPeriod: 4320h
   metrics:
     # -- Enable scheduler metrics
     enable: false
@@ -799,6 +837,25 @@ dfdaemon:
       proxies:
         # -- Proxy all http image layer download requests with dfget
         - regx: blobs/sha256.*
+    security:
+      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+      # If AutoIssueCert is false, any other option in Security will be ignored.
+      autoIssueCert: false
+      # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
+      caCert: ""
+      # -- TLSVerify indicates to verify certificates.
+      tlsVerify: false
+      # -- TLSPolicy controls the grpc shandshake behaviors:
+      #   force: both ClientHandshake and ServerHandshake are only support tls
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+      tlsPolicy: "prefer"
+      certSpec:
+        # -- ValidityPeriod is the validity period  of certificate.
+        validityPeriod: 4320h
 
 manager:
   # -- Enable manager
@@ -905,6 +962,32 @@ manager:
       accessKey: ""
       # -- Access key secret
       secretKey: ""
+    security:
+      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+      # If AutoIssueCert is false, any other option in Security will be ignored.
+      autoIssueCert: false
+      # -- CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string.
+      caCert: ""
+      # -- CAKey is the CA private key, it can be path or PEM format string.
+      caKey: ""
+      # -- TLSPolicy controls the grpc shandshake behaviors:
+      #   force: both ClientHandshake and ServerHandshake are only support tls
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+      tlsPolicy: "prefer"
+      certSpec:
+        # -- DNSNames is a list of dns names be set on the certificate.
+        dnsNames:
+          - "dragonfly-manager"
+          - "dragonfly-manager.dragonfly-system.svc"
+          - "dragonfly-manager.dragonfly-system.svc.cluster.local"
+        # -- IPAddresses is a list of ip addresses be set on the certificate.
+        ipAddresses:
+        # -- ValidityPeriod is the validity period  of certificate.
+        validityPeriod: 87600h
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof

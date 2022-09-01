@@ -201,6 +201,11 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
 | dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
+| dfdaemon.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
+| dfdaemon.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
+| dfdaemon.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
+| dfdaemon.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
+| dfdaemon.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
@@ -265,6 +270,13 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.objectStorage.region | string | `""` | Storage region |
 | manager.config.objectStorage.secretKey | string | `""` | Access key secret |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| manager.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
+| manager.config.security.caCert | string | `""` | CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string. |
+| manager.config.security.caKey | string | `""` | CAKey is the CA private key, it can be path or PEM format string. |
+| manager.config.security.certSpec.dnsNames | list | `["dragonfly-manager","dragonfly-manager.dragonfly-system.svc","dragonfly-manager.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
+| manager.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
+| manager.config.security.certSpec.validityPeriod | string | `"87600h"` | ValidityPeriod is the validity period  of certificate. |
+| manager.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
@@ -345,6 +357,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |
+| scheduler.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
+| scheduler.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
+| scheduler.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
+| scheduler.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
+| scheduler.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
@@ -435,6 +452,11 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.scheduler.manager.seedPeer.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | seedPeer.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types |
 | seedPeer.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
+| seedPeer.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
+| seedPeer.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
+| seedPeer.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
+| seedPeer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
+| seedPeer.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | seedPeer.config.storage.diskGCThresholdPercent | int | `90` | Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks |
 | seedPeer.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |

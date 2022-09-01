@@ -76,4 +76,6 @@ data:
 {{ toYaml .Values.seedPeer.config.proxy.proxies | indent 8 }}
     objectStorage:
 {{ toYaml .Values.seedPeer.config.objectStorage | indent 6 }}
+    security:
+{{ toYaml .Values.seedPeer.config.security | indent 6 }}
 {{- end }}
