@@ -45,6 +45,8 @@ data:
         host: {{ .Values.externalRedis.host }}
         port: {{ .Values.externalRedis.port }}
         {{- end }}
+    security:
+{{ toYaml .Values.scheduler.config.security | indent 6 }}
     metrics:
       enable: {{ .Values.scheduler.metrics.enable }}
       addr: ":8000"

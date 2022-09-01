@@ -49,6 +49,8 @@ data:
 {{ toYaml .Values.manager.config.cache | indent 6 }}
     objectStorage:
 {{ toYaml .Values.manager.config.objectStorage | indent 6 }}
+    security:
+{{ toYaml .Values.manager.config.security | indent 6 }}
     {{- if .Values.manager.metrics.enable }}
     metrics:
       addr: ":8000"
