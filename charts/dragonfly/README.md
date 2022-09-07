@@ -160,8 +160,8 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
 | dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
-| dfdaemon.config.download.perPeerRateLimit | string | `"100Mi"` | Per peer task limit per second |
-| dfdaemon.config.download.totalRateLimit | string | `"200Mi"` | Total download limit per second |
+| dfdaemon.config.download.perPeerRateLimit | string | `"512Mi"` | Per peer task limit per second |
+| dfdaemon.config.download.totalRateLimit | string | `"1024Mi"` | Total download limit per second |
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
 | dfdaemon.config.health.path | string | `"/server/ping"` |  |
 | dfdaemon.config.health.tcpListen.listen | string | `"0.0.0.0"` |  |
@@ -210,7 +210,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id |
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted default is io.d7y.storage.v2.advance |
 | dfdaemon.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
-| dfdaemon.config.upload.rateLimit | string | `"100Mi"` | Upload limit per second |
+| dfdaemon.config.upload.rateLimit | string | `"1024Mi"` | Upload limit per second |
 | dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
 | dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
