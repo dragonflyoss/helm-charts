@@ -728,9 +728,9 @@ dfdaemon:
       disableAutoBackSource: false
     download:
       # -- Total download limit per second
-      totalRateLimit: 200Mi
+      totalRateLimit: 1024Mi
       # -- Per peer task limit per second
-      perPeerRateLimit: 100Mi
+      perPeerRateLimit: 512Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory
       calculateDigest: true
       downloadGRPC:
@@ -753,7 +753,7 @@ dfdaemon:
           port: 65000
     upload:
       # -- Upload limit per second
-      rateLimit: 100Mi
+      rateLimit: 1024Mi
       # -- Upload grpc security option
       security:
         insecure: true
