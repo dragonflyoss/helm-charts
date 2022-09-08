@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - charts/dragonfly/Chart.yaml
 
 jobs:
   release:
