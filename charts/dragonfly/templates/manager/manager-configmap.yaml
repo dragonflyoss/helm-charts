@@ -37,13 +37,13 @@ data:
         {{- end }}
       redis:
         {{- if and .Values.redis.enable (empty .Values.externalRedis.host) }}
+        addrs:
+        - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
-        host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-        port: {{ .Values.redis.master.service.ports.redis }}
         {{- else }}
+        addrs:
+        - {{ .Values.externalRedis.host }}:{{ .Values.externalRedis.port }}
         password: {{ .Values.externalRedis.password }}
-        host: {{ .Values.externalRedis.host }}
-        port: {{ .Values.externalRedis.port }}
         {{- end }}
     cache:
 {{ toYaml .Values.manager.config.cache | indent 6 }}
