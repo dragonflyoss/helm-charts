@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Compatible with v2.0.3 redis addresses configuration
+        - Update dragonfly image tag to v2.0.7-alpha.3
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.7-alpha.3
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.7-alpha.3
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.7-alpha.3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.7.6
+    created: "2022-09-08T10:31:20.652188576Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.1.2
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.10.1
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.56.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: d03235e7906bfb39aa357ec6ecc3cd9425cc9ad789c5389582af83112444464a
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.7.6/dragonfly-0.7.6.tgz
+    version: 0.7.6
+  - annotations:
+      artifacthub.io/changes: |
         - Update dragonfly image version to v2.0.7-alpha.2
       artifacthub.io/images: |
         - name: manager
@@ -32,7 +88,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 7555d2c97dcf080acd12b302647a71e508f776e28cd1df541acce7f607c2d043
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -86,7 +143,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: ba8a1cca0b71ff0faae0d62e510aa40404d8567550df0e12824b50cec3d700c9
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -140,7 +198,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 25033245ea823ca7dc6aacf8ed018e7cb4ffb3974533a2b2dbd6779da08a38b1
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -194,7 +253,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 50d595264baddc7a982529ab257032d6c99da0596689ae563095931200a28fe7
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -248,7 +308,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 720796c8f903dcb4f3d8df8d71837889bda8741efa06db4ce6ab01105646b140
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -302,7 +363,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: be5ac80465b8d52da9cb646c2b33eb42aede991283b0a123a892711d2506b8dd
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -356,7 +418,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 86dc44139a091213243194574478e3a9a4b52447db98902a1035151bb49887a3
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -410,7 +473,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 40e5ea90c1aa22293cf5be447940c6c1fa2514febfe7b76f56545ee899e38a70
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -464,7 +528,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 57b8d4239bce6691511f62183a2c3cfd1c9ee9a160e4e20acf6db4adb9c62364
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -518,7 +583,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: ac98d596ac55a991c8d67e26d15099457875256bb04367c999516204cde380b2
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -572,7 +638,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 88c1dd7304d6f39aa15c26d1a3faefd0cd1b0db77af8eca2aab288d55f2fb962
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -626,7 +693,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: da787367a6006544a7c390ab50db499f5e9f389fa2192fa9bef85446e00c8494
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -680,7 +748,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: c26c62731924b5aa51ed334e3eb91ace8c008709eda39cc9bc2072e940990bae
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -734,7 +803,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: e308e75b5b7a7d4ceff75097c01089d715df3ec352cb7b932bad34a67b291ae4
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -788,7 +858,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 2e902ebd2fabedc25181669bfd287776d15ab5d15065a681a90c2e340235206f
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -843,7 +914,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 3c7c747d5bb014672570bfa7c93ad5848d429304649f6e960d3238fcd92c30c7
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -898,7 +970,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: c076f9f54f1c01b34562ccb4a6cd21c34a542ed9004f1ebd01706eb891427571
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -952,7 +1025,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 20f1be73fb7772b6f5c5627b75fd7b18f4f6c3fd7d9663c0b3d7791d94e3e7a4
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1006,7 +1080,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 732ce465c4c1d69bbbcd1a61452b7f15f0afea61051a69edec6b88b543b70e1e
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1060,7 +1135,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 1fa50d75b9ec172fe383d3ff7b7cdcfea40b2653edb627860224224a7b67b72d
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1114,7 +1190,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 3843b111a10c6ea77257de4a006722a4943be2882073b82f6d7ddb13ef5bc6c5
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1168,7 +1245,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: f5b4f7d4b62ea3664a83da62f33447b1499349be231e3129d65ac8c9884cb7b4
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1222,7 +1300,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 66ef470fd92c2d24cbe32fc6ef2e3d32ce5f18c3cf5a4327596a1066cfb8855c
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1276,7 +1355,8 @@ entries:
       name: jaeger
       repository: https://jaegertracing.github.io/helm-charts
       version: 0.56.5
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 2c469c7a3deb47e345dad61a43c46950144c034ba0a73b281807f39ce143bc45
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1326,7 +1406,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 3c416fffbae3096cba14c39000b107d80def7f6fb3750b66228f01ca3e9e61b6
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1379,7 +1460,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 8553460a3344ba3929fc909c868ce9cc9415c172d9dc9966d531dff591ac785b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1431,7 +1513,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 486aa6df752259488aac6d68c3eaac58aa025c1e9c0577891f561b3ecec5ba64
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1483,7 +1566,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: a59d0f7880069f433c5996903e7b92819927e5f91912dadc66df829a18dc6ed5
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1535,7 +1619,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 8109ecd867749c25cd91a12cb5259e4c47a189f0ffb78b997a02d87dc14d4a30
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1588,7 +1673,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 897f4661ddc7ac899c8e9b5991d7fe11dd4d96c0467b41f31c92a7c671e4de70
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1640,7 +1726,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 31d6cd90e712a62a9e00cfbfbf2dc2a86efc421383e9bd567b087db808d4d103
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1692,7 +1779,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: de48ecb348f6c526a6fbdbd35b6c1c2700f435385a37c187baa6a584c8d9e28b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1744,7 +1832,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 73b29dc8dffe76b4032fea17b63cee42e9d216a278bb4daf8a17e7dfd7e1622c
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1796,7 +1885,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 86cfae318e49dfca1b4ab9b19324c088f775653d61000737eb0657b78b608bcd
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
@@ -1849,7 +1939,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: ff7d7536c91b04730224789d65f5d478e07a9a94254deaff995a9de0f1c3d41b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -1901,7 +1992,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 22fafeac5316541e80c1271e04a843d22dc23807b4f05226b101e0e90d00e41c
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -1954,7 +2046,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: a7e8199c41ab39364b4932dd6fa7f84fd1de455804583ba2464af319f5e9556b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2007,7 +2100,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 4aa05a53da139529abaaf212e7702241e51ae524b5554f8bcf5f7cc39a67eaf3
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2059,7 +2153,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 887f3480642fda428b35163aff4991735fb5bcbd8c2a22cb35028afd9bf773d7
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2111,7 +2206,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: fdf480247fb43be8b65fcc4368428eaa12064b4665ff4f926eec892eb52e98e8
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2163,7 +2259,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 6aeda04573be28981f7060c682de429f6f792734bee968867a5bac0b8fab0da2
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2216,7 +2313,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 7b22f75aa4a372a47d1ea93a31c9b1c9497bca69c3794513e0e869c1f18b2ca3
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2268,7 +2366,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 30700850f258eb443395ad42b2d13922fcd0aa5c4adc1982d07337cd4c27e390
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2320,7 +2419,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 51c9e23045862f19762ef63a7919286643a6753d58d43881c651cd4ed4108328
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2372,7 +2472,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: b925d11174337855ccdd3f78abc62216aff84a70728abb268fd6238c68967fd7
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2417,7 +2518,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 069f1a13a5088cc2aa35ca756852c040a469c2b249c81f1c5c73d589a692c575
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2462,7 +2564,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: abaaa1269e280d27e525673292fb070b7b973e01b79452631299b4a8c21e6905
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2507,7 +2610,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 32862061ad40e6f5e3c4183b526811298d07d2345ff2a6640de0c8a24f40d873
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2553,7 +2657,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 9c5b2c4e615a566f358ec50adbbf3c428b0a12102303a0f0b45f8c6d8c35f517
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2598,7 +2703,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 00464e6c7bcd4cee3c4483aadfe81dfad74ad846c2d49e1661963caacf28a587
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2643,7 +2749,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 4dac0a0f8a9a2a7ea70aa6bc014cf911c00a1349bb62426b755736a0fec2094d
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2688,7 +2795,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 8a18e37cc25f8b052867673321fe82828f391cad383d4fab33416ee2491fa1ac
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2733,7 +2841,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: e9e1a21e414fc2ced8d20a35a9eec01abf8a1423a90f3dcf0c613855bd522419
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2779,7 +2888,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 139fcd79a5770857c1424ccb7c5d83ad9f1e1919b2c6bff7a6f651243b06b70e
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2825,7 +2935,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 3866c464523403af5409f0a9140c3d3d366541ef4460ad03f6ece6596050184a
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2871,7 +2982,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 2ac7ea60022cf4db0837be2169af0e362a44c0a53ff74842aba119a1185a252b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2917,7 +3029,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: eef0d25b267d2dfeae2a15e73363aa6d98dce0a4dbbc4097a3ba4028cd28fdee
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -2963,7 +3076,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 0852b20a9c8620eb3eed094899daf901fc761c1c83ef6b6ed57ce4bdc9f71daa
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3009,7 +3123,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 5f6ae0dff40e427e5e6fcd056071ceff4665b32a647307bedb6ea1c4d4342ff2
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3055,7 +3170,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 1d582d7014aae9044b813158470a0b7467d2bf89e03f0485889e4a271a2093da
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3100,7 +3216,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: f873b182f17fded83dc42e0ebdafbfca1ede7b7125b22a279a2da48596b4d9c9
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3145,7 +3262,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 831bd429a5a24782e830bc5946eaa9576b95f108a1e19c1b9b752a2254ebd1a6
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3190,7 +3308,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: ce4fce80f8d21fbafb3d000800d6f2eeca9221b04cc999eaa0ec7af7e642a6c0
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3236,7 +3355,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 3f63603036a37c37cb50f76241f95d640b544ebbed4895910b85fba622f357d7
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3281,7 +3401,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: d61fb0bec578e4bcb2d5fa6acee6f817f89a021dc5531498b3f6072c921bad3a
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3326,7 +3447,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 651dbd35ccf6be905745df134e47b1b7ede6c18b3bb3da5758728e14afc68360
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3371,7 +3493,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 5e72189694459876f6e88d6e7de78a7c8424078c96b5c8965ae65b221efbe382
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3418,7 +3541,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 1fb5803e0d4397b9f51bc361f514de89593cd7fe5e16d7dc7e61aa0292d92de3
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3463,7 +3587,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: a213c782acdc52b075cb031e6701ef8d98a7f84a2ff0f369976b6938c736798a
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3509,7 +3634,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: e94e340e6439c6e85087cd35aa0f2d65d7ab8573ca42dd3cb28dfc3c6113f90f
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3554,7 +3680,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 398491a833d484d06d04ce80be7c86f2f74c0742f24c8e311bb667457fe75bef
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3599,7 +3726,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 2567157e10fecda2fcc00df54b779af4d385296f2af4a5896b2265bf74ff5600
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3645,7 +3773,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: b846cc13168e858f08c1fd0b019f71b2d71682aebd1e516b06e2d68905c5b67e
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3690,7 +3819,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 480ae86d957270c30f773683fff0a3c3a6fe73df4f67651e3c8e3904467400de
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3735,7 +3865,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 41ec30b512747432be72dd4faf9d713b3dc9bec8cbc2ad6021a918e72014f1a0
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3780,7 +3911,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: d03417a4807f328e4d5ca0c754f86b3562c91d21b29c596bc641e258b030a11b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3825,7 +3957,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 280a55336dd975673139dbe6e00794dc60a0d7a5e750bc9565df4cea86c38a0a
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3870,7 +4003,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: f2f3aefdc19b73df3655971ab600de59ad0e725b035dd2751f278faf1820b6c4
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3916,7 +4050,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 05b87c9182ec24444b8629d27f4dfb5ac48396adc4589c193dff217bad541fdc
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -3962,7 +4097,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: cff214920f842cf3148db13175e05612313e0a838f6a0d2c69fe886faea3ffb8
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4007,7 +4143,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 7c7fbf6e538cdc673203804699d278acbf32e4f004106586f6f9212669e54ec6
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4052,7 +4189,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 297f01a754b8521d8ab9cbb2730c6a48ab0d11db41851dcf3e09956731c5883a
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4100,7 +4238,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: f25e53c0c295b7fabfd0db25d50f5fc5de18713926246c7bab849a95df9f58c0
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4148,7 +4287,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 112a1e7c7c0fcf122e8da21219c83099d41c4aa02448464ea52612bc76b29ee8
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4194,7 +4334,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: e5ae4d887a3c107becc484a25ed4955503c8fca7ada59536539919068ce35945
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4244,7 +4385,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 8d5955acd15b28f61d8bfb75c9d7a18f5163d01dc58d5027e0b51435d4e8ca6b
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4292,7 +4434,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: 473d066ed12fc6acb9a2f4e371505845dc3586140d73223671df4326c6c71241
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4338,7 +4481,8 @@ entries:
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.0
-    description: Dragonfly is an intelligent P2P based image and file distribution system
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
     digest: bbe7957b83d6fe46895274a253a9ac6c5f7268dafa960c8c5f3915715711d9be
     home: https://d7y.io/
     icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/en/images/logo/dragonfly.svg
@@ -4354,4 +4498,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.1.0/dragonfly-0.1.0.tgz
     version: 0.1.0
-generated: "2021-08-12T14:20:33.166208858Z"
+generated: "2022-09-08T10:31:20.653186594Z"
