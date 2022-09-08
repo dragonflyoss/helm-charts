@@ -27,6 +27,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Compatible with v2.0.3 redis addresses configuration
+    - Update dragonfly image tag to v2.0.7-alpha.3
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -35,11 +36,11 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.7-alpha.2
+      image: dragonflyoss/manager:v2.0.7-alpha.3
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.7-alpha.2
+      image: dragonflyoss/dfdaemon:v2.0.7-alpha.3
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.7-alpha.2
+      image: dragonflyoss/scheduler:v2.0.7-alpha.3
 
 dependencies:
   - name: mysql
