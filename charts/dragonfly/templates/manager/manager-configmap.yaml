@@ -55,11 +55,9 @@ data:
 {{ toYaml .Values.manager.config.objectStorage | indent 6 }}
     security:
 {{ toYaml .Values.manager.config.security | indent 6 }}
-    {{- if .Values.manager.metrics.enable }}
     metrics:
-      enable: true
+      enable: {{ .Values.manager.metrics.enable }}
       addr: ":8000"
-    {{- end }}
     console: {{ .Values.manager.config.console }}
     verbose: {{ .Values.manager.config.verbose }}
     {{- if .Values.manager.config.verbose }}
