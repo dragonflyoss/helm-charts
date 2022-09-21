@@ -259,6 +259,9 @@ scheduler:
       certSpec:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
+    network:
+      # -- enableIPv6 enables ipv6.
+      enableIPv6: false
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof
@@ -401,13 +404,9 @@ seedPeer:
     jaeger: ""
     health:
       tcpListen:
-        listen: 0.0.0.0
         port: 40901
       path: /server/ping
     host:
-      # -- TCP service listen address
-      # port should be set by other options
-      listenIP: 0.0.0.0
       # -- Geographical location, separated by "|" characters
       location: ""
       # -- IDC deployed by daemon
@@ -460,8 +459,6 @@ seedPeer:
         security:
           insecure: true
         tcpListen:
-          # -- Listen address
-          listen: 0.0.0.0
           # -- Listen port
           port: 65000
     upload:
@@ -472,8 +469,6 @@ seedPeer:
         insecure: true
         tlsVerify: false
       tcpListen:
-        # -- Listen address
-        listen: 0.0.0.0
         # -- Listen port
         port: 65002
     objectStorage:
@@ -493,8 +488,6 @@ seedPeer:
         insecure: true
         tlsVerify: true
       tcpListen:
-        # -- Listen address
-        listen: 0.0.0.0
         # -- Listen port
         port: 65004
     storage:
@@ -531,8 +524,10 @@ seedPeer:
         insecure: true
         tlsVerify: false
       tcpListen:
-        # -- Listen address
-        listen: 0.0.0.0
+        # -- Namespace stands the linux net namespace, like /proc/1/ns/net
+        # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
+        # Linux only
+        namespace: /run/dragonfly/net
         # If you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
@@ -565,6 +560,9 @@ seedPeer:
       certSpec:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
+    network:
+      # -- enableIPv6 enables ipv6.
+      enableIPv6: false
   metrics:
     # -- Enable scheduler metrics
     enable: false
@@ -687,16 +685,9 @@ dfdaemon:
     jaeger: ""
     health:
       tcpListen:
-        listen: 0.0.0.0
         port: 40901
       path: /server/ping
     host:
-      # -- TCP service listen address
-      # port should be set by other options
-      listenIP: 0.0.0.0
-      # -- Access ip for other peers
-      # when local ip is different with access ip, advertiseIP should be set
-      advertiseIP: 0.0.0.0
       # -- Geographical location, separated by "|" characters
       location: ""
       # -- IDC deployed by daemon
@@ -747,8 +738,6 @@ dfdaemon:
         security:
           insecure: true
         tcpListen:
-          # -- Listen address
-          listen: 0.0.0.0
           # -- Listen port
           port: 65000
     upload:
@@ -759,8 +748,6 @@ dfdaemon:
         insecure: true
         tlsVerify: false
       tcpListen:
-        # -- Listen address
-        listen: 0.0.0.0
         # -- Listen port
         port: 65002
     objectStorage:
@@ -780,8 +767,6 @@ dfdaemon:
         insecure: true
         tlsVerify: true
       tcpListen:
-        # -- Listen address
-        listen: 0.0.0.0
         # -- Listen port
         port: 65004
     storage:
@@ -822,8 +807,6 @@ dfdaemon:
         # it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace
         # Linux only
         namespace: /run/dragonfly/net
-        # -- Listen address
-        listen: 0.0.0.0
         # If you want to change port, please update hostPort in $.Values.dfdaemon.hostPort
         # port in configmap is generated from $.Values.dfdaemon.hostPort
         # port: 65001
@@ -856,6 +839,9 @@ dfdaemon:
       certSpec:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
+    network:
+      # -- enableIPv6 enables ipv6.
+      enableIPv6: false
 
 manager:
   # -- Enable manager
@@ -988,6 +974,9 @@ manager:
         ipAddresses:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 87600h
+    network:
+      # -- enableIPv6 enables ipv6.
+      enableIPv6: false
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof

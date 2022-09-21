@@ -68,7 +68,6 @@ data:
     {{- if not .Values.dfdaemon.hostNetwork }}
         namespace: {{ .Values.dfdaemon.config.proxy.tcpListen.namespace }}
     {{- end }}
-        listen: {{ .Values.dfdaemon.config.proxy.tcpListen.listen }}
         port: {{ .Values.dfdaemon.containerPort }}
       security:
 {{ toYaml .Values.dfdaemon.config.proxy.security | indent 8 }}
@@ -96,4 +95,6 @@ data:
       {{- end }}
     security:
 {{ toYaml .Values.dfdaemon.config.security | indent 6 }}
+    network:
+{{ toYaml .Values.dfdaemon.config.network | indent 6 }}
 {{- end }}
