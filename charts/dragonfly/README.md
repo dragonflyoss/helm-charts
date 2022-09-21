@@ -158,17 +158,13 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address current, only support unix domain socket |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
-| dfdaemon.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
 | dfdaemon.config.download.perPeerRateLimit | string | `"512Mi"` | Per peer task limit per second |
 | dfdaemon.config.download.totalRateLimit | string | `"1024Mi"` | Total download limit per second |
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
 | dfdaemon.config.health.path | string | `"/server/ping"` |  |
-| dfdaemon.config.health.tcpListen.listen | string | `"0.0.0.0"` |  |
 | dfdaemon.config.health.tcpListen.port | int | `40901` |  |
-| dfdaemon.config.host.advertiseIP | string | `"0.0.0.0"` | Access ip for other peers when local ip is different with access ip, advertiseIP should be set |
 | dfdaemon.config.host.idc | string | `""` | IDC deployed by daemon |
-| dfdaemon.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
 | dfdaemon.config.host.location | string | `""` | Geographical location, separated by "|" characters |
 | dfdaemon.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
 | dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
@@ -176,11 +172,11 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log storage directory |
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
+| dfdaemon.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | dfdaemon.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | dfdaemon.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
-| dfdaemon.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
@@ -190,7 +186,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
 | dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | dfdaemon.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
-| dfdaemon.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
 | dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
@@ -212,7 +207,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
 | dfdaemon.config.upload.rateLimit | string | `"1024Mi"` | Upload limit per second |
 | dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
-| dfdaemon.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
 | dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | dfdaemon.config.workHome | string | `""` | Daemon work directory |
@@ -263,6 +257,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.redis.ttl | string | `"30s"` | Redis cache TTL duration |
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
+| manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | manager.config.objectStorage.accessKey | string | `""` | Access key ID |
 | manager.config.objectStorage.enable | bool | `false` | Enable object storage |
 | manager.config.objectStorage.endpoint | string | `""` | Datacenter endpoint |
@@ -347,6 +342,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.jaeger | string | `""` |  |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
+| scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml" "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins |
 | scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the seed peer is unavailable |
@@ -411,27 +407,24 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option |
 | seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address current, only support unix domain socket |
 | seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option |
-| seedPeer.config.download.peerGRPC.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port |
 | seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second |
 | seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second |
 | seedPeer.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval |
 | seedPeer.config.health.path | string | `"/server/ping"` |  |
-| seedPeer.config.health.tcpListen.listen | string | `"0.0.0.0"` |  |
 | seedPeer.config.health.tcpListen.port | int | `40901` |  |
 | seedPeer.config.host.idc | string | `""` | IDC deployed by daemon |
-| seedPeer.config.host.listenIP | string | `"0.0.0.0"` | TCP service listen address port should be set by other options |
 | seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters |
 | seedPeer.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
 | seedPeer.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | seedPeer.config.jaeger | string | `""` |  |
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | seedPeer.config.logDir | string | `""` | Log storage directory |
+| seedPeer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | seedPeer.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | seedPeer.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
-| seedPeer.config.objectStorage.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
@@ -441,7 +434,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true |
 | seedPeer.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | seedPeer.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
-| seedPeer.config.proxy.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
+| seedPeer.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
 | seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
@@ -463,7 +456,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.storage.taskExpireTime | string | `"6h"` | Task data expire time when there is no access to a task data, this task will be gc. |
 | seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second |
 | seedPeer.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
-| seedPeer.config.upload.tcpListen.listen | string | `"0.0.0.0"` | Listen address |
 | seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port |
 | seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | seedPeer.config.workHome | string | `""` | Daemon work directory |

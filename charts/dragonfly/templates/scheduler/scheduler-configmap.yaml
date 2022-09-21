@@ -51,6 +51,8 @@ data:
         {{- end }}
     security:
 {{ toYaml .Values.scheduler.config.security | indent 6 }}
+    network:
+{{ toYaml .Values.scheduler.config.network | indent 6 }}
     metrics:
       enable: {{ .Values.scheduler.metrics.enable }}
       addr: ":8000"
