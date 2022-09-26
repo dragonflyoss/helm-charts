@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update dragonfly image verison to v2.0.7-beta.2.
+        - Add prefetch field to dfdaemon configuration.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.7-beta.2
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.7-beta.2
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.7-beta.2
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.7.9
+    created: "2022-09-26T07:18:19.555789214Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.1.2
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.10.1
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.56.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: d6e740839857e52db3fd1b07fadd89af6373338d83fe9042f8ee1edbd2fd0d07
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.7.9/dragonfly-0.7.9.tgz
+    version: 0.7.9
+  - annotations:
+      artifacthub.io/changes: |
         - Remove listenIP and advertiseIP field from dfdaemon
         - Add enableIPv6 filed to services
       artifacthub.io/images: |
@@ -4609,4 +4665,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.1.0/dragonfly-0.1.0.tgz
     version: 0.1.0
-generated: "2022-09-21T14:51:19.988482649Z"
+generated: "2022-09-26T07:18:19.556813466Z"
