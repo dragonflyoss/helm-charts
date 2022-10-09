@@ -384,8 +384,9 @@ spec:
           [plugins."io.containerd.grpc.v1.cri".registry]
             config_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"
           EOF
+                echo "Registry config_path $config_path added"
+                need_restart=1
               fi
-              
               mkdir -p $etcContainerd/certs.d
               for registry in $registries; do
                 # parse registry domain
