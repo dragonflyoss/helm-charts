@@ -387,7 +387,6 @@ spec:
                 echo "Registry config_path $config_path added"
                 need_restart=1
               fi
-              
               mkdir -p $etcContainerd/certs.d
               for registry in $registries; do
                 # parse registry domain
