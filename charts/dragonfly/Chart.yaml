@@ -26,7 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Restart containerd after injecting config_path to config file.
+    - Add the operation of restarting containerd in dfdaemon configuration.
 
   artifacthub.io/links: |
     - name: Chart Source
