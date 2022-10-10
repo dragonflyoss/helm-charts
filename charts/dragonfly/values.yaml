@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.7-beta.2
+  tag: v2.0.7-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -209,13 +209,13 @@ scheduler:
       retryInterval: 50ms
       gc:
         # -- Peer's gc interval
-        peerGCInterval: 10m
+        peerGCInterval: 10s
         # -- Peer's TTL duration
         peerTTL: 24h
         # -- Task's gc interval
-        taskGCInterval: 10m
-        # -- Task's TTL duration
-        taskTTL: 24h
+        taskGCInterval: 30m
+        # -- Host's gc interval
+        hostGCInterval: 1h
     dynconfig:
       # -- Type is deprecated and is no longer used.
       # Please remove it from your configuration.
@@ -316,7 +316,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.7-beta.2
+  tag: v2.0.7-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -608,7 +608,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.7-beta.2
+  tag: v2.0.7-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -861,7 +861,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.7-beta.2
+  tag: v2.0.7-beta.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
