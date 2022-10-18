@@ -403,6 +403,8 @@ spec:
             capabilities = ["pull", "resolve"]
             [host."http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}".header]
             X-Dragonfly-Registry = ["$registry"]
+          [host."$registry"]
+            capabilities = ["pull", "resolve"]
           EOF
                   echo "Registry $domain added"
                   {{- if not .Values.containerRuntime.containerd.injectConfigPath }}
