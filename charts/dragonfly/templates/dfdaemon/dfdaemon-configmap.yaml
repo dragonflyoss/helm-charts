@@ -15,9 +15,10 @@ data:
     gcInterval: {{ .Values.dfdaemon.config.gcInterval }}
     keepStorage: {{ .Values.dfdaemon.config.keepStorage }}
     workHome: {{ .Values.dfdaemon.config.workHome }}
-    cacheDir: {{ .Values.dfdaemon.config.cacheDir }}
-    dataDir: {{ .Values.dfdaemon.config.dataDir }}
     logDir: {{ .Values.dfdaemon.config.logDir }}
+    cacheDir: {{ .Values.dfdaemon.config.cacheDir }}
+    pluginDir: {{ .Values.dfdaemon.config.pluginDir }}
+    dataDir: {{ .Values.dfdaemon.config.dataDir }}
     console: {{ .Values.dfdaemon.config.console }}
     health:
 {{ toYaml .Values.dfdaemon.config.health | indent 6 }}

@@ -18,6 +18,10 @@ data:
         port:
           start: {{ .Values.manager.grpcPort }}
           end: {{ .Values.manager.grpcPort }}
+      workHome: {{ .Values.manager.config.server.workHome }}
+      logDir: {{ .Values.manager.config.server.logDir }}
+      cacheDir: {{ .Values.manager.config.server.cacheDir }}
+      pluginDir: {{ .Values.manager.config.server.pluginDir }}
     database:
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
