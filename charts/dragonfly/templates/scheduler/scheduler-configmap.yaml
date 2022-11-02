@@ -14,8 +14,9 @@ data:
     server:
       port: {{ .Values.scheduler.containerPort }}
       workHome: {{ .Values.scheduler.config.server.workHome }}
-      cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
       logDir: {{ .Values.scheduler.config.server.logDir }}
+      cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
+      pluginDir: {{ .Values.scheduler.config.server.pluginDir }}
       dataDir: {{ .Values.scheduler.config.server.dataDir }}
     scheduler:
 {{ toYaml .Values.scheduler.config.scheduler | indent 6 }}

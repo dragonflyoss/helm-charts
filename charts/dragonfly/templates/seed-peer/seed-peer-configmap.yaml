@@ -15,9 +15,10 @@ data:
     gcInterval: {{ .Values.seedPeer.config.gcInterval }}
     keepStorage: {{ .Values.seedPeer.config.keepStorage }}
     workHome: {{ .Values.seedPeer.config.workHome }}
-    cacheDir: {{ .Values.seedPeer.config.cacheDir }}
-    dataDir: {{ .Values.seedPeer.config.dataDir }}
     logDir: {{ .Values.seedPeer.config.logDir }}
+    cacheDir: {{ .Values.seedPeer.config.cacheDir }}
+    pluginDir: {{ .Values.seedPeer.config.pluginDir }}
+    dataDir: {{ .Values.seedPeer.config.dataDir }}
     console: {{ .Values.seedPeer.config.console }}
     health:
 {{ toYaml .Values.dfdaemon.config.health | indent 6 }}

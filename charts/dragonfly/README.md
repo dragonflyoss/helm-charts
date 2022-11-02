@@ -151,7 +151,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.extraInitContainers | list | `[]` | Additional init containers |
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
-| dfdaemon.config.cacheDir | string | `""` | Dynconfig cache storage directory |
+| dfdaemon.config.cacheDir | string | `""` | Dynconfig cache directory |
 | dfdaemon.config.console | bool | `false` | Console shows log on console |
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
@@ -171,7 +171,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
-| dfdaemon.config.logDir | string | `""` | Log storage directory |
+| dfdaemon.config.logDir | string | `""` | Log directory |
 | dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
 | dfdaemon.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
@@ -179,6 +179,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
+| dfdaemon.config.pluginDir | string | `""` | Plugin directory |
 | dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
 | dfdaemon.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
@@ -210,7 +211,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port |
 | dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| dfdaemon.config.workHome | string | `""` | Daemon work directory |
+| dfdaemon.config.workHome | string | `""` | Work directory |
 | dfdaemon.containerPort | int | `65001` | Pod containerPort |
 | dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dfdaemon.enable | bool | `true` | Enable dfdaemon |
@@ -230,7 +231,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.7"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.8-alpha.4"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -273,6 +274,10 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
 | manager.config.security.certSpec.validityPeriod | string | `"87600h"` | ValidityPeriod is the validity period  of certificate. |
 | manager.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
+| manager.config.server.cacheDir | string | `""` | Dynconfig cache directory |
+| manager.config.server.logDir | string | `""` | Log directory |
+| manager.config.server.pluginDir | string | `""` | Plugin directory |
+| manager.config.server.workHome | string | `""` | Work directory |
 | manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations |
 | manager.enable | bool | `true` | Enable manager |
@@ -316,7 +321,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.7"` | Image tag |
+| manager.tag | string | `"v2.0.8-alpha.4"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -360,10 +365,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | scheduler.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
-| scheduler.config.server.cacheDir | string | `""` | Dynconfig cache storage directory |
+| scheduler.config.server.cacheDir | string | `""` | Dynconfig cache directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
-| scheduler.config.server.logDir | string | `""` | Log storage directory |
-| scheduler.config.server.workHome | string | `""` | Service work directory |
+| scheduler.config.server.logDir | string | `""` | Log directory |
+| scheduler.config.server.pluginDir | string | `""` | Plugin directory |
+| scheduler.config.server.workHome | string | `""` | Work directory |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
@@ -397,11 +403,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.7"` | Image tag |
+| scheduler.tag | string | `"v2.0.8-alpha.4"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
-| seedPeer.config.cacheDir | string | `""` | Dynconfig cache storage directory |
+| seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory |
 | seedPeer.config.console | bool | `false` | Console shows log on console |
 | seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
 | seedPeer.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory |
@@ -421,13 +427,14 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | seedPeer.config.jaeger | string | `""` |  |
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
-| seedPeer.config.logDir | string | `""` | Log storage directory |
+| seedPeer.config.logDir | string | `""` | Log directory |
 | seedPeer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | seedPeer.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
 | seedPeer.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
 | seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option |
 | seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port |
+| seedPeer.config.pluginDir | string | `""` | Plugin directory |
 | seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
 | seedPeer.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
@@ -460,7 +467,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option |
 | seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port |
 | seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| seedPeer.config.workHome | string | `""` | Daemon work directory |
+| seedPeer.config.workHome | string | `""` | Work directory |
 | seedPeer.enable | bool | `true` | Enable dfdaemon seed peer |
 | seedPeer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/daemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -496,7 +503,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.7"` | Image tag |
+| seedPeer.tag | string | `"v2.0.8-alpha.4"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.7
+  tag: v2.0.8-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -183,12 +183,14 @@ scheduler:
     pullPolicy: IfNotPresent
   config:
     server:
-      # -- Service work directory
+      # -- Work directory
       workHome: ""
-      # -- Dynconfig cache storage directory
-      cacheDir: ""
-      # -- Log storage directory
+      # -- Log directory
       logDir: ""
+      # -- Dynconfig cache directory
+      cacheDir: ""
+      # -- Plugin directory
+      pluginDir: ""
       # -- Storage directory
       dataDir: ""
     scheduler:
@@ -316,7 +318,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.7
+  tag: v2.0.8-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -385,12 +387,14 @@ seedPeer:
     # it is usefully when upgrade daemon service, all local cache will be saved
     # default is false
     keepStorage: false
-    # -- Daemon work directory
+    # -- Work directory
     workHome: ""
-    # -- Dynconfig cache storage directory
-    cacheDir: ""
-    # -- Log storage directory
+    # -- Log directory
     logDir: ""
+    # -- Dynconfig cache directory
+    cacheDir: ""
+    # -- Plugin directory
+    pluginDir: ""
     # -- Daemon data storage directory
     dataDir: "/var/lib/dragonfly"
     # -- Console shows log on console
@@ -608,7 +612,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.7
+  tag: v2.0.8-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -666,12 +670,14 @@ dfdaemon:
     # it is usefully when upgrade daemon service, all local cache will be saved
     # default is false
     keepStorage: false
-    # -- Daemon work directory
+    # -- Work directory
     workHome: ""
-    # -- Dynconfig cache storage directory
-    cacheDir: ""
-    # -- Log storage directory
+    # -- Log directory
     logDir: ""
+    # -- Dynconfig cache directory
+    cacheDir: ""
+    # -- Plugin directory
+    pluginDir: ""
     # -- Daemon data storage directory
     dataDir: "/var/lib/dragonfly"
     # -- Console shows log on console
@@ -861,7 +867,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.7
+  tag: v2.0.8-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -930,6 +936,15 @@ manager:
     # -- Ingress TLS configuration
     tls: []
   config:
+    server:
+      # -- Work directory
+      workHome: ""
+      # -- Log directory
+      logDir: ""
+      # -- Dynconfig cache directory
+      cacheDir: ""
+      # -- Plugin directory
+      pluginDir: ""
     cache:
       redis:
         # -- Redis cache TTL duration
