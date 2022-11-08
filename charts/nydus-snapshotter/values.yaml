@@ -1,0 +1,72 @@
+# nydus-snapshotter Helm Chart Values
+
+# -- Override nydus-snapshotter name
+nameOverride: ""
+# -- Override nydus-snapshotter fullname
+fullnameOverride: ""
+
+nydusSnapshotter:
+  # -- nydus-snapshotter name
+  name: nydus-snapshotter
+  # -- Override nydus-snapshotter name
+  nameOverride: ""
+  # -- Override nydus-snapshotter fullname
+  fullnameOverride: ""
+  # -- Image repository
+  image: ghcr.io/containerd/nydus-snapshotter
+  # -- Image tag (FIXME: This version should be updated after a new snapshotter is released.)
+  tag: v1.2.11
+  # -- Image pull policy
+  pullPolicy: Always
+  # -- Let nydus-snapshotter run in host network
+  hostNetwork: true
+  # -- Host Aliases
+  hostAliases: []
+  # -- Pod resource requests and limits
+  resources:
+    requests:
+      cpu: "0"
+      memory: "0"
+    limits:
+      cpu: "2"
+      memory: "2Gi"
+  # -- Pod priorityClassName
+  priorityClassName: ""
+  # -- Node labels for pod assignment
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
+  terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
+  tolerations: []
+  # -- Pod annotations
+  podAnnotations: {}
+  # -- Pod labels
+  podLabels: {}
+  # -- Daemonset annotations
+  daemonsetAnnotations: {}
+
+dragonfly:
+  # -- Enable dragonfly
+  enable: true
+  mirrorConfig:
+    host: "http://127.0.0.1:65001"
+    auth_through: false
+    headers:
+      "X-Dragonfly-Registry": "https://index.docker.io"
+    ping_url: "http://127.0.0.1:40901/server/ping"
+
+
+# -- [Experimental] Container runtime support
+# Choose special container runtime in Kubernetes.
+# Support: Containerd, Docker, CRI-O
+containerRuntime:
+  # -- The image name of init container, just to update container runtime configuration file
+  initContainerImage: library/alpine:latest
+
+  # -- [Experimental] Containerd support
+  containerd:
+    # -- Enable containerd support
+    # Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile},
+    enable: true
+    # -- Custom config path directory, default is /etc/containerd/config.toml
+    configFile: "/etc/containerd/config.toml"
