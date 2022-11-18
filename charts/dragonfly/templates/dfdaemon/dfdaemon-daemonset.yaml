@@ -285,7 +285,7 @@ spec:
             echo Docker proxy already enabled, skip
           else
             echo Try to inject proxy and restart docker
-            path=$(nsenter -t 1 -m systemctl -- show -p FragmentPath docker.service | grep -o "/.*")
+            path=$(nsenter -t 1 -m systemctl -- show -p FragmentPath docker.service | grep -o "/.*systemd.*")
             if [[ -z "$path" ]]; then
                 echo docker.service not found
                 exit 1
