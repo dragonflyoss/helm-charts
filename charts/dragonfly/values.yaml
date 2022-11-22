@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.8-alpha.4
+  tag: v2.0.8-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -318,7 +318,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8-alpha.4
+  tag: v2.0.8-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -569,6 +569,11 @@ seedPeer:
     network:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
+    announcer:
+      # -- schedulerInterval is the interval of announcing scheduler.
+      # Announcer will provide the scheduler with peer information for scheduling.
+      # Peer information includes cpu, memory, etc.
+      schedulerInterval: 30s
   metrics:
     # -- Enable scheduler metrics
     enable: false
@@ -612,7 +617,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8-alpha.4
+  tag: v2.0.8-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -852,6 +857,11 @@ dfdaemon:
     network:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
+    announcer:
+      # -- schedulerInterval is the interval of announcing scheduler.
+      # Announcer will provide the scheduler with peer information for scheduling.
+      # Peer information includes cpu, memory, etc.
+      schedulerInterval: 30s
 
 manager:
   # -- Enable manager
@@ -867,7 +877,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.8-alpha.4
+  tag: v2.0.8-rc.0
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases

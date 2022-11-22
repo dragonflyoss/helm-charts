@@ -80,4 +80,6 @@ data:
 {{ toYaml .Values.seedPeer.config.security | indent 6 }}
     network:
 {{ toYaml .Values.seedPeer.config.network | indent 6 }}
+    announcer:
+{{ toYaml .Values.seedPeer.config.announcer | indent 6 }}
 {{- end }}
