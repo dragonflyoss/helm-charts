@@ -151,6 +151,7 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.extraInitContainers | list | `[]` | Additional init containers |
 | containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
+| dfdaemon.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
 | dfdaemon.config.cacheDir | string | `""` | Dynconfig cache directory |
 | dfdaemon.config.console | bool | `false` | Console shows log on console |
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
@@ -231,7 +232,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.8-alpha.4"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.8-rc.0"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -321,7 +322,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.8-alpha.4"` | Image tag |
+| manager.tag | string | `"v2.0.8-rc.0"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -403,10 +404,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.8-alpha.4"` | Image tag |
+| scheduler.tag | string | `"v2.0.8-rc.0"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
+| seedPeer.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
 | seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory |
 | seedPeer.config.console | bool | `false` | Console shows log on console |
 | seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory |
@@ -503,7 +505,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.8-alpha.4"` | Image tag |
+| seedPeer.tag | string | `"v2.0.8-rc.0"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

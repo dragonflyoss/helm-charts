@@ -98,4 +98,6 @@ data:
 {{ toYaml .Values.dfdaemon.config.security | indent 6 }}
     network:
 {{ toYaml .Values.dfdaemon.config.network | indent 6 }}
+    announcer:
+{{ toYaml .Values.dfdaemon.config.announcer | indent 6 }}
 {{- end }}
