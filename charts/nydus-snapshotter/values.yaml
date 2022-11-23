@@ -61,7 +61,7 @@ dragonfly:
 # Support: Containerd, Docker, CRI-O
 containerRuntime:
   # -- The image name of init container, just to update container runtime configuration file
-  initContainerImage: library/alpine:latest
+  initContainerImage: ghcr.io/liubin/toml-cli:latest
 
   # -- [Experimental] Containerd support
   containerd:

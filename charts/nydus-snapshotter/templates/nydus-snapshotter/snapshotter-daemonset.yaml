@@ -37,6 +37,7 @@ spec:
 {{ toYaml .Values.nydusSnapshotter.nodeSelector | indent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.nydusSnapshotter.hostNetwork }}
+      hostPID: {{ .Values.containerRuntime.containerd.enable }}
       {{- if .Values.nydusSnapshotter.hostNetwork }}
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
@@ -93,31 +94,29 @@ spec:
         - |-
           etcContainerd={{ .Values.containerRuntime.containerd.configFile }}
 
-          if grep -q "nydus" $etcContainerd; then
+          toml check $etcContainerd proxy_plugins.nydus
+          if [ $? -eq 0 ]; then
             echo "nydus snapshotter has already configured."
             exit 0
           fi
 
-          # FIXME use https://github.com/gnprice/toml-cli to edit toml file
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.discard_unpacked_layers false
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.disable_snapshot_annotations false
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.snapshotter nydus
+
+          # toml command not support to set block, so just use cat command.
           cat << EOF >> $etcContainerd
           [proxy_plugins]
             [proxy_plugins.nydus]
               type = "snapshot"
               address = "/run/containerd-nydus/containerd-nydus-grpc.sock"
-
-          [plugins."io.containerd.grpc.v1.cri".containerd]
-            # snapshotter = "nydus"
-            disable_snapshot_annotations = false
-
-          # this is a workaround to not change the system default snapshotter
-          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc-nydus]
-            runtime_type = "io.containerd.runc.v2"
-            snapshotter = "nydus"
           EOF
 
           # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
-          nsenter -t 1 -m systemctl -- restart containerd.service
-
+          # FIXME: can't restart, because global snapshotter has been set to nydus, but it is not started yet.
+          # nsenter -t 1 -m systemctl -- restart containerd.service
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: containerd-conf
           mountPath: {{ .Values.containerRuntime.containerd.configFile }}

@@ -57,11 +57,11 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"library/alpine:latest"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
+| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"ghcr.io/liubin/toml-cli:latest"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFile":"/etc/containerd/config.toml","enable":true}` | [Experimental] Containerd support |
 | containerRuntime.containerd.configFile | string | `"/etc/containerd/config.toml"` | Custom config path directory, default is /etc/containerd/config.toml |
 | containerRuntime.containerd.enable | bool | `true` | Enable containerd support Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile}, |
-| containerRuntime.initContainerImage | string | `"library/alpine:latest"` | The image name of init container, just to update container runtime configuration file |
+| containerRuntime.initContainerImage | string | `"ghcr.io/liubin/toml-cli:latest"` | The image name of init container, just to update container runtime configuration file |
 | dragonfly.enable | bool | `true` | Enable dragonfly |
 | dragonfly.mirrorConfig.auth_through | bool | `false` |  |
 | dragonfly.mirrorConfig.headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
