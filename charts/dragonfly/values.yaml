@@ -241,7 +241,7 @@ scheduler:
       # -- scheduler enable seed peer as P2P peer,
       # if the value is false, P2P network will not be back-to-source through
       # seed peer but by dfdaemon and preheat feature does not work
-      enable: true # Store task download information.
+      enable: true
     storage:
       # -- maxSize sets the maximum size in megabytes of storage file.
       maxSize: 100
