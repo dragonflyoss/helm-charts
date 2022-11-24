@@ -65,7 +65,15 @@ spec:
           value: "false"
         resources:
 {{ toYaml .Values.nydusSnapshotter.resources | indent 12 }}
-
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
+                nsenter -t 1 -m systemctl -- restart containerd.service
         volumeMounts:
         - name: config
           mountPath: "/etc/nydus/"
@@ -112,11 +120,6 @@ spec:
               address = "/run/containerd-nydus/containerd-nydus-grpc.sock"
           EOF
 
-          # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
-          # FIXME: can't restart, because global snapshotter has been set to nydus, but it is not started yet.
-          # nsenter -t 1 -m systemctl -- restart containerd.service
-        securityContext:
-          privileged: true
         volumeMounts:
         - name: containerd-conf
           mountPath: {{ .Values.containerRuntime.containerd.configFile }}
