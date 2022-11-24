@@ -50,6 +50,8 @@ data:
         port: {{ .Values.externalRedis.port }}
         password: {{ .Values.externalRedis.password }}
         {{- end }}
+    storage:
+{{ toYaml .Values.scheduler.config.storage | indent 6 }}
     security:
 {{ toYaml .Values.scheduler.config.security | indent 6 }}
     network:
