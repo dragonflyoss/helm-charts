@@ -371,6 +371,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.logDir | string | `""` | Log directory |
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory |
 | scheduler.config.server.workHome | string | `""` | Work directory |
+| scheduler.config.storage.bufferSize | int | `100` | bufferSize sets the size of buffer container, if the buffer is full, write all the records in the buffer to the file. |
+| scheduler.config.storage.maxBackups | int | `10` | maxBackups sets the maximum number of storage files to retain. |
+| scheduler.config.storage.maxSize | int | `100` | maxSize sets the maximum size in megabytes of storage file. |
 | scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | scheduler.containerPort | int | `8002` | Pod containerPort |
 | scheduler.enable | bool | `true` | Enable scheduler |
