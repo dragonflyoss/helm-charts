@@ -353,10 +353,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml" "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins |
 | scheduler.config.scheduler.backSourceCount | int | `3` | Number of backsource clients when the seed peer is unavailable |
-| scheduler.config.scheduler.gc.hostGCInterval | string | `"1h"` | Host's gc interval |
-| scheduler.config.scheduler.gc.peerGCInterval | string | `"10s"` | Peer's gc interval |
-| scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | Peer's TTL duration |
-| scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | Task's gc interval |
+| scheduler.config.scheduler.gc.hostGCInterval | string | `"1h"` | hostGCInterval is the interval of host gc. |
+| scheduler.config.scheduler.gc.peerGCInterval | string | `"10s"` | peerGCInterval is the interval of peer gc. |
+| scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | peerTTL is the ttl of peer. |
+| scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
+| scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. |
 | scheduler.config.scheduler.retryBackSourceLimit | int | `5` | Retry scheduling back-to-source limit times |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times |

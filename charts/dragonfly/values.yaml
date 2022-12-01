@@ -210,13 +210,15 @@ scheduler:
       # -- Retry scheduling interval
       retryInterval: 50ms
       gc:
-        # -- Peer's gc interval
+        # -- pieceDownloadTimeout is the timeout of downloading piece.
+        pieceDownloadTimeout: 30m
+        # -- peerGCInterval is the interval of peer gc.
         peerGCInterval: 10s
-        # -- Peer's TTL duration
+        # -- peerTTL is the ttl of peer.
         peerTTL: 24h
-        # -- Task's gc interval
+        # -- taskGCInterval is the interval of task gc.
         taskGCInterval: 30m
-        # -- Host's gc interval
+        # -- hostGCInterval is the interval of host gc.
         hostGCInterval: 1h
     dynconfig:
       # -- Type is deprecated and is no longer used.
