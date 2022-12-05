@@ -201,10 +201,10 @@ scheduler:
       # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
       # the dragonfly working directory plugins
       algorithm: default
-      # -- Number of backsource clients when the seed peer is unavailable
-      backSourceCount: 3
-      # -- Retry scheduling back-to-source limit times
-      retryBackSourceLimit: 5
+      # -- backToSourceCount is single task allows the peer to back-to-source count
+      backToSourceCount: 3
+      # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source
+      retryBackToSourceLimit: 5
       # -- Retry scheduling limit times
       retryLimit: 10
       # -- Retry scheduling interval
