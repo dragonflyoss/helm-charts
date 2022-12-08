@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ template "nydus-snapshotter.fullname" . }}
+  labels:
+    app: {{ template "nydus-snapshotter.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: "{{ .Values.name }}"
+  annotations:
+    {{- if .Values.daemonsetAnnotations }}
+{{ toYaml .Values.daemonsetAnnotations | indent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "nydus-snapshotter.fullname" . }}
+      component: "{{ .Values.name }}"
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "nydus-snapshotter.fullname" . }}
+        component: "{{ .Values.name }}"
+        release: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+        {{- end }}
+      {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{template "nydus-snapshotter.fullname" . }}-sa
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      hostPID: {{ .Values.containerRuntime.containerd.enable }}
+      {{- if .Values.hostNetwork }}
+      dnsPolicy: "ClusterFirstWithHostNet"
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
+
+      {{- if quote .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.priorityClassName) }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
+      {{- if .Values.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.hostAliases | indent 8 }}
+      {{- end }}
+      containers:
+      - name: nydus-snapshotter
+        image: "{{ .Values.image }}:{{ .Values.tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy | quote }}
+        env:
+        - name: ENABLE_NYDUS_OVERLAY
+          value: "false"
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
+                nsenter -t 1 -m systemctl -- restart containerd.service
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/nydus/"
+        - name: nydus-lib
+          mountPath: "/var/lib/containerd-nydus"
+          mountPropagation: Bidirectional
+        - name: nydus-run
+          mountPath: "/run/containerd-nydus"
+          mountPropagation: Bidirectional
+        - name: fuse
+          mountPath: "/dev/fuse"
+
+        securityContext:
+          privileged: true
+
+      initContainers:
+      {{- if .Values.containerRuntime.containerd.enable }}
+      - name: update-containerd
+        image: "{{ .Values.containerRuntime.initContainerImage }}"
+        imagePullPolicy: {{ .Values.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          etcContainerd={{ .Values.containerRuntime.containerd.configFile }}
+
+          toml check $etcContainerd proxy_plugins.nydus
+          if [ $? -eq 0 ]; then
+            echo "nydus snapshotter has already configured."
+            exit 0
+          fi
+
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.discard_unpacked_layers false
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.disable_snapshot_annotations false
+          toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.snapshotter nydus
+
+          # toml command not support to set block, so just use cat command.
+          cat << EOF >> $etcContainerd
+          [proxy_plugins]
+            [proxy_plugins.nydus]
+              type = "snapshot"
+              address = "/run/containerd-nydus/containerd-nydus-grpc.sock"
+          EOF
+
+        volumeMounts:
+        - name: containerd-conf
+          mountPath: {{ .Values.containerRuntime.containerd.configFile }}
+      {{- end }}
+
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "nydus-snapshotter.fullname" . }}
+      - name: nydus-run
+        hostPath:
+          path: /run/containerd-nydus
+          type: DirectoryOrCreate
+      - name: nydus-lib
+        hostPath:
+          path: /var/lib/containerd-nydus
+          type: DirectoryOrCreate
+      - name: fuse
+        hostPath:
+          path: /dev/fuse
+      {{- if .Values.containerRuntime.containerd.enable }}
+      - name: containerd-conf
+        hostPath:
+          path: {{ .Values.containerRuntime.containerd.configFile }}
+      {{- end }}

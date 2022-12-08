@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{template "nydus-snapshotter.fullname" . }}-sa
+  namespace: {{ .Release.Namespace }}
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "nydus-snapshotter.fullname" . }}-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "nydus-snapshotter.fullname" . }}-role-binding
+roleRef:
+  kind: ClusterRole
+  name: {{ template "nydus-snapshotter.fullname" . }}-role
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: {{ template "nydus-snapshotter.fullname" . }}-sa
+  namespace: {{ .Release.Namespace }}
+
