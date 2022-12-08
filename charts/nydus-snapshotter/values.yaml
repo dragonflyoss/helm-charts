@@ -1,49 +1,39 @@
 # nydus-snapshotter Helm Chart Values
 
-# -- Override nydus-snapshotter name
-nameOverride: ""
-# -- Override nydus-snapshotter fullname
-fullnameOverride: ""
-
-nydusSnapshotter:
-  # -- nydus-snapshotter name
-  name: nydus-snapshotter
-  # -- Override nydus-snapshotter name
-  nameOverride: ""
-  # -- Override nydus-snapshotter fullname
-  fullnameOverride: ""
-  # -- Image repository
-  image: ghcr.io/containerd/nydus-snapshotter
-  # -- Image tag (FIXME: This version should be updated after a new snapshotter is released.)
-  tag: v1.2.11
-  # -- Image pull policy
-  pullPolicy: Always
-  # -- Let nydus-snapshotter run in host network
-  hostNetwork: true
-  # -- Host Aliases
-  hostAliases: []
-  # -- Pod resource requests and limits
-  resources:
-    requests:
-      cpu: "0"
-      memory: "0"
-    limits:
-      cpu: "2"
-      memory: "2Gi"
-  # -- Pod priorityClassName
-  priorityClassName: ""
-  # -- Node labels for pod assignment
-  nodeSelector: {}
-  # -- Pod terminationGracePeriodSeconds
-  terminationGracePeriodSeconds:
-  # -- List of node taints to tolerate
-  tolerations: []
-  # -- Pod annotations
-  podAnnotations: {}
-  # -- Pod labels
-  podLabels: {}
-  # -- Daemonset annotations
-  daemonsetAnnotations: {}
+# -- nydus-snapshotter name
+name: nydus-snapshotter
+# -- Image repository
+image: ghcr.io/containerd/nydus-snapshotter
+# -- Image tag
+tag: v0.4.0
+# -- Image pull policy
+pullPolicy: Always
+# -- Let nydus-snapshotter run in host network
+hostNetwork: true
+# -- Host Aliases
+hostAliases: []
+# -- Pod resource requests and limits
+resources:
+  requests:
+    cpu: "0"
+    memory: "0"
+  limits:
+    cpu: "2"
+    memory: "2Gi"
+# -- Pod priorityClassName
+priorityClassName: ""
+# -- Node labels for pod assignment
+nodeSelector: {}
+# -- Pod terminationGracePeriodSeconds
+terminationGracePeriodSeconds:
+# -- List of node taints to tolerate
+tolerations: []
+# -- Pod annotations
+podAnnotations: {}
+# -- Pod labels
+podLabels: {}
+# -- Daemonset annotations
+daemonsetAnnotations: {}
 
 dragonfly:
   # -- Enable dragonfly
@@ -61,7 +51,7 @@ dragonfly:
 # Support: Containerd, Docker, CRI-O
 containerRuntime:
   # -- The image name of init container, just to update container runtime configuration file
-  initContainerImage: ghcr.io/liubin/toml-cli:latest
+  initContainerImage: ghcr.io/liubin/toml-cli:v0.0.7
 
   # -- [Experimental] Containerd support
   containerd:

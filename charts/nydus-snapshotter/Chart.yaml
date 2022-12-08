@@ -29,7 +29,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Firs release of nydus-snapshotter
+    - First release of nydus-snapshotter
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

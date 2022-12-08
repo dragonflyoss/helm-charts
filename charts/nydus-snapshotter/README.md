@@ -57,34 +57,30 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"ghcr.io/liubin/toml-cli:latest"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
+| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"ghcr.io/liubin/toml-cli:v0.0.7"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFile":"/etc/containerd/config.toml","enable":true}` | [Experimental] Containerd support |
 | containerRuntime.containerd.configFile | string | `"/etc/containerd/config.toml"` | Custom config path directory, default is /etc/containerd/config.toml |
 | containerRuntime.containerd.enable | bool | `true` | Enable containerd support Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile}, |
-| containerRuntime.initContainerImage | string | `"ghcr.io/liubin/toml-cli:latest"` | The image name of init container, just to update container runtime configuration file |
+| containerRuntime.initContainerImage | string | `"ghcr.io/liubin/toml-cli:v0.0.7"` | The image name of init container, just to update container runtime configuration file |
+| daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dragonfly.enable | bool | `true` | Enable dragonfly |
 | dragonfly.mirrorConfig.auth_through | bool | `false` |  |
 | dragonfly.mirrorConfig.headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
 | dragonfly.mirrorConfig.host | string | `"http://127.0.0.1:65001"` |  |
 | dragonfly.mirrorConfig.ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
-| fullnameOverride | string | `""` | Override nydus-snapshotter fullname |
-| nameOverride | string | `""` | Override nydus-snapshotter name |
-| nydusSnapshotter.daemonsetAnnotations | object | `{}` | Daemonset annotations |
-| nydusSnapshotter.fullnameOverride | string | `""` | Override nydus-snapshotter fullname |
-| nydusSnapshotter.hostAliases | list | `[]` | Host Aliases |
-| nydusSnapshotter.hostNetwork | bool | `true` | Let nydus-snapshotter run in host network |
-| nydusSnapshotter.image | string | `"ghcr.io/containerd/nydus-snapshotter"` | Image repository |
-| nydusSnapshotter.name | string | `"nydus-snapshotter"` | nydus-snapshotter name |
-| nydusSnapshotter.nameOverride | string | `""` | Override nydus-snapshotter name |
-| nydusSnapshotter.nodeSelector | object | `{}` | Node labels for pod assignment |
-| nydusSnapshotter.podAnnotations | object | `{}` | Pod annotations |
-| nydusSnapshotter.podLabels | object | `{}` | Pod labels |
-| nydusSnapshotter.priorityClassName | string | `""` | Pod priorityClassName |
-| nydusSnapshotter.pullPolicy | string | `"Always"` | Image pull policy |
-| nydusSnapshotter.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| nydusSnapshotter.tag | string | `"v1.2.11"` | Image tag (FIXME: This version should be updated after a new snapshotter is released.) |
-| nydusSnapshotter.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
-| nydusSnapshotter.tolerations | list | `[]` | List of node taints to tolerate |
+| hostAliases | list | `[]` | Host Aliases |
+| hostNetwork | bool | `true` | Let nydus-snapshotter run in host network |
+| image | string | `"ghcr.io/containerd/nydus-snapshotter"` | Image repository |
+| name | string | `"nydus-snapshotter"` | nydus-snapshotter name |
+| nodeSelector | object | `{}` | Node labels for pod assignment |
+| podAnnotations | object | `{}` | Pod annotations |
+| podLabels | object | `{}` | Pod labels |
+| priorityClassName | string | `""` | Pod priorityClassName |
+| pullPolicy | string | `"Always"` | Image pull policy |
+| resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| tag | string | `"v0.4.0"` | Image tag |
+| terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
+| tolerations | list | `[]` | List of node taints to tolerate |
 
 ## Chart dependencies
 

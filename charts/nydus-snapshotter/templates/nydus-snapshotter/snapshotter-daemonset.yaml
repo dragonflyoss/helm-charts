@@ -7,64 +7,65 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: "{{ .Values.nydusSnapshotter.name }}"
+    component: "{{ .Values.name }}"
   annotations:
-    {{- if .Values.nydusSnapshotter.daemonsetAnnotations }}
-{{ toYaml .Values.nydusSnapshotter.daemonsetAnnotations | indent 4 }}
+    {{- if .Values.daemonsetAnnotations }}
+{{ toYaml .Values.daemonsetAnnotations | indent 4 }}
     {{- end }}
 spec:
   selector:
     matchLabels:
       app: {{ template "nydus-snapshotter.fullname" . }}
-      component: "{{ .Values.nydusSnapshotter.name }}"
+      component: "{{ .Values.name }}"
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "nydus-snapshotter.fullname" . }}
-        component: "{{ .Values.nydusSnapshotter.name }}"
+        component: "{{ .Values.name }}"
         release: {{ .Release.Name }}
-        {{- if .Values.nydusSnapshotter.podLabels }}
-{{ toYaml .Values.nydusSnapshotter.podLabels | indent 8 }}
+        {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.nydusSnapshotter.podAnnotations }}
+      {{- if .Values.podAnnotations }}
       annotations:
-{{ toYaml .Values.nydusSnapshotter.podAnnotations | indent 8 }}
+{{ toYaml .Values.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.nydusSnapshotter.nodeSelector }}
+      serviceAccountName: {{template "nydus-snapshotter.fullname" . }}-sa
+      {{- if .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nydusSnapshotter.nodeSelector | indent 8 }}
+{{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end }}
-      hostNetwork: {{ .Values.nydusSnapshotter.hostNetwork }}
+      hostNetwork: {{ .Values.hostNetwork }}
       hostPID: {{ .Values.containerRuntime.containerd.enable }}
-      {{- if .Values.nydusSnapshotter.hostNetwork }}
+      {{- if .Values.hostNetwork }}
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
-      {{- if .Values.nydusSnapshotter.tolerations }}
+      {{- if .Values.tolerations }}
       tolerations:
-{{ toYaml .Values.nydusSnapshotter.tolerations | indent 8 }}
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
 
-      {{- if quote .Values.nydusSnapshotter.terminationGracePeriodSeconds }}
-      terminationGracePeriodSeconds: {{ .Values.nydusSnapshotter.terminationGracePeriodSeconds }}
+      {{- if quote .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
       {{- end }}
-      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.nydusSnapshotter.priorityClassName) }}
-      priorityClassName: {{ .Values.nydusSnapshotter.priorityClassName }}
+      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.priorityClassName) }}
+      priorityClassName: {{ .Values.priorityClassName }}
       {{- end }}
-      {{- if .Values.nydusSnapshotter.hostAliases }}
+      {{- if .Values.hostAliases }}
       hostAliases:
-{{ toYaml .Values.nydusSnapshotter.hostAliases | indent 8 }}
+{{ toYaml .Values.hostAliases | indent 8 }}
       {{- end }}
       containers:
       - name: nydus-snapshotter
-        image: "{{ .Values.nydusSnapshotter.image }}:{{ .Values.nydusSnapshotter.tag }}"
-        imagePullPolicy: {{ .Values.nydusSnapshotter.pullPolicy | quote }}
+        image: "{{ .Values.image }}:{{ .Values.tag }}"
+        imagePullPolicy: {{ .Values.pullPolicy | quote }}
         env:
         - name: ENABLE_NYDUS_OVERLAY
           value: "false"
         resources:
-{{ toYaml .Values.nydusSnapshotter.resources | indent 12 }}
+{{ toYaml .Values.resources | indent 12 }}
         lifecycle:
           postStart:
             exec:
@@ -93,9 +94,9 @@ spec:
       {{- if .Values.containerRuntime.containerd.enable }}
       - name: update-containerd
         image: "{{ .Values.containerRuntime.initContainerImage }}"
-        imagePullPolicy: {{ .Values.nydusSnapshotter.pullPolicy | quote }}
+        imagePullPolicy: {{ .Values.pullPolicy | quote }}
         resources:
-{{ toYaml .Values.nydusSnapshotter.resources | indent 12 }}
+{{ toYaml .Values.resources | indent 12 }}
         command:
         - /bin/sh
         - -cx
