@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Support redis sentinel mode.
+        - Update dragonfly image version to v2.0.9-alpha.1.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.9-alpha.1
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.9-alpha.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.9-alpha.1
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.9.1
+    created: "2022-12-09T10:34:42.037074719Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.1.2
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.10.1
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.56.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 9bda134c91ff5ccd39f1df37b1e9441ef69efe35118c027fc5a45864e25ed5f6
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.9.1/dragonfly-0.9.1.tgz
+    version: 0.9.1
+  - annotations:
+      artifacthub.io/changes: |
         - Rename backSourceCount to backToSourceCount.
         - Rename retryBackSourceLimit and retryBackToSourceLimit.
       artifacthub.io/images: |
@@ -5274,4 +5330,47 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.1.0/dragonfly-0.1.0.tgz
     version: 0.1.0
-generated: "2022-12-05T13:23:28.174999747Z"
+  nydus-snapshotter:
+  - annotations:
+      artifacthub.io/changes: |
+        - First release of nydus-snapshotter
+      artifacthub.io/images: |
+        - name: nydus-snapshotter
+          image: ghcr.io/nydus-snapshotter/nydus-snapshotter:latest
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-12-09T10:34:42.287870222Z"
+    description: Nydus snapshotter is an external plugin of containerd for Nydus image
+      service which implements a chunk-based content-addressable filesystem on top
+      of a called RAFS.
+    digest: 3b675135a3c85e48f14bfc85b31e2016c855255b150efc330a0fc02b82901674
+    home: https://nydus.dev/
+    icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
+    keywords:
+    - nydus
+    - nydus-snapshotter
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: liubin0329@gmail.com
+      name: liubin
+    name: nydus-snapshotter
+    sources:
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
+    version: 0.0.1
+generated: "2022-12-09T10:34:42.288259226Z"
