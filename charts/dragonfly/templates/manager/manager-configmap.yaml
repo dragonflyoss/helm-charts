@@ -40,18 +40,20 @@ data:
         migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
       redis:
-        {{- if and .Values.redis.enable (empty .Values.externalRedis.host) }}
+        {{- if .Values.redis.enable }}
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         host: {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
         {{- else }}
-        addrs:
-        - {{ .Values.externalRedis.host }}:{{ .Values.externalRedis.port }}
-        host: {{ .Values.externalRedis.host }}
-        port: {{ .Values.externalRedis.port }}
+        addrs: {{ .Values.externalRedis.addrs }}
+        masterName: {{ .Values.externalRedis.masterName }}
+        username: {{ .Values.externalRedis.username }}
         password: {{ .Values.externalRedis.password }}
+        db: {{ .Values.externalRedis.db }}
+        brokerDB: {{ .Values.externalRedis.brokerDB }}
+        backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
     cache:
 {{ toYaml .Values.manager.config.cache | indent 6 }}
