@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -328,7 +328,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -627,7 +627,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -887,7 +887,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -1117,18 +1117,19 @@ redis:
 
 externalRedis:
   # -- External redis server addresses
-  addrs: []
+  addrs:
+    - "redis.example.com:6379"
   # -- External redis sentinel master name
   masterName: ""
   # -- External redis username
   username: ""
   # -- External redis password
   password: ""
-  # -- External redis db name
+  # -- External redis db
   db: 0
-  # -- External redis broker db name
+  # -- External redis broker db
   brokerDB: 1
-  # -- External redis backend db name
+  # -- External redis backend db
   backendDB: 2
 
 jaeger:

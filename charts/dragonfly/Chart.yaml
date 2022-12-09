@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.9.0
-appVersion: 0.9.0
+version: 0.9.1
+appVersion: 0.9.1
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Rename backSourceCount to backToSourceCount.
-    - Rename retryBackSourceLimit and retryBackToSourceLimit.
+    - Support redis sentinel mode.
+    - Update dragonfly image version to v2.0.9-alpha.1.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -36,11 +36,11 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.8
+      image: dragonflyoss/manager:v2.0.9-alpha.1
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.8
+      image: dragonflyoss/dfdaemon:v2.0.9-alpha.1
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.8
+      image: dragonflyoss/scheduler:v2.0.9-alpha.1
 
 dependencies:
   - name: mysql
