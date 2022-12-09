@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -328,7 +328,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -627,7 +627,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -887,7 +887,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.8
+  tag: v2.0.9-alpha.1
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -1116,12 +1116,21 @@ redis:
         redis: 6379
 
 externalRedis:
-  # -- External redis hostname
-  host: ""
+  # -- External redis server addresses
+  addrs:
+    - "redis.example.com:6379"
+  # -- External redis sentinel master name
+  masterName: ""
+  # -- External redis username
+  username: ""
   # -- External redis password
-  password: dragonfly
-  # -- External redis port
-  port: 6379
+  password: ""
+  # -- External redis db
+  db: 0
+  # -- External redis broker db
+  brokerDB: 1
+  # -- External redis backend db
+  backendDB: 2
 
 jaeger:
   # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment

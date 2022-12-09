@@ -232,7 +232,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.8"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.9-alpha.1"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -244,9 +244,13 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.password | string | `"dragonfly"` | External mysql password |
 | externalMysql.port | int | `3306` | External mysql port |
 | externalMysql.username | string | `"dragonfly"` | External mysql username |
-| externalRedis.host | string | `""` | External redis hostname |
-| externalRedis.password | string | `"dragonfly"` | External redis password |
-| externalRedis.port | int | `6379` | External redis port |
+| externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses |
+| externalRedis.backendDB | int | `2` | External redis backend db |
+| externalRedis.brokerDB | int | `1` | External redis broker db |
+| externalRedis.db | int | `0` | External redis db |
+| externalRedis.masterName | string | `""` | External redis sentinel master name |
+| externalRedis.password | string | `""` | External redis password |
+| externalRedis.username | string | `""` | External redis username |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
 | jaeger.agent.enabled | bool | `false` |  |
 | jaeger.allInOne.enabled | bool | `true` |  |
@@ -322,7 +326,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.8"` | Image tag |
+| manager.tag | string | `"v2.0.9-alpha.1"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -408,7 +412,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.8"` | Image tag |
+| scheduler.tag | string | `"v2.0.9-alpha.1"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -509,7 +513,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.8"` | Image tag |
+| seedPeer.tag | string | `"v2.0.9-alpha.1"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

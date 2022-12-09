@@ -45,10 +45,12 @@ data:
         password: {{ .Values.redis.auth.password }}
         {{- else }}
         addrs:
-        - {{ .Values.externalRedis.host }}:{{ .Values.externalRedis.port }}
-        host: {{ .Values.externalRedis.host }}
-        port: {{ .Values.externalRedis.port }}
+{{ toYaml .Values.externalRedis.addrs | indent 10 }}
+        masterName: {{ .Values.externalRedis.masterName }}
+        username: {{ .Values.externalRedis.username }}
         password: {{ .Values.externalRedis.password }}
+        brokerDB: {{ .Values.externalRedis.brokerDB }}
+        backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
     storage:
 {{ toYaml .Values.scheduler.config.storage | indent 6 }}
