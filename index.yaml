@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update externalRedis document.
+        - Update dragonfly image version to v2.0.9-alpha.3.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.9-alpha.3
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.9-alpha.3
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.9-alpha.3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.9.2
+    created: "2022-12-14T10:38:57.290305565Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.1.2
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.10.1
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.56.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 1e4a087ba98b3a6b839d1151e023525075b8781e8c9dbad9fd61a0eaacaac526
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.9.2/dragonfly-0.9.2.tgz
+    version: 0.9.2
+  - annotations:
+      artifacthub.io/changes: |
         - Support redis sentinel mode.
         - Update dragonfly image version to v2.0.9-alpha.1.
       artifacthub.io/images: |
@@ -5373,4 +5429,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2022-12-09T10:34:42.288259226Z"
+generated: "2022-12-14T10:38:57.290684867Z"
