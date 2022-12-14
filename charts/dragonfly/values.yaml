@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-alpha.1
+  tag: v2.0.9-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -328,7 +328,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.1
+  tag: v2.0.9-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -627,7 +627,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.1
+  tag: v2.0.9-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -887,7 +887,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-alpha.1
+  tag: v2.0.9-alpha.3
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
