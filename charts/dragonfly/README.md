@@ -173,7 +173,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log directory |
-| dfdaemon.config.metrics | string | `""` | Metrics listen config, eg: 127.0.0.1:8000 |
 | dfdaemon.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service |
 | dfdaemon.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task |
@@ -223,6 +222,17 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
+| dfdaemon.metrics.enable | bool | `false` | Enable peer metrics |
+| dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
+| dfdaemon.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
+| dfdaemon.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
+| dfdaemon.metrics.service.annotations | object | `{}` | Service annotations |
+| dfdaemon.metrics.service.labels | object | `{}` | Service labels |
+| dfdaemon.metrics.service.type | string | `"ClusterIP"` | Service type |
+| dfdaemon.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| dfdaemon.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
+| dfdaemon.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
+| dfdaemon.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
 | dfdaemon.mountDataDirAsHostPath | bool | `false` | Mount data directory from host when enabled, mount host path to dfdaemon, or just emptyDir in dfdaemon |
 | dfdaemon.name | string | `"dfdaemon"` | Dfdaemon name |
 | dfdaemon.nameOverride | string | `""` | Override dfdaemon name |
@@ -232,7 +242,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.9-alpha.3"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.9-alpha.4"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -326,7 +336,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.9-alpha.3"` | Image tag |
+| manager.tag | string | `"v2.0.9-alpha.4"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -412,7 +422,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.9-alpha.3"` | Image tag |
+| scheduler.tag | string | `"v2.0.9-alpha.4"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -487,8 +497,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.initContainer.image | string | `"busybox"` | Init container image repository |
 | seedPeer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
 | seedPeer.initContainer.tag | string | `"latest"` | Init container image tag |
-| seedPeer.metrics.enable | bool | `false` | Enable scheduler metrics |
-| seedPeer.metrics.enablePeerHost | bool | `false` | Enable peer host metrics |
+| seedPeer.metrics.enable | bool | `false` | Enable seed peer metrics |
 | seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
 | seedPeer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
 | seedPeer.metrics.prometheusRule.rules | list | `[]` | Prometheus rules |
@@ -513,7 +522,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.9-alpha.3"` | Image tag |
+| seedPeer.tag | string | `"v2.0.9-alpha.4"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

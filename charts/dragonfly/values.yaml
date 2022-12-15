@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-alpha.3
+  tag: v2.0.9-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -328,7 +328,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.3
+  tag: v2.0.9-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -585,10 +585,8 @@ seedPeer:
       # Peer information includes cpu, memory, etc.
       schedulerInterval: 30s
   metrics:
-    # -- Enable scheduler metrics
+    # -- Enable seed peer metrics
     enable: false
-    # -- Enable peer host metrics
-    enablePeerHost: false
     service:
       # -- Service type
       type: ClusterIP
@@ -627,7 +625,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.3
+  tag: v2.0.9-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -702,8 +700,6 @@ dfdaemon:
     # -- Listen port for pprof, only valid when the verbose option is true
     # default is -1. If it is 0, pprof will use a random port.
     pprofPort: -1
-    # -- Metrics listen config, eg: 127.0.0.1:8000
-    metrics: ""
     # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
     jaeger: ""
     health:
@@ -872,6 +868,34 @@ dfdaemon:
       # Announcer will provide the scheduler with peer information for scheduling.
       # Peer information includes cpu, memory, etc.
       schedulerInterval: 30s
+  metrics:
+    # -- Enable peer metrics
+    enable: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules: []
 
 manager:
   # -- Enable manager
@@ -887,7 +911,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-alpha.3
+  tag: v2.0.9-alpha.4
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases

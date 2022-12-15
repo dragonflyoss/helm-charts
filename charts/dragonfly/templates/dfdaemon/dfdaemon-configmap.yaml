@@ -26,8 +26,8 @@ data:
     {{- if .Values.dfdaemon.config.verbose }}
     pprof-port: {{ .Values.dfdaemon.config.pprofPort }}
     {{- end }}
-    {{- if .Values.dfdaemon.config.metrics }}
-    metrics: {{ .Values.dfdaemon.config.metrics }}
+    {{- if .Values.dfdaemon.metrics.enable }}
+    metrics: ":8000"
     {{- end }}
     {{- if .Values.dfdaemon.config.jaeger }}
     jaeger: {{ .Values.dfdaemon.config.jaeger }}

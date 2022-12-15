@@ -1,0 +1,21 @@
+{{- if and .Values.dfdaemon.metrics.enable .Values.dfdaemon.metrics.prometheusRule.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "dragonfly.dfdaemon.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.dfdaemon.name }}
+    {{- if .Values.dfdaemon.metrics.prometheusRule.additionalLabels }}
+{{ toYaml .Values.dfdaemon.metrics.prometheusRule.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+{{- with .Values.dfdaemon.metrics.prometheusRule.rules }}
+  groups:
+    - name: {{ template "dragonfly.dfdaemon.fullname" $ }}
+      rules: {{ tpl (toYaml .) $ | nindent 8 }}
+{{- end }}
+{{- end }}
