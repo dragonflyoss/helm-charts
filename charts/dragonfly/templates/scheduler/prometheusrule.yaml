@@ -13,9 +13,8 @@ metadata:
 {{ toYaml .Values.scheduler.metrics.prometheusRule.additionalLabels | indent 4 }}
     {{- end }}
 spec:
-{{- with .Values.scheduler.metrics.prometheusRule.rules }}
   groups:
     - name: {{ template "dragonfly.scheduler.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+      rules:
+{{ toYaml .Values.scheduler.metrics.prometheusRule.rules | indent 8 }}
 {{- end }}

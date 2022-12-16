@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.9.3
-appVersion: 0.9.3
+version: 0.9.4
+appVersion: 0.9.4
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add ServiceMonitor and PrometheusRule to peer.
-    - Update dragonfly image version to v2.0.9-alpha.4.
+    - Add the default value of PrometheusRule.
 
   artifacthub.io/links: |
     - name: Chart Source
