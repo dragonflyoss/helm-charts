@@ -13,9 +13,8 @@ metadata:
 {{ toYaml .Values.seedPeer.metrics.prometheusRule.additionalLabels | indent 4 }}
     {{- end }}
 spec:
-{{- with .Values.seedPeer.metrics.prometheusRule.rules }}
   groups:
     - name: {{ template "dragonfly.seedPeer.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+      rules:
+{{ toYaml .Values.seedPeer.metrics.prometheusRule.rules | indent 8 }}
 {{- end }}

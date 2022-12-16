@@ -13,9 +13,8 @@ metadata:
 {{ toYaml .Values.dfdaemon.metrics.prometheusRule.additionalLabels | indent 4 }}
     {{- end }}
 spec:
-{{- with .Values.dfdaemon.metrics.prometheusRule.rules }}
   groups:
     - name: {{ template "dragonfly.dfdaemon.fullname" $ }}
-      rules: {{ tpl (toYaml .) $ | nindent 8 }}
-{{- end }}
+      rules:
+{{ toYaml .Values.dfdaemon.metrics.prometheusRule.rules | indent 8 }}
 {{- end }}
