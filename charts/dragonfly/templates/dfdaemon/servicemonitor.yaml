@@ -1,0 +1,32 @@
+{{- if and .Values.dfdaemon.metrics.enable .Values.dfdaemon.metrics.serviceMonitor.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "dragonfly.dfdaemon.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.dfdaemon.name }}
+    {{- if .Values.dfdaemon.metrics.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.dfdaemon.metrics.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.dfdaemon.metrics.serviceMonitor.interval }}
+    interval: {{ .Values.dfdaemon.metrics.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.dfdaemon.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.dfdaemon.metrics.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.name" . }}
+      release: {{ .Release.Name }}
+      component: {{ .Values.dfdaemon.name }}-metrics
+{{- end }}

@@ -78,6 +78,10 @@ spec:
         - containerPort: {{ .Values.dfdaemon.config.objectStorage.tcpListen.port }}
           protocol: TCP
         {{- end }}
+        {{- if .Values.dfdaemon.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.dfdaemon.config.download.peerGRPC.tcpListen.port }}"]
