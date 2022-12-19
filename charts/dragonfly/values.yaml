@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-alpha.4
+  tag: v2.0.9-alpha.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -269,6 +269,13 @@ scheduler:
       # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
       tlsPolicy: "prefer"
       certSpec:
+        # -- DNSNames is a list of dns names be set on the certificate.
+        dnsNames:
+          - "dragonfly-scheduler"
+          - "dragonfly-scheduler.dragonfly-system.svc"
+          - "dragonfly-scheduler.dragonfly-system.svc.cluster.local"
+        # -- IPAddresses is a list of ip addresses be set on the certificate.
+        ipAddresses:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
     network:
@@ -464,7 +471,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.4
+  tag: v2.0.9-alpha.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -710,6 +717,13 @@ seedPeer:
       # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
       tlsPolicy: "prefer"
       certSpec:
+        # -- DNSNames is a list of dns names be set on the certificate.
+        dnsNames:
+          - "dragonfly-seed-peer"
+          - "dragonfly-seed-peer.dragonfly-system.svc"
+          - "dragonfly-seed-peer.dragonfly-system.svc.cluster.local"
+        # -- IPAddresses is a list of ip addresses be set on the certificate.
+        ipAddresses:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
     network:
@@ -801,7 +815,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.4
+  tag: v2.0.9-alpha.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -1034,6 +1048,10 @@ dfdaemon:
       # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
       tlsPolicy: "prefer"
       certSpec:
+        # -- DNSNames is a list of dns names be set on the certificate.
+        dnsNames:
+        # -- IPAddresses is a list of ip addresses be set on the certificate.
+        ipAddresses:
         # -- ValidityPeriod is the validity period  of certificate.
         validityPeriod: 4320h
     network:
@@ -1127,7 +1145,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-alpha.4
+  tag: v2.0.9-alpha.5
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
