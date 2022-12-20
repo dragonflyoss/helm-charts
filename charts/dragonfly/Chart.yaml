@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.9.5
-appVersion: 0.9.5
+version: 0.9.6
+appVersion: 0.9.6
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,9 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add ipAddresses and dnsNames to certSpec.
-    - Update dragonfly image version to v2.0.9-alpha.5.
+    - Update mysql version to v9.4.5.
+    - Update redis version to v17.3.17.
+    - Update jaeger version to v0.65.4.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -44,14 +45,14 @@ annotations:
 
 dependencies:
   - name: mysql
-    version: 9.1.2
+    version: 9.4.5
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
   - name: redis
-    version: 16.10.1
+    version: 17.3.17
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enable
   - name: jaeger
-    version: 0.56.5
+    version: 0.65.4
     repository: https://jaegertracing.github.io/helm-charts
     condition: jaeger.enable

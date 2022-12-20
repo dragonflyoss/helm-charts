@@ -536,6 +536,6 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | mysql | 9.1.2 |
-| https://charts.bitnami.com/bitnami | redis | 16.10.1 |
-| https://jaegertracing.github.io/helm-charts | jaeger | 0.56.5 |
+| https://charts.bitnami.com/bitnami | mysql | 9.4.5 |
+| https://charts.bitnami.com/bitnami | redis | 17.3.17 |
+| https://jaegertracing.github.io/helm-charts | jaeger | 0.65.4 |
