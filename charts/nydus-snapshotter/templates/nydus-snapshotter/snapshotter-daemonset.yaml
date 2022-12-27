@@ -75,6 +75,10 @@ spec:
               - |
                 # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
                 nsenter -t 1 -m systemctl -- restart containerd.service
+        {{- if .Values.args }}
+        args:
+{{ toYaml .Values.args | indent 12 }}
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/nydus/"

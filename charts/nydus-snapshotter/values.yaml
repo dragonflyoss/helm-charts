@@ -12,6 +12,8 @@ pullPolicy: Always
 hostNetwork: true
 # -- Host Aliases
 hostAliases: []
+# -- Args to overwrite default nydus-snapshotter startup command
+args: []
 # -- Pod resource requests and limits
 resources:
   requests:
