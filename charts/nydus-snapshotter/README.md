@@ -57,6 +57,7 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| args | list | `[]` | Args to overwrite default nydus-snapshotter startup command |
 | containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"ghcr.io/liubin/toml-cli:v0.0.7"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFile":"/etc/containerd/config.toml","enable":true}` | [Experimental] Containerd support |
 | containerRuntime.containerd.configFile | string | `"/etc/containerd/config.toml"` | Custom config path directory, default is /etc/containerd/config.toml |
