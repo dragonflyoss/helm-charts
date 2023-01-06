@@ -244,7 +244,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.9-alpha.7"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.9-alpha.8"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -277,12 +277,13 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
 | manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
-| manager.config.objectStorage.accessKey | string | `""` | Access key ID |
+| manager.config.objectStorage.accessKey | string | `""` | AccessKey is access key ID |
 | manager.config.objectStorage.enable | bool | `false` | Enable object storage |
-| manager.config.objectStorage.endpoint | string | `""` | Datacenter endpoint |
-| manager.config.objectStorage.name | string | `"s3"` | Object storage name of type, it can be s3 or oss |
-| manager.config.objectStorage.region | string | `""` | Storage region |
-| manager.config.objectStorage.secretKey | string | `""` | Access key secret |
+| manager.config.objectStorage.endpoint | string | `""` | Endpoint is datacenter endpoint |
+| manager.config.objectStorage.name | string | `"s3"` | Name is object storage name of type, it can be s3 or oss |
+| manager.config.objectStorage.region | string | `""` | Reigon is storage region |
+| manager.config.objectStorage.s3ForcePathStyle | bool | `true` | S3ForcePathStyle sets force path style for s3, true by default. Set this to `true` to force the request to use path-style addressing, i.e., `http://s3.amazonaws.com/BUCKET/KEY`. By default, the S3 client will use virtual hosted bucket addressing when possible (`http://BUCKET.s3.amazonaws.com/KEY`). Refer to https://github.com/aws/aws-sdk-go/blob/main/aws/config.go#L118. |
+| manager.config.objectStorage.secretKey | string | `""` | SecretKey is access key secret |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | manager.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | manager.config.security.caCert | string | `""` | CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string. |
@@ -338,7 +339,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.9-alpha.7"` | Image tag |
+| manager.tag | string | `"v2.0.9-alpha.8"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -426,7 +427,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.9-alpha.7"` | Image tag |
+| scheduler.tag | string | `"v2.0.9-alpha.8"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -528,7 +529,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.9-alpha.7"` | Image tag |
+| seedPeer.tag | string | `"v2.0.9-alpha.8"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

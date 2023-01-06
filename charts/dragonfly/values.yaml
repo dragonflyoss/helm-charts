@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-alpha.7
+  tag: v2.0.9-alpha.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -471,7 +471,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.7
+  tag: v2.0.9-alpha.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -815,7 +815,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.7
+  tag: v2.0.9-alpha.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -1145,7 +1145,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-alpha.7
+  tag: v2.0.9-alpha.8
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -1235,16 +1235,23 @@ manager:
     objectStorage:
       # -- Enable object storage
       enable: false
-      # -- Object storage name of type, it can be s3 or oss
+      # -- Name is object storage name of type, it can be s3 or oss
       name: s3
-      # -- Storage region
+      # -- Reigon is storage region
       region: ""
-      # -- Datacenter endpoint
+      # -- Endpoint is datacenter endpoint
       endpoint: ""
-      # -- Access key ID
+      # -- AccessKey is access key ID
       accessKey: ""
-      # -- Access key secret
+      # -- SecretKey is access key secret
       secretKey: ""
+      # -- S3ForcePathStyle sets force path style for s3, true by default.
+      # Set this to `true` to force the request to use path-style addressing,
+      # i.e., `http://s3.amazonaws.com/BUCKET/KEY`. By default, the S3 client
+      # will use virtual hosted bucket addressing when possible
+      # (`http://BUCKET.s3.amazonaws.com/KEY`).
+      # Refer to https://github.com/aws/aws-sdk-go/blob/main/aws/config.go#L118.
+      s3ForcePathStyle: true
     security:
       # -- AutoIssueCert indicates to issue client certificates for all grpc call.
       # If AutoIssueCert is false, any other option in Security will be ignored.
