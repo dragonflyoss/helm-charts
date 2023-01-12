@@ -12,12 +12,7 @@ metadata:
 data:
   scheduler.yaml: |-
     server:
-      port: {{ .Values.scheduler.containerPort }}
-      workHome: {{ .Values.scheduler.config.server.workHome }}
-      logDir: {{ .Values.scheduler.config.server.logDir }}
-      cacheDir: {{ .Values.scheduler.config.server.cacheDir }}
-      pluginDir: {{ .Values.scheduler.config.server.pluginDir }}
-      dataDir: {{ .Values.scheduler.config.server.dataDir }}
+{{ toYaml .Values.scheduler.config.server | indent 6 }}
     scheduler:
 {{ toYaml .Values.scheduler.config.scheduler | indent 6 }}
     dynconfig:
