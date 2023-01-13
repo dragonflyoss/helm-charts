@@ -16,9 +16,7 @@ data:
           "type": "registry",
           "config": {
           {{- if .Values.dragonfly.enable }}
-            "mirrors": [
-              {{ mustToJson .Values.dragonfly.mirrorConfig | indent 8 }}
-            ],
+            "mirrors": {{ mustToJson .Values.dragonfly.mirrorConfig }},
           {{- end }}
             "scheme": "https",
             "skip_verify": false,
