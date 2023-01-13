@@ -224,6 +224,9 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
+| dfdaemon.initContainer.image | string | `"busybox"` | Init container image repository |
+| dfdaemon.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
+| dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics |
 | dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
 | dfdaemon.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
@@ -244,7 +247,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| dfdaemon.tag | string | `"v2.0.9-alpha.8"` | Image tag |
+| dfdaemon.tag | string | `"v2.0.9-alpha.9"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate |
 | externalManager.grpcPort | int | `65003` | External GRPC service port |
@@ -339,7 +342,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations |
 | manager.service.labels | object | `{}` | Service labels |
 | manager.service.type | string | `"ClusterIP"` | Service type |
-| manager.tag | string | `"v2.0.9-alpha.8"` | Image tag |
+| manager.tag | string | `"v2.0.9-alpha.9"` | Image tag |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | manager.tolerations | list | `[]` | List of node taints to tolerate |
 | mysql.auth.database | string | `"manager"` | Mysql database name |
@@ -386,10 +389,13 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | scheduler.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
+| scheduler.config.server.advertiseIP | string | `""` | Advertise ip |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
+| scheduler.config.server.listenIP | string | `"0.0.0.0"` | Listen ip |
 | scheduler.config.server.logDir | string | `""` | Log directory |
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory |
+| scheduler.config.server.port | int | `8002` | Server port |
 | scheduler.config.server.workHome | string | `""` | Work directory |
 | scheduler.config.storage.bufferSize | int | `100` | bufferSize sets the size of buffer container, if the buffer is full, write all the records in the buffer to the file. |
 | scheduler.config.storage.maxBackups | int | `10` | maxBackups sets the maximum number of storage files to retain. |
@@ -426,8 +432,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
+| scheduler.service.annotations | object | `{}` | Service annotations |
+| scheduler.service.labels | object | `{}` | Service labels |
+| scheduler.service.type | string | `"ClusterIP"` | Service type |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| scheduler.tag | string | `"v2.0.9-alpha.8"` | Image tag |
+| scheduler.tag | string | `"v2.0.9-alpha.9"` | Image tag |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running |
@@ -529,7 +538,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |
-| seedPeer.tag | string | `"v2.0.9-alpha.8"` | Image tag |
+| seedPeer.tag | string | `"v2.0.9-alpha.9"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 

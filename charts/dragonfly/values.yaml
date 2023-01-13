@@ -137,7 +137,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-alpha.8
+  tag: v2.0.9-alpha.9
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -150,6 +150,13 @@ scheduler:
     limits:
       cpu: "4"
       memory: "8Gi"
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service labels
+    labels: {}
+    # -- Service annotations
+    annotations: {}
   # -- Pod priorityClassName
   priorityClassName: ""
   # -- Node labels for pod assignment
@@ -183,6 +190,12 @@ scheduler:
     pullPolicy: IfNotPresent
   config:
     server:
+      # -- Advertise ip
+      advertiseIP: ""
+      # -- Listen ip
+      listenIP: "0.0.0.0"
+      # -- Server port
+      port: 8002
       # -- Work directory
       workHome: ""
       # -- Log directory
@@ -471,7 +484,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.8
+  tag: v2.0.9-alpha.9
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -815,7 +828,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-alpha.8
+  tag: v2.0.9-alpha.9
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
@@ -842,6 +855,13 @@ dfdaemon:
   podLabels: {}
   # -- Daemonset annotations
   daemonsetAnnotations: {}
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1145,7 +1165,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-alpha.8
+  tag: v2.0.9-alpha.9
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Host Aliases
