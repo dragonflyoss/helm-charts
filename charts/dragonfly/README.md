@@ -168,7 +168,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.health.tcpListen.port | int | `40901` |  |
 | dfdaemon.config.host.idc | string | `""` | IDC deployed by daemon |
 | dfdaemon.config.host.location | string | `""` | Geographical location, separated by "|" characters |
-| dfdaemon.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
 | dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
@@ -365,7 +364,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
-| scheduler.config.host.netTopology | string | `""` | NetTopology is the net topology of scheduler instance |
 | scheduler.config.jaeger | string | `""` |  |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id |
@@ -457,7 +455,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.health.tcpListen.port | int | `40901` |  |
 | seedPeer.config.host.idc | string | `""` | IDC deployed by daemon |
 | seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters |
-| seedPeer.config.host.netTopology | string | `""` | Network topology, separated by "|" characters |
 | seedPeer.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | seedPeer.config.jaeger | string | `""` |  |
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
