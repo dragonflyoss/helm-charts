@@ -242,8 +242,6 @@ scheduler:
     host:
       # -- IDC is the idc of scheduler instance
       idc: ""
-      # -- NetTopology is the net topology of scheduler instance
-      netTopology: ""
       # -- Location is the location of scheduler instance
       location: ""
     manager:
@@ -577,14 +575,12 @@ seedPeer:
         port: 40901
       path: /server/ping
     host:
-      # -- Geographical location, separated by "|" characters
-      location: ""
       # -- IDC deployed by daemon
       idc: ""
+      # -- Geographical location, separated by "|" characters
+      location: ""
       # -- Security domain deployed by daemon, network isolation between different security domains
       securityDomain: ""
-      # -- Network topology, separated by "|" characters
-      netTopology: ""
     # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
     scheduler:
       manager:
@@ -917,14 +913,12 @@ dfdaemon:
         port: 40901
       path: /server/ping
     host:
-      # -- Geographical location, separated by "|" characters
-      location: ""
       # -- IDC deployed by daemon
       idc: ""
+      # -- Geographical location, separated by "|" characters
+      location: ""
       # -- Security domain deployed by daemon, network isolation between different security domains
       securityDomain: ""
-      # -- Network topology, separated by "|" characters
-      netTopology: ""
     # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
     scheduler:
       manager:
