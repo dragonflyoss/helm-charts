@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.10.0
-appVersion: 0.10.0
+version: 0.10.1
+appVersion: 0.10.1
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,10 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Remove netTopology from configuration.
+    - Update image version to v2.0.9-beta.0.
+    - Update mysql version to v9.4.6.
+    - Update redis version to v17.4.3.
+    - Update jaeger version to v0.66.1.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -35,22 +38,22 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.9-alpha.9
+      image: dragonflyoss/manager:v2.0.9-beta.0
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.9-alpha.9
+      image: dragonflyoss/dfdaemon:v2.0.9-beta.0
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.9-alpha.9
+      image: dragonflyoss/scheduler:v2.0.9-beta.0
 
 dependencies:
   - name: mysql
-    version: 9.4.5
+    version: 9.4.6
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
   - name: redis
-    version: 17.3.17
+    version: 17.4.3
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enable
   - name: jaeger
-    version: 0.65.4
+    version: 0.66.1
     repository: https://jaegertracing.github.io/helm-charts
     condition: jaeger.enable
