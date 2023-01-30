@@ -161,7 +161,7 @@ spec:
       - name: wait-for-scheduler
         image: {{ .Values.dfdaemon.initContainer.image }}:{{ .Values.dfdaemon.initContainer.tag  }}
         imagePullPolicy: {{ .Values.dfdaemon.initContainer.pullPolicy }}
-        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup -type=A {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
       {{- end }}
       {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
       - name: mount-netns

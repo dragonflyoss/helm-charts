@@ -63,9 +63,9 @@ spec:
         image: {{ .Values.scheduler.initContainer.image }}:{{ .Values.scheduler.initContainer.tag  }}
         imagePullPolicy: {{ .Values.scheduler.initContainer.pullPolicy }}
         {{- if .Values.manager.enable }}
-        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup -type=A {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
-        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup -type=A {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
       containers:
       - name: scheduler
