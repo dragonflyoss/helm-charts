@@ -56,7 +56,7 @@ data:
     metrics:
       enable: {{ .Values.scheduler.metrics.enable }}
       addr: ":8000"
-      enablePeerHost: {{ .Values.scheduler.metrics.enablePeerHost }}
+      enableHost: {{ .Values.scheduler.metrics.enableHost }}
     console: {{ .Values.scheduler.config.console }}
     verbose: {{ .Values.scheduler.config.verbose }}
     {{- if .Values.scheduler.config.verbose }}
