@@ -196,7 +196,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
 | dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
 | dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
-| dfdaemon.config.scheduler.netAddrs | string | `nil` | Scheduler service address, netAddr is a list, there are two fields type and addr    Also set dfdaemon.config.scheduler.manager.enable to false to take effect |
+| dfdaemon.config.scheduler.netAddrs | string | `nil` | Scheduler service address, netAddr is a list, there are two fields type and addr.    Also set dfdaemon.config.scheduler.manager.enable to false to take effect. |
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | dfdaemon.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | dfdaemon.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |

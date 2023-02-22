@@ -26,7 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - dfdaemon support set scheduler.netAddr 
+    - Dfdaemon support set scheduler.netAddr.
 
   artifacthub.io/links: |
     - name: Chart Source

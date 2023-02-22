@@ -940,8 +940,8 @@ dfdaemon:
           type: "super"
           # -- Associated seed peer cluster id
           clusterID: 1
-      # -- Scheduler service address, netAddr is a list, there are two fields type and addr
-      #    Also set dfdaemon.config.scheduler.manager.enable to false to take effect
+      # -- Scheduler service address, netAddr is a list, there are two fields type and addr.
+      #    Also set dfdaemon.config.scheduler.manager.enable to false to take effect.
       netAddrs:
       # -- Schedule timeout
       scheduleTimeout: 30s
