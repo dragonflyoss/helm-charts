@@ -225,7 +225,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty many network add-ons do not yet support hostPort https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false for performance, injecting the 65001 port to host network is better than hostPort |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository |
 | dfdaemon.initContainer.image | string | `"busybox"` | Init container image repository |
-| dfdaemon.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
 | dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics |
 | dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
@@ -246,6 +245,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.podLabels | object | `{}` | Pod labels |
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName |
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets) | Image pull secrets |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | dfdaemon.tag | string | `"v2.0.9-beta.2"` | Image tag |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
@@ -267,6 +267,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.password | string | `""` | External redis password |
 | externalRedis.username | string | `""` | External redis username |
 | fullnameOverride | string | `""` | Override dragonfly fullname |
+| global.imagePullSecrets | list | `[]` | Image pull secrets |
 | jaeger.agent.enabled | bool | `false` |  |
 | jaeger.allInOne.enabled | bool | `true` |  |
 | jaeger.collector.enabled | bool | `false` |  |
@@ -336,6 +337,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.podLabels | object | `{}` | Pod labels |
 | manager.priorityClassName | string | `""` | Pod priorityClassName |
 | manager.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| manager.pullSecrets | list | `[]` (defaults to global.imagePullSecrets) | Image pull secrets |
 | manager.replicas | int | `3` | Number of Pods to launch |
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | manager.restPort | int | `8080` | REST service port |
@@ -430,6 +432,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.podLabels | object | `{}` | Pod labels |
 | scheduler.priorityClassName | string | `""` | Pod priorityClassName |
 | scheduler.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| scheduler.pullSecrets | list | `[]` (defaults to global.imagePullSecrets) | Image pull secrets |
 | scheduler.replicas | int | `3` | Number of Pods to launch |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | scheduler.service.annotations | object | `{}` | Service annotations |
@@ -534,6 +537,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.podLabels | object | `{}` | Pod labels |
 | seedPeer.priorityClassName | string | `""` | Pod priorityClassName |
 | seedPeer.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
+| seedPeer.pullSecrets | list | `[]` (defaults to global.imagePullSecrets) | Image pull secrets |
 | seedPeer.replicas | int | `3` | Number of Pods to launch |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations |

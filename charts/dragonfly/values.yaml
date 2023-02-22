@@ -1,4 +1,9 @@
 # Dragonfly Helm Chart Values
+#
+
+global:
+  # -- Image pull secrets
+  imagePullSecrets: []
 
 # -- Override dragonfly name
 nameOverride: ""
@@ -140,6 +145,9 @@ scheduler:
   tag: v2.0.9-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Image pull secrets
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+  pullSecrets: []
   # -- Host Aliases
   hostAliases: []
   # -- Pod resource requests and limits
@@ -490,6 +498,9 @@ seedPeer:
   tag: v2.0.9-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Image pull secrets
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+  pullSecrets: []
   # -- Host Aliases
   hostAliases: []
   # -- Pod resource requests and limits
@@ -832,6 +843,9 @@ dfdaemon:
   tag: v2.0.9-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Image pull secrets
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+  pullSecrets: []
   # -- Host Aliases
   hostAliases: []
   # -- Pod resource requests and limits
@@ -861,8 +875,6 @@ dfdaemon:
     image: busybox
     # -- Init container image tag
     tag: latest
-    # -- Container image pull policy
-    pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1169,6 +1181,9 @@ manager:
   tag: v2.0.9-beta.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
+  # -- Image pull secrets
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+  pullSecrets: []
   # -- Host Aliases
   hostAliases: []
   # -- Pod resource requests and limits
