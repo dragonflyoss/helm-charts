@@ -42,7 +42,7 @@ spec:
       {{- if .Values.dfdaemon.hostNetwork }}
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
-      hostPID: {{ or (and .Values.containerRuntime.docker.enable .Values.containerRuntime.docker.restart) .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable }}
+      hostPID: {{ or (and .Values.containerRuntime.docker.enable .Values.containerRuntime.docker.restart) .Values.containerRuntime.containerd.enable .Values.containerRuntime.crio.enable (gt (len .Values.containerRuntime.extraInitContainers) 0) }}
       {{- if .Values.dfdaemon.tolerations }}
       tolerations:
 {{ toYaml .Values.dfdaemon.tolerations | indent 8 }}
@@ -159,7 +159,7 @@ spec:
             add:
             - SYS_ADMIN
         {{- end }}
-      {{- if or (and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace) .Values.containerRuntime.containerd.enable .Values.containerRuntime.docker.enable }}
+      {{- if or (and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace) .Values.containerRuntime.containerd.enable .Values.containerRuntime.docker.enable .Values.containerRuntime.extraInitContainers }}
       initContainers:
       {{- if .Values.scheduler.enable }}
       - name: wait-for-scheduler
