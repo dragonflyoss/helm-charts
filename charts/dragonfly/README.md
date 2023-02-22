@@ -188,7 +188,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | dfdaemon.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
-| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"netAddrs":null,"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | dfdaemon.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | dfdaemon.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
@@ -196,6 +196,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
 | dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
 | dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
+| dfdaemon.config.scheduler.netAddrs | string | `nil` | Scheduler service address, netAddr is a list, there are two fields type and addr    Also set dfdaemon.config.scheduler.manager.enable to false to take effect |
 | dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout |
 | dfdaemon.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | dfdaemon.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
