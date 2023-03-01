@@ -6171,6 +6171,48 @@ entries:
   nydus-snapshotter:
   - annotations:
       artifacthub.io/changes: |
+        - Change mirroConfig of dragonfly to array type
+      artifacthub.io/images: |
+        - name: nydus-snapshotter
+          image: ghcr.io/nydus-snapshotter/nydus-snapshotter:latest
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
+    appVersion: 0.0.3
+    created: "2023-03-01T12:03:05.324443712Z"
+    description: Nydus snapshotter is an external plugin of containerd for Nydus image
+      service which implements a chunk-based content-addressable filesystem on top
+      of a called RAFS.
+    digest: ad23134d041b7d66d5a8a3cbf547fbec08faf2ab0768cf72c779eb6d74bddfdd
+    home: https://nydus.dev/
+    icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
+    keywords:
+    - nydus
+    - nydus-snapshotter
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: liubin0329@gmail.com
+      name: liubin
+    name: nydus-snapshotter
+    sources:
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.3/nydus-snapshotter-0.0.3.tgz
+    version: 0.0.3
+  - annotations:
+      artifacthub.io/changes: |
         - Add `args` for nydus-snapshotter
       artifacthub.io/images: |
         - name: nydus-snapshotter
@@ -6253,4 +6295,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-02-22T11:11:08.355250628Z"
+generated: "2023-03-01T12:03:05.324680513Z"
