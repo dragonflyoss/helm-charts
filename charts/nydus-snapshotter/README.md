@@ -65,10 +65,10 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 | containerRuntime.initContainerImage | string | `"ghcr.io/liubin/toml-cli:v0.0.7"` | The image name of init container, just to update container runtime configuration file |
 | daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dragonfly.enable | bool | `true` | Enable dragonfly |
-| dragonfly.mirrorConfig.auth_through | bool | `false` |  |
-| dragonfly.mirrorConfig.headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
-| dragonfly.mirrorConfig.host | string | `"http://127.0.0.1:65001"` |  |
-| dragonfly.mirrorConfig.ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
+| dragonfly.mirrorConfig[0].auth_through | bool | `false` |  |
+| dragonfly.mirrorConfig[0].headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
+| dragonfly.mirrorConfig[0].host | string | `"http://127.0.0.1:65001"` |  |
+| dragonfly.mirrorConfig[0].ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
 | hostAliases | list | `[]` | Host Aliases |
 | hostNetwork | bool | `true` | Let nydus-snapshotter run in host network |
 | image | string | `"ghcr.io/containerd/nydus-snapshotter"` | Image repository |

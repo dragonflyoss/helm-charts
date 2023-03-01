@@ -41,7 +41,7 @@ dragonfly:
   # -- Enable dragonfly
   enable: true
   mirrorConfig:
-    host: "http://127.0.0.1:65001"
+  - host: "http://127.0.0.1:65001"
     auth_through: false
     headers:
       "X-Dragonfly-Registry": "https://index.docker.io"
