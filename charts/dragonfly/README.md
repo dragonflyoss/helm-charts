@@ -275,6 +275,10 @@ helm delete dragonfly --namespace dragonfly-system
 | jaeger.provisionDataStore.cassandra | bool | `false` |  |
 | jaeger.query.enabled | bool | `false` |  |
 | jaeger.storage.type | string | `"none"` |  |
+| manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
+| manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
+| manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
+| manager.config.auth.jwt.timeout | string | `"48h"` | Timeout is duration that a jwt token is valid, default duration is two days. |
 | manager.config.cache.local.size | int | `10000` | Size of LFU cache |
 | manager.config.cache.local.ttl | string | `"10s"` | Local cache TTL duration |
 | manager.config.cache.redis.ttl | string | `"30s"` | Redis cache TTL duration |
