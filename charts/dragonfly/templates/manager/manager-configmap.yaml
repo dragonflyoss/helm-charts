@@ -22,6 +22,8 @@ data:
       logDir: {{ .Values.manager.config.server.logDir }}
       cacheDir: {{ .Values.manager.config.server.cacheDir }}
       pluginDir: {{ .Values.manager.config.server.pluginDir }}
+    auth:
+{{ toYaml .Values.manager.config.auth | indent 6 }}
     database:
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
