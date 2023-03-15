@@ -142,7 +142,7 @@ scheduler:
   # -- Image repository
   image: dragonflyoss/scheduler
   # -- Image tag
-  tag: v2.0.9-beta.2
+  tag: v2.0.9-rc.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secrets
@@ -352,54 +352,54 @@ scheduler:
           annotations:
             summary: Scheduler instance is down
             message: Scheduler instance {{ "{{ $labels.instance }}" }} is down
-        - alert: SchedulerHighNumberOfFailedDownloadTask
-          expr: sum(increase(dragonfly_scheduler_download_failure_total{type="p2p"}[1m])) > 100
+        - alert: SchedulerHighNumberOfFailedDownloadPeer
+          expr: sum(increase(dragonfly_scheduler_download_peer_finished_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
           annotations:
-            summary: Scheduler has a high number of failed download task
-            message: Scheduler has a high number of failed download task
-        - alert: SchedulerSuccessRateOfDownloadingTask
-          expr: (sum(rate(dragonfly_scheduler_download_total{}[1m])) - sum(rate(dragonfly_scheduler_download_failure_total{type="p2p"}[1m]))) / sum(rate(dragonfly_scheduler_download_total{}[1m])) < 0.6
+            summary: Scheduler has a high number of failed download peer
+            message: Scheduler has a high number of failed download peer
+        - alert: SchedulerSuccessRateOfDownloadingPeer
+          expr: (sum(rate(dragonfly_scheduler_download_peer_finished_total{}[1m])) - sum(rate(dragonfly_scheduler_download_peer_finished_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_download_peer_finished_total{}[1m])) < 0.6
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: Scheduler's success rate of downloading task is low
-            message: Scheduler's success rate of downloading task is low
-        - alert: SchedulerHighNumberOfFailedRegisterTask
-          expr: sum(increase(dragonfly_scheduler_register_peer_task_failure_total{}[1m])) > 100
+            summary: Scheduler's success rate of downloading peer is low
+            message: Scheduler's success rate of downloading peer is low
+        - alert: SchedulerHighNumberOfFailedRegisterPeer
+          expr: sum(increase(dragonfly_scheduler_register_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
           annotations:
-            summary: Scheduler has a high number of failed register task
-            message: Scheduler has a high number of failed register task
+            summary: Scheduler has a high number of failed register peer
+            message: Scheduler has a high number of failed register peer
         - alert: SchedulerSuccessRateOfRegisterTask
-          expr: (sum(rate(dragonfly_scheduler_register_peer_task_total{}[1m])) - sum(rate(dragonfly_scheduler_register_peer_task_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_register_peer_task_total{}[1m])) < 0.6
+          expr: (sum(rate(dragonfly_scheduler_register_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_register_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_register_peer_total{}[1m])) < 0.6
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: Scheduler's success rate of register task is low
-            message: Scheduler's success rate of register task is low
-        - alert: SchedulerHighNumberOfFailedLeaveTask
-          expr: sum(increase(dragonfly_scheduler_leave_task_failure_total{}[1m])) > 100
+            summary: Scheduler's success rate of register peer is low
+            message: Scheduler's success rate of register peer is low
+        - alert: SchedulerHighNumberOfFailedLeavePeer
+          expr: sum(increase(dragonfly_scheduler_leave_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
           annotations:
-            summary: Scheduler has a high number of failed leave task
-            message: Scheduler has a high number of failed leave task
-        - alert: SchedulerSuccessRateOfLeavingTask
-          expr: (sum(rate(dragonfly_scheduler_leave_task_total{}[1m])) - sum(rate(dragonfly_scheduler_leave_task_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_leave_task_total{}[1m])) < 0.6
+            summary: Scheduler has a high number of failed leave peer
+            message: Scheduler has a high number of failed leave peer
+        - alert: SchedulerSuccessRateOfLeavingPeer
+          expr: (sum(rate(dragonfly_scheduler_leave_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_leave_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_leave_peer_total{}[1m])) < 0.6
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: Scheduler's success rate of leaving task is low
-            message: Scheduler's success rate of leaving task is low
+            summary: Scheduler's success rate of leaving peer is low
+            message: Scheduler's success rate of leaving peer is low
         - alert: SchedulerHighNumberOfFailedStatTask
           expr: sum(increase(dragonfly_scheduler_stat_task_failure_total{}[1m])) > 100
           for: 1m
@@ -416,22 +416,22 @@ scheduler:
           annotations:
             summary: Scheduler's success rate of stat task is low
             message: Scheduler's success rate of stat task is low
-        - alert: SchedulerHighNumberOfFailedAnnounceTask
-          expr: sum(increase(dragonfly_scheduler_announce_task_failure_total{}[1m])) > 100
+        - alert: SchedulerHighNumberOfFailedAnnouncePeer
+          expr: sum(increase(dragonfly_scheduler_announce_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
           annotations:
-            summary: Scheduler has a high number of failed announce task
-            message: Scheduler has a high number of failed announce task
-        - alert: SchedulerSuccessRateOfAnnouncingTask
-          expr: (sum(rate(dragonfly_scheduler_announce_task_total{}[1m])) - sum(rate(dragonfly_scheduler_announce_task_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_announce_task_total{}[1m])) < 0.6
+            summary: Scheduler has a high number of failed announce peer
+            message: Scheduler has a high number of failed announce peer
+        - alert: SchedulerSuccessRateOfAnnouncingPeer
+          expr: (sum(rate(dragonfly_scheduler_announce_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_announce_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_announce_peer_total{}[1m])) < 0.6
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: Scheduler's success rate of announcing task is low
-            message: Scheduler's success rate of announcing task is low
+            summary: Scheduler's success rate of announcing peer is low
+            message: Scheduler's success rate of announcing peer is low
         - alert: SchedulerHighNumberOfFailedLeaveHost
           expr: sum(increase(dragonfly_scheduler_leave_host_failure_total{}[1m])) > 100
           for: 1m
@@ -495,7 +495,7 @@ seedPeer:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-beta.2
+  tag: v2.0.9-rc.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secrets
@@ -840,7 +840,7 @@ dfdaemon:
   # -- Image repository
   image: dragonflyoss/dfdaemon
   # -- Image tag
-  tag: v2.0.9-beta.2
+  tag: v2.0.9-rc.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secrets
@@ -1178,7 +1178,7 @@ manager:
   # -- Image repository
   image: dragonflyoss/manager
   # -- Image tag
-  tag: v2.0.9-beta.2
+  tag: v2.0.9-rc.2
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secrets
