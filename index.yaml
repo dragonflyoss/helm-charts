@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update PrometheusRule in schduler by v2 protocol of metrics.
+        - Update image version to v2.0.9-rc.2.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.9-rc.2
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.9-rc.2
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.9-rc.2
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 0.10.8
+    created: "2023-03-15T10:30:50.083833468Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 4fd1d99edcc275bc99fe56bb0ab96bb617328e40d6670b91fdee43967be1f97b
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-0.10.8/dragonfly-0.10.8.tgz
+    version: 0.10.8
+  - annotations:
+      artifacthub.io/changes: |
         - Add auth config to manager.
       artifacthub.io/images: |
         - name: manager
@@ -6350,4 +6406,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-03-13T09:35:35.855241848Z"
+generated: "2023-03-15T10:30:50.084262464Z"
