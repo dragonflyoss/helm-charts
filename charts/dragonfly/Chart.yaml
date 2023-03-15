@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.10.7
-appVersion: 0.10.7
+version: 0.10.8
+appVersion: 0.10.8
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add auth config to manager.
+    - Update PrometheusRule in schduler by v2 protocol of metrics.
+    - Update image version to v2.0.9-rc.2.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -35,11 +36,11 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.0.9-beta.2
+      image: dragonflyoss/manager:v2.0.9-rc.2
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.0.9-beta.2
+      image: dragonflyoss/dfdaemon:v2.0.9-rc.2
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.0.9-beta.2
+      image: dragonflyoss/scheduler:v2.0.9-rc.2
 
 dependencies:
   - name: mysql
