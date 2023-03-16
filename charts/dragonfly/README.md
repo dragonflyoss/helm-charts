@@ -301,6 +301,8 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.security.certSpec.validityPeriod | string | `"87600h"` | ValidityPeriod is the validity period  of certificate. |
 | manager.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | manager.config.server.cacheDir | string | `""` | Dynconfig cache directory |
+| manager.config.server.grpc.advertiseIP | string | `""` | GRPC advertise ip |
+| manager.config.server.grpc.advertisePort | int | `65003` | GRPC advertise port |
 | manager.config.server.logDir | string | `""` | Log directory |
 | manager.config.server.pluginDir | string | `""` | Plugin directory |
 | manager.config.server.workHome | string | `""` | Work directory |
@@ -396,6 +398,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work |
 | scheduler.config.server.advertiseIP | string | `""` | Advertise ip |
+| scheduler.config.server.advertisePort | int | `8002` | Advertise port |
 | scheduler.config.server.cacheDir | string | `""` | Dynconfig cache directory |
 | scheduler.config.server.dataDir | string | `""` | Storage directory |
 | scheduler.config.server.listenIP | string | `"0.0.0.0"` | Listen ip |
