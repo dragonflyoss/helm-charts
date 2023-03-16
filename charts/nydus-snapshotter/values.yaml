@@ -5,7 +5,7 @@ name: nydus-snapshotter
 # -- Image repository
 image: ghcr.io/containerd/nydus-snapshotter
 # -- Image tag
-tag: v0.4.0
+tag: v0.6.1
 # -- Image pull policy
 pullPolicy: Always
 # -- Let nydus-snapshotter run in host network

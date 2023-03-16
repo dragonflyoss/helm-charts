@@ -79,7 +79,7 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 | priorityClassName | string | `""` | Pod priorityClassName |
 | pullPolicy | string | `"Always"` | Image pull policy |
 | resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| tag | string | `"v0.4.0"` | Image tag |
+| tag | string | `"v0.6.1"` | Image tag |
 | terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | tolerations | list | `[]` | List of node taints to tolerate |
 
