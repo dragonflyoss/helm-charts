@@ -3,6 +3,62 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add advertiseIP to manager and scheduler.
+        - Add advertisePort to manager and scheduler.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.0.9
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.0.9
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.0.9
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 1.0.0
+    created: "2023-03-16T09:05:48.670224912Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: c3770885edfe24dc86aa744e945e7dc52ff55cf353c81ef1d4334070b27549c1
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.0.0/dragonfly-1.0.0.tgz
+    version: 1.0.0
+  - annotations:
+      artifacthub.io/changes: |
         - Update image version to v2.0.9.
       artifacthub.io/images: |
         - name: manager
@@ -6503,4 +6559,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-03-16T07:22:56.452560686Z"
+generated: "2023-03-16T09:05:48.670646436Z"
