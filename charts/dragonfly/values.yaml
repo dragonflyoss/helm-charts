@@ -200,6 +200,8 @@ scheduler:
     server:
       # -- Advertise ip
       advertiseIP: ""
+      # -- Advertise port
+      advertisePort: 8002
       # -- Listen ip
       listenIP: "0.0.0.0"
       # -- Server port
@@ -1251,6 +1253,11 @@ manager:
     tls: []
   config:
     server:
+      grpc:
+        # -- GRPC advertise ip
+        advertiseIP: ""
+        # -- GRPC advertise port
+        advertisePort: 65003
       # -- Work directory
       workHome: ""
       # -- Log directory

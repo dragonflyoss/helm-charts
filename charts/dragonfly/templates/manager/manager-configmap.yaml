@@ -15,6 +15,8 @@ data:
       rest:
         addr: :{{ .Values.manager.restPort }}
       grpc:
+        advertiseIP: {{ .Values.manager.config.server.grpc.advertiseIP }}
+        advertisePort: {{ .Values.manager.config.server.grpc.advertisePort }}
         port:
           start: {{ .Values.manager.grpcPort }}
           end: {{ .Values.manager.grpcPort }}
