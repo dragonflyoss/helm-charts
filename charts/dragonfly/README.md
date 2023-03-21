@@ -188,11 +188,11 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | dfdaemon.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
 | dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
-| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"netAddrs":null,"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"10m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"netAddrs":null,"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | dfdaemon.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | dfdaemon.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
-| dfdaemon.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
+| dfdaemon.config.scheduler.manager.refreshInterval | string | `"10m"` | Scheduler list refresh interval |
 | dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
 | dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
 | dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
@@ -279,9 +279,9 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
 | manager.config.auth.jwt.timeout | string | `"48h"` | Timeout is duration that a jwt token is valid, default duration is two days. |
-| manager.config.cache.local.size | int | `10000` | Size of LFU cache |
-| manager.config.cache.local.ttl | string | `"10s"` | Local cache TTL duration |
-| manager.config.cache.redis.ttl | string | `"30s"` | Redis cache TTL duration |
+| manager.config.cache.local.size | int | `200000` | Size of LFU cache |
+| manager.config.cache.local.ttl | string | `"3m"` | Local cache TTL duration |
+| manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration |
 | manager.config.console | bool | `false` | Console shows log on console |
 | manager.config.jaeger | string | `""` |  |
 | manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
@@ -369,7 +369,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.enable | bool | `true` | Enable redis cluster with docker container |
 | redis.master.service.ports.redis | int | `6379` | Redis master service port |
 | scheduler.config.console | bool | `false` | Console shows log on console |
-| scheduler.config.dynconfig.refreshInterval | string | `"10s"` | Dynamic config refresh interval |
+| scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance |
@@ -487,11 +487,11 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror |
 | seedPeer.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option |
 | seedPeer.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace Linux only |
-| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"5m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
+| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"10m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml |
 | seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon |
 | seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager |
 | seedPeer.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr |
-| seedPeer.config.scheduler.manager.refreshInterval | string | `"5m"` | Scheduler list refresh interval |
+| seedPeer.config.scheduler.manager.refreshInterval | string | `"10m"` | Scheduler list refresh interval |
 | seedPeer.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id |
 | seedPeer.config.scheduler.manager.seedPeer.enable | bool | `true` | Enable seed peer mode |
 | seedPeer.config.scheduler.manager.seedPeer.keepAlive.interval | string | `"5s"` | Manager keepalive interval |
