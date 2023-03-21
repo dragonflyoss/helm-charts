@@ -253,7 +253,7 @@ scheduler:
       # Please remove it from your configuration.
       type: manager
       # -- Dynamic config refresh interval
-      refreshInterval: 10s
+      refreshInterval: 1m
     host:
       # -- IDC is the idc of scheduler instance
       idc: ""
@@ -607,7 +607,7 @@ seedPeer:
         # -- Manager service address, netAddr is a list, there are two fields type and addr
         netAddrs:
         # -- Scheduler list refresh interval
-        refreshInterval: 5m
+        refreshInterval: 10m
         seedPeer:
           # -- Enable seed peer mode
           enable: true
@@ -946,7 +946,7 @@ dfdaemon:
         # -- Manager service address, netAddr is a list, there are two fields type and addr
         netAddrs:
         # -- Scheduler list refresh interval
-        refreshInterval: 5m
+        refreshInterval: 10m
         seedPeer:
           # -- Enable seed peer mode.
           enable: false
@@ -1283,12 +1283,12 @@ manager:
     cache:
       redis:
         # -- Redis cache TTL duration
-        ttl: 30s
+        ttl: 5m
       local:
         # -- Size of LFU cache
-        size: 10000
+        size: 200000
         # -- Local cache TTL duration
-        ttl: 10s
+        ttl: 3m
     objectStorage:
       # -- Enable object storage
       enable: false
