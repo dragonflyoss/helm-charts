@@ -22,7 +22,12 @@ Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an In
 
 ## Installation
 
-Please follow [this chart document](./charts/dragonfly/README.md)
+Quick start: [Use Helm to quickly deploy Dragonfly & Nydus on K8S](./INSTALL.md)
+
+If you need to install components individually:
+
+- [Dragonfly chart](./charts/dragonfly/README.md)
+- [Nydus chart](./charts/nydus/README.md)
 
 ## Contact
 
