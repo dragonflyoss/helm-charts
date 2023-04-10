@@ -16,17 +16,17 @@ an Incubating Level Project.
 
 ## Installation
 
-Please refer to the [document](./INSTALL.md) to install Dragonfly & Nydus on Kubernetes.
+Please refer to the [document][install] to install Dragonfly & Nydus on Kubernetes.
 
-## Additional documentation
+## Documentation
 
-- [Install Dragonfly Chart on Kubernetes](./charts/dragonfly/README.md)
-- [Install Nydus Chart on Kubernetes](./charts/nydus/README.md)
+- [Install Dragonfly & Nydus on Kubernetes][install]
+- [Install Dragonfly on Kubernetes](./charts/dragonfly/README.md)
+- [Install Nydus on Kubernetes](./charts/nydus/README.md)
 
-## Contact
+## Community
 
-Welcome developers to actively participate in community discussions and contribute code to Dragonfly.
-We will remain concerned about the issues discussed in the community and respond quickly.
+Join the conversation and help the community.
 
 - **Slack Channel**: [#dragonfly](https://cloud-native.slack.com/messages/dragonfly/) on [CNCF Slack](https://slack.cncf.io/)
 - **Discussion Group**: <dragonfly-discuss@googlegroups.com>
@@ -40,3 +40,4 @@ We will remain concerned about the issues discussed in the community and respond
 Apache 2.0 License. Please see [License File][license] for more information.
 
 [license]: LICENSE
+[install]: INSTALL.md
