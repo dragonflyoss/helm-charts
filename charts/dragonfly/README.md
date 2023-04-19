@@ -168,7 +168,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.health.tcpListen.port | int | `40901` |  |
 | dfdaemon.config.host.idc | string | `""` | IDC deployed by daemon |
 | dfdaemon.config.host.location | string | `""` | Geographical location, separated by "|" characters |
-| dfdaemon.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | dfdaemon.config.jaeger | string | `""` |  |
 | dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | dfdaemon.config.logDir | string | `""` | Log directory |
@@ -467,7 +466,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.health.tcpListen.port | int | `40901` |  |
 | seedPeer.config.host.idc | string | `""` | IDC deployed by daemon |
 | seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters |
-| seedPeer.config.host.securityDomain | string | `""` | Security domain deployed by daemon, network isolation between different security domains |
 | seedPeer.config.jaeger | string | `""` |  |
 | seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not it is usefully when upgrade daemon service, all local cache will be saved default is false |
 | seedPeer.config.logDir | string | `""` | Log directory |
