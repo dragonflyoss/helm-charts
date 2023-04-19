@@ -597,8 +597,6 @@ seedPeer:
       idc: ""
       # -- Geographical location, separated by "|" characters
       location: ""
-      # -- Security domain deployed by daemon, network isolation between different security domains
-      securityDomain: ""
     # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
     scheduler:
       manager:
@@ -936,8 +934,6 @@ dfdaemon:
       idc: ""
       # -- Geographical location, separated by "|" characters
       location: ""
-      # -- Security domain deployed by daemon, network isolation between different security domains
-      securityDomain: ""
     # -- Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml
     scheduler:
       manager:
