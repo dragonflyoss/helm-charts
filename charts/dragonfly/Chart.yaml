@@ -27,7 +27,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Add database to scheduler.
-    - Move redis from job to database. 
+    - Move redis from job to database.
 
   artifacthub.io/links: |
     - name: Chart Source
