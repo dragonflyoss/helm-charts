@@ -30,7 +30,7 @@ data:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
     seedPeer:
 {{ toYaml .Values.scheduler.config.seedPeer | indent 6 }}
-    job:
+    database:
       redis:
         {{- if .Values.redis.enable }}
         addrs:
@@ -46,6 +46,7 @@ data:
         password: {{ .Values.externalRedis.password }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
+        networkTopologyDB: {{ .Values.externalRedis.networkTopologyDB }}
         {{- end }}
     storage:
 {{ toYaml .Values.scheduler.config.storage | indent 6 }}

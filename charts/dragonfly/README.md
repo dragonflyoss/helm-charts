@@ -259,6 +259,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | External mysql port |
 | externalMysql.username | string | `"dragonfly"` | External mysql username |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses |
+| externalRedis.networkTopologyDB | int | `3` | External redis network topology db |
 | externalRedis.backendDB | int | `2` | External redis backend db |
 | externalRedis.brokerDB | int | `1` | External redis broker db |
 | externalRedis.db | int | `0` | External redis db |

@@ -1489,6 +1489,8 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db
   backendDB: 2
+  # -- External redis network topology db
+  networkTopologyDB: 3
 
 jaeger:
   # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment
