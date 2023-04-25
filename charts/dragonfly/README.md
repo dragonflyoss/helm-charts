@@ -128,7 +128,7 @@ helm delete dragonfly --namespace dragonfly-system
 ## Values
 
 | Key | Type | Default | Description |
-|-----|------|---------|-------------|
+|-----|------|--------|-------------|
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain |
 | containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainerImage":"dragonflyoss/openssl"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support |
@@ -259,6 +259,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | External mysql port |
 | externalMysql.username | string | `"dragonfly"` | External mysql username |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses |
+| externalRedis.networkTopologyDB | int | `3` | External redis network topologydb |
 | externalRedis.backendDB | int | `2` | External redis backend db |
 | externalRedis.brokerDB | int | `1` | External redis broker db |
 | externalRedis.db | int | `0` | External redis db |
