@@ -875,6 +875,8 @@ dfdaemon:
     image: busybox
     # -- Init container image tag
     tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
