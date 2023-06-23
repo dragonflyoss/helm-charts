@@ -374,7 +374,7 @@ spec:
                 need_restart=1
               fi
               {{- if .Values.containerRuntime.containerd.injectRegistryCredencials.enable}}
-              if grep "registry.config.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
+              if grep "registry.configs.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
                   echo "registry auth $registry found in {{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}, skip"
               else
                 cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
@@ -446,7 +446,7 @@ spec:
               need_restart=1
             fi
           {{- if .Values.containerRuntime.containerd.injectRegistryCredencials.enable}}
-            if grep "registry.config.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
+            if grep "registry.configs.\"$domain\".auth" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
                 echo "registry auth $registry found in {{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}, skip"
             else
               cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
