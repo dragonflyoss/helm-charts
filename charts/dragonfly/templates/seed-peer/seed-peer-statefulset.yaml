@@ -21,7 +21,7 @@ spec:
       app: {{ template "dragonfly.fullname" . }}
       component: {{ .Values.seedPeer.name }}
       release: {{ .Release.Name }}
-  serviceName: seed-peer
+  serviceName: {{ template "dragonfly.seedPeer.fullname" . }}
   template:
     metadata:
       labels:

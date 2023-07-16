@@ -21,7 +21,7 @@ spec:
       app: {{ template "dragonfly.fullname" . }}
       release: {{ .Release.Name }}
       component: {{ .Values.scheduler.name }}
-  serviceName: scheduler
+  serviceName: {{ template "dragonfly.scheduler.fullname" . }}
   template:
     metadata:
       labels:
