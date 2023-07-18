@@ -5,6 +5,63 @@ entries:
       artifacthub.io/changes: |
         - Update image version to v2.1.0-alpha.6.
         - Add redis configuration in scheduler.
+        - fix registries is http generate cert.d file name err
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.0-alpha.6
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.0-alpha.6
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.0-alpha.6
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 1.0.4
+    created: "2023-07-18T03:18:41.514497127Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 70185f951cb16bb080c9438b21f9b9a40a8d897d1c8bc3d05afc83e0829ac160
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.0.4/dragonfly-1.0.4.tgz
+    version: 1.0.4
+  - annotations:
+      artifacthub.io/changes: |
+        - Update image version to v2.1.0-alpha.6.
+        - Add redis configuration in scheduler.
       artifacthub.io/images: |
         - name: manager
           image: dragonflyoss/manager:v2.1.0-alpha.6
@@ -6726,4 +6783,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-05-11T10:23:36.352146672Z"
+generated: "2023-07-18T03:18:41.514997839Z"
