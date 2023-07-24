@@ -1558,7 +1558,7 @@ trainer:
   # -- Deployment annotations
   deploymentAnnotations: {}
   # -- Pod containerPort
-  containerPort: 9090
+  containerPort: 8002
   # -- Extra volumes for trainer.
   extraVolumes:
     - name: logs
