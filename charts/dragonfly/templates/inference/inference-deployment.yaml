@@ -1,0 +1,67 @@
+{{- if .Values.inference.enable }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dragonfly.inference.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.inference.name }}
+spec:
+  replicas: {{ .Values.inference.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" . }}
+      component: {{ .Values.inference.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "dragonfly.fullname" . }}
+        component: {{ .Values.inference.name }}
+        release: {{ .Release.Name }}
+
+    spec:
+      containers:
+        - name: inference
+          image: "{{ .Values.inference.image }}:{{ .Values.inference.tag}}"
+          imagePullPolicy: {{ .Values.inference.pullPolicy | quote}}
+          args: ["tritonserver", "--model-store={{ .Values.inference.modelRepositoryPath }}",
+                 "--model-control-mode=poll",
+                 "--repository-poll-secs=5"]
+          env:
+            - name: DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: region
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: credentials
+                  key: key
+          ports:
+            - containerPort: {{ .Values.inference.restPort }}
+              name: http
+            - containerPort: {{ .Values.inference.grpcPort }}
+              name: grpc
+          readinessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /v2/health/live
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 10
+{{- end}}

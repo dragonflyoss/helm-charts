@@ -1505,3 +1505,227 @@ jaeger:
     enabled: false
   query:
     enabled: false
+
+trainer:
+  # -- Enable trainer
+  enable: false
+  # -- trainer name
+  name: trainer
+  # -- Override trainer name
+  nameOverride: ""
+  # -- Override trainer fullname
+  fullnameOverride: ""
+  # -- Number of Pods to launch
+  replicas: 1
+  # -- Image repository
+  image: dragonflyoss/trainer
+  # -- Image tag
+  tag: latest
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  # -- Image pull secrets
+  # @default -- `[]` (defaults to global.imagePullSecrets)
+  pullSecrets: []
+  # -- Host Aliases
+  hostAliases: []
+  # -- Pod resource requests and limits
+  resources:
+    requests:
+      cpu: "0"
+      memory: "0"
+    limits:
+      cpu: "2"
+      memory: "4Gi"
+  service:
+    # -- Service type
+    type: ClusterIP
+    # -- Service labels
+    labels: { }
+    # -- Service annotations
+    annotations: { }
+  # -- Pod priorityClassName
+  priorityClassName: ""
+  # -- Node labels for pod assignment
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
+  terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
+  tolerations: []
+  # -- Pod annotations
+  podAnnotations: {}
+  # -- Pod labels
+  podLabels: {}
+  # -- Deployment annotations
+  deploymentAnnotations: { }
+  # -- Pod containerPort
+  containerPort: 9090
+  # -- Extra volumes for trainer.
+  extraVolumes:
+    - name: logs
+      emptyDir: {}
+  # -- Extra volumeMounts for trainer.
+  extraVolumeMounts:
+    - name: logs
+      mountPath: "/var/log/dragonfly/trainer"
+  initContainer:
+    # -- Init container image repository
+    image: busybox
+    # -- Init container image tag
+    tag: latest
+    # -- Container image pull policy
+    pullPolicy: IfNotPresent # -- Deployment annotations
+  config:
+    server:
+      # -- Advertise ip
+      advertiseIP: ""
+      # -- Advertise port
+      advertisePort: 8002
+      # -- Listen ip
+      listenIP: "0.0.0.0"
+      # -- Server port
+      port: 8002
+      # -- Work directory
+      workHome: ""
+      # -- Log directory
+      logDir: ""
+      # -- Storage directory
+      dataDir: ""
+    security:
+      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+      # If AutoIssueCert is false, any other option in Security will be ignored.
+      autoIssueCert: false
+      # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
+      caCert: ""
+      # -- TLSVerify indicates to verify certificates.
+      tlsVerify: false
+      # -- TLSPolicy controls the grpc shandshake behaviors:
+      #   force: both ClientHandshake and ServerHandshake are only support tls
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+      tlsPolicy: "prefer"
+      certSpec:
+        # -- DNSNames is a list of dns names be set on the certificate.
+        dnsNames:
+          - "dragonfly-trainer"
+          - "dragonfly-trainer.dragonfly-system.svc"
+          - "dragonfly-trainer.dragonfly-system.svc.cluster.local"
+        # -- IPAddresses is a list of ip addresses be set on the certificate.
+        ipAddresses:
+        # -- ValidityPeriod is the validity period of certificate.
+        validityPeriod: 4320h
+    network:
+      # -- enableIPv6 enables ipv6.
+      enableIPv6: false
+    manager:
+      # -- Manager Service Address
+      Addr:
+    # -- Console shows log on console
+    console: false
+    # -- Whether to enable debug level logger and enable pprof
+    verbose: false
+    # -- Listen port for pprof, only valid when the verbose option is true
+    # default is -1. If it is 0, pprof will use a random port.
+    pprofPort: -1
+    # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    jaeger: ""
+  metrics:
+    # -- Enable trainer metrics
+    enable: false
+    service:
+      # -- Service type
+      type: ClusterIP
+      # -- Service labels
+      labels: {}
+      # -- Service annotations
+      annotations: {}
+    serviceMonitor:
+      # -- Enable prometheus service monitor
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped
+      interval: 30s
+      # -- Timeout after which the scrape is ended
+      scrapeTimeout: 10s
+    prometheusRule:
+      # -- Enable prometheus rule
+      # ref: https://github.com/coreos/prometheus-operator
+      enable: false
+      # -- Additional labels
+      additionalLabels: {}
+      # -- Prometheus rules
+      rules:
+        - alert: TrainerDown
+          expr: sum(dragonfly_trainer_version{}) == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Trainer instance is down
+            message: Trainer instance {{ "{{ $labels.instance }}" }} is down
+        - alert: TrainerHighNumberOfFailedGRPCRequest
+          expr: sum(rate(grpc_server_started_total{grpc_service="trainer.Trainer",grpc_type="unary"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="InvalidArgument"}[1m])) > 100
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: Trainer has a high number of failed grpc request
+            message: Trainer has a high number of failed grpc request
+        - alert: TrainerSuccessRateOfGRPCRequest
+          expr: (sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="trainer.Trainer",grpc_type="unary",grpc_code="InvalidArgument"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service="trainer.Trainer",grpc_type="unary"}[1m])) < 0.6
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Trainer's success rate of grpc request is low
+            message: Trainer's success rate of grpc request is low
+        - alert: TrainerHighNumberOfFailedRESTRequest
+          expr: sum(rate(dragonfly_trainer_requests_total{}[1m])) - sum(rate(dragonfly_trainer_requests_total{code=~"[12].."}[1m])) > 100
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: Trainer has a high number of failed rest request
+            message: Trainer has a high number of failed rest request
+        - alert: TrainerSuccessRateOfRESTRequest
+          expr: sum(rate(dragonfly_trainer_requests_total{code=~"[12].."}[1m])) / sum(rate(dragonfly_trainer_requests_total{}[1m])) < 0.6
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Trainer's success rate of rest request is low
+            message: Trainer's success rate of rest request is low
+
+inference:
+  # -- Enable inference
+  enable: false
+  # -- inference name
+  name: inference
+  # -- Override inference name
+  nameOverride: ""
+  # -- Override inference fullname
+  fullnameOverride: ""
+  # -- Number of Pods to launch
+  replicas: 1
+  # -- Image repository
+  image: nvcr.io/nvidia/tritonserver
+  # -- Image tag
+  tag: 23.06-py3
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+  modelRepositoryPath:
+  secret:
+    region: REGION
+    id: SECRET_KEY_ID
+    key: SECRET_ACCESS_KEY
+  service:
+    # -- Service type
+    type: LoadBalancer
+  # -- REST service port
+  restPort: 8000
+  # -- GRPC service port
+  grpcPort: 8001

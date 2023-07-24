@@ -1,0 +1,28 @@
+{{- if .Values.inference.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.inference.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.inference.name }}
+spec:
+  type: {{ .Values.inference.service.type }}
+  ports:
+    - port: 8000
+      targetPort: http
+      name: http-inference-server
+    - port: 8001
+      targetPort: grpc
+      name: grpc-inference-server
+    - port: 8002
+      targetPort: metrics
+      name: metrics-inference-server
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Values.inference.name }}
+{{- end}}

@@ -1,0 +1,35 @@
+{{- if .Values.trainer.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dragonfly.trainer.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.trainer.name }}
+data:
+  trainer.yaml: |-
+    server:
+{{ toYaml .Values.trainer.config.server | indent 6 }}
+    security:
+{{ toYaml .Values.trainer.config.security | indent 6 }}
+    network:
+{{ toYaml .Values.trainer.config.network | indent 6 }}
+    manager:
+{{ toYaml .Values.trainer.config.manager | indent 6 }}
+    metrics:
+      enable: {{ .Values.trainer.metrics.enable }}
+      addr: ":8000"
+    console: {{ .Values.trainer.config.console }}
+    verbose: {{ .Values.trainer.config.verbose }}
+    {{- if .Values.trainer.config.verbose }}
+    pprof-port: {{ .Values.trainer.config.pprofPort }}
+    {{- end }}
+    {{- if .Values.trainer.config.jaeger }}
+    jaeger: {{ .Values.trainer.config.jaeger }}
+    {{- else if .Values.jaeger.enable }}
+    jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+    {{- end }}
+{{- end }}

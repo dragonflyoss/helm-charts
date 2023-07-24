@@ -40,6 +40,10 @@ annotations:
       image: dragonflyoss/dfdaemon:v2.1.0-alpha.6
     - name: scheduler
       image: dragonflyoss/scheduler:v2.1.0-alpha.6
+    - name: trainer
+      image: dragonflyoss/scheduler:latest
+    - name: inference
+      image: nvcr.io/nvidia/tritonserver:23.06-py3
 
 dependencies:
   - name: mysql
