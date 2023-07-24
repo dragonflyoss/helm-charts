@@ -1540,9 +1540,9 @@ trainer:
     # -- Service type
     type: ClusterIP
     # -- Service labels
-    labels: { }
+    labels: {}
     # -- Service annotations
-    annotations: { }
+    annotations: {}
   # -- Pod priorityClassName
   priorityClassName: ""
   # -- Node labels for pod assignment
@@ -1556,7 +1556,7 @@ trainer:
   # -- Pod labels
   podLabels: {}
   # -- Deployment annotations
-  deploymentAnnotations: { }
+  deploymentAnnotations: {}
   # -- Pod containerPort
   containerPort: 9090
   # -- Extra volumes for trainer.
@@ -1573,7 +1573,7 @@ trainer:
     # -- Init container image tag
     tag: latest
     # -- Container image pull policy
-    pullPolicy: IfNotPresent # -- Deployment annotations
+    pullPolicy: IfNotPresent
   config:
     server:
       # -- Advertise ip

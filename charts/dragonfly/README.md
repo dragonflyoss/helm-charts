@@ -281,7 +281,7 @@ helm delete dragonfly --namespace dragonfly-system
 | inference.secret.key | string | `"SECRET_ACCESS_KEY"` |  |
 | inference.secret.region | string | `"REGION"` |  |
 | inference.service.type | string | `"LoadBalancer"` | Service type |
-| inference.tag | string | `"23.06-py3"` | Image tag |  
+| inference.tag | string | `"23.06-py3"` | Image tag |
 | jaeger.agent.enabled | bool | `false` |  |
 | jaeger.allInOne.enabled | bool | `true` |  |
 | jaeger.collector.enabled | bool | `false` |  |
@@ -622,6 +622,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.tag | string | `"latest"` | Image tag |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate |
+
 ## Chart dependencies
 
 | Repository | Name | Version |
