@@ -584,7 +584,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.config.server.port | int | `8002` | Server port |
 | trainer.config.server.workHome | string | `""` | Work directory |
 | trainer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| trainer.containerPort | int | `9090` | Pod containerPort |
+| trainer.containerPort | int | `8002` | Pod containerPort |
 | trainer.deploymentAnnotations | object | `{}` | Deployment annotations |
 | trainer.enable | bool | `false` | Enable trainer |
 | trainer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/trainer","name":"logs"}]` | Extra volumeMounts for trainer. |
