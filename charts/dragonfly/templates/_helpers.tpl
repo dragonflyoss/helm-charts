@@ -64,9 +64,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Create a default fully qualified inference name.
+Create a default fully qualified triton name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "dragonfly.inference.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.inference.name }}
+{{- define "dragonfly.triton.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.triton.name }}
 {{- end -}}

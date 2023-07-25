@@ -1558,7 +1558,7 @@ trainer:
   # -- Deployment annotations
   deploymentAnnotations: {}
   # -- Pod containerPort
-  containerPort: 8002
+  containerPort: 9090
   # -- Extra volumes for trainer.
   extraVolumes:
     - name: logs
@@ -1579,11 +1579,11 @@ trainer:
       # -- Advertise ip
       advertiseIP: ""
       # -- Advertise port
-      advertisePort: 8002
+      advertisePort: 9090
       # -- Listen ip
       listenIP: "0.0.0.0"
       # -- Server port
-      port: 8002
+      port: 9090
       # -- Work directory
       workHome: ""
       # -- Log directory
@@ -1700,17 +1700,17 @@ trainer:
             summary: Trainer's success rate of rest request is low
             message: Trainer's success rate of rest request is low
 
-inference:
-  # -- Enable inference
+triton:
+  # -- Enable triton
   enable: false
-  # -- inference name
-  name: inference
-  # -- Override inference name
+  # -- triton name
+  name: triton
+  # -- Override triton name
   nameOverride: ""
-  # -- Override inference fullname
+  # -- Override triton fullname
   fullnameOverride: ""
   # -- Number of Pods to launch
-  replicas: 1
+  replicas: 3
   # -- Image repository
   image: nvcr.io/nvidia/tritonserver
   # -- Image tag
@@ -1718,10 +1718,10 @@ inference:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   modelRepositoryPath:
-  secret:
+  aws:
     region: REGION
-    id: SECRET_KEY_ID
-    key: SECRET_ACCESS_KEY
+    accessKeyID: SECRET_KEY_ID
+    secretAccessKey: SECRET_ACCESS_KEY
   service:
     # -- Service type
     type: LoadBalancer
@@ -1729,3 +1729,5 @@ inference:
   restPort: 8000
   # -- GRPC service port
   grpcPort: 8001
+  # -- Metrics service port
+  metricsPort: 8002

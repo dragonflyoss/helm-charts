@@ -1,57 +1,58 @@
-{{- if .Values.inference.enable }}
+{{- if .Values.triton.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "dragonfly.inference.fullname" . }}
+  name: {{ template "dragonfly.triton.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    component: {{ .Values.inference.name }}
+    component: {{ .Values.triton.name }}
 spec:
-  replicas: {{ .Values.inference.replicaCount }}
+  replicas: {{ .Values.triton.replicas }}
   selector:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
-      component: {{ .Values.inference.name }}
+      component: {{ .Values.triton.name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "dragonfly.fullname" . }}
-        component: {{ .Values.inference.name }}
+        component: {{ .Values.triton.name }}
         release: {{ .Release.Name }}
-
     spec:
       containers:
-        - name: inference
-          image: "{{ .Values.inference.image }}:{{ .Values.inference.tag}}"
-          imagePullPolicy: {{ .Values.inference.pullPolicy | quote}}
-          args: ["tritonserver", "--model-store={{ .Values.inference.modelRepositoryPath }}",
+        - name: triton
+          image: "{{ .Values.triton.image }}:{{ .Values.triton.tag}}"
+          imagePullPolicy: {{ .Values.triton.pullPolicy | quote}}
+          args: ["tritonserver", "--model-store={{ .Values.triton.modelRepositoryPath }}",
                  "--model-control-mode=poll",
                  "--repository-poll-secs=5"]
           env:
             - name: DEFAULT_REGION
               valueFrom:
                 secretKeyRef:
-                  name: credentials
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
                   key: region
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: credentials
-                  key: id
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
+                  key: accessKeyID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: credentials
-                  key: key
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
+                  key: secretAccessKey
           ports:
-            - containerPort: {{ .Values.inference.restPort }}
-              name: http
-            - containerPort: {{ .Values.inference.grpcPort }}
-              name: grpc
+            - containerPort: {{ .Values.triton.restPort }}
+              protocol: TCP
+            - containerPort: {{ .Values.triton.grpcPort }}
+              protocol: TCP
+            - containerPort: {{ .Values.triton.metricsPort }}
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /v2/health/ready
