@@ -614,7 +614,6 @@ helm delete dragonfly --namespace dragonfly-system
 | triton.fullnameOverride | string | `""` | Override triton fullname |
 | triton.grpcPort | int | `8001` | GRPC service port |
 | triton.image | string | `"nvcr.io/nvidia/tritonserver"` | Image repository |
-| triton.metricsPort | int | `8002` | Metrics service port |
 | triton.modelRepositoryPath | string | `""` |  |
 | triton.name | string | `"triton"` | triton name |
 | triton.nameOverride | string | `""` | Override triton name |
