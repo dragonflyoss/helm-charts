@@ -1729,5 +1729,3 @@ triton:
   restPort: 8000
   # -- GRPC service port
   grpcPort: 8001
-  # -- Metrics service port
-  metricsPort: 8002

@@ -12,11 +12,11 @@ metadata:
 spec:
   type: {{ .Values.triton.service.type }}
   ports:
-    - port: 8000
+    - port: {{ .Values.triton.restPort }}
       name: http-rest
       protocol: TCP
       targetPort: http
-    - port: 8001
+    - port: {{ .Values.triton.grpcPort }}
       name: http-grpc
       protocol: TCP
       targetPort: grpc

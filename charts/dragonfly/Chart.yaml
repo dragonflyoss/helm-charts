@@ -42,7 +42,7 @@ annotations:
       image: dragonflyoss/scheduler:v2.1.0-alpha.6
     - name: trainer
       image: dragonflyoss/scheduler:latest
-    - name: inference
+    - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 
 dependencies:

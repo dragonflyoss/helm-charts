@@ -53,7 +53,7 @@ spec:
             - containerPort: {{ .Values.triton.grpcPort }}
               name: http-grpc
               protocol: TCP
-            - containerPort: {{ .Values.triton.metricsPort }}
+            - containerPort: 8002
               name: http-metrics
               protocol: TCP
           readinessProbe:
