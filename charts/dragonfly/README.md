@@ -551,7 +551,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
 | trainer.config.console | bool | `false` | Console shows log on console |
 | trainer.config.jaeger | string | `""` |  |
-| trainer.config.manager.Addr | string | `nil` | Manager Service Address |
+| trainer.config.manager.Addr | string | `"127.0.0.1:65003"` | Manager Service Address |
 | trainer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | trainer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | trainer.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
@@ -562,11 +562,11 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | trainer.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | trainer.config.server.advertiseIP | string | `""` | Advertise ip |
-| trainer.config.server.advertisePort | int | `9090` | Advertise port | 
+| trainer.config.server.advertisePort | int | `9090` | Advertise port |
 | trainer.config.server.dataDir | string | `""` | Storage directory |
 | trainer.config.server.listenIP | string | `"0.0.0.0"` | Listen ip |
 | trainer.config.server.logDir | string | `""` | Log directory |
-| trainer.config.server.port | int | `9090` | Server port | 
+| trainer.config.server.port | int | `9090` | Server port |
 | trainer.config.server.workHome | string | `""` | Work directory |
 | trainer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
 | trainer.containerPort | int | `8002` | Pod containerPort |
