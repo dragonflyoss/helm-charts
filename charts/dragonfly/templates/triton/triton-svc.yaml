@@ -15,11 +15,11 @@ spec:
     - port: 8000
       name: http-rest
       protocol: TCP
-      targetPort: 8000
+      targetPort: http
     - port: 8001
       name: http-grpc
       protocol: TCP
-      targetPort: 8001
+      targetPort: grpc
   selector:
     app: {{ template "dragonfly.fullname" . }}
     release: {{ .Release.Name }}

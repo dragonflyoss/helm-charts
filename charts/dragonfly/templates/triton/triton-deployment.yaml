@@ -48,21 +48,24 @@ spec:
                   key: secretAccessKey
           ports:
             - containerPort: {{ .Values.triton.restPort }}
+              name: http-rest
               protocol: TCP
             - containerPort: {{ .Values.triton.grpcPort }}
+              name: http-grpc
               protocol: TCP
             - containerPort: {{ .Values.triton.metricsPort }}
+              name: http-metrics
               protocol: TCP
           readinessProbe:
             httpGet:
               path: /v2/health/ready
-              port: http
+              port: http-rest
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /v2/health/live
-              port: http
+              port: http-rest
             initialDelaySeconds: 15
             periodSeconds: 10
 {{- end}}

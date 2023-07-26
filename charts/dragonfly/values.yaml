@@ -1621,7 +1621,7 @@ trainer:
       enableIPv6: false
     manager:
       # -- Manager Service Address
-      Addr:
+      Addr: "127.0.0.1:65003"
     # -- Console shows log on console
     console: false
     # -- Whether to enable debug level logger and enable pprof
@@ -1717,11 +1717,11 @@ triton:
   tag: 23.06-py3
   # -- Image pull policy
   pullPolicy: IfNotPresent
-  modelRepositoryPath:
+  modelRepositoryPath: ""
   aws:
-    region: REGION
-    accessKeyID: SECRET_KEY_ID
-    secretAccessKey: SECRET_ACCESS_KEY
+    region: ""
+    accessKeyID: ""
+    secretAccessKey: ""
   service:
     # -- Service type
     type: LoadBalancer

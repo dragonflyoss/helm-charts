@@ -61,51 +61,42 @@ spec:
       hostAliases:
 {{ toYaml .Values.trainer.hostAliases | indent 8 }}
       {{- end }}
-      initContainers:
-      - name: wait-for-manager
-        image: {{ .Values.scheduler.initContainer.image }}:{{ .Values.scheduler.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.scheduler.initContainer.pullPolicy }}
-        {{- if .Values.manager.enable }}
-        command: [ 'sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;' ]
-        {{- else }}
-        command: [ 'sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;' ]
-        {{- end }}
       containers:
-        - name: trainer
-          image: "{{ .Values.trainer.image }}:{{ .Values.trainer.tag }}"
-          imagePullPolicy: {{ .Values.trainer.pullPolicy | quote }}
-          resources:
+      - name: trainer
+        image: "{{ .Values.trainer.image }}:{{ .Values.trainer.tag }}"
+        imagePullPolicy: {{ .Values.trainer.pullPolicy | quote }}
+        resources:
 {{ toYaml .Values.trainer.resources | indent 12 }}
-          ports:
-            - containerPort: {{ .Values.trainer.containerPort }}
-              protocol: TCP
+        ports:
+        - containerPort: {{ .Values.trainer.containerPort }}
+          protocol: TCP
         {{- if .Values.trainer.metrics.enable }}
-            - containerPort: 8000
-              protocol: TCP
+        - containerPort: 8000
+          protocol: TCP
         {{- end }}
-          volumeMounts:
-            - name: config
-              mountPath: "/etc/dragonfly"
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/dragonfly"
         {{- if .Values.trainer.extraVolumeMounts }}
         {{- toYaml .Values.trainer.extraVolumeMounts | nindent 8 }}
         {{- end }}
-          readinessProbe:
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            exec:
-              command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
-            initialDelaySeconds: 15
-            periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
       volumes:
-        - name: config
-          configMap:
-            name: {{ template "dragonfly.trainer.fullname" . }}
-            items:
-              - key: trainer.yaml
-                path: trainer.yaml
+      - name: config
+        configMap:
+          name: {{ template "dragonfly.trainer.fullname" . }}
+          items:
+          - key: trainer.yaml
+            path: trainer.yaml
       {{- if .Values.trainer.extraVolumes }}
       {{- toYaml .Values.trainer.extraVolumes | nindent 6 }}
       {{- end }}
