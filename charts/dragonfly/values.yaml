@@ -1520,7 +1520,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: latest
+  tag: v2.1.0-beta.3
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
