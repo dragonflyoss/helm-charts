@@ -26,7 +26,6 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Fix the regex when injecting v1 mirror settings.
     - Add trainer and triton service.
 
   artifacthub.io/links: |
