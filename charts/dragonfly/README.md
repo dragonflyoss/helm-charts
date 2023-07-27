@@ -549,79 +549,77 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.tag | string | `"v2.1.0-alpha.6"` | Image tag |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate |
-| trainer.config.console | bool | `false` | Console shows log on console |
+| trainer.config.console | bool | `false` | Console shows log on console. |
 | trainer.config.jaeger | string | `""` |  |
-| trainer.config.manager.Addr | string | `"127.0.0.1:65003"` | Manager Service Address |
+| trainer.config.manager.Addr | string | `"127.0.0.1:65003"` | Manager Service Address. |
 | trainer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
-| trainer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| trainer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
 | trainer.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | trainer.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
 | trainer.config.security.certSpec.dnsNames | list | `["dragonfly-trainer","dragonfly-trainer.dragonfly-system.svc","dragonfly-trainer.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
 | trainer.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
 | trainer.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period of certificate. |
-| trainer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls) Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
+| trainer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | trainer.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
-| trainer.config.server.advertiseIP | string | `""` | Advertise ip |
-| trainer.config.server.advertisePort | int | `9090` | Advertise port |
-| trainer.config.server.dataDir | string | `""` | Storage directory |
-| trainer.config.server.listenIP | string | `"0.0.0.0"` | Listen ip |
-| trainer.config.server.logDir | string | `""` | Log directory |
-| trainer.config.server.port | int | `9090` | Server port |
-| trainer.config.server.workHome | string | `""` | Work directory |
-| trainer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof |
-| trainer.containerPort | int | `9090` | Pod containerPort |
-| trainer.deploymentAnnotations | object | `{}` | Deployment annotations |
-| trainer.enable | bool | `false` | Enable trainer |
+| trainer.config.server.advertiseIP | string | `""` | Advertise ip. |
+| trainer.config.server.advertisePort | int | `9090` | Advertise port. |
+| trainer.config.server.dataDir | string | `""` | Storage directory. |
+| trainer.config.server.listenIP | string | `"0.0.0.0"` | Listen ip. |
+| trainer.config.server.logDir | string | `""` | Log directory. |
+| trainer.config.server.port | int | `9090` | Server port. |
+| trainer.config.server.workHome | string | `""` | Work directory. |
+| trainer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
+| trainer.containerPort | int | `9090` | Pod containerPort. |
+| trainer.deploymentAnnotations | object | `{}` | Deployment annotations. |
+| trainer.enable | bool | `false` | Enable trainer. |
 | trainer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/trainer","name":"logs"}]` | Extra volumeMounts for trainer. |
 | trainer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for trainer. |
-| trainer.fullnameOverride | string | `""` | Override trainer fullname |
-| trainer.hostAliases | list | `[]` | Host Aliases |
-| trainer.image | string | `"dragonflyoss/trainer"` | Image repository |
-| trainer.initContainer.image | string | `"busybox"` | Init container image repository |
-| trainer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy |
-| trainer.initContainer.tag | string | `"latest"` | Init container image tag |
-| trainer.metrics.enable | bool | `false` | Enable trainer metrics |
-| trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels |
-| trainer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator |
-| trainer.metrics.prometheusRule.rules | list | `[{"alert":"TrainerDown","annotations":{"message":"Trainer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Trainer instance is down"},"expr":"sum(dragonfly_trainer_version{}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedGRPCRequest","annotations":{"message":"Trainer has a high number of failed grpc request","summary":"Trainer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfGRPCRequest","annotations":{"message":"Trainer's success rate of grpc request is low","summary":"Trainer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedRESTRequest","annotations":{"message":"Trainer has a high number of failed rest request","summary":"Trainer has a high number of failed rest request"},"expr":"sum(rate(dragonfly_trainer_requests_total{}[1m])) - sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfRESTRequest","annotations":{"message":"Trainer's success rate of rest request is low","summary":"Trainer's success rate of rest request is low"},"expr":"sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) / sum(rate(dragonfly_trainer_requests_total{}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules |
-| trainer.metrics.service.annotations | object | `{}` | Service annotations |
-| trainer.metrics.service.labels | object | `{}` | Service labels |
-| trainer.metrics.service.type | string | `"ClusterIP"` | Service type |
-| trainer.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| trainer.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor ref: https://github.com/coreos/prometheus-operator |
-| trainer.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped |
-| trainer.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended |
-| trainer.name | string | `"trainer"` | trainer name |
-| trainer.nameOverride | string | `""` | Override trainer name |
-| trainer.nodeSelector | object | `{}` | Node labels for pod assignment |
-| trainer.podAnnotations | object | `{}` | Pod annotations |
-| trainer.podLabels | object | `{}` | Pod labels |
-| trainer.priorityClassName | string | `""` | Pod priorityClassName |
-| trainer.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| trainer.pullSecrets | list | `[]` (defaults to global.imagePullSecrets) | Image pull secrets |
-| trainer.replicas | int | `1` | Number of Pods to launch |
-| trainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| trainer.service.annotations | object | `{}` | Service annotations |
-| trainer.service.labels | object | `{}` | Service labels |
-| trainer.service.type | string | `"ClusterIP"` | Service type |
-| trainer.tag | string | `"latest"` | Image tag |
-| trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
-| trainer.tolerations | list | `[]` | List of node taints to tolerate |
-| triton.aws.accessKeyID | string | `""` |  |
-| triton.aws.region | string | `""` |  |
-| triton.aws.secretAccessKey | string | `""` |  |
-| triton.enable | bool | `false` | Enable triton |
-| triton.fullnameOverride | string | `""` | Override triton fullname |
-| triton.grpcPort | int | `8001` | GRPC service port |
-| triton.image | string | `"nvcr.io/nvidia/tritonserver"` | Image repository |
-| triton.modelRepositoryPath | string | `""` |  |
-| triton.name | string | `"triton"` | triton name |
-| triton.nameOverride | string | `""` | Override triton name |
-| triton.pullPolicy | string | `"IfNotPresent"` | Image pull policy |
-| triton.replicas | int | `3` | Number of Pods to launch |
-| triton.restPort | int | `8000` | REST service port |
-| triton.service.type | string | `"LoadBalancer"` | Service type |
-| triton.tag | string | `"23.06-py3"` | Image tag |
+| trainer.fullnameOverride | string | `""` | Override trainer fullname. |
+| trainer.hostAliases | list | `[]` | Host Aliases. |
+| trainer.image | string | `"dragonflyoss/trainer"` | Image repository. |
+| trainer.initContainer.image | string | `"busybox"` | Init container image repository. |
+| trainer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy. |
+| trainer.initContainer.tag | string | `"latest"` | Init container image tag. |
+| trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
+| trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
+| trainer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
+| trainer.metrics.prometheusRule.rules | list | `[{"alert":"TrainerDown","annotations":{"message":"Trainer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Trainer instance is down"},"expr":"sum(dragonfly_trainer_version{}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedGRPCRequest","annotations":{"message":"Trainer has a high number of failed grpc request","summary":"Trainer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfGRPCRequest","annotations":{"message":"Trainer's success rate of grpc request is low","summary":"Trainer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedRESTRequest","annotations":{"message":"Trainer has a high number of failed rest request","summary":"Trainer has a high number of failed rest request"},"expr":"sum(rate(dragonfly_trainer_requests_total{}[1m])) - sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfRESTRequest","annotations":{"message":"Trainer's success rate of rest request is low","summary":"Trainer's success rate of rest request is low"},"expr":"sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) / sum(rate(dragonfly_trainer_requests_total{}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
+| trainer.metrics.service.annotations | object | `{}` | Service annotations. |
+| trainer.metrics.service.labels | object | `{}` | Service labels. |
+| trainer.metrics.service.type | string | `"ClusterIP"` | Service type. |
+| trainer.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels. |
+| trainer.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
+| trainer.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
+| trainer.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
+| trainer.name | string | `"trainer"` | trainer name. |
+| trainer.nameOverride | string | `""` | Override trainer name. |
+| trainer.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| trainer.podAnnotations | object | `{}` | Pod annotations. |
+| trainer.podLabels | object | `{}` | Pod labels. |
+| trainer.priorityClassName | string | `""` | Pod priorityClassName. |
+| trainer.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| trainer.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| trainer.replicas | int | `1` | Number of Pods to launch. |
+| trainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| trainer.service.annotations | object | `{}` | Service annotations. |
+| trainer.service.labels | object | `{}` | Service labels. |
+| trainer.service.type | string | `"ClusterIP"` | Service type. |
+| trainer.tag | string | `"latest"` | Image tag. |
+| trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
+| trainer.tolerations | list | `[]` | List of node taints to tolerate. |
+| triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
+| triton.enable | bool | `false` | Enable triton. |
+| triton.fullnameOverride | string | `""` | Override triton fullname. |
+| triton.grpcPort | int | `8001` | GRPC service port. |
+| triton.image | string | `"nvcr.io/nvidia/tritonserver"` | Image repository. |
+| triton.modelRepositoryPath | string | `""` | Model repository path. |
+| triton.name | string | `"triton"` | triton name. |
+| triton.nameOverride | string | `""` | Override triton name. |
+| triton.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| triton.replicas | int | `3` | Number of Pods to launch. |
+| triton.restPort | int | `8000` | REST service port. |
+| triton.service.type | string | `"LoadBalancer"` | Service type. |
+| triton.tag | string | `"23.06-py3"` | Image tag. |
 
 ## Chart dependencies
 
