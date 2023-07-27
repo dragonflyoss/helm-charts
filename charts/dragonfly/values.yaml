@@ -1507,28 +1507,28 @@ jaeger:
     enabled: false
 
 trainer:
-  # -- Enable trainer
+  # -- Enable trainer.
   enable: false
-  # -- trainer name
+  # -- trainer name.
   name: trainer
-  # -- Override trainer name
+  # -- Override trainer name.
   nameOverride: ""
-  # -- Override trainer fullname
+  # -- Override trainer fullname.
   fullnameOverride: ""
-  # -- Number of Pods to launch
+  # -- Number of Pods to launch.
   replicas: 1
-  # -- Image repository
+  # -- Image repository.
   image: dragonflyoss/trainer
-  # -- Image tag
+  # -- Image tag.
   tag: latest
-  # -- Image pull policy
+  # -- Image pull policy.
   pullPolicy: IfNotPresent
-  # -- Image pull secrets
-  # @default -- `[]` (defaults to global.imagePullSecrets)
+  # -- Image pull secrets.
+  # @default -- `[]` (defaults to global.imagePullSecrets).
   pullSecrets: []
-  # -- Host Aliases
+  # -- Host Aliases.
   hostAliases: []
-  # -- Pod resource requests and limits
+  # -- Pod resource requests and limits.
   resources:
     requests:
       cpu: "0"
@@ -1537,27 +1537,27 @@ trainer:
       cpu: "2"
       memory: "4Gi"
   service:
-    # -- Service type
+    # -- Service type.
     type: ClusterIP
-    # -- Service labels
+    # -- Service labels.
     labels: {}
-    # -- Service annotations
+    # -- Service annotations.
     annotations: {}
-  # -- Pod priorityClassName
+  # -- Pod priorityClassName.
   priorityClassName: ""
-  # -- Node labels for pod assignment
+  # -- Node labels for pod assignment.
   nodeSelector: {}
-  # -- Pod terminationGracePeriodSeconds
+  # -- Pod terminationGracePeriodSeconds.
   terminationGracePeriodSeconds:
-  # -- List of node taints to tolerate
+  # -- List of node taints to tolerate.
   tolerations: []
-  # -- Pod annotations
+  # -- Pod annotations.
   podAnnotations: {}
-  # -- Pod labels
+  # -- Pod labels.
   podLabels: {}
-  # -- Deployment annotations
+  # -- Deployment annotations.
   deploymentAnnotations: {}
-  # -- Pod containerPort
+  # -- Pod containerPort.
   containerPort: 9090
   # -- Extra volumes for trainer.
   extraVolumes:
@@ -1568,27 +1568,27 @@ trainer:
     - name: logs
       mountPath: "/var/log/dragonfly/trainer"
   initContainer:
-    # -- Init container image repository
+    # -- Init container image repository.
     image: busybox
-    # -- Init container image tag
+    # -- Init container image tag.
     tag: latest
-    # -- Container image pull policy
+    # -- Container image pull policy.
     pullPolicy: IfNotPresent
   config:
     server:
-      # -- Advertise ip
+      # -- Advertise ip.
       advertiseIP: ""
-      # -- Advertise port
+      # -- Advertise port.
       advertisePort: 9090
-      # -- Listen ip
+      # -- Listen ip.
       listenIP: "0.0.0.0"
-      # -- Server port
+      # -- Server port.
       port: 9090
-      # -- Work directory
+      # -- Work directory.
       workHome: ""
-      # -- Log directory
+      # -- Log directory.
       logDir: ""
-      # -- Storage directory
+      # -- Storage directory.
       dataDir: ""
     security:
       # -- AutoIssueCert indicates to issue client certificates for all grpc call.
@@ -1599,9 +1599,9 @@ trainer:
       # -- TLSVerify indicates to verify certificates.
       tlsVerify: false
       # -- TLSPolicy controls the grpc shandshake behaviors:
-      #   force: both ClientHandshake and ServerHandshake are only support tls
-      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls
-      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls)
+      #   force: both ClientHandshake and ServerHandshake are only support tls.
+      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.
+      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls).
       # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
       # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
       # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
@@ -1620,44 +1620,44 @@ trainer:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
     manager:
-      # -- Manager Service Address
+      # -- Manager Service Address.
       Addr: "127.0.0.1:65003"
-    # -- Console shows log on console
+    # -- Console shows log on console.
     console: false
-    # -- Whether to enable debug level logger and enable pprof
+    # -- Whether to enable debug level logger and enable pprof.
     verbose: false
-    # -- Listen port for pprof, only valid when the verbose option is true
+    # -- Listen port for pprof, only valid when the verbose option is true.
     # default is -1. If it is 0, pprof will use a random port.
     pprofPort: -1
-    # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces
+    # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces.
     jaeger: ""
   metrics:
-    # -- Enable trainer metrics
+    # -- Enable trainer metrics.
     enable: false
     service:
-      # -- Service type
+      # -- Service type.
       type: ClusterIP
-      # -- Service labels
+      # -- Service labels.
       labels: {}
-      # -- Service annotations
+      # -- Service annotations.
       annotations: {}
     serviceMonitor:
-      # -- Enable prometheus service monitor
-      # ref: https://github.com/coreos/prometheus-operator
+      # -- Enable prometheus service monitor.
+      # ref: https://github.com/coreos/prometheus-operator.
       enable: false
-      # -- Additional labels
+      # -- Additional labels.
       additionalLabels: {}
-      # -- Interval at which metrics should be scraped
+      # -- Interval at which metrics should be scraped.
       interval: 30s
-      # -- Timeout after which the scrape is ended
+      # -- Timeout after which the scrape is ended.
       scrapeTimeout: 10s
     prometheusRule:
-      # -- Enable prometheus rule
-      # ref: https://github.com/coreos/prometheus-operator
+      # -- Enable prometheus rule.
+      # ref: https://github.com/coreos/prometheus-operator.
       enable: false
-      # -- Additional labels
+      # -- Additional labels.
       additionalLabels: {}
-      # -- Prometheus rules
+      # -- Prometheus rules.
       rules:
         - alert: TrainerDown
           expr: sum(dragonfly_trainer_version{}) == 0
@@ -1701,31 +1701,33 @@ trainer:
             message: Trainer's success rate of rest request is low
 
 triton:
-  # -- Enable triton
+  # -- Enable triton.
   enable: false
-  # -- triton name
+  # -- triton name.
   name: triton
-  # -- Override triton name
+  # -- Override triton name.
   nameOverride: ""
-  # -- Override triton fullname
+  # -- Override triton fullname.
   fullnameOverride: ""
-  # -- Number of Pods to launch
+  # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository
+  # -- Image repository.
   image: nvcr.io/nvidia/tritonserver
-  # -- Image tag
+  # -- Image tag.
   tag: 23.06-py3
-  # -- Image pull policy
+  # -- Image pull policy.
   pullPolicy: IfNotPresent
+  # -- Model repository path.
   modelRepositoryPath: ""
+  # -- Credentials information.
   aws:
     region: ""
     accessKeyID: ""
     secretAccessKey: ""
   service:
-    # -- Service type
+    # -- Service type.
     type: LoadBalancer
-  # -- REST service port
+  # -- REST service port.
   restPort: 8000
-  # -- GRPC service port
+  # -- GRPC service port.
   grpcPort: 8001
