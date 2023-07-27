@@ -604,7 +604,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"latest"` | Image tag. |
+| trainer.tag | string | `"v2.1.0-beta.3"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |

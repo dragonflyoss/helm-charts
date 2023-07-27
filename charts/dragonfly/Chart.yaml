@@ -41,7 +41,7 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.1.0-alpha.6
     - name: trainer
-      image: dragonflyoss/scheduler:latest
+      image: dragonflyoss/scheduler:v2.1.0-beta.3
     - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 
