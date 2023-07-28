@@ -1,0 +1,103 @@
+{{- if .Values.trainer.enable }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.trainer.name }}
+  name: {{ template "dragonfly.trainer.fullname" . }}
+  annotations:
+    checksum/config: {{ include (print $.Template.BasePath "/trainer/trainer-configmap.yaml") . | sha256sum }}
+  {{- if .Values.trainer.deploymentAnnotations }}
+{{ toYaml .Values.trainer.deploymentAnnotations | indent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.trainer.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" . }}
+      component: {{ .Values.trainer.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "dragonfly.fullname" . }}
+        component: {{ .Values.trainer.name }}
+        release: {{ .Release.Name }}
+        {{- if .Values.trainer.podLabels }}
+{{ toYaml .Values.trainer.podLabels | indent 8 }}
+        {{- end }}
+      {{- if .Values.trainer.podAnnotations }}
+      annotations:
+{{ toYaml .Values.trainer.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      {{- if .Values.trainer.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.trainer.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.trainer.tolerations }}
+      tolerations:
+{{ toYaml .Values.trainer.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.trainer.affinity }}
+      affinity:
+{{ toYaml .Values.trainer.affinity | indent 8 }}
+      {{- end }}
+      {{- if quote .Values.trainer.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.trainer.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.scheduler.priorityClassName) }}
+      priorityClassName: {{ .Values.trainer.priorityClassName }}
+      {{- end }}
+      {{- with .Values.trainer.pullSecrets | default .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.trainer.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.trainer.hostAliases | indent 8 }}
+      {{- end }}
+      containers:
+      - name: trainer
+        image: "{{ .Values.trainer.image }}:{{ .Values.trainer.tag }}"
+        imagePullPolicy: {{ .Values.trainer.pullPolicy | quote }}
+        resources:
+{{ toYaml .Values.trainer.resources | indent 12 }}
+        ports:
+        - containerPort: {{ .Values.trainer.containerPort }}
+          protocol: TCP
+        {{- if .Values.trainer.metrics.enable }}
+        - containerPort: 8000
+          protocol: TCP
+        {{- end }}
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/dragonfly"
+        {{- if .Values.trainer.extraVolumeMounts }}
+        {{- toYaml .Values.trainer.extraVolumeMounts | nindent 8 }}
+        {{- end }}
+        readinessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.trainer.containerPort }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: {{ template "dragonfly.trainer.fullname" . }}
+          items:
+          - key: trainer.yaml
+            path: trainer.yaml
+      {{- if .Values.trainer.extraVolumes }}
+      {{- toYaml .Values.trainer.extraVolumes | nindent 6 }}
+      {{- end }}
+{{- end }}

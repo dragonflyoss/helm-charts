@@ -54,3 +54,19 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- define "dragonfly.dfdaemon.fullname" -}}
 {{ template "dragonfly.fullname" . }}-{{ .Values.dfdaemon.name }}
 {{- end -}}
+
+{{/*
+Create a default fully qualified trainer name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.trainer.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.trainer.name }}
+{{- end -}}
+
+{{/*
+Create a default fully qualified triton name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.triton.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.triton.name }}
+{{- end -}}

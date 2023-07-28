@@ -1,0 +1,71 @@
+{{- if .Values.triton.enable }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dragonfly.triton.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.triton.name }}
+spec:
+  replicas: {{ .Values.triton.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" . }}
+      component: {{ .Values.triton.name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "dragonfly.fullname" . }}
+        component: {{ .Values.triton.name }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: triton
+          image: "{{ .Values.triton.image }}:{{ .Values.triton.tag}}"
+          imagePullPolicy: {{ .Values.triton.pullPolicy | quote}}
+          args: ["tritonserver", "--model-store={{ .Values.triton.modelRepositoryPath }}",
+                 "--model-control-mode=poll",
+                 "--repository-poll-secs=5"]
+          env:
+            - name: DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
+                  key: region
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
+                  key: accessKeyID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "dragonfly.triton.fullname" . }}-credentials
+                  key: secretAccessKey
+          ports:
+            - containerPort: {{ .Values.triton.restPort }}
+              name: http-rest
+              protocol: TCP
+            - containerPort: {{ .Values.triton.grpcPort }}
+              name: http-grpc
+              protocol: TCP
+            - containerPort: 8002
+              name: http-metrics
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /v2/health/ready
+              port: http-rest
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /v2/health/live
+              port: http-rest
+            initialDelaySeconds: 15
+            periodSeconds: 10
+{{- end}}

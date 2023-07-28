@@ -1,0 +1,30 @@
+{{- if .Values.trainer.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.trainer.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.trainer.name }}
+{{- if .Values.trainer.service.labels }}
+{{ toYaml .Values.trainer.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.trainer.service.annotations }}
+  annotations:
+{{ toYaml .Values.trainer.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.trainer.service.type }}
+  ports:
+    - port: {{ .Values.trainer.config.server.port }}
+      name: http-grpc
+      protocol: TCP
+      targetPort: {{ .Values.trainer.config.server.port }}
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Values.trainer.name }}
+{{- end }}

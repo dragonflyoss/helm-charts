@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.0.6
-appVersion: 1.0.6
+version: 1.0.7
+appVersion: 1.0.7
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Fix the regex when injecting v1 mirror settings.
+    - Add trainer and triton service.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -40,6 +40,10 @@ annotations:
       image: dragonflyoss/dfdaemon:v2.1.0-alpha.6
     - name: scheduler
       image: dragonflyoss/scheduler:v2.1.0-alpha.6
+    - name: trainer
+      image: dragonflyoss/scheduler:v2.1.0-beta.3
+    - name: triton
+      image: nvcr.io/nvidia/tritonserver:23.06-py3
 
 dependencies:
   - name: mysql

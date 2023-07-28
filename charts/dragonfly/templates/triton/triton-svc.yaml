@@ -1,0 +1,27 @@
+{{- if .Values.triton.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.triton.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.triton.name }}
+spec:
+  type: {{ .Values.triton.service.type }}
+  ports:
+    - port: {{ .Values.triton.restPort }}
+      name: http-rest
+      protocol: TCP
+      targetPort: http
+    - port: {{ .Values.triton.grpcPort }}
+      name: http-grpc
+      protocol: TCP
+      targetPort: grpc
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Values.triton.name }}
+{{- end}}
