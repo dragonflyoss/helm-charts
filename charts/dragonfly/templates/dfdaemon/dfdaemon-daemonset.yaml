@@ -173,11 +173,11 @@ spec:
         imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
-        # FIXME dfget daemon only need /proc/1/ns/net and CAP_SYS_ADMIN
-        # but containerd resolves the symbolic of /proc/1/ns/net from v1.5.0
+        # FIXME dfget daemon only need /proc/1/ns/net and CAP_SYS_ADMIN,
+        # but containerd resolves the symbolic of /proc/1/ns/net from v1.5.0.
         # due to /proc/1/ns/net is not a regular symbolic link, it always failed.
-        # for keeping only CAP_SYS_ADMIN capability, use init container to bind mount only netns to /run/dragonfly/net
-        # https://github.com/containerd/containerd/blob/v1.5.0/pkg/cri/opts/spec_linux.go#L171
+        # for keeping only CAP_SYS_ADMIN capability, use init container to bind mount only netns to /run/dragonfly/net.
+        # https://github.com/containerd/containerd/blob/v1.5.0/pkg/cri/opts/spec_linux.go#L171.
         command:
         - /bin/sh
         - -cx
@@ -195,10 +195,10 @@ spec:
           mountPath: /host/ns
         - name: run
           mountPath: /run/dragonfly
-          # bind mount need Bidirectional to propagate into host
+          # bind mount need Bidirectional to propagate into host.
           mountPropagation: Bidirectional
         securityContext:
-          # open /proc/1/ns need privilege permission
+          # open /proc/1/ns need privilege permission.
           privileged: true
       {{- end }}
       {{- if .Values.containerRuntime.extraInitContainers }}
@@ -318,7 +318,7 @@ spec:
           mountPath: /host/etc
         {{- if .Values.containerRuntime.docker.restart }}
         securityContext:
-          # nsenter need privilege permission
+          # nsenter need privilege permission.
           privileged: true
         {{- end }}
       {{- else if .Values.containerRuntime.containerd.enable }}
@@ -469,7 +469,7 @@ spec:
         - name: containerd-conf
           mountPath: /host{{ .Values.containerRuntime.containerd.configPathDir }}
         securityContext:
-          # nsenter need privilege permission
+          # nsenter need privilege permission.
           privileged: true
       {{- else if .Values.containerRuntime.crio.enable }}
       - name: update-crio
@@ -531,7 +531,7 @@ spec:
         - name: etc
           mountPath: /host/etc
         securityContext:
-          # nsenter need privilege permission
+          # nsenter need privilege permission.
           privileged: true
       {{- end }}
       {{- end }}
