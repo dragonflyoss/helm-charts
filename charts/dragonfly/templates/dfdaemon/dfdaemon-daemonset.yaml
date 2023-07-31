@@ -294,23 +294,23 @@ spec:
           {{- if .Values.containerRuntime.docker.restart }}
           # inject docker proxy setting and restart docker
           # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
-          status=$(nsenter -t 1 -m systemctl -- status docker --no-pager | grep http-proxy.conf)
+          status=$(nsenter -t 1 -m -- systemctl status docker --no-pager | grep http-proxy.conf)
           if [[ -n "$status" ]]; then
             echo Docker proxy already enabled, skip
           else
             echo Try to inject proxy and restart docker
-            path=$(nsenter -t 1 -m systemctl -- show -p FragmentPath docker.service | grep -o "/.*systemd.*")
+            path=$(nsenter -t 1 -m -- systemctl show -p FragmentPath docker.service | grep -o "/.*systemd.*")
             if [[ -z "$path" ]]; then
                 echo docker.service not found
                 exit 1
             fi
-            nsenter -t 1 -m mkdir -- -p "$path".d
-            nsenter -t 1 -m sh -- -c "echo '[Service]' > $path.d/http-proxy.conf"
-            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
-            nsenter -t 1 -m sh -- -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
-            nsenter -t 1 -m sh -- -c "echo 'Environment=\"NO_PROXY={{ join "," .Values.containerRuntime.docker.skipHosts }}\"' >> $path.d/http-proxy.conf"
-            nsenter -t 1 -m systemctl -- daemon-reload
-            nsenter -t 1 -m systemctl -- restart docker.service
+            nsenter -t 1 -m -- mkdir -p "$path".d
+            nsenter -t 1 -m -- sh -c "echo '[Service]' > $path.d/http-proxy.conf"
+            nsenter -t 1 -m -- sh -c "echo 'Environment=\"HTTP_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m -- sh -c "echo 'Environment=\"HTTPS_PROXY=http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m -- sh -c "echo 'Environment=\"NO_PROXY={{ join "," .Values.containerRuntime.docker.skipHosts }}\"' >> $path.d/http-proxy.conf"
+            nsenter -t 1 -m -- systemctl daemon-reload
+            nsenter -t 1 -m -- systemctl restart docker.service
           fi
           {{- end }}
         volumeMounts:
@@ -463,7 +463,7 @@ spec:
           # restart containerd
           # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
           if [[ "$need_restart" -gt 0 ]]; then
-            nsenter -t 1 -m systemctl -- restart containerd.service
+            nsenter -t 1 -m -- systemctl restart containerd.service
           fi
         volumeMounts:
         - name: containerd-conf
@@ -526,7 +526,7 @@ spec:
               echo "Registry $domain added"
             fi
           done
-          nsenter -t 1 -m systemctl -- reload crio.service
+          nsenter -t 1 -m -- systemctl reload crio.service
         volumeMounts:
         - name: etc
           mountPath: /host/etc
