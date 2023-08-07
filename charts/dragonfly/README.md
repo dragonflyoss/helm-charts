@@ -304,6 +304,8 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.grpc.advertisePort | int | `65003` | GRPC advertise port. |
 | manager.config.server.logDir | string | `""` | Log directory. |
 | manager.config.server.pluginDir | string | `""` | Plugin directory. |
+| manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
+| manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
 | manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
