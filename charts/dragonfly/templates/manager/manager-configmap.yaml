@@ -14,6 +14,11 @@ data:
     server:
       rest:
         addr: :{{ .Values.manager.restPort }}
+        {{- if and .Values.manager.config.server.rest.tls.cert .Values.manager.config.server.rest.tls.cert}}
+        tls:
+          cert: {{ .Values.manager.config.server.rest.tls.cert }}
+          key: {{ .Values.manager.config.server.rest.tls.key }}
+        {{- end }}
       grpc:
         advertiseIP: {{ .Values.manager.config.server.grpc.advertiseIP }}
         advertisePort: {{ .Values.manager.config.server.grpc.advertisePort }}

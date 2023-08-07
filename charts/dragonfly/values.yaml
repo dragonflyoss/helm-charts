@@ -1254,6 +1254,12 @@ manager:
         advertiseIP: ""
         # -- GRPC advertise port.
         advertisePort: 65003
+      rest:
+        tls:
+          # -- Certificate file path.
+          cert: ""
+          # -- Key file path.
+          key: ""
       # -- Work directory.
       workHome: ""
       # -- Log directory.
