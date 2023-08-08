@@ -283,6 +283,8 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `false` | Console shows log on console. |
 | manager.config.jaeger | string | `""` |  |
+| manager.config.job.preheat | object | `{"registryTimeout":"1m"}` | Preheat configuration. |
+| manager.config.job.preheat.registryTimeout | string | `"1m"` | registryTimeout is the timeout for requesting registry to get token and manifest. |
 | manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | manager.config.objectStorage.accessKey | string | `""` | AccessKey is access key ID. |
 | manager.config.objectStorage.enable | bool | `false` | Enable object storage. |
@@ -379,6 +381,13 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
 | scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
+| scheduler.config.resource | object | `{"task":{"downloadTiny":{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}}}` | resource configuration. |
+| scheduler.config.resource.task | object | `{"downloadTiny":{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}}` | task configuration. |
+| scheduler.config.resource.task.downloadTiny | object | `{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}` | downloadTiny is the configuration of downloading tiny task by scheduler. |
+| scheduler.config.resource.task.downloadTiny.scheme | string | `"http"` | scheme is download tiny task scheme. |
+| scheduler.config.resource.task.downloadTiny.timeout | string | `"1m"` | timeout is http request timeout. |
+| scheduler.config.resource.task.downloadTiny.tls | object | `{"insecureSkipVerify":true}` | tls is download tiny task TLS configuration. |
+| scheduler.config.resource.task.downloadTiny.tls.insecureSkipVerify | bool | `true` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default" and "ml". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `3` | backToSourceCount is single task allows the peer to back-to-source count. |
 | scheduler.config.scheduler.gc.hostGCInterval | string | `"6h"` | hostGCInterval is the interval of host gc. |
