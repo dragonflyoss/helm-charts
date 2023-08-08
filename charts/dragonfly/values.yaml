@@ -1291,6 +1291,13 @@ manager:
         size: 200000
         # -- Local cache TTL duration.
         ttl: 3m
+    job:
+      # -- Preheat configuration.
+      preheat:
+      # # TLS configuration.
+      # tls:
+      #   # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
+      #   caCert: ''
     objectStorage:
       # -- Enable object storage.
       enable: false

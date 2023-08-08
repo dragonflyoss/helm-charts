@@ -283,6 +283,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `false` | Console shows log on console. |
 | manager.config.jaeger | string | `""` |  |
+| manager.config.job.preheat | string | `nil` | Preheat configuration. |
 | manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | manager.config.objectStorage.accessKey | string | `""` | AccessKey is access key ID. |
 | manager.config.objectStorage.enable | bool | `false` | Enable object storage. |
