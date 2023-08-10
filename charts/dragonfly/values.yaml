@@ -248,6 +248,21 @@ scheduler:
         # -- hostTTL is time to live of host. If host announces message to scheduler,
         # then HostTTl will be reset.
         hostTTL: 1h
+    # -- resource configuration.
+    resource:
+      # -- task configuration.
+      task:
+        # -- downloadTiny is the configuration of downloading tiny task by scheduler.
+        downloadTiny:
+          # -- scheme is download tiny task scheme.
+          scheme: http
+          # -- timeout is http request timeout.
+          timeout: 1m
+          # -- tls is download tiny task TLS configuration.
+          tls:
+            # -- insecureSkipVerify controls whether a client verifies the
+            # server's certificate chain and hostname.
+            insecureSkipVerify: true
     dynconfig:
       # -- Type is deprecated and is no longer used.
       # Please remove it from your configuration.
@@ -1294,6 +1309,8 @@ manager:
     job:
       # -- Preheat configuration.
       preheat:
+        # -- registryTimeout is the timeout for requesting registry to get token and manifest.
+        registryTimeout: 1m
       # # TLS configuration.
       # tls:
       #   # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
