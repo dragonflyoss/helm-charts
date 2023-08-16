@@ -394,10 +394,14 @@ spec:
               tmp=$(cat $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }} | tr '"' ' ' | grep config_path | awk '{print $3}')
               if [[ -z "$tmp" ]]; then
                 echo inject config_path into $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
-                cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
+                if grep -q '\[plugins."io.containerd.grpc.v1.cri".registry\]' $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
+                  sed -i 's|\[plugins."io.containerd.grpc.v1.cri".registry\]|\[plugins."io.containerd.grpc.v1.cri".registry\]\nconfig_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"|g' $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
+                else
+                  cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
           [plugins."io.containerd.grpc.v1.cri".registry]
             config_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"
           EOF
+                fi
                 echo "Registry config_path $config_path added"
                 need_restart=1
               fi
