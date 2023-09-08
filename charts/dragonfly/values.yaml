@@ -195,7 +195,7 @@ scheduler:
     # -- Init container image tag.
     tag: latest
     # -- Container image pull policy.
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   config:
     server:
       # -- Advertise ip.
@@ -548,7 +548,7 @@ seedPeer:
     # -- Init container image tag.
     tag: latest
     # -- Container image pull policy.
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -890,6 +890,7 @@ dfdaemon:
     image: busybox
     # -- Init container image tag.
     tag: latest
+    pullPolicy: Always
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1246,7 +1247,7 @@ manager:
     # -- Init container image tag.
     tag: latest
     # -- Container image pull policy.
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   ingress:
     # -- Enable ingress.
     enable: false
@@ -1603,7 +1604,7 @@ trainer:
     # -- Init container image tag.
     tag: latest
     # -- Container image pull policy.
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   config:
     server:
       # -- Advertise ip.
