@@ -224,6 +224,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty. many network add-ons do not yet support hostPort. https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false. for performance, injecting the 65001 port to host network is better than hostPort. |
 | dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository. |
 | dfdaemon.initContainer.image | string | `"busybox"` | Init container image repository. |
+| dfdaemon.initContainer.pullPolicy | string | `"Always"` |  |
 | dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag. |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics. |
 | dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -326,7 +327,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Requirement: kubernetes >=1.18. |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration. |
 | manager.initContainer.image | string | `"busybox"` | Init container image repository. |
-| manager.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy. |
+| manager.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | manager.initContainer.tag | string | `"latest"` | Init container image tag. |
 | manager.metrics.enable | bool | `false` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -428,7 +429,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.hostAliases | list | `[]` | Host Aliases. |
 | scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository. |
 | scheduler.initContainer.image | string | `"busybox"` | Init container image repository. |
-| scheduler.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy. |
+| scheduler.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | scheduler.initContainer.tag | string | `"latest"` | Init container image tag. |
 | scheduler.metrics.enable | bool | `false` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
@@ -529,7 +530,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.hostAliases | list | `[]` | Host Aliases. |
 | seedPeer.image | string | `"dragonflyoss/dfdaemon"` | Image repository. |
 | seedPeer.initContainer.image | string | `"busybox"` | Init container image repository. |
-| seedPeer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy. |
+| seedPeer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | seedPeer.initContainer.tag | string | `"latest"` | Init container image tag. |
 | seedPeer.metrics.enable | bool | `false` | Enable seed peer metrics. |
 | seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -589,7 +590,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.hostAliases | list | `[]` | Host Aliases. |
 | trainer.image | string | `"dragonflyoss/trainer"` | Image repository. |
 | trainer.initContainer.image | string | `"busybox"` | Init container image repository. |
-| trainer.initContainer.pullPolicy | string | `"IfNotPresent"` | Container image pull policy. |
+| trainer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | trainer.initContainer.tag | string | `"latest"` | Init container image tag. |
 | trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
 | trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
