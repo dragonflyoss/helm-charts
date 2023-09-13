@@ -3,6 +3,66 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - chore: update busybox:latest pullPolicy: from IfNotPresent to Always
+        - Fix bug cause 'plugins."io.containerd.grpc.v1.cri".registry' duplicated in dfdaemon init script(containerd part)
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.0
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.0
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.0
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.0
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.0
+    created: "2023-09-13T02:54:29.513916719Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 3dd212dc0f5e1701c435dc273e57b6b5eb66185cde10df4c8eb2d2738e7b7544
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.5/dragonfly-1.1.5.tgz
+    version: 1.1.5
+  - annotations:
+      artifacthub.io/changes: |
         - Fix bug cause 'plugins."io.containerd.grpc.v1.cri".registry' duplicated in dfdaemon init script(containerd part)
       artifacthub.io/images: |
         - name: manager
@@ -7366,4 +7426,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-08-16T08:41:15.73876592Z"
+generated: "2023-09-13T02:54:29.514538522Z"
