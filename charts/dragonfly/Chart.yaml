@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.5
+version: 1.1.6
 appVersion: 2.1.0
 keywords:
   - dragonfly
@@ -26,8 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - chore: update busybox:latest pullPolicy: from IfNotPresent to Always
-    - Fix bug cause 'plugins."io.containerd.grpc.v1.cri".registry' duplicated in dfdaemon init script(containerd part)
+    - Exposed health port in peer.
+    - Update dragonfly image tag to v2.1.9.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -36,13 +36,13 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.0
+      image: dragonflyoss/manager:v2.1.9
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.1.0
+      image: dragonflyoss/dfdaemon:v2.1.9
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.0
+      image: dragonflyoss/scheduler:v2.1.9
     - name: trainer
-      image: dragonflyoss/scheduler:v2.1.0
+      image: dragonflyoss/scheduler:v2.1.9
     - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 

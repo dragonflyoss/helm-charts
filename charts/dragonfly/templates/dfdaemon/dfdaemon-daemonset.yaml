@@ -78,6 +78,10 @@ spec:
           hostIP: 127.0.0.1
           {{- end }}
           protocol: TCP
+        - containerPort: {{ .Values.dfdaemon.config.health.tcpListen.port }}
+          hostPort: {{ .Values.dfdaemon.config.health.tcpListen.port }}
+          hostIP: 127.0.0.1
+          protocol: TCP
         {{- if .Values.dfdaemon.config.objectStorage.enable }}
         - containerPort: {{ .Values.dfdaemon.config.objectStorage.tcpListen.port }}
           protocol: TCP
