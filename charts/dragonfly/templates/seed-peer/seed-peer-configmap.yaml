@@ -21,7 +21,7 @@ data:
     dataDir: {{ .Values.seedPeer.config.dataDir }}
     console: {{ .Values.seedPeer.config.console }}
     health:
-{{ toYaml .Values.dfdaemon.config.health | indent 6 }}
+{{ toYaml .Values.seedPeer.config.health | indent 6 }}
     verbose: {{ .Values.seedPeer.config.verbose }}
     {{- if .Values.seedPeer.config.verbose }}
     pprof-port: {{ .Values.seedPeer.config.pprofPort }}
