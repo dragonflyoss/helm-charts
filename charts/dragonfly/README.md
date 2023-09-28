@@ -247,7 +247,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.10"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.11"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
@@ -354,7 +354,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.10"` | Image tag. |
+| manager.tag | string | `"v2.1.11"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
@@ -457,7 +457,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.10"` | Image tag. |
+| scheduler.tag | string | `"v2.1.11"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
@@ -558,7 +558,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.10"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.11"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.config.console | bool | `false` | Console shows log on console. |
@@ -616,7 +616,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.10"` | Image tag. |
+| trainer.tag | string | `"v2.1.11"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
