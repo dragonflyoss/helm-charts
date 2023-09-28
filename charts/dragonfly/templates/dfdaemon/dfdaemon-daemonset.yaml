@@ -411,6 +411,15 @@ spec:
               fi
               mkdir -p $etcContainerd/certs.d
               for registry in $registries; do
+                # If the registry is docker.io, then the domain name should
+                # be changed to index.docker.io.
+                if [ $registry == "https://docker.io" ]; then
+                    registry_domain=https://index.docker.io
+                elif [ $registry == "http://docker.io" ]; then
+                    registry_domain=http://index.docker.io
+                else
+                    registry_domain=$registry
+                fi
                 # parse registry domain
                 domain=$(echo $registry | sed -e "s,http.*://,," | sed "s,:.*,,")
                 # inject registry
@@ -420,12 +429,12 @@ spec:
                   continue
                 else
                   cat << EOF >> $etcContainerd/certs.d/$domain/hosts.toml
-          server = "$registry"
+          server = "$registry_domain"
           [host."http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}"]
             capabilities = ["pull", "resolve"]
             [host."http://127.0.0.1:{{ .Values.dfdaemon.hostPort}}".header]
-            X-Dragonfly-Registry = ["$registry"]
-          [host."$registry"]
+            X-Dragonfly-Registry = ["$registry_domain"]
+          [host."$registry_domain"]
             capabilities = ["pull", "resolve"]
           EOF
                   echo "Registry $domain added"

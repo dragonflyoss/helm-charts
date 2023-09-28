@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.7
-appVersion: 2.1.10
+version: 1.1.8
+appVersion: 2.1.11
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Update dragonfly image tag to v2.1.10.
+    - Fixed incorrect dockerhub domain being injected when using containerd config_path.
+    - Update dragonfly image tag to v2.1.11.
 
   artifacthub.io/links: |
     - name: Chart Source
