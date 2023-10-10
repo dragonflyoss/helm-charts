@@ -7449,6 +7449,48 @@ entries:
         - name: Source
           url: https://github.com/containerd/nydus-snapshotter
     apiVersion: v2
+    appVersion: 0.0.5
+    created: "2023-10-10T01:59:44.258622296Z"
+    description: Nydus snapshotter is an external plugin of containerd for Nydus image
+      service which implements a chunk-based content-addressable filesystem on top
+      of a called RAFS.
+    digest: 16f627aee1179a97a184d6b281b287128a61cce26ffcc329afbb5f87a4730c8e
+    home: https://nydus.dev/
+    icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
+    keywords:
+    - nydus
+    - nydus-snapshotter
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: liubin0329@gmail.com
+      name: liubin
+    name: nydus-snapshotter
+    sources:
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.5/nydus-snapshotter-0.0.5.tgz
+    version: 0.0.5
+  - annotations:
+      artifacthub.io/changes: |
+        - Change mirroConfig of dragonfly to array type
+      artifacthub.io/images: |
+        - name: nydus-snapshotter
+          image: ghcr.io/nydus-snapshotter/nydus-snapshotter:latest
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
     appVersion: 0.0.4
     created: "2023-03-16T07:22:56.452315288Z"
     description: Nydus snapshotter is an external plugin of containerd for Nydus image
@@ -7605,4 +7647,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-09-28T19:12:23.648644096Z"
+generated: "2023-10-10T01:59:44.259456202Z"
