@@ -1490,7 +1490,7 @@ externalMysql:
 
 postgresql:
   # -- Enable postgresql with docker container.
-  enable: true
+  enable: false
   # -- Cluster domain.
   clusterDomain: "cluster.local"
   # -- Running GORM migration.
