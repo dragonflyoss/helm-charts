@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.8
-appVersion: 2.1.11
+version: 1.1.9
+appVersion: 2.1.16
 keywords:
   - dragonfly
   - d7y
@@ -26,8 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Fixed incorrect dockerhub domain being injected when using containerd config_path.
-    - Update dragonfly image tag to v2.1.11.
+    - Add syncPeers configuration to manager.
+    - Update dragonfly image tag to v2.1.16.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -36,13 +36,13 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.10
+      image: dragonflyoss/manager:v2.1.16
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.1.10
+      image: dragonflyoss/dfdaemon:v2.1.16
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.10
+      image: dragonflyoss/scheduler:v2.1.16
     - name: trainer
-      image: dragonflyoss/scheduler:v2.1.10
+      image: dragonflyoss/scheduler:v2.1.16
     - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 
