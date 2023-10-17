@@ -27,6 +27,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Add postgresql database
+    - Fix dfdaemon seedPeer configmap
     - Update dragonfly image tag to v2.1.16.
 
   artifacthub.io/links: |
