@@ -48,14 +48,14 @@ data:
           addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
         {{- end }}
         refreshInterval: {{ .Values.dfdaemon.config.scheduler.manager.refreshInterval }}
+        seedPeer:
+{{ toYaml .Values.dfdaemon.config.scheduler.manager.seedPeer | indent 10 }}
       netAddrs:
       {{- if and (not .Values.dfdaemon.config.scheduler.manager.enable) (.Values.dfdaemon.config.scheduler.netAddrs) }}
 {{ toYaml .Values.dfdaemon.config.scheduler.netAddrs | indent 8 }}
       {{- end }}
       scheduleTimeout: {{ .Values.dfdaemon.config.scheduler.scheduleTimeout }}
       disableAutoBackSource: {{ .Values.dfdaemon.config.scheduler.disableAutoBackSource }}
-      seedPeer:
-{{ toYaml .Values.dfdaemon.config.scheduler.manager.seedPeer | indent 8 }}
     host:
 {{ toYaml .Values.dfdaemon.config.host | indent 6 }}
     download:
