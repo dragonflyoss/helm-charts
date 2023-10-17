@@ -58,7 +58,7 @@ data:
         user: {{ .Values.postgresql.auth.username }}
         password: {{ .Values.postgresql.auth.password }}
         host: {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
-        port: 5432
+        port: {{ .Values.postgresql.primary.service.port }}
         dbname: {{ .Values.postgresql.auth.database }}
         migrate: {{ .Values.postgresql.migrate }}
         {{- else }}
