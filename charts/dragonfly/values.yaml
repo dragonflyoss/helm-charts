@@ -1503,14 +1503,13 @@ postgresql:
     password: "dragonfly"
     # -- Create dragonfly manager db.
     database: "manager"
-    primary:
-      service:
-        # -- postgresql port.
-        port: 5432
-      persistence:
-        enabled: true
-      storageClass: ""
-      # size: 5Gi
+  primary:
+    service:
+      # -- postgresql port.
+      port: 5432
+    persistence:
+      enabled: true
+    storageClass: ""
 
 externalPostgresql:
   # -- Running GORM migration.
