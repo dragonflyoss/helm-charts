@@ -36,13 +36,13 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.10
+      image: dragonflyoss/manager:v2.1.16
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.1.10
+      image: dragonflyoss/dfdaemon:v2.1.16
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.10
+      image: dragonflyoss/scheduler:v2.1.16
     - name: trainer
-      image: dragonflyoss/scheduler:v2.1.10
+      image: dragonflyoss/scheduler:v2.1.16
     - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 

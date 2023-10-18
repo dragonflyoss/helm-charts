@@ -142,7 +142,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.11
+  tag: v2.1.16
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -512,7 +512,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.11
+  tag: v2.1.16
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -855,7 +855,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.11
+  tag: v2.1.16
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1192,7 +1192,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.11
+  tag: v2.1.16
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1308,6 +1308,13 @@ manager:
         # -- Local cache TTL duration.
         ttl: 3m
     job:
+      # -- Sync peers configuration.
+      syncPeers:
+        # -- interval is the interval for syncing all peers information from the scheduler and
+        # display peers information in the manager console.
+        interval: 24h
+        # -- timeout is the timeout for syncing peers information from the single scheduler.
+        timeout: 10m
       # -- Preheat configuration.
       preheat:
         # -- registryTimeout is the timeout for requesting registry to get token and manifest.
@@ -1588,7 +1595,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.11
+  tag: v2.1.16
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.

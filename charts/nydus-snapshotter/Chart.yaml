@@ -3,8 +3,8 @@ name: nydus-snapshotter
 description: Nydus snapshotter is an external plugin of containerd for Nydus image service which implements a chunk-based content-addressable filesystem on top of a called RAFS.
 icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
 type: application
-version: 0.0.5
-appVersion: 0.0.5
+version: 0.0.6
+appVersion: 0.9.0
 keywords:
   - nydus
   - nydus-snapshotter
@@ -14,12 +14,14 @@ keywords:
   - image
 
 maintainers:
-  - name: jim3ma
-    email: majinjing3@gmail.com
+  - name: adamqqqplay
+    email: adamqqq@163.com
+  - name: imeoer
+    email: imeoer@gmail.com
+  - name: liubin
+    email: lb203159@antgroup.com
   - name: gaius-qi
     email: gaius.qi@gmail.com
-  - name: liubin
-    email: liubin0329@gmail.com
 
 home: https://nydus.dev/
 
@@ -29,7 +31,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Change mirroConfig of dragonfly to array type
+    - Change maintainers to nydus maintainers.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
