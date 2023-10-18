@@ -3,6 +3,66 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add syncPeers configuration to manager.
+        - Update dragonfly image tag to v2.1.16.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.16
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.16
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.16
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.16
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.16
+    created: "2023-10-18T02:43:34.642962535Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: e3a0da436dd0dbf56e698ae5b1d29505fd3a636123b02053f41d702900e83d1d
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.9/dragonfly-1.1.9.tgz
+    version: 1.1.9
+  - annotations:
+      artifacthub.io/changes: |
         - Fixed incorrect dockerhub domain being injected when using containerd config_path.
         - Update dragonfly image tag to v2.1.11.
       artifacthub.io/images: |
@@ -7439,6 +7499,50 @@ entries:
   nydus-snapshotter:
   - annotations:
       artifacthub.io/changes: |
+        - Change maintainers to nydus maintainers.
+      artifacthub.io/images: |
+        - name: nydus-snapshotter
+          image: ghcr.io/nydus-snapshotter/nydus-snapshotter:latest
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
+    appVersion: 0.9.0
+    created: "2023-10-18T02:43:34.77725037Z"
+    description: Nydus snapshotter is an external plugin of containerd for Nydus image
+      service which implements a chunk-based content-addressable filesystem on top
+      of a called RAFS.
+    digest: 43d085da0bce7bff8fcc4f23f65c28f2508f2fb5cc43bd997f02397f970183da
+    home: https://nydus.dev/
+    icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
+    keywords:
+    - nydus
+    - nydus-snapshotter
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: adamqqq@163.com
+      name: adamqqqplay
+    - email: imeoer@gmail.com
+      name: imeoer
+    - email: lb203159@antgroup.com
+      name: liubin
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    name: nydus-snapshotter
+    sources:
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.6/nydus-snapshotter-0.0.6.tgz
+    version: 0.0.6
+  - annotations:
+      artifacthub.io/changes: |
         - Change mirroConfig of dragonfly to array type
       artifacthub.io/images: |
         - name: nydus-snapshotter
@@ -7647,4 +7751,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2023-10-10T01:59:44.259456202Z"
+generated: "2023-10-18T02:43:34.77780883Z"
