@@ -1509,7 +1509,7 @@ postgresql:
       port: 5432
     persistence:
       enabled: true
-    storageClass: ""
+    # storageClass: ""
 
 externalPostgresql:
   # -- Running GORM migration.
@@ -1524,7 +1524,6 @@ externalPostgresql:
   database: manager
   # -- External postgresql port.
   port: 5432
-  
 
 redis:
   # -- Enable redis cluster with docker container.
