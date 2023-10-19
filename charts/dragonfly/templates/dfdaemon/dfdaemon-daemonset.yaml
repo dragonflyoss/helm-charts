@@ -395,11 +395,12 @@ spec:
             else
               echo config_path is enabled, add mirror in $config_path
               # TODO check whether config_path is enabled, if not, add it
-              tmp=$(cat $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }} | tr '"' ' ' | grep config_path | awk '{print $3}')
+              tmp=$(cat $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }} | tr '"' ' ' | grep config_path | grep -v nri | awk '{print $3}')
               if [[ -z "$tmp" ]]; then
                 echo inject config_path into $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
                 if grep -q '\[plugins."io.containerd.grpc.v1.cri".registry\]' $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
-                  sed -i 's|\[plugins."io.containerd.grpc.v1.cri".registry\]|\[plugins."io.containerd.grpc.v1.cri".registry\]\nconfig_path = "{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d"|g' $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
+                  line_number=$(grep -n '\[plugins\."io\.containerd\.grpc\.v1\.cri"\.registry\]' $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }} | cut -d ':' -f 1)
+                  sed -i "$((line_number+1))s|config_path = \"\"|config_path = \"{{ .Values.containerRuntime.containerd.configPathDir }}/certs.d\"|" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
                 else
                   cat << EOF >> $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
           [plugins."io.containerd.grpc.v1.cri".registry]
