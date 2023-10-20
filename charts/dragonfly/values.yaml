@@ -1522,7 +1522,7 @@ externalPostgresql:
   # -- Running GORM migration.
   migrate: false
   # -- External postgresql hostname.
-  host: 
+  host:
   # -- External postgresql username.
   username: dragonfly
   # -- External postgresql password.
