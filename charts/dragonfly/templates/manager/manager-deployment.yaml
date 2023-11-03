@@ -75,6 +75,12 @@ spec:
         imagePullPolicy: {{ .Values.manager.initContainer.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
       {{- end }}
+      {{- if .Values.postgresql.enable }}
+      - name: wait-for-postgresql
+        image: {{ .Values.manager.initContainer.image }}:{{ .Values.manager.initContainer.tag  }}
+        imagePullPolicy: {{ .Values.manager.initContainer.pullPolicy }}
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.postgresql.primary.service.port }}; do echo waiting for postgresql; sleep 2; done;']
+      {{- end }}
       {{- end }}
       containers:
       - name: manager
