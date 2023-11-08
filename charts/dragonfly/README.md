@@ -226,6 +226,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.initContainer.image | string | `"busybox"` | Init container image repository. |
 | dfdaemon.initContainer.pullPolicy | string | `"Always"` |  |
 | dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag. |
+| dfdaemon.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics. |
 | dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | dfdaemon.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
@@ -247,7 +248,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.16"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.21"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
@@ -332,6 +333,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.initContainer.image | string | `"busybox"` | Init container image repository. |
 | manager.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | manager.initContainer.tag | string | `"latest"` | Init container image tag. |
+| manager.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | manager.metrics.enable | bool | `false` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | manager.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
@@ -357,7 +359,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.16"` | Image tag. |
+| manager.tag | string | `"v2.1.21"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
@@ -434,6 +436,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.initContainer.image | string | `"busybox"` | Init container image repository. |
 | scheduler.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | scheduler.initContainer.tag | string | `"latest"` | Init container image tag. |
+| scheduler.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | scheduler.metrics.enable | bool | `false` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
 | scheduler.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -460,7 +463,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.16"` | Image tag. |
+| scheduler.tag | string | `"v2.1.21"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
@@ -535,6 +538,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.initContainer.image | string | `"busybox"` | Init container image repository. |
 | seedPeer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | seedPeer.initContainer.tag | string | `"latest"` | Init container image tag. |
+| seedPeer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedPeer.metrics.enable | bool | `false` | Enable seed peer metrics. |
 | seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | seedPeer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
@@ -561,7 +565,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.16"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.21"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.config.console | bool | `false` | Console shows log on console. |
@@ -595,6 +599,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.initContainer.image | string | `"busybox"` | Init container image repository. |
 | trainer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
 | trainer.initContainer.tag | string | `"latest"` | Init container image tag. |
+| trainer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
 | trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | trainer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
@@ -619,7 +624,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.16"` | Image tag. |
+| trainer.tag | string | `"v2.1.21"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
@@ -627,6 +632,7 @@ helm delete dragonfly --namespace dragonfly-system
 | triton.fullnameOverride | string | `""` | Override triton fullname. |
 | triton.grpcPort | int | `8001` | GRPC service port. |
 | triton.image | string | `"nvcr.io/nvidia/tritonserver"` | Image repository. |
+| triton.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | triton.modelRepositoryPath | string | `""` | Model repository path. |
 | triton.name | string | `"triton"` | triton name. |
 | triton.nameOverride | string | `""` | Override triton name. |

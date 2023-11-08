@@ -67,6 +67,11 @@ spec:
         imagePullPolicy: {{ .Values.trainer.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.trainer.resources | indent 12 }}
+        env:
+        {{- if .Values.trainer.maxProcs }}
+        - name: GOMAXPROCS
+          value: {{ .Values.trainer.maxProcs }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.trainer.containerPort }}
           protocol: TCP

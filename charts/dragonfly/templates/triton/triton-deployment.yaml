@@ -31,6 +31,10 @@ spec:
                  "--model-control-mode=poll",
                  "--repository-poll-secs=5"]
           env:
+            {{- if .Values.triton.maxProcs }}
+            - name: GOMAXPROCS
+              value: {{ .Values.triton.maxProcs }}
+            {{- end }}
             - name: DEFAULT_REGION
               valueFrom:
                 secretKeyRef:

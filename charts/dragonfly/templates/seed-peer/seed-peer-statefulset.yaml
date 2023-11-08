@@ -77,6 +77,11 @@ spec:
         imagePullPolicy: {{ .Values.seedPeer.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.seedPeer.resources | indent 12 }}
+        env:
+        {{- if .Values.seedPeer.maxProcs }}
+        - name: GOMAXPROCS
+          value: {{ .Values.seedPeer.maxProcs }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.seedPeer.config.download.peerGRPC.tcpListen.port }}
           protocol: TCP
