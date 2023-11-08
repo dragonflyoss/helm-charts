@@ -137,12 +137,15 @@ scheduler:
   nameOverride: ""
   # -- Override scheduler fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.16
+  tag: v2.1.21
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -507,12 +510,15 @@ seedPeer:
   nameOverride: ""
   # -- Override scheduler fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.16
+  tag: v2.1.21
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -852,10 +858,13 @@ dfdaemon:
   nameOverride: ""
   # -- Override dfdaemon fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.16
+  tag: v2.1.21
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1187,12 +1196,15 @@ manager:
   nameOverride: ""
   # -- Override manager fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.16
+  tag: v2.1.21
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1553,12 +1565,15 @@ trainer:
   nameOverride: ""
   # -- Override trainer fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 1
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.16
+  tag: v2.1.21
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1747,6 +1762,9 @@ triton:
   nameOverride: ""
   # -- Override triton fullname.
   fullnameOverride: ""
+  # -- maxProcs Limits the number of operating system threads that can execute user-level.
+  # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+  maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
   # -- Image repository.

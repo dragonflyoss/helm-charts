@@ -71,6 +71,11 @@ spec:
         imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
+        env:
+        {{- if .Values.dfdaemon.maxProcs }}
+        - name: GOMAXPROCS
+          value: {{ .Values.dfdaemon.maxProcs }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.dfdaemon.containerPort }}
           {{- if and (not .Values.dfdaemon.hostNetwork) (empty .Values.dfdaemon.config.proxy.tcpListen.namespace) }}

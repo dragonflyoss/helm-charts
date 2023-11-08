@@ -77,6 +77,11 @@ spec:
         imagePullPolicy: {{ .Values.scheduler.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.scheduler.resources | indent 12 }}
+        env:
+        {{- if .Values.scheduler.maxProcs }}
+        - name: GOMAXPROCS
+          value: {{ .Values.scheduler.maxProcs }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.scheduler.containerPort }}
           protocol: TCP
