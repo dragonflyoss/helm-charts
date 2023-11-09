@@ -145,7 +145,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.21
+  tag: v2.1.22
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -229,6 +229,9 @@ scheduler:
       algorithm: default
       # -- backToSourceCount is single task allows the peer to back-to-source count.
       backToSourceCount: 3
+      # -- maxScheduleCount is max schedule count. If scheduling exceeds the maxScheduleCount,
+      # scheduler will notify peer back-to-source.
+      maxScheduleCount: 30
       # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
       retryBackToSourceLimit: 5
       # -- Retry scheduling limit times.
@@ -518,7 +521,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.21
+  tag: v2.1.22
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -864,7 +867,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.21
+  tag: v2.1.22
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1204,7 +1207,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.21
+  tag: v2.1.22
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1573,7 +1576,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.21
+  tag: v2.1.22
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
