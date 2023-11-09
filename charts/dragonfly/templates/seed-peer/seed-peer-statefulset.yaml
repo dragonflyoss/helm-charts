@@ -124,12 +124,18 @@ spec:
           items:
           - key: dfget.yaml
             path: dfget.yaml
-      {{- if not (.Values.seedPeer.persistence.enable) }}
-      - name: storage
-        emptyDir: {}
-      {{- end }}
+      {{- $needStorage := true }}
       {{- if .Values.seedPeer.extraVolumes }}
+      {{- range .Values.seedPeer.extraVolumes }}
+      {{- if eq .name "storage" }}
+      {{- $needStorage = false }}
+      {{- end }}
+      {{- end }}
       {{- toYaml .Values.seedPeer.extraVolumes | nindent 6 }}
+      {{- end }}
+      {{- if and (not (.Values.seedPeer.persistence.enable)) $needStorage }}
+      - name: storage
+        emptyDir: { }
       {{- end }}
   {{- if .Values.seedPeer.persistence.enable }}
   volumeClaimTemplates:
