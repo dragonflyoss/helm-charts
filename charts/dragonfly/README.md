@@ -402,6 +402,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | peerTTL is the ttl of peer. If the peer has been downloaded by other peers, then PeerTTL will be reset. |
 | scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
+| scheduler.config.scheduler.maxScheduleCount | int | `30` | maxScheduleCount is max schedule count. If scheduling exceeds the maxScheduleCount, scheduler will notify peer back-to-source. |
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
 | scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval. |
 | scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times. |

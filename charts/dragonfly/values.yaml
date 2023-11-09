@@ -229,6 +229,9 @@ scheduler:
       algorithm: default
       # -- backToSourceCount is single task allows the peer to back-to-source count.
       backToSourceCount: 3
+      # -- maxScheduleCount is max schedule count. If scheduling exceeds the maxScheduleCount,
+      # scheduler will notify peer back-to-source.
+      maxScheduleCount: 30
       # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
       retryBackToSourceLimit: 5
       # -- Retry scheduling limit times.
