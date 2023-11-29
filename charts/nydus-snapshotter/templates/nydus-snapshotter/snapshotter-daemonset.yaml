@@ -117,6 +117,13 @@ spec:
           toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.disable_snapshot_annotations false
           toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.snapshotter nydus
 
+          if grep -q "\[proxy_plugins\]" $etcContainerd; then
+            echo '[proxy_plugins.nydus]' >> $etcContainerd
+            echo '  type = "snapshot"' >>  $etcContainerd
+            echo '  address = "/run/containerd-nydus/containerd-nydus-grpc.sock"' >>  $etcContainerd
+            exit 0
+          fi
+
           # toml command not support to set block, so just use cat command.
           cat << EOF >> $etcContainerd
           [proxy_plugins]
