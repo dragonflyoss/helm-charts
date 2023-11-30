@@ -71,6 +71,7 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 | dragonfly.mirrorConfig[0].ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
 | hostAliases | list | `[]` | Host Aliases |
 | hostNetwork | bool | `true` | Let nydus-snapshotter run in host network |
+| hostPid | bool | `true` | Let nydus-snapshotter use the host's pid namespace |
 | image | string | `"ghcr.io/containerd/nydus-snapshotter"` | Image repository |
 | name | string | `"nydus-snapshotter"` | nydus-snapshotter name |
 | nodeSelector | object | `{}` | Node labels for pod assignment |

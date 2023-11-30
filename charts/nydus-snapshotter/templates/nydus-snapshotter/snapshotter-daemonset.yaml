@@ -38,7 +38,7 @@ spec:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.hostNetwork }}
-      hostPID: {{ .Values.containerRuntime.containerd.enable }}
+      hostPID: {{ .Values.hostPid }}
       {{- if .Values.hostNetwork }}
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
@@ -66,6 +66,7 @@ spec:
           value: "false"
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+        {{- if .Values.containerRuntime.containerd.enable }}
         lifecycle:
           postStart:
             exec:
@@ -75,6 +76,7 @@ spec:
               - |
                 # currently, without host pid in container, we can not nsenter with pid and can not invoke systemctl correctly.
                 nsenter -t 1 -m systemctl -- restart containerd.service
+        {{- end }}
         {{- if .Values.args }}
         args:
 {{ toYaml .Values.args | indent 12 }}
