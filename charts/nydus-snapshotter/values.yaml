@@ -10,6 +10,8 @@ tag: v0.9.0
 pullPolicy: Always
 # -- Let nydus-snapshotter run in host network
 hostNetwork: true
+# -- Let nydus-snapshotter use the host's pid namespace
+hostPid: true
 # -- Host Aliases
 hostAliases: []
 # -- Args to overwrite default nydus-snapshotter startup command
