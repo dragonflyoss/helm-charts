@@ -3,7 +3,7 @@ name: nydus-snapshotter
 description: Nydus snapshotter is an external plugin of containerd for Nydus image service which implements a chunk-based content-addressable filesystem on top of a called RAFS.
 icon: https://github.com/dragonflyoss/image-service/raw/master/misc/logo.svg
 type: application
-version: 0.0.7
+version: 0.0.8
 appVersion: 0.9.0
 keywords:
   - nydus
