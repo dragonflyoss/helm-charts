@@ -36,7 +36,7 @@ Create the `values.yaml` configuration file.
 nydusSnapshotter:
   name: nydus-snapshotter
   image: ghcr.io/containerd/nydus-snapshotter
-  tag: v1.2.11
+  tag: v0.13.4
 ```
 Install nydus-snapshotter chart with release name `nydus-snapshotter`:
 
