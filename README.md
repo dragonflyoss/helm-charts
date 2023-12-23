@@ -22,7 +22,7 @@ Please refer to the [document][install] to install Dragonfly & Nydus on Kubernet
 
 - [Install Dragonfly & Nydus on Kubernetes][install]
 - [Install Dragonfly on Kubernetes](./charts/dragonfly/README.md)
-- [Install Nydus on Kubernetes](./charts/nydus/README.md)
+- [Install Nydus on Kubernetes](./charts/nydus-snapshotter/README.md)
 
 ## Community
 
