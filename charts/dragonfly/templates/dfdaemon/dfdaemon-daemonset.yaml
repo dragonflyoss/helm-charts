@@ -369,7 +369,7 @@ spec:
               echo config_path is not enabled, just add one mirror in {{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}
               # parse registry domain
               registry={{ .Values.dfdaemon.config.proxy.registryMirror.url}}
-              domain=$(echo $registry | sed -e "s,http.*://,," | sed "s,:.*,,")
+              domain=$(echo $registry | sed -e "s,http.*://,,")
               # inject registry
               if grep "registry.mirrors.\"$domain\"" $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }}; then
                 # TODO merge mirrors
@@ -426,7 +426,7 @@ spec:
                     registry_domain=$registry
                 fi
                 # parse registry domain
-                domain=$(echo $registry | sed -e "s,http.*://,," | sed "s,:.*,,")
+                domain=$(echo $registry | sed -e "s,http.*://,,")
                 # inject registry
                 mkdir -p $etcContainerd/certs.d/$domain
                 if [[ -e "$etcContainerd/certs.d/$domain/hosts.toml" ]]; then
