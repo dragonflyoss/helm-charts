@@ -129,6 +129,67 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| client.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
+| client.config.download.pieceTimeout | string | `"30s"` | pieceTimeout is the timeout for downloading a piece from source. |
+| client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
+| client.config.dynconfig.refreshInterval | string | `"1800s"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
+| client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
+| client.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| client.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
+| client.config.host | string | `nil` | host is the host configuration for dfdaemon. |
+| client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
+| client.config.metrics.port | int | `4001` | port is the port to the metrics server. |
+| client.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
+| client.config.scheduler.announceInterval | string | `"30s"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
+| client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
+| client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
+| client.config.scheduler.scheduleTimeout | string | `"300s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
+| client.config.security.enable | bool | `false` | enable indicates whether enable security. |
+| client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
+| client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
+| client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| client.config.tracing | string | `nil` | tracing is the tracing configuration for dfdaemon. |
+| client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
+| client.enable | bool | `false` | Enable client. |
+| client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
+| client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
+| client.fullnameOverride | string | `""` | Override scheduler fullname. |
+| client.hostAliases | list | `[]` | Host Aliases. |
+| client.image | string | `"dragonflyoss/client"` | Image repository. |
+| client.initContainer.image | string | `"busybox"` | Init container image repository. |
+| client.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
+| client.initContainer.tag | string | `"latest"` | Init container image tag. |
+| client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
+| client.metrics.enable | bool | `false` | Enable client metrics. |
+| client.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels |
+| client.metrics.podMonitor.enable | bool | `false` | Enable prometheus pod monitor. ref: https://github.com/coreos/prometheus-operator. |
+| client.metrics.podMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
+| client.metrics.podMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
+| client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
+| client.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
+| client.metrics.prometheusRule.rules | list | `[]` | Prometheus rules. |
+| client.metrics.service.annotations | object | `{}` | Service annotations. |
+| client.metrics.service.labels | object | `{}` | Service labels. |
+| client.metrics.service.type | string | `"ClusterIP"` | Service type. |
+| client.name | string | `"client"` | Client name. |
+| client.nameOverride | string | `""` | Override scheduler name. |
+| client.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| client.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
+| client.persistence.annotations | object | `{}` | Persistence annotations. |
+| client.persistence.enable | bool | `true` | Enable persistence for peer. |
+| client.persistence.size | string | `"50Gi"` | Persistence persistence size. |
+| client.podAnnotations | object | `{}` | Pod annotations. |
+| client.podLabels | object | `{}` | Pod labels. |
+| client.priorityClassName | string | `""` | Pod priorityClassName. |
+| client.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| client.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| client.replicas | int | `3` | Number of Pods to launch. |
+| client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
+| client.tag | string | `"v0.1.4"` | Image tag. |
+| client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
+| client.tolerations | list | `[]` | List of node taints to tolerate. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainerImage":"dragonflyoss/openssl"}` | [Experimental] Container runtime support. Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O. |
 | containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support. |
@@ -228,16 +289,16 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag. |
 | dfdaemon.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics. |
+| dfdaemon.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels. |
+| dfdaemon.metrics.podMonitor.enable | bool | `false` | Enable prometheus pod monitor. ref: https://github.com/coreos/prometheus-operator. |
+| dfdaemon.metrics.podMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
+| dfdaemon.metrics.podMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
 | dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | dfdaemon.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
 | dfdaemon.metrics.prometheusRule.rules | list | `[{"alert":"PeerDown","annotations":{"message":"Peer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Peer instance is down"},"expr":"sum(dragonfly_dfdaemon_version{}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"PeerHighNumberOfFailedDownloadTask","annotations":{"message":"Peer has a high number of failed download task","summary":"Peer has a high number of failed download task"},"expr":"sum(increase(dragonfly_dfdaemon_peer_task_failed_total{}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"PeerSuccessRateOfDownloadingTask","annotations":{"message":"Peer's success rate of downloading task is low","summary":"Peer's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_dfdaemon_peer_task_total{container=\"seed-peer\"}[1m])) - sum(rate(dragonfly_dfdaemon_peer_task_failed_total{container=\"seed-peer\"}[1m]))) / sum(rate(dragonfly_dfdaemon_peer_task_total{container=\"seed-peer\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"PeerHighNumberOfFailedGRPCRequest","annotations":{"message":"Peer has a high number of failed grpc request","summary":"Peer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"PeerSuccessRateOfGRPCRequest","annotations":{"message":"Peer's success rate of grpc request is low","summary":"Peer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
 | dfdaemon.metrics.service.annotations | object | `{}` | Service annotations. |
 | dfdaemon.metrics.service.labels | object | `{}` | Service labels. |
 | dfdaemon.metrics.service.type | string | `"ClusterIP"` | Service type. |
-| dfdaemon.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels. |
-| dfdaemon.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
-| dfdaemon.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
-| dfdaemon.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
 | dfdaemon.mountDataDirAsHostPath | bool | `false` | Mount data directory from host. when enabled, mount host path to dfdaemon, or just emptyDir in dfdaemon. |
 | dfdaemon.name | string | `"dfdaemon"` | Dfdaemon name. |
 | dfdaemon.nameOverride | string | `""` | Override dfdaemon name. |
@@ -248,7 +309,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.22"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.28"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
@@ -359,7 +420,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.22"` | Image tag. |
+| manager.tag | string | `"v2.1.28"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
@@ -464,9 +525,74 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.22"` | Image tag. |
+| scheduler.tag | string | `"v2.1.28"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
+| seedClient.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
+| seedClient.config.download.pieceTimeout | string | `"30s"` | pieceTimeout is the timeout for downloading a piece from source. |
+| seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
+| seedClient.config.dynconfig.refreshInterval | string | `"1800s"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
+| seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
+| seedClient.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| seedClient.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
+| seedClient.config.host | string | `nil` | host is the host configuration for dfdaemon. |
+| seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
+| seedClient.config.metrics.port | int | `4001` | port is the port to the metrics server. |
+| seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
+| seedClient.config.scheduler.announceInterval | string | `"30s"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
+| seedClient.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
+| seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
+| seedClient.config.scheduler.scheduleTimeout | string | `"300s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
+| seedClient.config.security.enable | bool | `false` | enable indicates whether enable security. |
+| seedClient.config.seedPeer.clusterID | int | `1` | clusterID is the cluster id of the seed peer cluster. |
+| seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
+| seedClient.config.seedPeer.keepaliveInterval | string | `"15s"` | keepaliveInterval is the interval to keep alive with manager. |
+| seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
+| seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
+| seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
+| seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| seedClient.config.tracing | string | `nil` | tracing is the tracing configuration for dfdaemon. |
+| seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
+| seedClient.enable | bool | `false` | Enable seed client. |
+| seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
+| seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
+| seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
+| seedClient.hostAliases | list | `[]` | Host Aliases. |
+| seedClient.image | string | `"dragonflyoss/client"` | Image repository. |
+| seedClient.initContainer.image | string | `"busybox"` | Init container image repository. |
+| seedClient.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
+| seedClient.initContainer.tag | string | `"latest"` | Init container image tag. |
+| seedClient.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
+| seedClient.metrics.enable | bool | `false` | Enable seed client metrics. |
+| seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
+| seedClient.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
+| seedClient.metrics.prometheusRule.rules | list | `[]` | Prometheus rules. |
+| seedClient.metrics.service.annotations | object | `{}` | Service annotations. |
+| seedClient.metrics.service.labels | object | `{}` | Service labels. |
+| seedClient.metrics.service.type | string | `"ClusterIP"` | Service type. |
+| seedClient.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| seedClient.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
+| seedClient.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
+| seedClient.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
+| seedClient.name | string | `"seed-client"` | Seed client name. |
+| seedClient.nameOverride | string | `""` | Override scheduler name. |
+| seedClient.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| seedClient.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
+| seedClient.persistence.annotations | object | `{}` | Persistence annotations. |
+| seedClient.persistence.enable | bool | `true` | Enable persistence for seed peer. |
+| seedClient.persistence.size | string | `"50Gi"` | Persistence persistence size. |
+| seedClient.podAnnotations | object | `{}` | Pod annotations. |
+| seedClient.podLabels | object | `{}` | Pod labels. |
+| seedClient.priorityClassName | string | `""` | Pod priorityClassName. |
+| seedClient.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedClient.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| seedClient.replicas | int | `3` | Number of Pods to launch. |
+| seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
+| seedClient.tag | string | `"v0.1.4"` | Image tag. |
+| seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
+| seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
 | seedPeer.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
 | seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory. |
@@ -566,7 +692,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.22"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.28"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.config.console | bool | `false` | Console shows log on console. |
@@ -625,7 +751,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.22"` | Image tag. |
+| trainer.tag | string | `"v2.1.28"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |

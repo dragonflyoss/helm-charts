@@ -24,6 +24,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified manager name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.manager.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.manager.name }}
+{{- end -}}
+
+{{/*
 Create a default fully qualified scheduler name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
@@ -32,19 +40,27 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified client name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.client.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.client.name }}
+{{- end -}}
+
+{{/*
+Create a default fully qualified seed client name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.seedClient.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.seedClient.name }}
+{{- end -}}
+
+{{/*
 Create a default fully qualified seed peer name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "dragonfly.seedPeer.fullname" -}}
 {{ template "dragonfly.fullname" . }}-{{ .Values.seedPeer.name }}
-{{- end -}}
-
-{{/*
-Create a default fully qualified manager name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "dragonfly.manager.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.manager.name }}
 {{- end -}}
 
 {{/*

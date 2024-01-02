@@ -1,0 +1,47 @@
+{{- if .Values.client.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dragonfly.client.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.client.name }}
+data:
+  dfdaemon.yaml: |-
+    host:
+{{ toYaml .Values.client.config.host | indent 6 }}
+    server:
+{{ toYaml .Values.client.config.server | indent 6 }}
+    download:
+{{ toYaml .Values.client.config.download | indent 6 }}
+    upload:
+{{ toYaml .Values.client.config.upload | indent 6 }}
+    manager:
+      addrs:
+      {{- if .Values.client.config.scheduler.manager.addrs }}
+{{ toYaml .Values.client.config.scheduler.manager.netAddrs | indent 6 }}
+      {{- else if .Values.manager.enable }}
+      - {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+      {{- else }}
+      - {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+      {{- end }}
+    scheduler:
+{{ toYaml .Values.client.config.scheduler | indent 6 }}
+    dynconfig:
+{{ toYaml .Values.client.config.dynconfig | indent 6 }}
+    storage:
+{{ toYaml .Values.client.config.storage | indent 6 }}
+    gc:
+{{ toYaml .Values.client.config.gc | indent 6 }}
+    proxy:
+{{ toYaml .Values.client.config.proxy | indent 6 }}
+    security:
+{{ toYaml .Values.client.config.security | indent 6 }}
+    metrics:
+{{ toYaml .Values.client.config.metrics | indent 6 }}
+    tracing:
+{{ toYaml .Values.client.config.tracing | indent 6 }}
+{{- end }}
