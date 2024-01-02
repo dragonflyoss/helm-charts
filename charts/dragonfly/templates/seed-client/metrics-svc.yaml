@@ -1,0 +1,30 @@
+{{- if and .Values.seedClient.metrics.enable .Values.seedClient.metrics.serviceMonitor.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.seedClient.fullname" . }}-metrics
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.seedClient.name }}-metrics
+{{- if .Values.seedClient.metrics.service.labels }}
+{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.seedClient.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.seedClient.metrics.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.seedClient.metrics.service.type }}
+  ports:
+  - port: {{ .Values.seedClient.config.metrics.port }}
+    name: http-metrics
+    targetPort: {{ .Values.seedClient.config.metrics.port }}
+    protocol: TCP
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    component: {{ .Values.seedClient.name }}
+    release: {{ .Release.Name }}
+{{- end }}

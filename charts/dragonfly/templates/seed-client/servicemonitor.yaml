@@ -1,0 +1,32 @@
+{{- if and .Values.seedClient.metrics.enable .Values.seedClient.metrics.serviceMonitor.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "dragonfly.seedClient.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.seedClient.name }}
+    {{- if .Values.seedClient.metrics.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.seedClient.metrics.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+  - port: http-metrics
+    {{- if .Values.seedClient.metrics.serviceMonitor.interval }}
+    interval: {{ .Values.seedClient.metrics.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.seedClient.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.seedClient.metrics.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.name" . }}
+      release: {{ .Release.Name }}
+      component: {{ .Values.seedClient.name }}-metrics
+{{- end }}

@@ -1,0 +1,20 @@
+{{- if and .Values.client.metrics.enable .Values.client.metrics.prometheusRule.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "dragonfly.client.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.client.name }}
+    {{- if .Values.client.metrics.prometheusRule.additionalLabels }}
+{{ toYaml .Values.client.metrics.prometheusRule.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+  groups:
+    - name: {{ template "dragonfly.client.fullname" $ }}
+      rules:
+{{ toYaml .Values.client.metrics.prometheusRule.rules | indent 8 }}
+{{- end }}
