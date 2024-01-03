@@ -24,7 +24,7 @@ data:
       {{- if .Values.client.config.manager.addrs }}
 {{ toYaml .Values.client.config.manager.netAddrs | indent 6 }}
       {{- else if .Values.manager.enable }}
-      - {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+      - http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
       {{- else }}
       - {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- end }}
