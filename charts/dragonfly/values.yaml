@@ -1037,24 +1037,6 @@ client:
   extraVolumeMounts:
     - name: logs
       mountPath: "/var/log/dragonfly/dfdaemon/"
-  persistence:
-    # -- Enable persistence for peer.
-    enable: true
-    # -- Persistence annotations.
-    annotations: {}
-    # -- Persistence access modes.
-    accessModes:
-      - ReadWriteOnce
-    # -- Persistence persistence size.
-    size: 50Gi
-    ## Client data Persistent Volume Storage Class.
-    ## If defined, storageClassName: <storageClass>.
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning.
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack).
-    ##
-    # storageClass: "-".
   config:
     # -- host is the host configuration for dfdaemon.
     host:
