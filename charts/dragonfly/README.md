@@ -137,7 +137,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | client.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
-| client.config.host | string | `nil` | host is the host configuration for dfdaemon. |
+| client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | client.config.metrics.port | int | `4001` | port is the port to the metrics server. |
 | client.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
@@ -149,7 +149,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
-| client.config.tracing | string | `nil` | tracing is the tracing configuration for dfdaemon. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -183,7 +182,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.4"` | Image tag. |
+| client.tag | string | `"v0.1.7"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
@@ -532,7 +531,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
-| seedClient.config.host | string | `nil` | host is the host configuration for dfdaemon. |
+| seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | seedClient.config.metrics.port | int | `4001` | port is the port to the metrics server. |
 | seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
@@ -548,7 +547,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
-| seedClient.config.tracing | string | `nil` | tracing is the tracing configuration for dfdaemon. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.enable | bool | `false` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -586,7 +584,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.4"` | Image tag. |
+| seedClient.tag | string | `"v0.1.7"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
