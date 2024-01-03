@@ -796,7 +796,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.4
+  tag: v0.1.7
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -863,9 +863,9 @@ seedClient:
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.
-      # idc: ""
+      idc: ""
       ## location is the location of the host.
-      # location: ""
+      location: ""
       ## hostname is the hostname of the host.
       # hostname: ""
       ## ip is the advertise ip of the host.
@@ -942,8 +942,8 @@ seedClient:
       port: 4001
       ## ip is the listen ip of the metrics server.
       # ip: ""
-    # -- tracing is the tracing configuration for dfdaemon.
-    tracing:
+    ## tracing is the tracing configuration for dfdaemon.
+    # tracing:
       ## addr is the address to report tracing log.
       # addr: ""
   metrics:
@@ -992,7 +992,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.4
+  tag: v0.1.7
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1041,9 +1041,9 @@ client:
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.
-      # idc: ""
+      idc: ""
       ## location is the location of the host.
-      # location: ""
+      location: ""
       ## hostname is the hostname of the host.
       # hostname: ""
       ## ip is the advertise ip of the host.
@@ -1111,8 +1111,8 @@ client:
       port: 4001
       ## ip is the listen ip of the metrics server.
       # ip: ""
-    # -- tracing is the tracing configuration for dfdaemon.
-    tracing:
+    ## tracing is the tracing configuration for dfdaemon.
+    # tracing:
       ## addr is the address to report tracing log.
       # addr: ""
   metrics:
