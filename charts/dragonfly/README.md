@@ -175,10 +175,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.name | string | `"client"` | Client name. |
 | client.nameOverride | string | `""` | Override scheduler name. |
 | client.nodeSelector | object | `{}` | Node labels for pod assignment. |
-| client.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
-| client.persistence.annotations | object | `{}` | Persistence annotations. |
-| client.persistence.enable | bool | `true` | Enable persistence for peer. |
-| client.persistence.size | string | `"50Gi"` | Persistence persistence size. |
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |

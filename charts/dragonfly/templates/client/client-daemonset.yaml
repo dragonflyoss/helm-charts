@@ -112,34 +112,11 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.client.fullname" . }}
-      {{- if not (.Values.client.persistence.enable) }}
       - name: storage
-        emptyDir: {}
-      {{- end }}
+        hostPath:
+          path: {{ .Values.client.config.storage.dir }}
+          type: DirectoryOrCreate
       {{- if .Values.client.extraVolumes }}
       {{- toYaml .Values.client.extraVolumes | nindent 6 }}
       {{- end }}
-  {{- if .Values.client.persistence.enable }}
-  volumeClaimTemplates:
-    - metadata:
-        name: storage
-        {{- range $key, $value := .Values.client.persistence.annotations }}
-          {{ $key }}: {{ $value }}
-        {{- end }}
-      spec:
-        accessModes:
-          {{- range .Values.client.persistence.accessModes }}
-          - {{ . | quote }}
-          {{- end }}
-        resources:
-          requests:
-            storage: {{ .Values.client.persistence.size | quote }}
-      {{- if .Values.client.persistence.storageClass }}
-      {{- if (eq "-" .Values.client.persistence.storageClass) }}
-        storageClassName: ""
-      {{- else }}
-        storageClassName: "{{ .Values.client.persistence.storageClass }}"
-      {{- end }}
-      {{- end }}
-  {{- end }}
 {{- end }}
