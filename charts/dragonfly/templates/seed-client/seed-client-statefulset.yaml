@@ -75,6 +75,10 @@ spec:
       - name: seed-client
         image: "{{ .Values.seedClient.image }}:{{ .Values.seedClient.tag }}"
         imagePullPolicy: {{ .Values.seedClient.pullPolicy | quote }}
+        {{- if .Values.seedClient.config.verbose }}
+        args:
+        - --verbose
+        {{- end }}
         resources:
 {{ toYaml .Values.seedClient.resources | indent 12 }}
         env:
