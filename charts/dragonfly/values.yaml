@@ -796,7 +796,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.7
+  tag: v0.1.10
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -860,6 +860,8 @@ seedClient:
     ##
     # storageClass: "-".
   config:
+    # -- verbose prints log.
+    verbose: false
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.
@@ -992,7 +994,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.7
+  tag: v0.1.10
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1038,6 +1040,8 @@ client:
     - name: logs
       mountPath: "/var/log/dragonfly/dfdaemon/"
   config:
+    # -- verbose prints log.
+    verbose: false
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.
