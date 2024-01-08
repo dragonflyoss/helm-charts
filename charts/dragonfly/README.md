@@ -459,10 +459,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | peerTTL is the ttl of peer. If the peer has been downloaded by other peers, then PeerTTL will be reset. |
 | scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
-| scheduler.config.scheduler.maxScheduleCount | int | `30` | maxScheduleCount is max schedule count. If scheduling exceeds the maxScheduleCount, scheduler will notify peer back-to-source. |
-| scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
-| scheduler.config.scheduler.retryInterval | string | `"50ms"` | Retry scheduling interval. |
-| scheduler.config.scheduler.retryLimit | int | `10` | Retry scheduling limit times. |
+| scheduler.config.scheduler.retryBackToSourceLimit | int | `30` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
+| scheduler.config.scheduler.retryInterval | string | `"100ms"` | Retry scheduling interval. |
+| scheduler.config.scheduler.retryLimit | int | `40` | Retry scheduling limit times. |
 | scheduler.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | scheduler.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
 | scheduler.config.security.certSpec.dnsNames | list | `["dragonfly-scheduler","dragonfly-scheduler.dragonfly-system.svc","dragonfly-scheduler.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
