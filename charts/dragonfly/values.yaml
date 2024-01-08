@@ -914,7 +914,7 @@ seedClient:
       keepaliveInterval: 15s
     dynconfig:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
-      refreshInterval: 1800s
+      refreshInterval: 1m
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
@@ -1085,7 +1085,7 @@ client:
       enableBackToSource: true
     dynconfig:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
-      refreshInterval: 1800s
+      refreshInterval: 5m
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
