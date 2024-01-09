@@ -859,6 +859,9 @@ seedClient:
   config:
     # -- verbose prints log.
     verbose: false
+    log:
+      # -- Specify the logging level [trace, debug, info, warn, error]
+      level: info
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.
@@ -1039,6 +1042,9 @@ client:
   config:
     # -- verbose prints log.
     verbose: false
+    log:
+      # -- Specify the logging level [trace, debug, info, warn, error]
+      level: info
     # -- host is the host configuration for dfdaemon.
     host:
       ## idc is the idc of the host.

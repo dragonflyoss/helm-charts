@@ -76,8 +76,9 @@ spec:
       - name: client
         image: {{ .Values.client.image }}:{{ .Values.client.tag }}
         imagePullPolicy: {{ .Values.client.pullPolicy | quote }}
-        {{- if .Values.client.config.verbose }}
         args:
+        - --log-level={{ .Values.client.config.log.level }}
+        {{- if .Values.client.config.verbose }}
         - --verbose
         {{- end }}
         resources:

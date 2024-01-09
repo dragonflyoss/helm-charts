@@ -75,8 +75,9 @@ spec:
       - name: seed-client
         image: "{{ .Values.seedClient.image }}:{{ .Values.seedClient.tag }}"
         imagePullPolicy: {{ .Values.seedClient.pullPolicy | quote }}
-        {{- if .Values.seedClient.config.verbose }}
         args:
+        - --log-level={{ .Values.client.config.log.level }}
+        {{- if .Values.seedClient.config.verbose }}
         - --verbose
         {{- end }}
         resources:

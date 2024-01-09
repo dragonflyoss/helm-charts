@@ -138,6 +138,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | client.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
 | client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
+| client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | client.config.metrics.port | int | `4001` | port is the port to the metrics server. |
 | client.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
@@ -532,6 +533,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
 | seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
+| seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | seedClient.config.metrics.port | int | `4001` | port is the port to the metrics server. |
 | seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
