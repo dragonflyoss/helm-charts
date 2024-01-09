@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.19
-appVersion: 2.1.28
+version: 1.1.20
+appVersion: 2.1.29
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Change default value of refresh interval in dynconfig.
+    - Change default value of announce interval in dynconfig.
+    - Change default value of schedule timeout in scheduler.
 
   artifacthub.io/links: |
     - name: Chart Source

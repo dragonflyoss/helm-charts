@@ -144,7 +144,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.scheduler.announceInterval | string | `"5m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
-| client.config.scheduler.scheduleTimeout | string | `"300s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
+| client.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
 | client.config.security.enable | bool | `false` | enable indicates whether enable security. |
 | client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
@@ -535,10 +535,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | seedClient.config.metrics.port | int | `4001` | port is the port to the metrics server. |
 | seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
-| seedClient.config.scheduler.announceInterval | string | `"5m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
+| seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
-| seedClient.config.scheduler.scheduleTimeout | string | `"300s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
+| seedClient.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
 | seedClient.config.security.enable | bool | `false` | enable indicates whether enable security. |
 | seedClient.config.seedPeer.clusterID | int | `1` | clusterID is the cluster id of the seed peer cluster. |
 | seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
