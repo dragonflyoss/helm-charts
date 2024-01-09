@@ -895,10 +895,10 @@ seedClient:
       # -- announceInterval is the interval to announce peer to the scheduler.
       # Announcer will provide the scheduler with peer information for scheduling,
       # peer information includes cpu, memory, etc.
-      announceInterval: 5m
+      announceInterval: 1m
       # -- scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source
       # download if enableBackToSource is true, otherwise dfdaemon will return download failed.
-      scheduleTimeout: 300s
+      scheduleTimeout: 30s
       # -- maxScheduleCount is the max count of schedule.
       maxScheduleCount: 5
       # -- enableBackToSource indicates whether enable back-to-source download, when the scheduling failed.
@@ -1078,7 +1078,7 @@ client:
       announceInterval: 5m
       # -- scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source
       # download if enableBackToSource is true, otherwise dfdaemon will return download failed.
-      scheduleTimeout: 300s
+      scheduleTimeout: 30s
       # -- maxScheduleCount is the max count of schedule.
       maxScheduleCount: 5
       # -- enableBackToSource indicates whether enable back-to-source download, when the scheduling failed.
