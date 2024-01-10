@@ -221,8 +221,6 @@ manager:
       grpc:
         # -- GRPC advertise ip.
         advertiseIP: ""
-        # -- GRPC advertise port.
-        advertisePort: 65003
       rest:
         tls:
           # -- Certificate file path.
