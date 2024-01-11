@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.28
+  tag: v2.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -418,7 +418,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.28
+  tag: v2.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -503,11 +503,11 @@ scheduler:
       # -- backToSourceCount is single task allows the peer to back-to-source count.
       backToSourceCount: 3
       # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
-      retryBackToSourceLimit: 30
+      retryBackToSourceLimit: 10
       # -- Retry scheduling limit times.
-      retryLimit: 40
+      retryLimit: 15
       # -- Retry scheduling interval.
-      retryInterval: 100ms
+      retryInterval: 300ms
       gc:
         # -- pieceDownloadTimeout is the timeout of downloading piece.
         pieceDownloadTimeout: 30m
@@ -791,7 +791,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.10
+  tag: v0.1.12
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -992,7 +992,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.10
+  tag: v0.1.12
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1166,7 +1166,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.28
+  tag: v2.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1512,7 +1512,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.28
+  tag: v2.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1946,7 +1946,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.28
+  tag: v2.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
