@@ -426,7 +426,7 @@ spec:
                     registry_domain=$registry
                 fi
                 # parse registry domain
-                domain=$(echo $registry | sed -e "s,http.*://,," | sed "s,:.*,,")
+                domain=$(echo $registry | sed -e "s,http.*://,,")
                 # inject registry
                 mkdir -p $etcContainerd/certs.d/$domain
                 if [[ -e "$etcContainerd/certs.d/$domain/hosts.toml" ]]; then
