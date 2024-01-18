@@ -140,7 +140,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
-| client.config.metrics.port | int | `4001` | port is the port to the metrics server. |
+| client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | client.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
 | client.config.scheduler.announceInterval | string | `"5m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
@@ -184,7 +184,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.12"` | Image tag. |
+| client.tag | string | `"v0.1.13"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
@@ -306,7 +306,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.29"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.30"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
@@ -416,7 +416,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.29"` | Image tag. |
+| manager.tag | string | `"v2.1.30"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
@@ -520,7 +520,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.29"` | Image tag. |
+| scheduler.tag | string | `"v2.1.30"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
@@ -534,7 +534,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
-| seedClient.config.metrics.port | int | `4001` | port is the port to the metrics server. |
+| seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
@@ -586,7 +586,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.12"` | Image tag. |
+| seedClient.tag | string | `"v0.1.13"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
@@ -688,7 +688,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.29"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.30"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.config.console | bool | `false` | Console shows log on console. |
@@ -747,7 +747,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.29"` | Image tag. |
+| trainer.tag | string | `"v2.1.30"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
