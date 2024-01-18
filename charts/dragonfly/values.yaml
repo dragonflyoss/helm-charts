@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.29
+  tag: v2.1.30
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -418,7 +418,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.29
+  tag: v2.1.30
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -791,7 +791,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.12
+  tag: v0.1.13
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -938,10 +938,11 @@ seedClient:
       # -- enable indicates whether enable security.
       enable: false
     metrics:
-      # -- port is the port to the metrics server.
-      port: 4001
-      ## ip is the listen ip of the metrics server.
-      # ip: ""
+      server:
+        # -- port is the port to the metrics server.
+        port: 4002
+        ## ip is the listen ip of the metrics server.
+        # ip: ""
     ## tracing is the tracing configuration for dfdaemon.
     # tracing:
       ## addr is the address to report tracing log.
@@ -992,7 +993,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.12
+  tag: v0.1.13
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1112,10 +1113,11 @@ client:
       # -- enable indicates whether enable security.
       enable: false
     metrics:
-      # -- port is the port to the metrics server.
-      port: 4001
-      ## ip is the listen ip of the metrics server.
-      # ip: ""
+      server:
+        # -- port is the port to the metrics server.
+        port: 4002
+        ## ip is the listen ip of the metrics server.
+        # ip: ""
     ## tracing is the tracing configuration for dfdaemon.
     # tracing:
       ## addr is the address to report tracing log.
@@ -1166,7 +1168,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.29
+  tag: v2.1.30
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1512,7 +1514,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.29
+  tag: v2.1.30
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1946,7 +1948,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.29
+  tag: v2.1.30
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
