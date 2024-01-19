@@ -309,6 +309,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.tag | string | `"v2.1.30"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
+| dfdaemon.updateStrategy | object | `{}` | updateStrategy config for dfdaemon. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `nil` | External manager hostname. |
 | externalManager.restPort | int | `8080` | External REST service port. |
