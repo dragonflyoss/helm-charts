@@ -10,7 +10,6 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.scheduler.name }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/scheduler/scheduler-configmap.yaml") . | sha256sum }}
   {{- if .Values.scheduler.statefulsetAnnotations }}
 {{ toYaml .Values.scheduler.statefulsetAnnotations | indent 4 }}
   {{- end }}
@@ -35,8 +34,9 @@ spec:
         {{- if .Values.scheduler.podLabels }}
 {{ toYaml .Values.scheduler.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.scheduler.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/scheduler/scheduler-configmap.yaml") . | sha256sum }}
+      {{- if .Values.scheduler.podAnnotations }}
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
     spec:

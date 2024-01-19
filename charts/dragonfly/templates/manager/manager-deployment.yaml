@@ -10,7 +10,6 @@ metadata:
     component: {{ .Values.manager.name }}
   name: {{ template "dragonfly.manager.fullname" . }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
   {{- if .Values.manager.deploymentAnnotations }}
 {{ toYaml .Values.manager.deploymentAnnotations | indent 4 }}
   {{- end }}
@@ -33,8 +32,9 @@ spec:
         {{- if .Values.manager.podLabels }}
 {{ toYaml .Values.manager.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.manager.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
+      {{- if .Values.manager.podAnnotations }}
 {{ toYaml .Values.manager.podAnnotations | indent 8 }}
       {{- end }}
     spec:
