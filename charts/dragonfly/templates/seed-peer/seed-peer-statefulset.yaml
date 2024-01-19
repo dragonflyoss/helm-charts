@@ -15,6 +15,10 @@ metadata:
 {{ toYaml .Values.seedPeer.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.seedPeer.updateStrategy }}
+  updateStrategy:
+{{ toYaml .Values.seedPeer.updateStrategy | indent 4 }}
+  {{- end }}
   replicas: {{ .Values.seedPeer.replicas }}
   selector:
     matchLabels:
