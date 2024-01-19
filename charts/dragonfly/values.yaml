@@ -1542,6 +1542,8 @@ dfdaemon:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- updateStrategy config for dfdaemon.
+  updateStrategy: {}
   # -- Daemonset annotations.
   daemonsetAnnotations: {}
   initContainer:
