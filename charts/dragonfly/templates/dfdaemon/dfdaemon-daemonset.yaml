@@ -10,7 +10,6 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.dfdaemon.name }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/dfdaemon/dfdaemon-configmap.yaml") . | sha256sum }}
   {{- if .Values.dfdaemon.daemonsetAnnotations }}
 {{ toYaml .Values.dfdaemon.daemonsetAnnotations | indent 4 }}
   {{- end }}
@@ -33,8 +32,9 @@ spec:
         {{- if .Values.dfdaemon.podLabels }}
 {{ toYaml .Values.dfdaemon.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.dfdaemon.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/dfdaemon/dfdaemon-configmap.yaml") . | sha256sum }}
+      {{- if .Values.dfdaemon.podAnnotations }}
 {{ toYaml .Values.dfdaemon.podAnnotations | indent 8 }}
       {{- end }}
     spec:
