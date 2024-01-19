@@ -15,6 +15,9 @@ metadata:
 {{ toYaml .Values.trainer.deploymentAnnotations | indent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.trainer.updateStrategy }}
+  strategy: {{- toYaml .Values.trainer.updateStrategy | nindent 4 }}
+  {{- end }}
   replicas: {{ .Values.trainer.replicas }}
   selector:
     matchLabels:

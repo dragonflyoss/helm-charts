@@ -15,6 +15,10 @@ metadata:
 {{ toYaml .Values.scheduler.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.scheduler.updateStrategy }}
+  updateStrategy:
+{{ toYaml .Values.scheduler.updateStrategy | indent 4 }}
+  {{- end }}
   replicas: {{ .Values.scheduler.replicas }}
   selector:
     matchLabels:

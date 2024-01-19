@@ -15,6 +15,10 @@ metadata:
 {{ toYaml .Values.seedClient.statefulsetAnnotations | indent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.seedClient.updateStrategy }}
+  updateStrategy:
+{{ toYaml .Values.seedClient.updateStrategy | indent 4 }}
+  {{- end }}
   replicas: {{ .Values.seedClient.replicas }}
   selector:
     matchLabels:

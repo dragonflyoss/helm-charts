@@ -173,6 +173,9 @@ manager:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy:
+    type: RollingUpdate
   # -- Deployment annotations.
   deploymentAnnotations: {}
   # -- Extra volumes for manager.
@@ -453,6 +456,8 @@ scheduler:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy: {}
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   # -- Pod containerPort.
@@ -819,6 +824,8 @@ seedClient:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy: {}
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
@@ -1021,6 +1028,8 @@ client:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy: {}
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
@@ -1196,6 +1205,8 @@ seedPeer:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy: {}
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
@@ -1542,7 +1553,7 @@ dfdaemon:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
-  # -- updateStrategy config for dfdaemon.
+  # -- Update strategy for replicas.
   updateStrategy: {}
   # -- Daemonset annotations.
   daemonsetAnnotations: {}
@@ -1985,6 +1996,9 @@ trainer:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  # -- Update strategy for replicas.
+  updateStrategy:
+    type: RollingUpdate
   # -- Deployment annotations.
   deploymentAnnotations: {}
   # -- Pod containerPort.

@@ -187,6 +187,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.tag | string | `"v0.1.13"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
+| client.updateStrategy | object | `{}` | Update strategy for replicas. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainerImage":"dragonflyoss/openssl"}` | [Experimental] Container runtime support. Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O. |
 | containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support. |
@@ -309,7 +310,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.tag | string | `"v2.1.30"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
-| dfdaemon.updateStrategy | object | `{}` | updateStrategy config for dfdaemon. |
+| dfdaemon.updateStrategy | object | `{}` | Update strategy for replicas. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `nil` | External manager hostname. |
 | externalManager.restPort | int | `8080` | External REST service port. |
@@ -420,6 +421,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.tag | string | `"v2.1.30"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
+| manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
 | mysql.auth.host | string | `""` | Mysql hostname. |
 | mysql.auth.password | string | `"dragonfly"` | Mysql password. |
@@ -524,6 +526,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.tag | string | `"v2.1.30"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
+| scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"30s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
@@ -590,6 +593,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.tag | string | `"v0.1.13"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
+| seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
 | seedPeer.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
 | seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory. |
@@ -692,6 +696,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.tag | string | `"v2.1.30"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
+| seedPeer.updateStrategy | object | `{}` | Update strategy for replicas. |
 | trainer.config.console | bool | `false` | Console shows log on console. |
 | trainer.config.jaeger | string | `""` |  |
 | trainer.config.manager.Addr | string | `"127.0.0.1:65003"` | Manager Service Address. |
@@ -751,6 +756,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.tag | string | `"v2.1.30"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
+| trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
 | triton.enable | bool | `false` | Enable triton. |
 | triton.fullnameOverride | string | `""` | Override triton fullname. |
