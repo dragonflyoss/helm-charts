@@ -10,7 +10,6 @@ metadata:
     component: {{ .Values.seedClient.name }}
   name: {{ template "dragonfly.seedClient.fullname" . }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/seed-client/seed-client-configmap.yaml") . | sha256sum }}
   {{- if .Values.seedClient.statefulsetAnnotations }}
 {{ toYaml .Values.seedClient.statefulsetAnnotations | indent 4 }}
   {{- end }}
@@ -35,8 +34,9 @@ spec:
         {{- if .Values.seedClient.podLabels }}
 {{ toYaml .Values.seedClient.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.seedClient.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/seed-client/seed-client-configmap.yaml") . | sha256sum }}
+      {{- if .Values.seedClient.podAnnotations }}
 {{ toYaml .Values.seedClient.podAnnotations | indent 8 }}
       {{- end }}
     spec:

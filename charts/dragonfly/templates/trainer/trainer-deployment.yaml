@@ -10,7 +10,6 @@ metadata:
     component: {{ .Values.trainer.name }}
   name: {{ template "dragonfly.trainer.fullname" . }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/trainer/trainer-configmap.yaml") . | sha256sum }}
   {{- if .Values.trainer.deploymentAnnotations }}
 {{ toYaml .Values.trainer.deploymentAnnotations | indent 4 }}
   {{- end }}
@@ -33,8 +32,9 @@ spec:
         {{- if .Values.trainer.podLabels }}
 {{ toYaml .Values.trainer.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.trainer.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/trainer/trainer-configmap.yaml") . | sha256sum }}
+      {{- if .Values.trainer.podAnnotations }}
 {{ toYaml .Values.trainer.podAnnotations | indent 8 }}
       {{- end }}
     spec:

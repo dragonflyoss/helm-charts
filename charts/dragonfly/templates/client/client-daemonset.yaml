@@ -10,7 +10,6 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.client.name }}
   annotations:
-    checksum/config: {{ include (print $.Template.BasePath "/client/client-configmap.yaml") . | sha256sum }}
   {{- if .Values.client.daemonsetAnnotations }}
 {{ toYaml .Values.client.daemonsetAnnotations | indent 4 }}
   {{- end }}
@@ -33,8 +32,9 @@ spec:
         {{- if .Values.client.podLabels }}
 {{ toYaml .Values.client.podLabels | indent 8 }}
         {{- end }}
-      {{- if .Values.client.podAnnotations }}
       annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/client/client-configmap.yaml") . | sha256sum }}
+      {{- if .Values.client.podAnnotations }}
 {{ toYaml .Values.client.podAnnotations | indent 8 }}
       {{- end }}
     spec:
