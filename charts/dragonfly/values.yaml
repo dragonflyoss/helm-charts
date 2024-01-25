@@ -506,11 +506,11 @@ scheduler:
       # the dragonfly working directory plugins.
       algorithm: default
       # -- backToSourceCount is single task allows the peer to back-to-source count.
-      backToSourceCount: 3
+      backToSourceCount: 200
       # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
-      retryBackToSourceLimit: 10
+      retryBackToSourceLimit: 3
       # -- Retry scheduling limit times.
-      retryLimit: 15
+      retryLimit: 5
       # -- Retry scheduling interval.
       retryInterval: 300ms
       gc:
