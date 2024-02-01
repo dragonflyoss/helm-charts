@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.30
+  tag: v2.1.31
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -421,7 +421,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.30
+  tag: v2.1.31
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1190,7 +1190,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.30
+  tag: v2.1.31
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1544,7 +1544,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.30
+  tag: v2.1.31
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1988,7 +1988,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.30
+  tag: v2.1.31
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
