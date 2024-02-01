@@ -3,6 +3,69 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add rule-based and networkTopology-based scheduling algorithm.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.30
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.30
+        - name: client
+          image: dragonflyoss/client:v0.1.13
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.13
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.30
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.30
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.30
+    created: "2024-02-01T12:35:16.478494442Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 1c9ca8c1d22226ab646395dd75da4390a7eba839f133362db31c63d9765cde59
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.31/dragonfly-1.1.31.tgz
+    version: 1.1.31
+  - annotations:
+      artifacthub.io/changes: |
         - Optimize scheduler default config.
       artifacthub.io/images: |
         - name: manager
@@ -9166,4 +9229,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-01-25T04:31:02.050183028Z"
+generated: "2024-02-01T12:35:16.478961306Z"
