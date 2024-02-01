@@ -104,4 +104,6 @@ data:
 {{ toYaml .Values.dfdaemon.config.network | indent 6 }}
     announcer:
 {{ toYaml .Values.dfdaemon.config.announcer | indent 6 }}
+    networkTopology:
+{{ toYaml .Values.dfdaemon.config.networkTopology | indent 6 }}    
 {{- end }}
