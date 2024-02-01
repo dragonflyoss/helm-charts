@@ -82,4 +82,6 @@ data:
 {{ toYaml .Values.seedPeer.config.network | indent 6 }}
     announcer:
 {{ toYaml .Values.seedPeer.config.announcer | indent 6 }}
+    networkTopology:
+{{ toYaml .Values.seedPeer.config.networkTopology | indent 6 }}    
 {{- end }}

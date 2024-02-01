@@ -29,6 +29,7 @@ data:
         password: {{ .Values.externalRedis.password }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
+        networkTopologyDB: {{ .Values.externalRedis.networkTopologyDB }}
         {{- end }}
     resource:
 {{ toYaml .Values.scheduler.config.resource | indent 6 }}

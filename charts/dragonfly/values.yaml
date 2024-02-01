@@ -499,8 +499,8 @@ scheduler:
       dataDir: ""
     scheduler:
       # -- Algorithm configuration to use different scheduling algorithms,
-      # default configuration supports "default" and "ml".
-      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm.
+      # default configuration supports "default", "ml" and "nt".
+      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm, "nt" is the scheduling algorithm based on rules and network topology.
       # It also supports user plugin extension, the algorithm value is "plugin",
       # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
       # the dragonfly working directory plugins.
@@ -516,7 +516,7 @@ scheduler:
       gc:
         # -- pieceDownloadTimeout is the timeout of downloading piece.
         pieceDownloadTimeout: 30m
-        # peerGCInterval is the interval of peer gc.
+        # -- peerGCInterval is the interval of peer gc.
         peerGCInterval: 10s
         # -- peerTTL is the ttl of peer. If the peer has been downloaded by other peers,
         # then PeerTTL will be reset.
@@ -529,6 +529,19 @@ scheduler:
         # -- hostTTL is time to live of host. If host announces message to scheduler,
         # then HostTTl will be reset.
         hostTTL: 1h
+      networkTopology:
+        # -- collectInterval is the interval of collecting network topology.
+        collectInterval: 2h
+        probe:
+          # -- queueLength is the length of probe queue.
+          queueLength: 5
+          # -- count is the number of probing hosts.
+          count: 10
+        cache:
+          # -- interval is cache cleanup interval.
+          interval: 5m
+          # -- ttl is networkTopology cache items ttl.
+          ttl: 5m
     # -- resource configuration.
     resource:
       # -- task configuration.
@@ -1441,6 +1454,12 @@ seedPeer:
       # Announcer will provide the scheduler with peer information for scheduling.
       # Peer information includes cpu, memory, etc.
       schedulerInterval: 30s
+    networkTopology:
+      # -- Enable networkTopology service.
+      enable: false
+      probe:
+        # -- interval is the interval of probing hosts.
+        interval: 20m
   metrics:
     # -- Enable seed peer metrics.
     enable: false
@@ -1781,6 +1800,12 @@ dfdaemon:
       # Announcer will provide the scheduler with peer information for scheduling.
       # Peer information includes cpu, memory, etc.
       schedulerInterval: 30s
+    networkTopology:
+      # -- Enable networkTopology service.
+      enable: false
+      probe:
+        # -- interval is the interval of probing hosts.
+        interval: 20m
   metrics:
     # -- Enable peer metrics.
     enable: false
@@ -1927,6 +1952,8 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+  # -- External redis networkTopology db.
+  networkTopologyDB: 3
 
 jaeger:
   # -- Enable an all-in-one jaeger for tracing every downloading event should not use in production environment.
