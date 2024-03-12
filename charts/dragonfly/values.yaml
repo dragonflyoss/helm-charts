@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.31
+  tag: v2.1.35
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -421,7 +421,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.31
+  tag: v2.1.35
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -664,7 +664,7 @@ scheduler:
             summary: Scheduler instance is down
             message: Scheduler instance {{ "{{ $labels.instance }}" }} is down
         - alert: SchedulerHighNumberOfFailedDownloadPeer
-          expr: sum(increase(dragonfly_scheduler_download_peer_finished_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_download_peer_finished_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -680,7 +680,7 @@ scheduler:
             summary: Scheduler's success rate of downloading peer is low
             message: Scheduler's success rate of downloading peer is low
         - alert: SchedulerHighNumberOfFailedRegisterPeer
-          expr: sum(increase(dragonfly_scheduler_register_peer_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_register_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -696,7 +696,7 @@ scheduler:
             summary: Scheduler's success rate of register peer is low
             message: Scheduler's success rate of register peer is low
         - alert: SchedulerHighNumberOfFailedLeavePeer
-          expr: sum(increase(dragonfly_scheduler_leave_peer_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_leave_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -712,7 +712,7 @@ scheduler:
             summary: Scheduler's success rate of leaving peer is low
             message: Scheduler's success rate of leaving peer is low
         - alert: SchedulerHighNumberOfFailedStatTask
-          expr: sum(increase(dragonfly_scheduler_stat_task_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_stat_task_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -728,7 +728,7 @@ scheduler:
             summary: Scheduler's success rate of stat task is low
             message: Scheduler's success rate of stat task is low
         - alert: SchedulerHighNumberOfFailedAnnouncePeer
-          expr: sum(increase(dragonfly_scheduler_announce_peer_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_announce_peer_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -744,7 +744,7 @@ scheduler:
             summary: Scheduler's success rate of announcing peer is low
             message: Scheduler's success rate of announcing peer is low
         - alert: SchedulerHighNumberOfFailedLeaveHost
-          expr: sum(increase(dragonfly_scheduler_leave_host_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_leave_host_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -760,7 +760,7 @@ scheduler:
             summary: Scheduler's success rate of leaving host is low
             message: Scheduler's success rate of leaving host is low
         - alert: SchedulerHighNumberOfFailedAnnounceHost
-          expr: sum(increase(dragonfly_scheduler_announce_host_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_scheduler_announce_host_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -809,7 +809,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.13
+  tag: v0.1.18
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1013,7 +1013,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.13
+  tag: v0.1.18
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1190,7 +1190,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.31
+  tag: v2.1.35
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1497,7 +1497,7 @@ seedPeer:
             summary: Seed peer instance is down
             message: Seed peer instance {{ "{{ $labels.instance }}" }} is down
         - alert: SeedPeerHighNumberOfFailedDownloadTask
-          expr: sum(increase(dragonfly_dfdaemon_seed_peer_download_failure_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_dfdaemon_seed_peer_download_failure_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -1544,7 +1544,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.31
+  tag: v2.1.35
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1843,7 +1843,7 @@ dfdaemon:
             summary: Peer instance is down
             message: Peer instance {{ "{{ $labels.instance }}" }} is down
         - alert: PeerHighNumberOfFailedDownloadTask
-          expr: sum(increase(dragonfly_dfdaemon_peer_task_failed_total{}[1m])) > 100
+          expr: sum(irate(dragonfly_dfdaemon_peer_task_failed_total{}[1m])) > 100
           for: 1m
           labels:
             severity: warning
@@ -1988,7 +1988,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.31
+  tag: v2.1.35
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
