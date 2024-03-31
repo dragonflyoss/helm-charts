@@ -219,9 +219,9 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |
 | dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port. |
-| dfdaemon.config.download.perPeerRateLimit | string | `"512Mi"` | Per peer task limit per second. |
+| dfdaemon.config.download.perPeerRateLimit | string | `"512Mi"` | Per peer task limit per second[B]. |
 | dfdaemon.config.download.prefetch | bool | `false` | When request data with range header, prefetch data not in range. |
-| dfdaemon.config.download.totalRateLimit | string | `"1024Mi"` | Total download limit per second. |
+| dfdaemon.config.download.totalRateLimit | string | `"1024Mi"` | Total download limit per second[B]. |
 | dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval. |
 | dfdaemon.config.health.path | string | `"/server/ping"` |  |
 | dfdaemon.config.health.tcpListen.port | int | `40901` |  |
@@ -265,11 +265,11 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
 | dfdaemon.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | dfdaemon.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
-| dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold. |
+| dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold, when the disk usage is above 50Gi, start to gc the oldest tasks. |
 | dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id. |
 | dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data. io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers. io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted. default is io.d7y.storage.v2.advance. |
 | dfdaemon.config.storage.taskExpireTime | string | `"6h"` | Task data expire time. when there is no access to a task data, this task will be gc. |
-| dfdaemon.config.upload.rateLimit | string | `"1024Mi"` | Upload limit per second. |
+| dfdaemon.config.upload.rateLimit | string | `"1024Mi"` | Upload limit per second[B]. |
 | dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option. |
 | dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port. |
 | dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
@@ -612,9 +612,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
 | seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |
 | seedPeer.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port. |
-| seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second. |
+| seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second[B]. |
 | seedPeer.config.download.prefetch | bool | `false` | When request data with range header, prefetch data not in range. |
-| seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second. |
+| seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second[B]. |
 | seedPeer.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval. |
 | seedPeer.config.health.path | string | `"/server/ping"` |  |
 | seedPeer.config.health.tcpListen.port | int | `40901` |  |
@@ -662,7 +662,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id. |
 | seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data. io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action.                           the download file in date directory will be the peer data for uploading to other peers. io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers.                            when user delete or change this file, this peer data will be corrupted. default is io.d7y.storage.v2.advance. |
 | seedPeer.config.storage.taskExpireTime | string | `"6h"` | Task data expire time. when there is no access to a task data, this task will be gc. |
-| seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second. |
+| seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second[B]. |
 | seedPeer.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option. |
 | seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port. |
 | seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
