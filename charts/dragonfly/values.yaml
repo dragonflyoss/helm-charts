@@ -1316,9 +1316,9 @@ seedPeer:
       # -- Disable auto back source in dfdaemon.
       disableAutoBackSource: false
     download:
-      # -- Total download limit per second.
+      # -- Total download limit per second[B].
       totalRateLimit: 2048Mi
-      # -- Per peer task limit per second.
+      # -- Per peer task limit per second[B].
       perPeerRateLimit: 1024Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory.
       calculateDigest: true
@@ -1341,7 +1341,7 @@ seedPeer:
           # -- Listen port.
           port: 65000
     upload:
-      # -- Upload limit per second.
+      # -- Upload limit per second[B].
       rateLimit: 2048Mi
       # -- Upload grpc security option.
       security:
@@ -1665,9 +1665,9 @@ dfdaemon:
       # -- Disable auto back source in dfdaemon.
       disableAutoBackSource: false
     download:
-      # -- Total download limit per second.
+      # -- Total download limit per second[B].
       totalRateLimit: 1024Mi
-      # -- Per peer task limit per second.
+      # -- Per peer task limit per second[B].
       perPeerRateLimit: 512Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory.
       calculateDigest: true
@@ -1690,7 +1690,7 @@ dfdaemon:
           # -- Listen port.
           port: 65000
     upload:
-      # -- Upload limit per second.
+      # -- Upload limit per second[B].
       rateLimit: 1024Mi
       # -- Upload grpc security option.
       security:
@@ -1733,7 +1733,7 @@ dfdaemon:
       strategy: io.d7y.storage.v2.simple
       # -- Set to ture for reusing underlying storage for same task id.
       multiplex: true
-      # -- Disk GC Threshold.
+      # -- Disk GC Threshold, when the disk usage is above 50Gi, start to gc the oldest tasks.
       diskGCThreshold: 50Gi
     proxy:
       # -- Filter for hash url.
