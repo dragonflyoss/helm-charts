@@ -152,6 +152,20 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.verbose | bool | `false` | verbose prints log. |
+| client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
+| client.dfinit.config.containerRuntime.containerd.enable | bool | `false` | Enable containerd feature to support containerd pull image via dfdaemon's proxy. |
+| client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io"},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io"}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. |
+| client.dfinit.config.containerRuntime.crio.configPath | string | `"/etc/containers/registries.conf"` | configPath is the path of cri-o registries's configuration file. |
+| client.dfinit.config.containerRuntime.crio.enable | bool | `false` | Enable cri-o feature to support cri-o pull image via dfdaemon's proxy. |
+| client.dfinit.config.containerRuntime.crio.registries | list | `[{"location":"docker.io","prefix":"docker.io"},{"location":"ghcr.io","prefix":"ghcr.io"}]` | registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings. prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table. location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries. |
+| client.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries | list | `["registry.fedoraproject.org","registry.access.redhat.com","docker.io"]` | unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order. Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings. |
+| client.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
+| client.dfinit.config.proxy.addr | string | `""` | addr is the proxy server address of dfdaemon. |
+| client.dfinit.config.verbose | bool | `true` | verbose prints log. |
+| client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
+| client.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
+| client.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| client.dfinit.tag | string | `"v0.1.25"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -184,7 +198,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.18"` | Image tag. |
+| client.tag | string | `"v0.1.25"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -309,7 +323,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.35"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.36"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | dfdaemon.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -421,7 +435,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.35"` | Image tag. |
+| manager.tag | string | `"v2.1.36"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -531,7 +545,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.35"` | Image tag. |
+| scheduler.tag | string | `"v2.1.36"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -562,6 +576,20 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.verbose | bool | `false` | verbose prints log. |
+| seedClient.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
+| seedClient.dfinit.config.containerRuntime.containerd.enable | bool | `false` | Enable containerd feature to support containerd pull image via dfdaemon's proxy. |
+| seedClient.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io"},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io"}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. |
+| seedClient.dfinit.config.containerRuntime.crio.configPath | string | `"/etc/containers/registries.conf"` | configPath is the path of cri-o registries's configuration file. |
+| seedClient.dfinit.config.containerRuntime.crio.enable | bool | `false` | Enable cri-o feature to support cri-o pull image via dfdaemon's proxy. |
+| seedClient.dfinit.config.containerRuntime.crio.registries | list | `[{"location":"docker.io","prefix":"docker.io"},{"location":"ghcr.io","prefix":"ghcr.io"}]` | registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings. prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table. location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries. |
+| seedClient.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries | list | `["registry.fedoraproject.org","registry.access.redhat.com","docker.io"]` | unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order. Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings. |
+| seedClient.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
+| seedClient.dfinit.config.proxy.addr | string | `""` | addr is the proxy server address of dfdaemon. |
+| seedClient.dfinit.config.verbose | bool | `true` | verbose prints log. |
+| seedClient.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
+| seedClient.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
+| seedClient.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedClient.dfinit.tag | string | `"v0.1.25"` | Image tag. |
 | seedClient.enable | bool | `false` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -598,7 +626,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.18"` | Image tag. |
+| seedClient.tag | string | `"v0.1.25"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -703,7 +731,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.35"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.36"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -763,7 +791,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.35"` | Image tag. |
+| trainer.tag | string | `"v2.1.36"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
