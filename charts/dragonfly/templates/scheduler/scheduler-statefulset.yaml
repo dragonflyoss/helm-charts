@@ -35,7 +35,7 @@ spec:
 {{ toYaml .Values.scheduler.podLabels | indent 8 }}
         {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/scheduler/scheduler-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/scheduler/scheduler-secret.yaml") . | sha256sum }}
       {{- if .Values.scheduler.podAnnotations }}
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
@@ -111,7 +111,7 @@ spec:
           periodSeconds: 10
       volumes:
       - name: config
-        configMap:
+        secret:
           name: {{ template "dragonfly.scheduler.fullname" . }}
           items:
           - key: scheduler.yaml

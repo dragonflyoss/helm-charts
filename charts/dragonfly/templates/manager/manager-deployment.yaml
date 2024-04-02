@@ -33,7 +33,7 @@ spec:
 {{ toYaml .Values.manager.podLabels | indent 8 }}
         {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/manager/manager-secret.yaml") . | sha256sum }}
       {{- if .Values.manager.podAnnotations }}
 {{ toYaml .Values.manager.podAnnotations | indent 8 }}
       {{- end }}
@@ -132,7 +132,7 @@ spec:
       {{- end }}
       volumes:
       - name: config
-        configMap:
+        secret:
           name: {{ template "dragonfly.manager.fullname" . }}
           items:
           - key: manager.yaml
