@@ -1,0 +1,26 @@
+{{- if .Values.client.dfinit.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dragonfly.dfinit.fullname" . }}-for-client
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.client.name }}
+data:
+  dfinit.yaml: |-
+    proxy:
+      addr: {{ .Values.client.dfinit.config.proxy.addr }}
+    containerRuntime:
+      containerd:
+        enable: {{ .Values.client.dfinit.config.containerRuntime.containerd.enable }}
+        configPath: {{ .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
+        registries: {{ .Values.client.dfinit.config.containerRuntime.containerd.registries }}
+      crio:
+        enable: {{ .Values.client.dfinit.config.containerRuntime.crio.enable }}
+        configPath: {{ .Values.client.dfinit.config.containerRuntime.crio.configPath }}
+        unqualifiedSearchRegistries: {{ .Values.client.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries }}
+        registries: {{ .Values.client.dfinit.config.containerRuntime.crio.registries }}
+{{- end }}

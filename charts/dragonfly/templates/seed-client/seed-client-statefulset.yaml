@@ -75,6 +75,46 @@ spec:
         {{- else }}
         command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
+      {{- if .Values.seedClient.dfinit.enable }}
+      - name: dfinit
+        image: {{ .Values.seedClient.dfinit.image }}:{{ .Values.seedClient.dfinit.tag }}
+        imagePullPolicy: {{ .Values.seedClient.dfinit.pullPolicy }}
+        args:
+        - --log-level={{ .Values.seedClient.dfinit.config.log.level }}
+        {{- if .Values.seedClient.dfinit.config.verbose }}
+        - --verbose
+        {{- end }}
+        volumeMounts:
+        - name: dfinit-config
+          mountPath: "/etc/dragonfly"
+        {{- if and (.Values.seedClient.dfinit.enable) (.Values.seedClient.dfinit.config.containerRuntime.containerd.enable) }}
+        - name: containerd-config
+          mountPath: {{ .Values.seedClient.dfinit.config.containerRuntime.containerd.configPath }}
+        {{- end }}
+        {{- if and (.Values.seedClient.dfinit.enable) (.Values.seedClient.dfinit.config.containerRuntime.crio.enable) }}
+        - name: crio-config
+          mountPath: {{ .Values.seedClient.dfinit.config.containerRuntime.crio.configPath }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.seedClient.dfinit.enable }}
+      - name: restart-container-runtime
+        image: {{ .Values.seedClient.initContainer.image }}:{{ .Values.seedClient.initContainer.tag  }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.pullPolicy }}
+        securityContext:
+          # nsenter need privilege permission.
+          privileged: true
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          {{- if .Values.seedClient.dfinit.config.containerRuntime.containerd.enable }}
+          nsenter -t 1 -m -- systemctl restart containerd.service
+          {{- else if .Values.seedClient.dfinit.config.containerRuntime.crio.enable }}
+          nsenter -t 1 -m -- systemctl restart crio.service
+          {{- else }}
+          echo "no container runtime to restart"
+          {{- end }}
+      {{- end }}
       containers:
       - name: seed-client
         image: "{{ .Values.seedClient.image }}:{{ .Values.seedClient.tag }}"
@@ -120,6 +160,19 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.seedClient.fullname" . }}
+      - name: dfinit-config
+        configMap:
+          name: {{ template "dragonfly.dfinit.fullname" . }}-for-seed-client
+      {{- if and (.Values.seedClient.dfinit.enable) (.Values.seedClient.dfinit.config.containerRuntime.containerd.enable) }}
+      - name: containerd-config
+        hostPath:
+          path: {{ .Values.seedClient.dfinit.config.containerRuntime.containerd.configPath }}
+      {{- end }}
+      {{- if and (.Values.seedClient.dfinit.enable) (.Values.seedClient.dfinit.config.containerRuntime.crio.enable) }}
+      - name: crio-config
+        hostPath:
+          path: {{ .Values.seedClient.dfinit.config.containerRuntime.crio.configPath }}
+      {{- end }}
       {{- if not (.Values.seedClient.persistence.enable) }}
       - name: storage
         emptyDir: {}

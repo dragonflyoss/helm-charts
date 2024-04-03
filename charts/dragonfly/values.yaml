@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.35
+  tag: v2.1.36
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -421,7 +421,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.35
+  tag: v2.1.36
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -809,7 +809,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.18
+  tag: v0.1.25
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -874,6 +874,60 @@ seedClient:
     ##   GKE, AWS & OpenStack).
     ##
     # storageClass: "-".
+  dfinit:
+    # -- Enable dfinit to override configuration of container runtime.
+    enable: false
+    # -- Image repository.
+    image: dragonflyoss/dfinit
+    # -- Image tag.
+    tag: v0.1.25
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    config:
+      # -- verbose prints log.
+      verbose: true
+      log:
+        # -- Specify the logging level [trace, debug, info, warn, error]
+        level: info
+      proxy:
+        # -- addr is the proxy server address of dfdaemon.
+        addr: ""
+      containerRuntime:
+        containerd:
+          # -- Enable containerd feature to support containerd pull image via dfdaemon's proxy.
+          enable: false
+          # -- configPath is the path of containerd configuration file.
+          configPath: /etc/containerd/config.toml
+          # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
+          # refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace
+          # portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server
+          # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
+          # capabilities is the list of capabilities in containerd configuration, refer to
+          # https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field.
+          registries:
+            - hostNamespace: docker.io
+              serverAddr: https://index.docker.io
+              capabilities: ["pull", "resolve"]
+            - hostNamespace: ghcr.io
+              serverAddr: https://ghcr.io
+              capabilities: ["pull", "resolve"]
+        crio:
+          # -- Enable cri-o feature to support cri-o pull image via dfdaemon's proxy.
+          enable: false
+          # -- configPath is the path of cri-o registries's configuration file.
+          configPath: /etc/containers/registries.conf
+          # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+          # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+          unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+          # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+          # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+          # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+          # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+          registries:
+            - prefix: docker.io
+              location: docker.io
+            - prefix: ghcr.io
+              location: ghcr.io
   config:
     # -- verbose prints log.
     verbose: false
@@ -1013,7 +1067,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.18
+  tag: v0.1.25
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1060,6 +1114,60 @@ client:
   extraVolumeMounts:
     - name: logs
       mountPath: "/var/log/dragonfly/dfdaemon/"
+  dfinit:
+    # -- Enable dfinit to override configuration of container runtime.
+    enable: false
+    # -- Image repository.
+    image: dragonflyoss/dfinit
+    # -- Image tag.
+    tag: v0.1.25
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    config:
+      # -- verbose prints log.
+      verbose: true
+      log:
+        # -- Specify the logging level [trace, debug, info, warn, error]
+        level: info
+      proxy:
+        # -- addr is the proxy server address of dfdaemon.
+        addr: ""
+      containerRuntime:
+        containerd:
+          # -- Enable containerd feature to support containerd pull image via dfdaemon's proxy.
+          enable: false
+          # -- configPath is the path of containerd configuration file.
+          configPath: /etc/containerd/config.toml
+          # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
+          # refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace
+          # portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server
+          # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
+          # capabilities is the list of capabilities in containerd configuration, refer to
+          # https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field.
+          registries:
+            - hostNamespace: docker.io
+              serverAddr: https://index.docker.io
+              capabilities: ["pull", "resolve"]
+            - hostNamespace: ghcr.io
+              serverAddr: https://ghcr.io
+              capabilities: ["pull", "resolve"]
+        crio:
+          # -- Enable cri-o feature to support cri-o pull image via dfdaemon's proxy.
+          enable: false
+          # -- configPath is the path of cri-o registries's configuration file.
+          configPath: /etc/containers/registries.conf
+          # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+          # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+          unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+          # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+          # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+          # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+          # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+          registries:
+            - prefix: docker.io
+              location: docker.io
+            - prefix: ghcr.io
+              location: ghcr.io
   config:
     # -- verbose prints log.
     verbose: false
@@ -1190,7 +1298,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.35
+  tag: v2.1.36
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1544,7 +1652,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.35
+  tag: v2.1.36
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1988,7 +2096,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.35
+  tag: v2.1.36
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.

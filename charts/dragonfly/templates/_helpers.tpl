@@ -56,6 +56,14 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Create a default fully qualified dfinit name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.dfinit.fullname" -}}
+{{ template "dragonfly.fullname" . }}-dfinit
+{{- end -}}
+
+{{/*
 Create a default fully qualified seed peer name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
