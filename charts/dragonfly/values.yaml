@@ -508,11 +508,11 @@ scheduler:
       # -- backToSourceCount is single task allows the peer to back-to-source count.
       backToSourceCount: 200
       # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
-      retryBackToSourceLimit: 3
+      retryBackToSourceLimit: 5
       # -- Retry scheduling limit times.
-      retryLimit: 5
+      retryLimit: 7
       # -- Retry scheduling interval.
-      retryInterval: 300ms
+      retryInterval: 700ms
       gc:
         # -- pieceDownloadTimeout is the timeout of downloading piece.
         pieceDownloadTimeout: 30m
@@ -809,7 +809,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.25
+  tag: v0.1.28
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -874,60 +874,6 @@ seedClient:
     ##   GKE, AWS & OpenStack).
     ##
     # storageClass: "-".
-  dfinit:
-    # -- Enable dfinit to override configuration of container runtime.
-    enable: false
-    # -- Image repository.
-    image: dragonflyoss/dfinit
-    # -- Image tag.
-    tag: v0.1.25
-    # -- Image pull policy.
-    pullPolicy: IfNotPresent
-    config:
-      # -- verbose prints log.
-      verbose: true
-      log:
-        # -- Specify the logging level [trace, debug, info, warn, error]
-        level: info
-      proxy:
-        # -- addr is the proxy server address of dfdaemon.
-        addr: ""
-      containerRuntime:
-        containerd:
-          # -- Enable containerd feature to support containerd pull image via dfdaemon's proxy.
-          enable: false
-          # -- configPath is the path of containerd configuration file.
-          configPath: /etc/containerd/config.toml
-          # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
-          # refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace
-          # portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server
-          # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
-          # capabilities is the list of capabilities in containerd configuration, refer to
-          # https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field.
-          registries:
-            - hostNamespace: docker.io
-              serverAddr: https://index.docker.io
-              capabilities: ["pull", "resolve"]
-            - hostNamespace: ghcr.io
-              serverAddr: https://ghcr.io
-              capabilities: ["pull", "resolve"]
-        crio:
-          # -- Enable cri-o feature to support cri-o pull image via dfdaemon's proxy.
-          enable: false
-          # -- configPath is the path of cri-o registries's configuration file.
-          configPath: /etc/containers/registries.conf
-          # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          registries:
-            - prefix: docker.io
-              location: docker.io
-            - prefix: ghcr.io
-              location: ghcr.io
   config:
     # -- verbose prints log.
     verbose: false
@@ -1006,8 +952,55 @@ seedClient:
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
         distLowThresholdPercent: 60
     proxy:
-      # -- enable indicates whether enable proxy.
-      enable: true
+      server:
+        # -- port is the port to the proxy server.
+        port: 4001
+        ## ip is the listen ip of the proxy server.
+        # ip: ""
+        ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+        ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+        ## When client requests via the proxy, the client should not verify the server cert and set
+        ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+        ## the proxy can intercept the request by the server cert.
+        # caCert: ""
+        ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+        ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+        ## When client requests via the proxy, the client should not verify the server cert and set
+        ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+        ## the proxy can intercept the request by the server cert.
+        # caKey: ""
+      # -- rules is the list of rules for the proxy server.
+      # regex is the regex of the request url.
+      # useTLS indicates whether use tls for the proxy backend.
+      # redirect is the redirect url.
+      # filteredQueryParams is the filtered query params to generate the task id.
+      # When filter is ["Signature", "Expires", "ns"], for example:
+      # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
+      # will generate the same task id.
+      # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+      rules:
+        - regex: "blobs/sha256.*"
+          # useTLS: false
+          # redirect: ""
+          # filteredQueryParams: []
+      registryMirror:
+        # -- addr is the default address of the registry mirror. Proxy will start a registry mirror service for the
+        # client to pull the image. The client can use the default address of the registry mirror in
+        # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
+        # of registry mirror.
+        addr: https://index.docker.io
+        ## certs is the client certs path with PEM format for the registry.
+        ## If registry use self-signed cert, the client should set the
+        ## cert for the registry mirror.
+        # certs: ""
+      # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
+      disableBackToSource: false
     security:
       # -- enable indicates whether enable security.
       enable: false
@@ -1067,7 +1060,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.25
+  tag: v0.1.28
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1075,6 +1068,12 @@ client:
   pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
+  # -- hostPID allows visibility of processes on the host for peer pod.
+  hostPID: true
+  # -- hostIPC specify if host IPC should be enabled for peer pod.
+  hostIPC: true
+  # -- hostNetwork specify if host network should be enabled for peer pod.
+  hostNetwork: true
   # -- Pod resource requests and limits.
   resources:
     requests:
@@ -1120,7 +1119,7 @@ client:
     # -- Image repository.
     image: dragonflyoss/dfinit
     # -- Image tag.
-    tag: v0.1.25
+    tag: v0.1.28
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     config:
@@ -1131,11 +1130,9 @@ client:
         level: info
       proxy:
         # -- addr is the proxy server address of dfdaemon.
-        addr: ""
+        addr: http://127.0.0.1:4001
       containerRuntime:
         containerd:
-          # -- Enable containerd feature to support containerd pull image via dfdaemon's proxy.
-          enable: false
           # -- configPath is the path of containerd configuration file.
           configPath: /etc/containerd/config.toml
           # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
@@ -1151,23 +1148,21 @@ client:
             - hostNamespace: ghcr.io
               serverAddr: https://ghcr.io
               capabilities: ["pull", "resolve"]
-        crio:
-          # -- Enable cri-o feature to support cri-o pull image via dfdaemon's proxy.
-          enable: false
-          # -- configPath is the path of cri-o registries's configuration file.
-          configPath: /etc/containers/registries.conf
-          # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          registries:
-            - prefix: docker.io
-              location: docker.io
-            - prefix: ghcr.io
-              location: ghcr.io
+        # crio:
+          # # -- configPath is the path of cri-o registries's configuration file.
+          # configPath: /etc/containers/registries.conf
+          # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+          # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+          # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+          # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+          # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+          # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+          # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+          # registries:
+            # - prefix: docker.io
+              # location: docker.io
+            # - prefix: ghcr.io
+              # location: ghcr.io
   config:
     # -- verbose prints log.
     verbose: false
@@ -1237,8 +1232,55 @@ client:
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
         distLowThresholdPercent: 60
     proxy:
-      # -- enable indicates whether enable proxy.
-      enable: true
+      server:
+        # -- port is the port to the proxy server.
+        port: 4001
+        ## ip is the listen ip of the proxy server.
+        # ip: ""
+        ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+        ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+        ## When client requests via the proxy, the client should not verify the server cert and set
+        ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+        ## the proxy can intercept the request by the server cert.
+        # caCert: ""
+        ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+        ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+        ## When client requests via the proxy, the client should not verify the server cert and set
+        ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+        ## the proxy can intercept the request by the server cert.
+        # caKey: ""
+      # -- rules is the list of rules for the proxy server.
+      # regex is the regex of the request url.
+      # useTLS indicates whether use tls for the proxy backend.
+      # redirect is the redirect url.
+      # filteredQueryParams is the filtered query params to generate the task id.
+      # When filter is ["Signature", "Expires", "ns"], for example:
+      # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
+      # will generate the same task id.
+      # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+      rules:
+        - regex: "blobs/sha256.*"
+          # useTLS: false
+          # redirect: ""
+          # filteredQueryParams: []
+      registryMirror:
+        # -- addr is the default address of the registry mirror. Proxy will start a registry mirror service for the
+        # client to pull the image. The client can use the default address of the registry mirror in
+        # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
+        # of registry mirror.
+        addr: https://index.docker.io
+        ## certs is the client certs path with PEM format for the registry.
+        ## If registry use self-signed cert, the client should set the
+        ## cert for the registry mirror.
+        # certs: ""
+      # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
+      disableBackToSource: false
     security:
       # -- enable indicates whether enable security.
       enable: false

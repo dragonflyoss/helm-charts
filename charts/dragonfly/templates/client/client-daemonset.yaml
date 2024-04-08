@@ -47,6 +47,7 @@ spec:
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
       hostPID: {{ .Values.client.hostPID }}
+      hostIPC: {{ .Values.client.hostIPC }}
       {{- if .Values.client.tolerations }}
       tolerations:
 {{ toYaml .Values.client.tolerations | indent 8 }}
@@ -88,13 +89,13 @@ spec:
         volumeMounts:
         - name: dfinit-config
           mountPath: "/etc/dragonfly"
-        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd.enable) }}
-        - name: containerd-config
-          mountPath: {{ .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
+        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd) }}
+        - name: containerd-config-dir
+          mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
         {{- end }}
-        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.crio.enable) }}
-        - name: crio-config
-          mountPath: {{ .Values.client.dfinit.config.containerRuntime.crio.configPath }}
+        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.crio) }}
+        - name: crio-config-dir
+          mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.crio.configPath }}
         {{- end }}
       {{- end }}
       {{- if .Values.client.dfinit.enable }}
@@ -108,10 +109,12 @@ spec:
         - /bin/sh
         - -cx
         - |-
-          {{- if .Values.client.dfinit.config.containerRuntime.containerd.enable }}
+          {{- if .Values.client.dfinit.config.containerRuntime.containerd }}
           nsenter -t 1 -m -- systemctl restart containerd.service
-          {{- else if .Values.client.dfinit.config.containerRuntime.crio.enable }}
+          echo "restart container"
+          {{- else if .Values.client.dfinit.config.containerRuntime.crio }}
           nsenter -t 1 -m -- systemctl restart crio.service
+          echo "restart cri-o"
           {{- else }}
           echo "no container runtime to restart"
           {{- end }}
@@ -167,16 +170,18 @@ spec:
           type: DirectoryOrCreate
       - name: dfinit-config
         configMap:
-          name: {{ template "dragonfly.dfinit.fullname" . }}-for-client
-      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd.enable) }}
-      - name: containerd-config
+          name: {{ template "dragonfly.dfinit.fullname" . }}
+      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd) }}
+      - name: containerd-config-dir
         hostPath:
-          path: {{ .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
+          path: {{ dir .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
+          type: DirectoryOrCreate
       {{- end }}
-      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.crio.enable) }}
-      - name: crio-config
+      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.crio) }}
+      - name: crio-config-dir
         hostPath:
-          path: {{ .Values.client.dfinit.config.containerRuntime.crio.configPath }}
+          path: {{ dir .Values.client.dfinit.config.containerRuntime.crio.configPath }}
+          type: DirectoryOrCreate
       {{- end }}
       {{- if .Values.client.extraVolumes }}
       {{- toYaml .Values.client.extraVolumes | nindent 6 }}
