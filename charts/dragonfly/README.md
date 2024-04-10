@@ -142,6 +142,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
+| client.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
 | client.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
@@ -163,7 +164,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
 | client.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
 | client.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| client.dfinit.tag | string | `"v0.1.28"` | Image tag. |
+| client.dfinit.tag | string | `"v0.1.29"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -199,7 +200,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.28"` | Image tag. |
+| client.tag | string | `"v0.1.29"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -324,7 +325,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.36"` | Image tag. |
+| dfdaemon.tag | string | `"v2.1.39"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | dfdaemon.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -436,7 +437,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.36"` | Image tag. |
+| manager.tag | string | `"v2.1.39"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -546,7 +547,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.36"` | Image tag. |
+| scheduler.tag | string | `"v2.1.39"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -563,6 +564,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
+| seedClient.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
 | seedClient.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
@@ -616,7 +618,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.28"` | Image tag. |
+| seedClient.tag | string | `"v0.1.29"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -721,7 +723,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.36"` | Image tag. |
+| seedPeer.tag | string | `"v2.1.39"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -781,7 +783,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.36"` | Image tag. |
+| trainer.tag | string | `"v2.1.39"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |

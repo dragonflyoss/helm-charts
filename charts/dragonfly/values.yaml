@@ -145,7 +145,7 @@ manager:
   # -- Image repository.
   image: dragonflyoss/manager
   # -- Image tag.
-  tag: v2.1.36
+  tag: v2.1.39
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -421,7 +421,7 @@ scheduler:
   # -- Image repository.
   image: dragonflyoss/scheduler
   # -- Image tag.
-  tag: v2.1.36
+  tag: v2.1.39
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -809,7 +809,7 @@ seedClient:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.28
+  tag: v0.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1001,6 +1001,8 @@ seedClient:
         # certs: ""
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
+      # -- prefetch pre-downloads full of the task when download with range request.
+      prefetch: false
     security:
       # -- enable indicates whether enable security.
       enable: false
@@ -1060,7 +1062,7 @@ client:
   # -- Image repository.
   image: dragonflyoss/client
   # -- Image tag.
-  tag: v0.1.28
+  tag: v0.1.29
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1119,7 +1121,7 @@ client:
     # -- Image repository.
     image: dragonflyoss/dfinit
     # -- Image tag.
-    tag: v0.1.28
+    tag: v0.1.29
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     config:
@@ -1281,6 +1283,8 @@ client:
         # certs: ""
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
+      # -- prefetch pre-downloads full of the task when download with range request.
+      prefetch: false
     security:
       # -- enable indicates whether enable security.
       enable: false
@@ -1340,7 +1344,7 @@ seedPeer:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.36
+  tag: v2.1.39
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -1694,7 +1698,7 @@ dfdaemon:
   # -- Image repository.
   image: dragonflyoss/dfdaemon
   # -- Image tag.
-  tag: v2.1.36
+  tag: v2.1.39
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
@@ -2138,7 +2142,7 @@ trainer:
   # -- Image repository.
   image: dragonflyoss/trainer
   # -- Image tag.
-  tag: v2.1.36
+  tag: v2.1.39
   # -- Image pull policy.
   pullPolicy: IfNotPresent
   # -- Image pull secrets.
