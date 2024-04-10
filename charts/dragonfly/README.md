@@ -141,7 +141,10 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
-| client.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
+| client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
+| client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
+| client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
+| client.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
 | client.config.scheduler.announceInterval | string | `"5m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
@@ -153,24 +156,22 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.verbose | bool | `false` | verbose prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
-| client.dfinit.config.containerRuntime.containerd.enable | bool | `false` | Enable containerd feature to support containerd pull image via dfdaemon's proxy. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io"},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io"}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. |
-| client.dfinit.config.containerRuntime.crio.configPath | string | `"/etc/containers/registries.conf"` | configPath is the path of cri-o registries's configuration file. |
-| client.dfinit.config.containerRuntime.crio.enable | bool | `false` | Enable cri-o feature to support cri-o pull image via dfdaemon's proxy. |
-| client.dfinit.config.containerRuntime.crio.registries | list | `[{"location":"docker.io","prefix":"docker.io"},{"location":"ghcr.io","prefix":"ghcr.io"}]` | registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings. prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table. location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries. |
-| client.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries | list | `["registry.fedoraproject.org","registry.access.redhat.com","docker.io"]` | unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order. Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings. |
 | client.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| client.dfinit.config.proxy.addr | string | `""` | addr is the proxy server address of dfdaemon. |
+| client.dfinit.config.proxy.addr | string | `"http://127.0.0.1:4001"` | addr is the proxy server address of dfdaemon. |
 | client.dfinit.config.verbose | bool | `true` | verbose prints log. |
 | client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
 | client.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
 | client.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| client.dfinit.tag | string | `"v0.1.25"` | Image tag. |
+| client.dfinit.tag | string | `"v0.1.28"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
 | client.hostAliases | list | `[]` | Host Aliases. |
+| client.hostIPC | bool | `true` | hostIPC specify if host IPC should be enabled for peer pod. |
+| client.hostNetwork | bool | `true` | hostNetwork specify if host network should be enabled for peer pod. |
+| client.hostPID | bool | `true` | hostPID allows visibility of processes on the host for peer pod. |
 | client.image | string | `"dragonflyoss/client"` | Image repository. |
 | client.initContainer.image | string | `"busybox"` | Init container image repository. |
 | client.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
@@ -198,7 +199,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.25"` | Image tag. |
+| client.tag | string | `"v0.1.28"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -484,9 +485,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.networkTopology.collectInterval | string | `"2h"` | collectInterval is the interval of collecting network topology. |
 | scheduler.config.scheduler.networkTopology.probe.count | int | `10` | count is the number of probing hosts. |
 | scheduler.config.scheduler.networkTopology.probe.queueLength | int | `5` | queueLength is the length of probe queue. |
-| scheduler.config.scheduler.retryBackToSourceLimit | int | `3` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
-| scheduler.config.scheduler.retryInterval | string | `"300ms"` | Retry scheduling interval. |
-| scheduler.config.scheduler.retryLimit | int | `5` | Retry scheduling limit times. |
+| scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
+| scheduler.config.scheduler.retryInterval | string | `"700ms"` | Retry scheduling interval. |
+| scheduler.config.scheduler.retryLimit | int | `7` | Retry scheduling limit times. |
 | scheduler.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
 | scheduler.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
 | scheduler.config.security.certSpec.dnsNames | list | `["dragonfly-scheduler","dragonfly-scheduler.dragonfly-system.svc","dragonfly-scheduler.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
@@ -561,7 +562,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
-| seedClient.config.proxy.enable | bool | `true` | enable indicates whether enable proxy. |
+| seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
+| seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
+| seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
+| seedClient.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
@@ -576,20 +580,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.verbose | bool | `false` | verbose prints log. |
-| seedClient.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
-| seedClient.dfinit.config.containerRuntime.containerd.enable | bool | `false` | Enable containerd feature to support containerd pull image via dfdaemon's proxy. |
-| seedClient.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io"},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io"}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. |
-| seedClient.dfinit.config.containerRuntime.crio.configPath | string | `"/etc/containers/registries.conf"` | configPath is the path of cri-o registries's configuration file. |
-| seedClient.dfinit.config.containerRuntime.crio.enable | bool | `false` | Enable cri-o feature to support cri-o pull image via dfdaemon's proxy. |
-| seedClient.dfinit.config.containerRuntime.crio.registries | list | `[{"location":"docker.io","prefix":"docker.io"},{"location":"ghcr.io","prefix":"ghcr.io"}]` | registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings. prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table. location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries. |
-| seedClient.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries | list | `["registry.fedoraproject.org","registry.access.redhat.com","docker.io"]` | unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order. Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings. |
-| seedClient.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| seedClient.dfinit.config.proxy.addr | string | `""` | addr is the proxy server address of dfdaemon. |
-| seedClient.dfinit.config.verbose | bool | `true` | verbose prints log. |
-| seedClient.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
-| seedClient.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
-| seedClient.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| seedClient.dfinit.tag | string | `"v0.1.25"` | Image tag. |
 | seedClient.enable | bool | `false` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -626,7 +616,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.25"` | Image tag. |
+| seedClient.tag | string | `"v0.1.28"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |

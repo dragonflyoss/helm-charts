@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "dragonfly.dfinit.fullname" . }}-for-client
+  name: {{ template "dragonfly.dfinit.fullname" . }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -14,13 +14,5 @@ data:
     proxy:
       addr: {{ .Values.client.dfinit.config.proxy.addr }}
     containerRuntime:
-      containerd:
-        enable: {{ .Values.client.dfinit.config.containerRuntime.containerd.enable }}
-        configPath: {{ .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
-        registries: {{ .Values.client.dfinit.config.containerRuntime.containerd.registries }}
-      crio:
-        enable: {{ .Values.client.dfinit.config.containerRuntime.crio.enable }}
-        configPath: {{ .Values.client.dfinit.config.containerRuntime.crio.configPath }}
-        unqualifiedSearchRegistries: {{ .Values.client.dfinit.config.containerRuntime.crio.unqualifiedSearchRegistries }}
-        registries: {{ .Values.client.dfinit.config.containerRuntime.crio.registries }}
+{{ toYaml .Values.client.dfinit.config.containerRuntime | indent 6 }}
 {{- end }}
