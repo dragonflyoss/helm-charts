@@ -58,7 +58,7 @@ spec:
       {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.scheduler.priorityClassName) }}
       priorityClassName: {{ .Values.scheduler.priorityClassName }}
       {{- end }}
-      {{- with .Values.scheduler.pullSecrets | default .Values.global.imagePullSecrets }}
+      {{- with .Values.scheduler.image.pullSecrets | default .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -68,8 +68,8 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-manager
-        image: {{ .Values.scheduler.initContainer.image }}:{{ .Values.scheduler.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.scheduler.initContainer.pullPolicy }}
+        image: {{ template "scheduler.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.scheduler.initContainer.image.pullPolicy }}
         {{- if .Values.manager.enable }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
@@ -77,8 +77,8 @@ spec:
         {{- end }}
       containers:
       - name: scheduler
-        image: "{{ .Values.scheduler.image }}:{{ .Values.scheduler.tag }}"
-        imagePullPolicy: {{ .Values.scheduler.pullPolicy | quote }}
+        image: {{ template "scheduler.image" . }}
+        imagePullPolicy: {{ .Values.scheduler.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.scheduler.resources | indent 12 }}
         env:

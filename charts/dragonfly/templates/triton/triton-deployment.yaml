@@ -25,8 +25,8 @@ spec:
     spec:
       containers:
         - name: triton
-          image: "{{ .Values.triton.image }}:{{ .Values.triton.tag}}"
-          imagePullPolicy: {{ .Values.triton.pullPolicy | quote}}
+          image: {{ template "triton.image" . }}
+          imagePullPolicy: {{ .Values.triton.image.pullPolicy | quote}}
           args: ["tritonserver", "--model-store={{ .Values.triton.modelRepositoryPath }}",
                  "--model-control-mode=poll",
                  "--repository-poll-secs=5"]

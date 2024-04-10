@@ -56,7 +56,7 @@ spec:
       {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.scheduler.priorityClassName) }}
       priorityClassName: {{ .Values.manager.priorityClassName }}
       {{- end }}
-      {{- with .Values.manager.pullSecrets | default .Values.global.imagePullSecrets }}
+      {{- with .Values.manager.image.pullSecrets | default .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -68,21 +68,21 @@ spec:
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
-        image: {{ .Values.manager.initContainer.image }}:{{ .Values.manager.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.manager.initContainer.pullPolicy }}
+        image: {{ template "manager.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.master.service.ports.redis }}; do echo waiting for redis; sleep 2; done;']
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
-        image: {{ .Values.manager.initContainer.image }}:{{ .Values.manager.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.manager.initContainer.pullPolicy }}
+        image: {{ template "manager.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
       {{- end }}
       {{- end }}
       containers:
       - name: manager
-        image: "{{ .Values.manager.image }}:{{ .Values.manager.tag }}"
-        imagePullPolicy: {{ .Values.manager.pullPolicy | quote }}
+        image: {{ template "manager.image" . }}
+        imagePullPolicy: {{ .Values.manager.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.manager.resources | indent 12 }}
         env:
@@ -115,21 +115,6 @@ spec:
             command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}"]
           initialDelaySeconds: 15
           periodSeconds: 10
-      {{- if .Values.manager.sidecar }}
-      - name: {{ .Values.manager.sidecar.name }}
-        image: {{ .Values.manager.sidecar.image }}:{{ .Values.manager.sidecar.tag }}
-        args:
-        {{-  range .Values.manager.sidecar.args }}
-        - {{ . }}
-        {{- end }}
-        command:
-        {{-  range .Values.manager.sidecar.command }}
-        - {{ . }}
-        {{- end }}
-        imagePullPolicy: {{ .Values.manager.sidecar.pullPolicy | quote }}
-        resources:
-{{ toYaml .Values.manager.sidecar.resources | indent 12 }}
-      {{- end }}
       volumes:
       - name: config
         configMap:
