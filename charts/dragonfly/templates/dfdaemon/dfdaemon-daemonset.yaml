@@ -61,7 +61,7 @@ spec:
       {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.dfdaemon.priorityClassName) }}
       priorityClassName: {{ .Values.dfdaemon.priorityClassName }}
       {{- end }}
-      {{- with .Values.dfdaemon.pullSecrets | default .Values.global.imagePullSecrets }}
+      {{- with .Values.dfdaemon.image.pullSecrets | default .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -71,8 +71,8 @@ spec:
       {{- end }}
       containers:
       - name: dfdaemon
-        image: "{{ .Values.dfdaemon.image }}:{{ .Values.dfdaemon.tag }}"
-        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        image: {{ template "dfdaemon.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         env:
@@ -176,14 +176,14 @@ spec:
       initContainers:
       {{- if .Values.scheduler.enable }}
       - name: wait-for-scheduler
-        image: {{ .Values.dfdaemon.initContainer.image }}:{{ .Values.dfdaemon.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.dfdaemon.initContainer.pullPolicy }}
+        image: {{ template "dfdaemon.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
       {{- end }}
       {{- if and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace }}
       - name: mount-netns
-        image: "{{ .Values.dfdaemon.image }}:{{ .Values.dfdaemon.tag }}"
-        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        image: {{ template "dfdaemon.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         # FIXME dfget daemon only need /proc/1/ns/net and CAP_SYS_ADMIN,
@@ -218,8 +218,8 @@ spec:
 {{ toYaml .Values.containerRuntime.extraInitContainers | indent 6 }}
       {{- else if .Values.containerRuntime.docker.enable }}
       - name: update-docker-config
-        image: "{{ .Values.containerRuntime.initContainerImage }}"
-        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        image: {{ template "containerRuntime.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:
@@ -336,8 +336,8 @@ spec:
         {{- end }}
       {{- else if .Values.containerRuntime.containerd.enable }}
       - name: update-containerd
-        image: "{{ .Values.containerRuntime.initContainerImage }}"
-        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        image: {{ template "containerRuntime.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:
@@ -499,8 +499,8 @@ spec:
           privileged: true
       {{- else if .Values.containerRuntime.crio.enable }}
       - name: update-crio
-        image: "{{ .Values.containerRuntime.initContainerImage }}"
-        imagePullPolicy: {{ .Values.dfdaemon.pullPolicy | quote }}
+        image: {{ template "containerRuntime.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.dfdaemon.image.pullPolicy | quote }}
         resources:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:

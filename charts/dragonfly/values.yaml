@@ -2,7 +2,9 @@
 #
 
 global:
-  # -- Image pull secrets.
+  # -- Global Docker image registry.
+  imageRegistry: ""
+  # -- Global Docker registry secret names as an array.
   imagePullSecrets: []
 
 # -- Override dragonfly name.
@@ -121,7 +123,18 @@ containerRuntime:
       - "https://quay.io"
       - "https://harbor.example.com:8443"
   # -- The image name of init container, need include openssl for ca generating.
-  initContainerImage: dragonflyoss/openssl
+  initContainer:
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/openssl
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   # -- Additional init containers.
   extraInitContainers: []
   # - name: update-containerd.
@@ -142,15 +155,20 @@ manager:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: dragonflyoss/manager
-  # -- Image tag.
-  tag: v2.1.39
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/manager
+    # -- Image tag.
+    tag: v2.1.39
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -198,12 +216,17 @@ manager:
     # -- Service annotations.
     annotations: {}
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   ingress:
     # -- Enable ingress.
     enable: false
@@ -418,15 +441,20 @@ scheduler:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: dragonflyoss/scheduler
-  # -- Image tag.
-  tag: v2.1.39
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/scheduler
+    # -- Image tag.
+    tag: v2.1.39
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -471,12 +499,17 @@ scheduler:
     - name: logs
       mountPath: "/var/log/dragonfly/scheduler"
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   config:
     server:
       # -- Advertise ip.
@@ -806,15 +839,20 @@ seedClient:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: dragonflyoss/client
-  # -- Image tag.
-  tag: v0.1.29
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/client
+    # -- Image tag.
+    tag: v0.1.29
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -842,12 +880,17 @@ seedClient:
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1059,15 +1102,20 @@ client:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: dragonflyoss/client
-  # -- Image tag.
-  tag: v0.1.29
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/client
+    # -- Image tag.
+    tag: v0.1.29
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- hostPID allows visibility of processes on the host for peer pod.
@@ -1101,12 +1149,17 @@ client:
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1118,12 +1171,17 @@ client:
   dfinit:
     # -- Enable dfinit to override configuration of container runtime.
     enable: false
-    # -- Image repository.
-    image: dragonflyoss/dfinit
-    # -- Image tag.
-    tag: v0.1.29
-    # -- Image pull policy.
-    pullPolicy: IfNotPresent
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/dfinit
+      # -- Image tag.
+      tag: v0.1.29
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
     config:
       # -- verbose prints log.
       verbose: true
@@ -1341,15 +1399,20 @@ seedPeer:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: dragonflyoss/dfdaemon
-  # -- Image tag.
-  tag: v2.1.39
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/dfdaemon
+    # -- Image tag.
+    tag: v2.1.39
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -1377,12 +1440,17 @@ seedPeer:
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1695,15 +1763,20 @@ dfdaemon:
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
   maxProcs: ""
-  # -- Image repository.
-  image: dragonflyoss/dfdaemon
-  # -- Image tag.
-  tag: v2.1.39
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/dfdaemon
+    # -- Image tag.
+    tag: v2.1.39
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -1731,11 +1804,17 @@ dfdaemon:
   # -- Daemonset annotations.
   daemonsetAnnotations: {}
   initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    pullPolicy: Always
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: busybox
+      # -- Image tag.
+      tag: latest
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -2139,15 +2218,20 @@ trainer:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 1
-  # -- Image repository.
-  image: dragonflyoss/trainer
-  # -- Image tag.
-  tag: v2.1.39
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
-  # -- Image pull secrets.
-  # @default -- `[]` (defaults to global.imagePullSecrets).
-  pullSecrets: []
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/trainer
+    # -- Image tag.
+    tag: v2.1.39
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Host Aliases.
   hostAliases: []
   # -- Pod resource requests and limits.
@@ -2192,13 +2276,6 @@ trainer:
   extraVolumeMounts:
     - name: logs
       mountPath: "/var/log/dragonfly/trainer"
-  initContainer:
-    # -- Init container image repository.
-    image: busybox
-    # -- Init container image tag.
-    tag: latest
-    # -- Container image pull policy.
-    pullPolicy: Always
   config:
     server:
       # -- Advertise ip.
@@ -2339,12 +2416,20 @@ triton:
   maxProcs: ""
   # -- Number of Pods to launch.
   replicas: 3
-  # -- Image repository.
-  image: nvcr.io/nvidia/tritonserver
-  # -- Image tag.
-  tag: 23.06-py3
-  # -- Image pull policy.
-  pullPolicy: IfNotPresent
+  image:
+    # -- Image registry.
+    registry: nvcr.io
+    # -- Image repository.
+    repository: nvidia/tritonserver
+    # -- Image tag.
+    tag: 23.06-py3
+    # -- Image digest.
+    digest: ""
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
   # -- Model repository path.
   modelRepositoryPath: ""
   # -- Credentials information.

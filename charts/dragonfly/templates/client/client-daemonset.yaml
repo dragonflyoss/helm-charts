@@ -62,7 +62,7 @@ spec:
       {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.client.priorityClassName) }}
       priorityClassName: {{ .Values.client.priorityClassName }}
       {{- end }}
-      {{- with .Values.client.pullSecrets | default .Values.global.imagePullSecrets }}
+      {{- with .Values.client.image.pullSecrets | default .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -73,14 +73,14 @@ spec:
       initContainers:
       {{- if .Values.scheduler.enable }}
       - name: wait-for-scheduler
-        image: {{ .Values.client.initContainer.image }}:{{ .Values.client.initContainer.tag }}
-        imagePullPolicy: {{ .Values.client.initContainer.pullPolicy }}
+        image: {{ template "client.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
       {{- end }}
       {{- if .Values.client.dfinit.enable }}
       - name: dfinit
-        image: {{ .Values.client.dfinit.image }}:{{ .Values.client.dfinit.tag }}
-        imagePullPolicy: {{ .Values.client.dfinit.pullPolicy }}
+        image: {{ template "client.dfinit.image" . }}
+        imagePullPolicy: {{ .Values.client.dfinit.image.pullPolicy }}
         args:
         - --log-level={{ .Values.client.dfinit.config.log.level }}
         {{- if .Values.client.dfinit.config.verbose }}
@@ -100,8 +100,8 @@ spec:
       {{- end }}
       {{- if .Values.client.dfinit.enable }}
       - name: restart-container-runtime
-        image: {{ .Values.client.initContainer.image }}:{{ .Values.client.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.client.initContainer.pullPolicy }}
+        image: {{ template "client.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
         securityContext:
           # nsenter need privilege permission.
           privileged: true
@@ -121,8 +121,8 @@ spec:
       {{- end }}
       containers:
       - name: client
-        image: {{ .Values.client.image }}:{{ .Values.client.tag }}
-        imagePullPolicy: {{ .Values.client.pullPolicy | quote }}
+        image: {{ template "client.image" . }}
+        imagePullPolicy: {{ .Values.client.image.pullPolicy | quote }}
         args:
         - --log-level={{ .Values.client.config.log.level }}
         {{- if .Values.client.config.verbose }}

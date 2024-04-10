@@ -162,9 +162,11 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.config.proxy.addr | string | `"http://127.0.0.1:4001"` | addr is the proxy server address of dfdaemon. |
 | client.dfinit.config.verbose | bool | `true` | verbose prints log. |
 | client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
-| client.dfinit.image | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| client.dfinit.tag | string | `"v0.1.29"` | Image tag. |
+| client.dfinit.image.digest | string | `""` | Image digest. |
+| client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
+| client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
+| client.dfinit.image.tag | string | `"v0.1.29"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -173,10 +175,17 @@ helm delete dragonfly --namespace dragonfly-system
 | client.hostIPC | bool | `true` | hostIPC specify if host IPC should be enabled for peer pod. |
 | client.hostNetwork | bool | `true` | hostNetwork specify if host network should be enabled for peer pod. |
 | client.hostPID | bool | `true` | hostPID allows visibility of processes on the host for peer pod. |
-| client.image | string | `"dragonflyoss/client"` | Image repository. |
-| client.initContainer.image | string | `"busybox"` | Init container image repository. |
-| client.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| client.initContainer.tag | string | `"latest"` | Init container image tag. |
+| client.image.digest | string | `""` | Image digest. |
+| client.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| client.image.registry | string | `"docker.io"` | Image registry. |
+| client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
+| client.image.tag | string | `"v0.1.29"` | Image tag. |
+| client.initContainer.image.digest | string | `""` | Image digest. |
+| client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| client.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| client.initContainer.image.tag | string | `"latest"` | Image tag. |
 | client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | client.metrics.enable | bool | `false` | Enable client metrics. |
 | client.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels |
@@ -195,17 +204,14 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
-| client.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| client.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.replicas | int | `3` | Number of Pods to launch. |
 | client.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| client.tag | string | `"v0.1.29"` | Image tag. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{}` | Update strategy for replicas. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
-| containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainerImage":"dragonflyoss/openssl"}` | [Experimental] Container runtime support. Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O. |
+| containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainer":{"image":{"digest":"","pullPolicy":"IfNotPresent","registry":"docker.io","repository":"dragonflyoss/openssl","tag":"latest"}}}` | [Experimental] Container runtime support. Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O. |
 | containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support. |
 | containerRuntime.containerd.configFileName | string | `""` | Custom config file name, default is config.toml. This is workaround for kops provider, see https://github.com/kubernetes/kops/pull/13090 for more details. |
 | containerRuntime.containerd.configPathDir | string | `"/etc/containerd"` | Custom config path directory, default is /etc/containerd. e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd. |
@@ -224,7 +230,12 @@ helm delete dragonfly --namespace dragonfly-system
 | containerRuntime.docker.restart | bool | `false` | Restart docker daemon to redirect traffic to dfdaemon. When containerRuntime.docker.restart=true, containerRuntime.docker.injectHosts and containerRuntime.registry.domains is ignored. If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true. |
 | containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts. Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39. Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts, don't forget add the corresponding backend storage. |
 | containerRuntime.extraInitContainers | list | `[]` | Additional init containers. |
-| containerRuntime.initContainerImage | string | `"dragonflyoss/openssl"` | The image name of init container, need include openssl for ca generating. |
+| containerRuntime.initContainer | object | `{"image":{"digest":"","pullPolicy":"IfNotPresent","registry":"docker.io","repository":"dragonflyoss/openssl","tag":"latest"}}` | The image name of init container, need include openssl for ca generating. |
+| containerRuntime.initContainer.image.digest | string | `""` | Image digest. |
+| containerRuntime.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| containerRuntime.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| containerRuntime.initContainer.image.repository | string | `"dragonflyoss/openssl"` | Image repository. |
+| containerRuntime.initContainer.image.tag | string | `"latest"` | Image tag. |
 | dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
 | dfdaemon.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
 | dfdaemon.config.cacheDir | string | `""` | Dynconfig cache directory. |
@@ -299,10 +310,17 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.hostAliases | list | `[]` | Host Aliases. |
 | dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network. |
 | dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty. many network add-ons do not yet support hostPort. https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false. for performance, injecting the 65001 port to host network is better than hostPort. |
-| dfdaemon.image | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| dfdaemon.initContainer.image | string | `"busybox"` | Init container image repository. |
-| dfdaemon.initContainer.pullPolicy | string | `"Always"` |  |
-| dfdaemon.initContainer.tag | string | `"latest"` | Init container image tag. |
+| dfdaemon.image.digest | string | `""` | Image digest. |
+| dfdaemon.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| dfdaemon.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| dfdaemon.image.registry | string | `"docker.io"` | Image registry. |
+| dfdaemon.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
+| dfdaemon.image.tag | string | `"v2.1.39"` | Image tag. |
+| dfdaemon.initContainer.image.digest | string | `""` | Image digest. |
+| dfdaemon.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| dfdaemon.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| dfdaemon.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| dfdaemon.initContainer.image.tag | string | `"latest"` | Image tag. |
 | dfdaemon.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | dfdaemon.metrics.enable | bool | `false` | Enable peer metrics. |
 | dfdaemon.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels. |
@@ -322,10 +340,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.podAnnotations | object | `{}` | Pod annotations. |
 | dfdaemon.podLabels | object | `{}` | Pod labels. |
 | dfdaemon.priorityClassName | string | `""` | Pod priorityClassName. |
-| dfdaemon.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| dfdaemon.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.tag | string | `"v2.1.39"` | Image tag. |
 | dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
 | dfdaemon.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -347,7 +362,8 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.password | string | `""` | External redis password. |
 | externalRedis.username | string | `""` | External redis username. |
 | fullnameOverride | string | `""` | Override dragonfly fullname. |
-| global.imagePullSecrets | list | `[]` | Image pull secrets. |
+| global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |
+| global.imageRegistry | string | `""` | Global Docker image registry. |
 | jaeger.agent.enabled | bool | `false` |  |
 | jaeger.allInOne.enabled | bool | `true` |  |
 | jaeger.collector.enabled | bool | `false` |  |
@@ -400,7 +416,12 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
 | manager.grpcPort | int | `65003` | GRPC service port. |
 | manager.hostAliases | list | `[]` | Host Aliases. |
-| manager.image | string | `"dragonflyoss/manager"` | Image repository. |
+| manager.image.digest | string | `""` | Image digest. |
+| manager.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| manager.image.registry | string | `"docker.io"` | Image registry. |
+| manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
+| manager.image.tag | string | `"v2.1.39"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -408,9 +429,11 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.ingress.path | string | `"/"` | Ingress host path. |
 | manager.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Requirement: kubernetes >=1.18. |
 | manager.ingress.tls | list | `[]` | Ingress TLS configuration. |
-| manager.initContainer.image | string | `"busybox"` | Init container image repository. |
-| manager.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| manager.initContainer.tag | string | `"latest"` | Init container image tag. |
+| manager.initContainer.image.digest | string | `""` | Image digest. |
+| manager.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| manager.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| manager.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| manager.initContainer.image.tag | string | `"latest"` | Image tag. |
 | manager.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | manager.metrics.enable | bool | `false` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -429,15 +452,12 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.podAnnotations | object | `{}` | Pod annotations. |
 | manager.podLabels | object | `{}` | Pod labels. |
 | manager.priorityClassName | string | `""` | Pod priorityClassName. |
-| manager.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| manager.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.replicas | int | `3` | Number of Pods to launch. |
 | manager.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | manager.restPort | int | `8080` | REST service port. |
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.tag | string | `"v2.1.39"` | Image tag. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -516,10 +536,17 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for scheduler. |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname. |
 | scheduler.hostAliases | list | `[]` | Host Aliases. |
-| scheduler.image | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.initContainer.image | string | `"busybox"` | Init container image repository. |
-| scheduler.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| scheduler.initContainer.tag | string | `"latest"` | Init container image tag. |
+| scheduler.image.digest | string | `""` | Image digest. |
+| scheduler.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| scheduler.image.registry | string | `"docker.io"` | Image registry. |
+| scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
+| scheduler.image.tag | string | `"v2.1.39"` | Image tag. |
+| scheduler.initContainer.image.digest | string | `""` | Image digest. |
+| scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| scheduler.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| scheduler.initContainer.image.tag | string | `"latest"` | Image tag. |
 | scheduler.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | scheduler.metrics.enable | bool | `false` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
@@ -539,15 +566,12 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.podAnnotations | object | `{}` | Pod annotations. |
 | scheduler.podLabels | object | `{}` | Pod labels. |
 | scheduler.priorityClassName | string | `""` | Pod priorityClassName. |
-| scheduler.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| scheduler.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.replicas | int | `3` | Number of Pods to launch. |
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | scheduler.service.annotations | object | `{}` | Service annotations. |
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| scheduler.tag | string | `"v2.1.39"` | Image tag. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -587,10 +611,17 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
 | seedClient.hostAliases | list | `[]` | Host Aliases. |
-| seedClient.image | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.initContainer.image | string | `"busybox"` | Init container image repository. |
-| seedClient.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| seedClient.initContainer.tag | string | `"latest"` | Init container image tag. |
+| seedClient.image.digest | string | `""` | Image digest. |
+| seedClient.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| seedClient.image.registry | string | `"docker.io"` | Image registry. |
+| seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
+| seedClient.image.tag | string | `"v0.1.29"` | Image tag. |
+| seedClient.initContainer.image.digest | string | `""` | Image digest. |
+| seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| seedClient.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| seedClient.initContainer.image.tag | string | `"latest"` | Image tag. |
 | seedClient.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedClient.metrics.enable | bool | `false` | Enable seed client metrics. |
 | seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -613,12 +644,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.podAnnotations | object | `{}` | Pod annotations. |
 | seedClient.podLabels | object | `{}` | Pod labels. |
 | seedClient.priorityClassName | string | `""` | Pod priorityClassName. |
-| seedClient.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| seedClient.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.tag | string | `"v0.1.29"` | Image tag. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -692,10 +720,17 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedPeer.fullnameOverride | string | `""` | Override scheduler fullname. |
 | seedPeer.hostAliases | list | `[]` | Host Aliases. |
-| seedPeer.image | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| seedPeer.initContainer.image | string | `"busybox"` | Init container image repository. |
-| seedPeer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| seedPeer.initContainer.tag | string | `"latest"` | Init container image tag. |
+| seedPeer.image.digest | string | `""` | Image digest. |
+| seedPeer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedPeer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| seedPeer.image.registry | string | `"docker.io"` | Image registry. |
+| seedPeer.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
+| seedPeer.image.tag | string | `"v2.1.39"` | Image tag. |
+| seedPeer.initContainer.image.digest | string | `""` | Image digest. |
+| seedPeer.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| seedPeer.initContainer.image.registry | string | `"docker.io"` | Image registry. |
+| seedPeer.initContainer.image.repository | string | `"busybox"` | Image repository. |
+| seedPeer.initContainer.image.tag | string | `"latest"` | Image tag. |
 | seedPeer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedPeer.metrics.enable | bool | `false` | Enable seed peer metrics. |
 | seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -718,12 +753,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.podAnnotations | object | `{}` | Pod annotations. |
 | seedPeer.podLabels | object | `{}` | Pod labels. |
 | seedPeer.priorityClassName | string | `""` | Pod priorityClassName. |
-| seedPeer.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| seedPeer.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedPeer.replicas | int | `3` | Number of Pods to launch. |
 | seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.tag | string | `"v2.1.39"` | Image tag. |
 | seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedPeer.updateStrategy | object | `{}` | Update strategy for replicas. |
@@ -754,10 +786,12 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for trainer. |
 | trainer.fullnameOverride | string | `""` | Override trainer fullname. |
 | trainer.hostAliases | list | `[]` | Host Aliases. |
-| trainer.image | string | `"dragonflyoss/trainer"` | Image repository. |
-| trainer.initContainer.image | string | `"busybox"` | Init container image repository. |
-| trainer.initContainer.pullPolicy | string | `"Always"` | Container image pull policy. |
-| trainer.initContainer.tag | string | `"latest"` | Init container image tag. |
+| trainer.image.digest | string | `""` | Image digest. |
+| trainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| trainer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| trainer.image.registry | string | `"docker.io"` | Image registry. |
+| trainer.image.repository | string | `"dragonflyoss/trainer"` | Image repository. |
+| trainer.image.tag | string | `"v2.1.39"` | Image tag. |
 | trainer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
 | trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -776,14 +810,11 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.podAnnotations | object | `{}` | Pod annotations. |
 | trainer.podLabels | object | `{}` | Pod labels. |
 | trainer.priorityClassName | string | `""` | Pod priorityClassName. |
-| trainer.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| trainer.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | trainer.replicas | int | `1` | Number of Pods to launch. |
 | trainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | trainer.service.annotations | object | `{}` | Service annotations. |
 | trainer.service.labels | object | `{}` | Service labels. |
 | trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.tag | string | `"v2.1.39"` | Image tag. |
 | trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -791,16 +822,19 @@ helm delete dragonfly --namespace dragonfly-system
 | triton.enable | bool | `false` | Enable triton. |
 | triton.fullnameOverride | string | `""` | Override triton fullname. |
 | triton.grpcPort | int | `8001` | GRPC service port. |
-| triton.image | string | `"nvcr.io/nvidia/tritonserver"` | Image repository. |
+| triton.image.digest | string | `""` | Image digest. |
+| triton.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| triton.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| triton.image.registry | string | `"nvcr.io"` | Image registry. |
+| triton.image.repository | string | `"nvidia/tritonserver"` | Image repository. |
+| triton.image.tag | string | `"23.06-py3"` | Image tag. |
 | triton.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | triton.modelRepositoryPath | string | `""` | Model repository path. |
 | triton.name | string | `"triton"` | triton name. |
 | triton.nameOverride | string | `""` | Override triton name. |
-| triton.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | triton.replicas | int | `3` | Number of Pods to launch. |
 | triton.restPort | int | `8000` | REST service port. |
 | triton.service.type | string | `"LoadBalancer"` | Service type. |
-| triton.tag | string | `"23.06-py3"` | Image tag. |
 
 ## Chart dependencies
 

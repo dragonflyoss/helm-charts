@@ -58,7 +58,7 @@ spec:
       {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.seedClient.priorityClassName) }}
       priorityClassName: {{ .Values.seedClient.priorityClassName }}
       {{- end }}
-      {{- with .Values.seedClient.pullSecrets | default .Values.global.imagePullSecrets }}
+      {{- with .Values.seedClient.image.pullSecrets | default .Values.global.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -68,8 +68,8 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-manager
-        image: {{ .Values.seedClient.initContainer.image }}:{{ .Values.seedClient.initContainer.tag  }}
-        imagePullPolicy: {{ .Values.seedClient.initContainer.pullPolicy }}
+        image: {{ template "seedClient.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
         {{- if .Values.manager.enable }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
@@ -77,8 +77,8 @@ spec:
         {{- end }}
       containers:
       - name: seed-client
-        image: "{{ .Values.seedClient.image }}:{{ .Values.seedClient.tag }}"
-        imagePullPolicy: {{ .Values.seedClient.pullPolicy | quote }}
+        image: {{ template "seedClient.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.image.pullPolicy | quote }}
         args:
         - --log-level={{ .Values.client.config.log.level }}
         {{- if .Values.seedClient.config.verbose }}
