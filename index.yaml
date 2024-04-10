@@ -3,6 +3,73 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add prefetch field to client configuration.
+        - Update client image verision to v0.1.29.
+        - Update dragonfly image verision to v2.1.39.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.39
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.39
+        - name: client
+          image: dragonflyoss/client:v0.1.29
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.29
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.29
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.39
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.39
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.39
+    created: "2024-04-10T12:21:30.702126076Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 7e23d0cdf583693b15a1a9b57b18d89b5963e749ff5fbca58a2778a02732543d
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.37/dragonfly-1.1.37.tgz
+    version: 1.1.37
+  - annotations:
+      artifacthub.io/changes: |
         - Optimize container runtime config in client.
         - Update client image verision to v0.1.28.
       artifacthub.io/images: |
@@ -9555,4 +9622,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-04-10T02:44:28.042576901Z"
+generated: "2024-04-10T12:21:30.702629001Z"
