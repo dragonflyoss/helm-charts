@@ -1,0 +1,30 @@
+{{- if .Values.seedClient.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.seedClient.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: {{ .Values.seedClient.name }}
+{{- if .Values.seedClient.service.labels }}
+{{ toYaml .Values.seedClient.service.labels | indent 4 }}
+{{- end }}
+{{- if .Values.seedClient.service.annotations }}
+  annotations:
+{{ toYaml .Values.seedClient.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.seedClient.service.type }}
+  ports:
+    - port: {{ .Values.seedClient.config.proxy.server.port }}
+      name: http-proxy
+      protocol: TCP
+      targetPort: {{ .Values.seedClient.config.proxy.server.port }}
+  selector:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Values.seedClient.name }}
+{{- end }}

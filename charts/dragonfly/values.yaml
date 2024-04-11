@@ -793,6 +793,13 @@ seedClient:
     ##   GKE, AWS & OpenStack).
     ##
     # storageClass: "-".
+  service:
+    # -- Service type.
+    type: ClusterIP
+    # -- Service labels.
+    labels: {}
+    # -- Service annotations.
+    annotations: {}
   config:
     # -- verbose prints log.
     verbose: false
