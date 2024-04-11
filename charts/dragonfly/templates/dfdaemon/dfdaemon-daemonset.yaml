@@ -38,9 +38,9 @@ spec:
 {{ toYaml .Values.dfdaemon.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.dfdaemon.nodeSelector }}
+      {{- with .Values.dfdaemon.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.dfdaemon.nodeSelector | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.dfdaemon.hostNetwork }}
       {{- if .Values.dfdaemon.hostNetwork }}

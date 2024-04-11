@@ -40,9 +40,9 @@ spec:
 {{ toYaml .Values.seedPeer.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.seedPeer.nodeSelector }}
+      {{- with .Values.seedPeer.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.seedPeer.nodeSelector | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.seedPeer.tolerations }}
       tolerations:

@@ -38,9 +38,9 @@ spec:
 {{ toYaml .Values.client.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.client.nodeSelector }}
+      {{- with .Values.client.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.client.nodeSelector | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       hostNetwork: {{ .Values.client.hostNetwork }}
       {{- if .Values.client.hostNetwork }}
