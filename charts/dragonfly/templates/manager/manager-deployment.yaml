@@ -38,9 +38,9 @@ spec:
 {{ toYaml .Values.manager.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.manager.nodeSelector }}
+      {{- with .Values.manager.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.manager.nodeSelector | indent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.manager.tolerations }}
       tolerations:
