@@ -146,12 +146,6 @@ spec:
         resources:
           requests:
             storage: {{ .Values.seedPeer.persistence.size | quote }}
-      {{- if .Values.seedPeer.persistence.storageClass }}
-      {{- if (eq "-" .Values.seedPeer.persistence.storageClass) }}
-        storageClassName: ""
-      {{- else }}
-        storageClassName: "{{ .Values.seedPeer.persistence.storageClass }}"
-      {{- end }}
-      {{- end }}
+        {{- include "common.storage.class" (dict "persistence" .Values.seedPeer.persistence "global" .Values.global) | nindent 8 }}
   {{- end }}
 {{- end }}

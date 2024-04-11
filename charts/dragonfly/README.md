@@ -168,8 +168,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
 | client.dfinit.image.tag | string | `"v0.1.30"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
-| client.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
-| client.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
+| client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
+| client.extraVolumes | list | `[{"hostPath":{"path":"/var/lib/dragonfly/","type":"DirectoryOrCreate"},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
 | client.hostAliases | list | `[]` | Host Aliases. |
 | client.hostIPC | bool | `true` | hostIPC specify if host IPC should be enabled for peer pod. |
@@ -364,6 +364,7 @@ helm delete dragonfly --namespace dragonfly-system
 | global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
+| global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
 | jaeger.agent.enabled | bool | `false` |  |
 | jaeger.allInOne.enabled | bool | `true` |  |
 | jaeger.collector.enabled | bool | `false` |  |

@@ -14,6 +14,8 @@ global:
   imagePullSecrets: []
   # -- Global node labels for pod assignment.
   nodeSelector: {}
+  # -- Global storageClass for Persistent Volume(s).
+  storageClass: ""
 
 manager:
   # -- Enable manager.
@@ -77,7 +79,7 @@ manager:
   # -- Extra volumeMounts for manager.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/manager"
+      mountPath: /var/log/dragonfly/manager
   # -- REST service port.
   restPort: 8080
   # -- GRPC service port.
@@ -371,7 +373,7 @@ scheduler:
   # -- Extra volumeMounts for scheduler.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/scheduler"
+      mountPath: /var/log/dragonfly/scheduler
   initContainer:
     image:
       # -- Image registry.
@@ -772,7 +774,7 @@ seedClient:
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/dfdaemon/"
+      mountPath: /var/log/dragonfly/dfdaemon/
   persistence:
     # -- Enable persistence for seed peer.
     enable: true
@@ -1034,12 +1036,18 @@ client:
       pullPolicy: IfNotPresent
   # -- Extra volumes for dfdaemon.
   extraVolumes:
+    - name: storage
+      hostPath:
+        path: /var/lib/dragonfly/
+        type: DirectoryOrCreate
     - name: logs
       emptyDir: {}
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
+    - name: storage
+      mountPath: /var/lib/dragonfly/
     - name: logs
-      mountPath: "/var/log/dragonfly/dfdaemon/"
+      mountPath: /var/log/dragonfly/dfdaemon/
   dfinit:
     # -- Enable dfinit to override configuration of container runtime.
     enable: false
@@ -1424,7 +1432,7 @@ trainer:
   # -- Extra volumeMounts for trainer.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/trainer"
+      mountPath: /var/log/dragonfly/trainer
   config:
     server:
       # -- Advertise ip.
@@ -1794,7 +1802,7 @@ seedPeer:
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/daemon"
+      mountPath: /var/log/dragonfly/daemon
   persistence:
     # -- Enable persistence for seed peer.
     enable: true
@@ -2158,7 +2166,7 @@ dfdaemon:
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
     - name: logs
-      mountPath: "/var/log/dragonfly/daemon"
+      mountPath: /var/log/dragonfly/daemon
   # -- Pod containerPort.
   containerPort: 65001
   # -- When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty.
