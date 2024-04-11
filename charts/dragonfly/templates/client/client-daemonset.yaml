@@ -155,8 +155,6 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
-        - name: storage
-          mountPath: {{ .Values.client.config.storage.dir }}
         {{- if .Values.client.extraVolumeMounts }}
         {{- toYaml .Values.client.extraVolumeMounts | nindent 8 }}
         {{- end }}
@@ -164,10 +162,6 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.client.fullname" . }}
-      - name: storage
-        hostPath:
-          path: {{ .Values.client.config.storage.dir }}
-          type: DirectoryOrCreate
       - name: dfinit-config
         configMap:
           name: {{ template "dragonfly.dfinit.fullname" . }}
