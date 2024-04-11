@@ -1,5 +1,4 @@
 # Dragonfly Helm Chart Values.
-#
 
 # -- Override dragonfly name.
 nameOverride: ""
@@ -975,8 +974,6 @@ client:
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
   maxProcs: ""
-  # -- Number of Pods to launch.
-  replicas: 3
   image:
     # -- Image registry.
     registry: docker.io
