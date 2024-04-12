@@ -3,6 +3,71 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add service for seed client.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.40
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.40
+        - name: client
+          image: dragonflyoss/client:v0.1.30
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.30
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.30
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.40
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.40
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.40
+    created: "2024-04-12T02:34:50.190253855Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 74b3764df182073621ee1c3cbb400dda4f2d7e9cdfca371474e661861eac1517
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.42/dragonfly-1.1.42.tgz
+    version: 1.1.42
+  - annotations:
+      artifacthub.io/changes: |
         - Add global.storageClass to configure the storage class for PVCs.
       artifacthub.io/images: |
         - name: manager
@@ -9884,4 +9949,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-04-11T11:55:55.621417139Z"
+generated: "2024-04-12T02:34:50.190726635Z"
