@@ -94,6 +94,8 @@ spec:
         ports:
         - containerPort: {{ .Values.seedClient.config.upload.server.port }}
           protocol: TCP
+        - containerPort: {{ .Values.seedClient.config.proxy.server.port }}
+          protocol: TCP
         {{- if .Values.seedClient.metrics.enable }}
         - containerPort: {{ .Values.seedClient.config.metrics.port }}
           protocol: TCP

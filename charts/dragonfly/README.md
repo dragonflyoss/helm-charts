@@ -647,6 +647,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.priorityClassName | string | `""` | Pod priorityClassName. |
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| seedClient.service.annotations | object | `{}` | Service annotations. |
+| seedClient.service.labels | object | `{}` | Service labels. |
+| seedClient.service.type | string | `"ClusterIP"` | Service type. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
