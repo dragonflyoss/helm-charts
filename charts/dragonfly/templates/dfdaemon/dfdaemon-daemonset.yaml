@@ -172,7 +172,7 @@ spec:
             add:
             - SYS_ADMIN
         {{- end }}
-      {{- if or (and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace) .Values.containerRuntime.containerd.enable .Values.containerRuntime.docker.enable .Values.containerRuntime.extraInitContainers }}
+      {{- if or (and (not .Values.dfdaemon.hostNetwork) .Values.dfdaemon.config.proxy.tcpListen.namespace) .Values.containerRuntime.containerd.enable .Values.containerRuntime.docker.enable .Values.containerRuntime.crio.enable .Values.containerRuntime.extraInitContainers }}
       initContainers:
       {{- if .Values.scheduler.enable }}
       - name: wait-for-scheduler
