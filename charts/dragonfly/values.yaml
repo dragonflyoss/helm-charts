@@ -1737,6 +1737,8 @@ containerRuntime:
   #   command: ['echo', 'hey'].
 
 seedPeer:
+  # -- hostNetwork specify if host network should be enabled for peer pod.
+  hostNetwork: false
   # -- Enable dfdaemon seed peer.
   enable: true
   # -- Seed peer name.
