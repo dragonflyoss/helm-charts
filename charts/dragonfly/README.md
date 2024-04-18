@@ -824,9 +824,11 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.tolerations | list | `[]` | List of node taints to tolerate. |
 | trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
 | triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
+| triton.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | triton.enable | bool | `false` | Enable triton. |
 | triton.fullnameOverride | string | `""` | Override triton fullname. |
 | triton.grpcPort | int | `8001` | GRPC service port. |
+| triton.hostAliases | list | `[]` | Host Aliases. |
 | triton.image.digest | string | `""` | Image digest. |
 | triton.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | triton.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
@@ -837,9 +839,15 @@ helm delete dragonfly --namespace dragonfly-system
 | triton.modelRepositoryPath | string | `""` | Model repository path. |
 | triton.name | string | `"triton"` | triton name. |
 | triton.nameOverride | string | `""` | Override triton name. |
+| triton.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| triton.podAnnotations | object | `{}` | Pod annotations. |
+| triton.priorityClassName | string | `""` | Pod priorityClassName. |
 | triton.replicas | int | `3` | Number of Pods to launch. |
 | triton.restPort | int | `8000` | REST service port. |
 | triton.service.type | string | `"LoadBalancer"` | Service type. |
+| triton.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
+| triton.tolerations | list | `[]` | List of node taints to tolerate. |
+| triton.updateStrategy | object | `{}` | Update strategy for replicas. |
 
 ## Chart dependencies
 
