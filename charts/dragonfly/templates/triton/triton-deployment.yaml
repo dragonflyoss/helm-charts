@@ -9,20 +9,60 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.triton.name }}
+  annotations:
+  {{- if .Values.triton.deploymentAnnotations }}
+{{ toYaml .Values.triton.deploymentAnnotations | indent 4 }}
+  {{- end }}
 spec:
+  {{- if .Values.triton.updateStrategy }}
+  updateStrategy:
+{{ toYaml .Values.triton.updateStrategy | indent 4 }}
+  {{- end }}
   replicas: {{ .Values.triton.replicas }}
   selector:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
       component: {{ .Values.triton.name }}
       release: {{ .Release.Name }}
+  serviceName: triton
   template:
     metadata:
       labels:
         app: {{ template "dragonfly.fullname" . }}
         component: {{ .Values.triton.name }}
         release: {{ .Release.Name }}
+      annotations:
+        checksum/serect: {{ include (print $.Template.BasePath "/triton/triton-secrets.yaml") . | sha256sum }}
+      {{- if .Values.triton.podAnnotations }}
+{{ toYaml .Values.triton.podAnnotations | indent 8 }}
+      {{- end }}
     spec:
+      {{- with .Values.triton.nodeSelector | default .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.triton.tolerations }}
+      tolerations:
+{{ toYaml .Values.triton.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.triton.affinity }}
+      affinity:
+{{ toYaml .Values.triton.affinity | indent 8 }}
+      {{- end }}
+      {{- if quote .Values.triton.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.triton.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.triton.priorityClassName) }}
+      priorityClassName: {{ .Values.triton.priorityClassName }}
+      {{- end }}
+      {{- with .Values.triton.image.pullSecrets | default .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.triton.hostAliases }}
+      hostAliases:
+{{ toYaml .Values.triton.hostAliases | indent 8 }}
+      {{- end }}
       containers:
         - name: triton
           image: {{ template "triton.image" . }}

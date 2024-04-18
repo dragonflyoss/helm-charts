@@ -1594,13 +1594,22 @@ triton:
     # -- Image pull secrets.
     # @default -- `[]` (defaults to global.imagePullSecrets).
     pullSecrets: []
-  # -- Model repository path.
-  modelRepositoryPath: ""
-  # -- Credentials information.
-  aws:
-    region: ""
-    accessKeyID: ""
-    secretAccessKey: ""
+  # -- Node labels for pod assignment.
+  nodeSelector: {}
+  # -- Pod annotations.
+  podAnnotations: {}
+  # -- List of node taints to tolerate.
+  tolerations: []
+  # -- Pod terminationGracePeriodSeconds.
+  terminationGracePeriodSeconds:
+  # -- Pod priorityClassName.
+  priorityClassName: ""
+  # -- Host Aliases.
+  hostAliases: []
+  # -- Update strategy for replicas.
+  updateStrategy: {}
+  # -- Deployment annotations.
+  deploymentAnnotations: {}
   service:
     # -- Service type.
     type: LoadBalancer
@@ -1608,6 +1617,13 @@ triton:
   restPort: 8000
   # -- GRPC service port.
   grpcPort: 8001
+  # -- Model repository path.
+  modelRepositoryPath: ""
+  # -- Credentials information.
+  aws:
+    region: ""
+    accessKeyID: ""
+    secretAccessKey: ""
 
 # -- [Experimental] Container runtime support.
 # Choose special container runtime in Kubernetes.
