@@ -724,6 +724,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedPeer.fullnameOverride | string | `""` | Override scheduler fullname. |
 | seedPeer.hostAliases | list | `[]` | Host Aliases. |
+| seedPeer.hostNetwork | bool | `true` | hostNetwork specify if host network should be enabled for peer pod. |
 | seedPeer.image.digest | string | `""` | Image digest. |
 | seedPeer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedPeer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
