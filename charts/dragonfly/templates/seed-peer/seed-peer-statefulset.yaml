@@ -40,9 +40,9 @@ spec:
 {{ toYaml .Values.seedPeer.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- if .Values.seedPeer.hostNetwork }} 
-      dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: {{ .Values.seedPeer.hostNetwork }}
+      {{- if .Values.seedPeer.hostNetwork }}
+      dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
       {{- with .Values.seedPeer.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
