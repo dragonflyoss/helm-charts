@@ -3,6 +3,71 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add hostNetwork for seed peer.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.40
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.40
+        - name: client
+          image: dragonflyoss/client:v0.1.30
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.30
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.30
+        - name: dfdaemon
+          image: dragonflyoss/dfdaemon:v2.1.40
+        - name: trainer
+          image: dragonflyoss/scheduler:v2.1.40
+        - name: triton
+          image: nvcr.io/nvidia/tritonserver:23.06-py3
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+    apiVersion: v2
+    appVersion: 2.1.40
+    created: "2024-04-18T05:52:46.710261151Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    - condition: jaeger.enable
+      name: jaeger
+      repository: https://jaegertracing.github.io/helm-charts
+      version: 0.66.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: cc448f66547ab3294be39c16ab1cb39489eb47269d145e6a578377c20c5ecf6f
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.44/dragonfly-1.1.44.tgz
+    version: 1.1.44
+  - annotations:
+      artifacthub.io/changes: |
         - Fix addrs config for seed client.
       artifacthub.io/images: |
         - name: manager
@@ -10014,4 +10079,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-04-16T11:36:49.554604994Z"
+generated: "2024-04-18T05:52:46.710826207Z"
