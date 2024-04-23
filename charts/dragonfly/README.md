@@ -131,12 +131,13 @@ helm delete dragonfly --namespace dragonfly-system
 |-----|------|---------|-------------|
 | client.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"30s"` | pieceTimeout is the timeout for downloading a piece from source. |
+| client.config.download.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the download speed in bps(bytes per second), default is 20Gbps. |
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
 | client.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
-| client.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
+| client.config.gc.policy.taskTTL | string | `"168h"` | taskTTL is the ttl of the task. |
 | client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
@@ -154,6 +155,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| client.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.verbose | bool | `false` | verbose prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
@@ -314,7 +316,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.image.registry | string | `"docker.io"` | Image registry. |
 | dfdaemon.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| dfdaemon.image.tag | string | `"v2.1.41"` | Image tag. |
+| dfdaemon.image.tag | string | `"v2.1.42"` | Image tag. |
 | dfdaemon.initContainer.image.digest | string | `""` | Image digest. |
 | dfdaemon.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -422,7 +424,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.1.41"` | Image tag. |
+| manager.image.tag | string | `"v2.1.42"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -542,7 +544,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.1.41"` | Image tag. |
+| scheduler.image.tag | string | `"v2.1.42"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -576,14 +578,15 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
-| seedClient.config.download.concurrentPieceCount | int | `10` | concurrentPieceCount is the number of concurrent pieces to download. |
+| seedClient.config.download.concurrentPieceCount | int | `32` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"30s"` | pieceTimeout is the timeout for downloading a piece from source. |
+| seedClient.config.download.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the download speed in bps(bytes per second), default is 20Gbps. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
 | seedClient.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
-| seedClient.config.gc.policy.taskTTL | string | `"21600s"` | taskTTL is the ttl of the task. |
+| seedClient.config.gc.policy.taskTTL | string | `"168h"` | taskTTL is the ttl of the task. |
 | seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
@@ -594,7 +597,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
 | seedClient.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
-| seedClient.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | seedClient.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
 | seedClient.config.security.enable | bool | `false` | enable indicates whether enable security. |
@@ -605,6 +607,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| seedClient.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.verbose | bool | `false` | verbose prints log. |
 | seedClient.enable | bool | `false` | Enable seed client. |
@@ -730,7 +733,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedPeer.image.registry | string | `"docker.io"` | Image registry. |
 | seedPeer.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| seedPeer.image.tag | string | `"v2.1.41"` | Image tag. |
+| seedPeer.image.tag | string | `"v2.1.42"` | Image tag. |
 | seedPeer.initContainer.image.digest | string | `""` | Image digest. |
 | seedPeer.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedPeer.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -796,7 +799,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | trainer.image.registry | string | `"docker.io"` | Image registry. |
 | trainer.image.repository | string | `"dragonflyoss/trainer"` | Image repository. |
-| trainer.image.tag | string | `"v2.1.41"` | Image tag. |
+| trainer.image.tag | string | `"v2.1.42"` | Image tag. |
 | trainer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
 | trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
