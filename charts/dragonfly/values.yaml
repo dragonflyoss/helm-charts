@@ -37,7 +37,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.42
+    tag: v2.1.43
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -323,7 +323,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.42
+    tag: v2.1.43
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -721,7 +721,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.37
+    tag: v0.1.38
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -934,6 +934,12 @@ seedClient:
     security:
       # -- enable indicates whether enable security.
       enable: false
+    health:
+      server:
+        # -- port is the port to the health server.
+        port: 4003
+        ## ip is the listen ip of the health server.
+        # ip: ""
     metrics:
       server:
         # -- port is the port to the metrics server.
@@ -991,7 +997,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.37
+    tag: v0.1.38
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1066,7 +1072,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.37
+      tag: v0.1.38
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1239,6 +1245,12 @@ client:
     security:
       # -- enable indicates whether enable security.
       enable: false
+    health:
+      server:
+        # -- port is the port to the health server.
+        port: 4003
+        ## ip is the listen ip of the health server.
+        # ip: ""
     metrics:
       server:
         # -- port is the port to the metrics server.
@@ -1394,7 +1406,7 @@ trainer:
     # -- Image repository.
     repository: dragonflyoss/trainer
     # -- Image tag.
-    tag: v2.1.42
+    tag: v2.1.43
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1780,7 +1792,7 @@ seedPeer:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.42
+    tag: v2.1.43
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -2144,7 +2156,7 @@ dfdaemon:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.42
+    tag: v2.1.43
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
