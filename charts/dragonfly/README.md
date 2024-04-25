@@ -243,7 +243,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.config.cacheDir | string | `""` | Dynconfig cache directory. |
 | dfdaemon.config.console | bool | `false` | Console shows log on console. |
 | dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory. |
-| dfdaemon.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory. |
+| dfdaemon.config.download.calculateDigest | bool | `false` | Calculate digest, when only pull images, can be false to save cpu and memory. |
 | dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option. |
 | dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
 | dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |
@@ -664,7 +664,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory. |
 | seedPeer.config.console | bool | `false` | Console shows log on console. |
 | seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory. |
-| seedPeer.config.download.calculateDigest | bool | `true` | Calculate digest, when only pull images, can be false to save cpu and memory. |
+| seedPeer.config.download.calculateDigest | bool | `false` | Calculate digest, when only pull images, can be false to save cpu and memory. |
 | seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option. |
 | seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
 | seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |

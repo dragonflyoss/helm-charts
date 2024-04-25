@@ -1930,7 +1930,7 @@ seedPeer:
       # -- Per peer task limit per second[B].
       perPeerRateLimit: 1024Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory.
-      calculateDigest: true
+      calculateDigest: false
       # -- When request data with range header, prefetch data not in range.
       prefetch: false
       downloadGRPC:
@@ -2290,7 +2290,7 @@ dfdaemon:
       # -- Per peer task limit per second[B].
       perPeerRateLimit: 512Mi
       # -- Calculate digest, when only pull images, can be false to save cpu and memory.
-      calculateDigest: true
+      calculateDigest: false
       # -- When request data with range header, prefetch data not in range.
       prefetch: false
       downloadGRPC:
