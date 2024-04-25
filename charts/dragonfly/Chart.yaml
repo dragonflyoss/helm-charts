@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.50
+version: 1.1.51
 appVersion: 2.1.43
 keywords:
   - dragonfly
@@ -26,9 +26,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add health configuration for client.
-    - Update dragonfly image version to v2.1.43.
-    - Update client image version to v0.1.38.
+    - Set calculateDigest to false in dfdaemon, because it has bug in downloading large files.
 
   artifacthub.io/links: |
     - name: Chart Source
