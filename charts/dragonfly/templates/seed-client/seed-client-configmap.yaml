@@ -46,6 +46,8 @@ data:
 {{ toYaml .Values.seedClient.config.health | indent 6 }}
     metrics:
 {{ toYaml .Values.seedClient.config.metrics | indent 6 }}
+    stats:
+{{ toYaml .Values.seedClient.config.stats | indent 6 }}
     {{- if .Values.seedClient.config.tracing }}
     tracing:
 {{ toYaml .Values.seedClient.config.tracing | indent 6 }}
