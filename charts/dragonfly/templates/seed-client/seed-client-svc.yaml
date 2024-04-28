@@ -23,6 +23,14 @@ spec:
       name: http-proxy
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.proxy.server.port }}
+    - port: {{ .Values.seedClient.config.health.server.port }}
+      name: http-health
+      protocol: TCP
+      targetPort: {{ .Values.seedClient.config.health.server.port }}
+    - port: {{ .Values.seedClient.config.stats.server.port }}
+      name: http-stats
+      protocol: TCP
+      targetPort: {{ .Values.seedClient.config.stats.server.port }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
     release: {{ .Release.Name }}

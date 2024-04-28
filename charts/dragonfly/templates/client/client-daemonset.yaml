@@ -138,10 +138,12 @@ spec:
         ports:
         - containerPort: {{ .Values.client.config.upload.server.port }}
           protocol: TCP
-        {{- if .Values.client.metrics.enable }}
-        - containerPort: {{ .Values.client.config.metrics.port }}
+        - containerPort: {{ .Values.client.config.health.server.port }}
           protocol: TCP
-        {{- end }}
+        - containerPort: {{ .Values.client.config.metrics.server.port }}
+          protocol: TCP
+        - containerPort: {{ .Values.client.config.stats.server.port }}
+          protocol: TCP
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.client.config.upload.server.port }}"]

@@ -96,10 +96,12 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.seedClient.config.proxy.server.port }}
           protocol: TCP
-        {{- if .Values.seedClient.metrics.enable }}
-        - containerPort: {{ .Values.seedClient.config.metrics.port }}
+        - containerPort: {{ .Values.seedClient.config.health.server.port }}
           protocol: TCP
-        {{- end }}
+        - containerPort: {{ .Values.seedClient.config.metrics.server.port }}
+          protocol: TCP
+        - containerPort: {{ .Values.seedClient.config.stats.server.port }}
+          protocol: TCP
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.seedClient.config.upload.server.port }}"]
