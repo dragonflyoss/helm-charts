@@ -721,7 +721,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.38
+    tag: v0.1.41
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -946,6 +946,12 @@ seedClient:
         port: 4002
         ## ip is the listen ip of the metrics server.
         # ip: ""
+    stats:
+      server:
+        # -- port is the port to the stats server.
+        port: 4004
+        ## ip is the listen ip of the stats server.
+        # ip: ""
     ## tracing is the tracing configuration for dfdaemon.
     # tracing:
       ## addr is the address to report tracing log.
@@ -997,7 +1003,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.38
+    tag: v0.1.41
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1072,7 +1078,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.38
+      tag: v0.1.41
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1256,6 +1262,12 @@ client:
         # -- port is the port to the metrics server.
         port: 4002
         ## ip is the listen ip of the metrics server.
+        # ip: ""
+    stats:
+      server:
+        # -- port is the port to the stats server.
+        port: 4004
+        ## ip is the listen ip of the stats server.
         # ip: ""
     ## tracing is the tracing configuration for dfdaemon.
     # tracing:
