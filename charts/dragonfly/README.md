@@ -145,6 +145,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | client.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
+| client.config.proxy.read_buffer_size | int | `16384` | read_buffer_size is the buffer size for reading piece from disk, default is 16KB. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
 | client.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
@@ -157,6 +158,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| client.config.storage.read_buffer_size | int | `16384` | read_buffer_size is the buffer size for reading piece from disk, default is 16KB. |
+| client.config.storage.write_buffer_size | int | `16384` | write_buffer_size is the buffer size for writing piece to disk, default is 16KB. |
 | client.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.verbose | bool | `false` | verbose prints log. |
@@ -596,6 +599,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
+| seedClient.config.proxy.read_buffer_size | int | `16384` | read_buffer_size is the buffer size for reading piece from disk, default is 16KB. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. |
 | seedClient.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
@@ -611,6 +615,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| seedClient.config.storage.read_buffer_size | int | `16384` | read_buffer_size is the buffer size for reading piece from disk, default is 16KB. |
+| seedClient.config.storage.write_buffer_size | int | `16384` | write_buffer_size is the buffer size for writing piece to disk, default is 16KB. |
 | seedClient.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.verbose | bool | `false` | verbose prints log. |

@@ -867,6 +867,10 @@ seedClient:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
+      # -- write_buffer_size is the buffer size for writing piece to disk, default is 16KB.
+      write_buffer_size: 16384
+      # -- read_buffer_size is the buffer size for reading piece from disk, default is 16KB.
+      read_buffer_size: 16384
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -931,6 +935,8 @@ seedClient:
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
+      # -- read_buffer_size is the buffer size for reading piece from disk, default is 16KB.
+      read_buffer_size: 16384
     security:
       # -- enable indicates whether enable security.
       enable: false
@@ -1184,6 +1190,10 @@ client:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
+      # -- write_buffer_size is the buffer size for writing piece to disk, default is 16KB.
+      write_buffer_size: 16384
+      # -- read_buffer_size is the buffer size for reading piece from disk, default is 16KB.
+      read_buffer_size: 16384
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -1248,6 +1258,8 @@ client:
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
+      # -- read_buffer_size is the buffer size for reading piece from disk, default is 16KB.
+      read_buffer_size: 16384
     security:
       # -- enable indicates whether enable security.
       enable: false
