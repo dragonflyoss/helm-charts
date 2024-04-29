@@ -164,9 +164,11 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.client.fullname" . }}
+      {{- if .Values.client.dfinit.enable }}
       - name: dfinit-config
         configMap:
           name: {{ template "dragonfly.dfinit.fullname" . }}
+      {{- end }}
       {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd) }}
       - name: containerd-config-dir
         hostPath:
