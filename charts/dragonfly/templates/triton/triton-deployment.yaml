@@ -24,7 +24,6 @@ spec:
       app: {{ template "dragonfly.fullname" . }}
       component: {{ .Values.triton.name }}
       release: {{ .Release.Name }}
-  serviceName: triton
   template:
     metadata:
       labels:
