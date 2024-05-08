@@ -173,7 +173,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v0.1.45"` | Image tag. |
+| client.dfinit.image.tag | string | `"v0.1.48"` | Image tag. |
 | client.enable | bool | `false` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"hostPath":{"path":"/var/lib/dragonfly/","type":"DirectoryOrCreate"},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -187,7 +187,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v0.1.45"` | Image tag. |
+| client.image.tag | string | `"v0.1.48"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -201,7 +201,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.metrics.podMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
 | client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | client.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
-| client.metrics.prometheusRule.rules | list | `[]` | Prometheus rules. |
+| client.metrics.prometheusRule.rules | list | `[{"alert":"ClientDown","annotations":{"message":"Client instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Client instance is down"},"expr":"sum(dragonfly_client_version{container=\"client\"}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"ClientHighNumberOfFailedDownloadTask","annotations":{"message":"Client has a high number of failed download task","summary":"Client has a high number of failed download task"},"expr":"sum(irate(dragonfly_client_download_task_failure_total{container=\"client\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"ClientSuccessRateOfDownloadingTask","annotations":{"message":"Client's success rate of downloading task is low","summary":"Client's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_client_download_task_total{container=\"client\"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container=\"client\"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container=\"client\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
 | client.metrics.service.annotations | object | `{}` | Service annotations. |
 | client.metrics.service.labels | object | `{}` | Service labels. |
 | client.metrics.service.type | string | `"ClusterIP"` | Service type. |
@@ -321,7 +321,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dfdaemon.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | dfdaemon.image.registry | string | `"docker.io"` | Image registry. |
 | dfdaemon.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| dfdaemon.image.tag | string | `"v2.1.43"` | Image tag. |
+| dfdaemon.image.tag | string | `"v2.1.44"` | Image tag. |
 | dfdaemon.initContainer.image.digest | string | `""` | Image digest. |
 | dfdaemon.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | dfdaemon.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -429,7 +429,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.1.43"` | Image tag. |
+| manager.image.tag | string | `"v2.1.44"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -549,7 +549,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.1.43"` | Image tag. |
+| scheduler.image.tag | string | `"v2.1.44"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -630,7 +630,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v0.1.45"` | Image tag. |
+| seedClient.image.tag | string | `"v0.1.48"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -640,7 +640,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.metrics.enable | bool | `false` | Enable seed client metrics. |
 | seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | seedClient.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
-| seedClient.metrics.prometheusRule.rules | list | `[]` | Prometheus rules. |
+| seedClient.metrics.prometheusRule.rules | list | `[{"alert":"SeedClientDown","annotations":{"message":"Seed client instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Seed client instance is down"},"expr":"sum(dragonfly_client_version{container=\"seed-client\"}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"SeedClientHighNumberOfFailedDownloadTask","annotations":{"message":"Seed client has a high number of failed download task","summary":"Seed client has a high number of failed download task"},"expr":"sum(irate(dragonfly_client_download_task_failure_total{container=\"seed-client\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"SeedClientSuccessRateOfDownloadingTask","annotations":{"message":"Seed client's success rate of downloading task is low","summary":"Seed client's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_client_download_task_total{container=\"seed-client\"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container=\"seed-client\"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container=\"seed-client\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
 | seedClient.metrics.service.annotations | object | `{}` | Service annotations. |
 | seedClient.metrics.service.labels | object | `{}` | Service labels. |
 | seedClient.metrics.service.type | string | `"ClusterIP"` | Service type. |
@@ -743,7 +743,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedPeer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedPeer.image.registry | string | `"docker.io"` | Image registry. |
 | seedPeer.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| seedPeer.image.tag | string | `"v2.1.43"` | Image tag. |
+| seedPeer.image.tag | string | `"v2.1.44"` | Image tag. |
 | seedPeer.initContainer.image.digest | string | `""` | Image digest. |
 | seedPeer.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedPeer.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -809,7 +809,7 @@ helm delete dragonfly --namespace dragonfly-system
 | trainer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | trainer.image.registry | string | `"docker.io"` | Image registry. |
 | trainer.image.repository | string | `"dragonflyoss/trainer"` | Image repository. |
-| trainer.image.tag | string | `"v2.1.43"` | Image tag. |
+| trainer.image.tag | string | `"v2.1.44"` | Image tag. |
 | trainer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
 | trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
