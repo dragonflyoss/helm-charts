@@ -37,7 +37,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.43
+    tag: v2.1.44
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -323,7 +323,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.43
+    tag: v2.1.44
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -721,7 +721,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.45
+    tag: v0.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -989,7 +989,31 @@ seedClient:
       # -- Additional labels.
       additionalLabels: {}
       # -- Prometheus rules.
-      rules: []
+      rules:
+        - alert: SeedClientDown
+          expr: sum(dragonfly_client_version{container="seed-client"}) == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Seed client instance is down
+            message: Seed client instance {{ "{{ $labels.instance }}" }} is down
+        - alert: SeedClientHighNumberOfFailedDownloadTask
+          expr: sum(irate(dragonfly_client_download_task_failure_total{container="seed-client"}[1m])) > 100
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: Seed client has a high number of failed download task
+            message: Seed client has a high number of failed download task
+        - alert: SeedClientSuccessRateOfDownloadingTask
+          expr: (sum(rate(dragonfly_client_download_task_total{container="seed-client"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container="seed-client"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container="seed-client"}[1m])) < 0.6
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Seed client's success rate of downloading task is low
+            message: Seed client's success rate of downloading task is low
 
 client:
   # -- Enable client.
@@ -1009,7 +1033,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.45
+    tag: v0.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1084,7 +1108,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.45
+      tag: v0.1.48
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1312,7 +1336,31 @@ client:
       # -- Additional labels.
       additionalLabels: {}
       # -- Prometheus rules.
-      rules: []
+      rules:
+        - alert: ClientDown
+          expr: sum(dragonfly_client_version{container="client"}) == 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Client instance is down
+            message: Client instance {{ "{{ $labels.instance }}" }} is down
+        - alert: ClientHighNumberOfFailedDownloadTask
+          expr: sum(irate(dragonfly_client_download_task_failure_total{container="client"}[1m])) > 100
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: Client has a high number of failed download task
+            message: Client has a high number of failed download task
+        - alert: ClientSuccessRateOfDownloadingTask
+          expr: (sum(rate(dragonfly_client_download_task_total{container="client"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container="client"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container="client"}[1m])) < 0.6
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: Client's success rate of downloading task is low
+            message: Client's success rate of downloading task is low
 
 externalManager:
   # -- External manager hostname.
@@ -1430,7 +1478,7 @@ trainer:
     # -- Image repository.
     repository: dragonflyoss/trainer
     # -- Image tag.
-    tag: v2.1.43
+    tag: v2.1.44
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1816,7 +1864,7 @@ seedPeer:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.43
+    tag: v2.1.44
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -2180,7 +2228,7 @@ dfdaemon:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.43
+    tag: v2.1.44
     # -- Image digest.
     digest: ""
     # -- Image pull policy.

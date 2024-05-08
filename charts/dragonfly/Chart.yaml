@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.54
-appVersion: 2.1.43
+version: 1.1.56
+appVersion: 2.1.44
 keywords:
   - dragonfly
   - d7y
@@ -26,7 +26,9 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add buffer size config for client.
+    - Add prometheus rules for client.
+    - Update dragonfly image tag to v2.1.44.
+    - Update client image tag to v0.1.48.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -35,19 +37,19 @@ annotations:
       url: https://github.com/dragonflyoss/Dragonfly2
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.43
+      image: dragonflyoss/manager:v2.1.44
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.43
+      image: dragonflyoss/scheduler:v2.1.44
     - name: client
-      image: dragonflyoss/client:v0.1.45
+      image: dragonflyoss/client:v0.1.48
     - name: seed-client
-      image: dragonflyoss/client:v0.1.45
+      image: dragonflyoss/client:v0.1.48
     - name: dfinit
-      image: dragonflyoss/dfinit:v0.1.45
+      image: dragonflyoss/dfinit:v0.1.48
     - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.1.43
+      image: dragonflyoss/dfdaemon:v2.1.44
     - name: trainer
-      image: dragonflyoss/scheduler:v2.1.43
+      image: dragonflyoss/scheduler:v2.1.44
     - name: triton
       image: nvcr.io/nvidia/tritonserver:23.06-py3
 
