@@ -1319,8 +1319,8 @@ client:
       labels: {}
       # -- Service annotations.
       annotations: {}
-    podMonitor:
-      # -- Enable prometheus pod monitor.
+    serviceMonitor:
+      # -- Enable prometheus service monitor.
       # ref: https://github.com/coreos/prometheus-operator.
       enable: false
       # -- Additional labels

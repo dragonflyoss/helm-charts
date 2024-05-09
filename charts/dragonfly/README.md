@@ -195,16 +195,16 @@ helm delete dragonfly --namespace dragonfly-system
 | client.initContainer.image.tag | string | `"latest"` | Image tag. |
 | client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | client.metrics.enable | bool | `false` | Enable client metrics. |
-| client.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels |
-| client.metrics.podMonitor.enable | bool | `false` | Enable prometheus pod monitor. ref: https://github.com/coreos/prometheus-operator. |
-| client.metrics.podMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
-| client.metrics.podMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
 | client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
 | client.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
 | client.metrics.prometheusRule.rules | list | `[{"alert":"ClientDown","annotations":{"message":"Client instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Client instance is down"},"expr":"sum(dragonfly_client_version{container=\"client\"}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"ClientHighNumberOfFailedDownloadTask","annotations":{"message":"Client has a high number of failed download task","summary":"Client has a high number of failed download task"},"expr":"sum(irate(dragonfly_client_download_task_failure_total{container=\"client\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"ClientSuccessRateOfDownloadingTask","annotations":{"message":"Client's success rate of downloading task is low","summary":"Client's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_client_download_task_total{container=\"client\"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container=\"client\"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container=\"client\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
 | client.metrics.service.annotations | object | `{}` | Service annotations. |
 | client.metrics.service.labels | object | `{}` | Service labels. |
 | client.metrics.service.type | string | `"ClusterIP"` | Service type. |
+| client.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
+| client.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
+| client.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
+| client.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
 | client.name | string | `"client"` | Client name. |
 | client.nameOverride | string | `""` | Override scheduler name. |
 | client.nodeSelector | object | `{}` | Node labels for pod assignment. |
