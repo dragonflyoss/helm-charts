@@ -19,9 +19,9 @@ metadata:
 spec:
   type: {{ .Values.seedClient.metrics.service.type }}
   ports:
-  - port: {{ .Values.seedClient.config.metrics.port }}
+  - port: {{ .Values.seedClient.config.metrics.server.port }}
     name: http-metrics
-    targetPort: {{ .Values.seedClient.config.metrics.port }}
+    targetPort: {{ .Values.seedClient.config.metrics.server.port }}
     protocol: TCP
   selector:
     app: {{ template "dragonfly.fullname" . }}
