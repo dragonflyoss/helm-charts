@@ -721,7 +721,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.56
+    tag: v0.1.62
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -830,7 +830,7 @@ seedClient:
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 30s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 32
+      concurrentPieceCount: 16
     upload:
       server:
         # -- port is the port to the grpc server.
@@ -867,10 +867,10 @@ seedClient:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
-      # -- writeBufferSize is the buffer size for writing piece to disk, default is 4KB.
-      writeBufferSize: 4096
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4KB.
-      readBufferSize: 4096
+      # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
+      writeBufferSize: 131072
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
+      readBufferSize: 131072
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -935,8 +935,8 @@ seedClient:
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 1KB.
-      readBufferSize: 1024
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
+      readBufferSize: 32768
     security:
       # -- enable indicates whether enable security.
       enable: false
@@ -1033,7 +1033,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.56
+    tag: v0.1.62
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1108,7 +1108,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.56
+      tag: v0.1.62
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1184,7 +1184,7 @@ client:
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 30s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 10
+      concurrentPieceCount: 16
     upload:
       server:
         # -- port is the port to the grpc server.
@@ -1214,10 +1214,10 @@ client:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
-      # -- writeBufferSize is the buffer size for writing piece to disk, default is 4KB.
-      writeBufferSize: 4096
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4KB.
-      readBufferSize: 4096
+      # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
+      writeBufferSize: 131072
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
+      readBufferSize: 131072
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -1282,8 +1282,8 @@ client:
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 1KB.
-      readBufferSize: 1024
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
+      readBufferSize: 32768
     security:
       # -- enable indicates whether enable security.
       enable: false

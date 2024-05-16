@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.60
+version: 1.1.61
 appVersion: 2.1.44
 keywords:
   - dragonfly
@@ -26,8 +26,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Fix readBufferSize and writeBufferSize for dfdaemon.
-    - Update client version to v0.1.56.
+    - Optimize default params for concurrent downloading.
+    - Update client version to v0.1.62.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -40,11 +40,11 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.1.44
     - name: client
-      image: dragonflyoss/client:v0.1.56
+      image: dragonflyoss/client:v0.1.62
     - name: seed-client
-      image: dragonflyoss/client:v0.1.56
+      image: dragonflyoss/client:v0.1.62
     - name: dfinit
-      image: dragonflyoss/dfinit:v0.1.56
+      image: dragonflyoss/dfinit:v0.1.62
     - name: dfdaemon
       image: dragonflyoss/dfdaemon:v2.1.44
     - name: trainer
