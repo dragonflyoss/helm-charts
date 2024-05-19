@@ -65,3 +65,7 @@ dependencies:
     version: 0.66.1
     repository: https://jaegertracing.github.io/helm-charts
     condition: jaeger.enable
+  - name: postgresql
+    repository: https://charts.bitnami.com/bitnami
+    version: 15.3.3
+    condition: postgresql.enable

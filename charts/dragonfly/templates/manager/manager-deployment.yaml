@@ -64,7 +64,7 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable }}
+      {{- if or .Values.redis.enable .Values.mysql.enable .Values.postgresql.enable}}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
@@ -77,6 +77,12 @@ spec:
         image: {{ template "manager.initContainer.image" . }}
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
+      {{- end }}
+      {{- if .Values.postgresql.enable }}
+      - name: wait-for-postgresql
+        image: {{ template "manager.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
+        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.postgresql.primary.service.port }}; do echo waiting for postgresql; sleep 2; done;']
       {{- end }}
       {{- end }}
       containers:

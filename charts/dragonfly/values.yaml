@@ -1407,6 +1407,45 @@ externalMysql:
   # -- External mysql port.
   port: 3306
 
+postgresql:
+  # -- Enable postgresql with docker container.
+  enable: false
+  # -- Cluster domain.
+  clusterDomain: "cluster.local"
+  # -- Running GORM migration.
+  migrate: true
+  auth:
+    enablePostgresUser: true
+    postgresPassword: "dragonfly"
+    # -- Create dragonfly user.
+    username: "dragonfly"
+    password: "dragonfly"
+    # -- Create dragonfly manager db.
+    database: "manager"
+  primary:
+    service:
+      # -- postgresql port.
+      port: 5432
+    persistence:
+      enabled: true
+    # storageClass: ""
+
+externalPostgresql:
+  # -- Running GORM migration.
+  migrate: false
+  # -- External postgresql hostname.
+  host:
+  # -- External postgresql username.
+  username: dragonfly
+  # -- External postgresql password.
+  password: dragonfly
+  # -- External postgresql database name.
+  database: manager
+  # -- External postgresql ssl mode.
+  sslMode: disable
+  # -- External postgresql port.
+  port: 5432
+
 redis:
   # -- Enable redis cluster with docker container.
   enable: true
