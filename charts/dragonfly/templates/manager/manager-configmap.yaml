@@ -32,6 +32,8 @@ data:
     auth:
 {{ toYaml .Values.manager.config.auth | indent 6 }}
     database:
+      {{- if or .Values.mysql.enable .Values.externalMysql.host }}
+      type: mysql
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
@@ -48,6 +50,28 @@ data:
         dbname: {{ .Values.externalMysql.database }}
         migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
+      {{- end }}
+      {{- if or .Values.postgresql.enable .Values.externalPostgresql.host}}
+      type: postgres
+      postgres:
+        {{- if and .Values.postgresql.enable (empty .Values.externalPostgresql.host)}}
+        user: {{ .Values.postgresql.auth.username }}
+        password: {{ .Values.postgresql.auth.password }}
+        host: {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+        port: {{ .Values.postgresql.primary.service.port }}
+        dbname: {{ .Values.postgresql.auth.database }}
+        migrate: {{ .Values.postgresql.migrate }}
+        {{- else }}
+        user: {{ .Values.externalPostgresql.username }}
+        password: {{ .Values.externalPostgresql.password }}
+        host: {{ .Values.externalPostgresql.host }}
+        port: {{ .Values.externalPostgresql.port }}
+        dbname: {{ .Values.externalPostgresql.database }}
+        migrate: {{ .Values.externalPostgresql.migrate }}
+        sslMode: {{ .Values.externalPostgresql.sslMode }}
+        {{- end }}
+        timezone: UTC
+      {{- end }}
       redis:
         {{- if .Values.redis.enable }}
         addrs:
