@@ -360,6 +360,13 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
+| externalPostgresql.database | string | `"manager"` | External postgresql database name. |
+| externalPostgresql.host | string | `nil` | External postgresql hostname. |
+| externalPostgresql.migrate | bool | `false` | Running GORM migration. |
+| externalPostgresql.password | string | `"dragonfly"` | External postgresql password. |
+| externalPostgresql.port | int | `5432` | External postgresql port. |
+| externalPostgresql.sslMode | string | `"disable"` | External postgresql ssl mode. |
+| externalPostgresql.username | string | `"dragonfly"` | External postgresql username. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
@@ -479,6 +486,16 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.migrate | bool | `true` | Running GORM migration. |
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
+| postgresql.auth.database | string | `"manager"` | Create dragonfly manager db. |
+| postgresql.auth.enablePostgresUser | bool | `true` |  |
+| postgresql.auth.password | string | `"dragonfly"` |  |
+| postgresql.auth.postgresPassword | string | `"dragonfly"` |  |
+| postgresql.auth.username | string | `"dragonfly"` | Create dragonfly user. |
+| postgresql.clusterDomain | string | `"cluster.local"` | Cluster domain. |
+| postgresql.enable | bool | `false` | Enable postgresql with docker container. |
+| postgresql.migrate | bool | `true` | Running GORM migration. |
+| postgresql.primary.persistence.enabled | bool | `true` |  |
+| postgresql.primary.service.port | int | `5432` | postgresql port. |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
@@ -867,5 +884,6 @@ helm delete dragonfly --namespace dragonfly-system
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 9.4.6 |
+| https://charts.bitnami.com/bitnami | postgresql | 15.3.3 |
 | https://charts.bitnami.com/bitnami | redis | 17.4.3 |
 | https://jaegertracing.github.io/helm-charts | jaeger | 0.66.1 |
