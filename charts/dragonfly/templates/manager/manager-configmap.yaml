@@ -51,10 +51,10 @@ data:
         migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
       {{- end }}
-      {{- if or .Values.postgresql.enable .Values.externalPostgresql.host}}
+      {{- if or .Values.postgresql.enable .Values.externalPostgresql.host }}
       type: postgres
       postgres:
-        {{- if and .Values.postgresql.enable (empty .Values.externalPostgresql.host)}}
+        {{- if and .Values.postgresql.enable (empty .Values.externalPostgresql.host) }}
         user: {{ .Values.postgresql.auth.username }}
         password: {{ .Values.postgresql.auth.password }}
         host: {{ .Release.Name }}-{{ default "postgresql" .Values.postgresql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}

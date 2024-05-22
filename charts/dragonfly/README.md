@@ -242,6 +242,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalPostgresql.port | int | `5432` | External postgresql port. |
 | externalPostgresql.sslMode | string | `"disable"` | External postgresql ssl mode. |
 | externalPostgresql.username | string | `"dragonfly"` | External postgresql username. |
+| externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
