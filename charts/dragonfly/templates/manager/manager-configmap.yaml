@@ -35,7 +35,7 @@ data:
       {{- if or .Values.mysql.enable .Values.externalMysql.host }}
       type: mysql
       mysql:
-        {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
+        {{- if and .Values.mysql.enable (empty .Values.externalMysql.host) }}
         user: {{ .Values.mysql.auth.username }}
         password: {{ .Values.mysql.auth.password }}
         host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
