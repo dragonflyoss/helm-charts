@@ -235,6 +235,13 @@ helm delete dragonfly --namespace dragonfly-system
 | externalPostgresql.sslMode | string | `"disable"` | External postgresql ssl mode. |
 | externalPostgresql.username | string | `"dragonfly"` | External postgresql username. |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
+| externalPostgresql.database | string | `"manager"` | External postgresql database name. |
+| externalPostgresql.host | string | `nil` | External postgresql hostname. |
+| externalPostgresql.migrate | bool | `false` | Running GORM migration. |
+| externalPostgresql.password | string | `"dragonfly"` | External postgresql password. |
+| externalPostgresql.port | int | `5432` | External postgresql port. |
+| externalPostgresql.sslMode | string | `"disable"` | External postgresql ssl mode. |
+| externalPostgresql.username | string | `"dragonfly"` | External postgresql username. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
@@ -348,7 +355,6 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.migrate | bool | `true` | Running GORM migration. |
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
-| namespaceOverride | string | `""` | Override dragonfly namespace. |
 | postgresql.auth.database | string | `"manager"` | Create dragonfly manager db. |
 | postgresql.auth.enablePostgresUser | bool | `true` |  |
 | postgresql.auth.password | string | `"dragonfly"` |  |
