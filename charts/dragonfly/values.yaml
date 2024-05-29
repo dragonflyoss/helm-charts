@@ -867,6 +867,8 @@ seedClient:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
+      # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
+      keep: true
       # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
       writeBufferSize: 131072
       # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
@@ -1214,6 +1216,8 @@ client:
     storage:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
+      # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
+      keep: true
       # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
       writeBufferSize: 131072
       # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.

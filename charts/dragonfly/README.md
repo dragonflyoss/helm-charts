@@ -158,6 +158,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| client.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | client.config.storage.readBufferSize | int | `131072` | readBufferSize is the buffer size for reading piece from disk, default is 128KB. |
 | client.config.storage.writeBufferSize | int | `131072` | writeBufferSize is the buffer size for writing piece to disk, default is 128KB. |
 | client.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
@@ -615,6 +616,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
+| seedClient.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | seedClient.config.storage.readBufferSize | int | `131072` | readBufferSize is the buffer size for reading piece from disk, default is 128KB. |
 | seedClient.config.storage.writeBufferSize | int | `131072` | writeBufferSize is the buffer size for writing piece to disk, default is 128KB. |
 | seedClient.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
