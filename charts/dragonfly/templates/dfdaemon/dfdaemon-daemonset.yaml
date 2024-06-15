@@ -224,7 +224,7 @@ spec:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:
         - /bin/sh
-        - -cx
+        - -ecx
         - |-
           mkdir -p /tmp/dragonfly-ca
           cd /tmp/dragonfly-ca
@@ -342,7 +342,7 @@ spec:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:
         - /bin/sh
-        - -cx
+        - -ecx
         - |-
           etcContainerd=/host{{ .Values.containerRuntime.containerd.configPathDir }}
           if [[ -e $etcContainerd/{{ default "config.toml" .Values.containerRuntime.containerd.configFileName }} ]]; then
@@ -505,7 +505,7 @@ spec:
 {{ toYaml .Values.dfdaemon.resources | indent 12 }}
         command:
         - /bin/sh
-        - -cx
+        - -ecx
         - |-
           registries="{{- join " " .Values.containerRuntime.crio.registries }}"
           if [[ -n "$domains" ]]; then
