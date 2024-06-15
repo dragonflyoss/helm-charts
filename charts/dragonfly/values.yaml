@@ -37,7 +37,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.45
+    tag: v2.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -323,7 +323,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.45
+    tag: v2.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -721,7 +721,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.65
+    tag: v0.1.81
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -868,7 +868,7 @@ seedClient:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
-      keep: true
+      keep: false
       # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
       writeBufferSize: 131072
       # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
@@ -1035,7 +1035,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.65
+    tag: v0.1.81
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1110,7 +1110,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.65
+      tag: v0.1.81
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1217,7 +1217,7 @@ client:
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
-      keep: true
+      keep: false
       # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
       writeBufferSize: 131072
       # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
@@ -1482,7 +1482,7 @@ trainer:
     # -- Image repository.
     repository: dragonflyoss/trainer
     # -- Image tag.
-    tag: v2.1.45
+    tag: v2.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1868,7 +1868,7 @@ seedPeer:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.45
+    tag: v2.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -2232,7 +2232,7 @@ dfdaemon:
     # -- Image repository.
     repository: dragonflyoss/dfdaemon
     # -- Image tag.
-    tag: v2.1.45
+    tag: v2.1.48
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
