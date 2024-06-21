@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.65
+version: 1.1.66
 appVersion: 2.1.49
 keywords:
   - dragonfly
@@ -12,28 +12,31 @@ keywords:
   - image
 
 maintainers:
-  - name: jim3ma
-    email: majinjing3@gmail.com
   - name: gaius-qi
     email: gaius.qi@gmail.com
   - name: yxxhero
     email: aiopsclub@163.com
+  - name: jim3ma
+    email: majinjing3@gmail.com
 
 home: https://d7y.io/
 
 sources:
   - https://github.com/dragonflyoss/Dragonfly2
+  - https://github.com/dragonflyoss/client
 
 annotations:
   artifacthub.io/changes: |
-    - Update dragonfly image tag to v2.1.49.
-    - Update client image tag to v0.1.82.
+    - Remove the unnecessary dependency on Dragonfly chart.
+    - Update Rust client for Dragonfly chart.
 
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
     - name: Source
       url: https://github.com/dragonflyoss/Dragonfly2
+    - name: Source
+      url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
       image: dragonflyoss/manager:v2.1.48
@@ -45,12 +48,6 @@ annotations:
       image: dragonflyoss/client:v0.1.81
     - name: dfinit
       image: dragonflyoss/dfinit:v0.1.81
-    - name: dfdaemon
-      image: dragonflyoss/dfdaemon:v2.1.48
-    - name: trainer
-      image: dragonflyoss/scheduler:v2.1.48
-    - name: triton
-      image: nvcr.io/nvidia/tritonserver:23.06-py3
 
 dependencies:
   - name: mysql
@@ -61,7 +58,3 @@ dependencies:
     version: 17.4.3
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enable
-  - name: jaeger
-    version: 0.66.1
-    repository: https://jaegertracing.github.io/helm-charts
-    condition: jaeger.enable

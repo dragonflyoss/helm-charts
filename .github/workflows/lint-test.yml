@@ -66,9 +66,6 @@ jobs:
       - name: Add bitnami chart repos
         run: helm repo add bitnami https://charts.bitnami.com/bitnami
 
-      - name: Add jaegertracing chart repos
-        run: helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
-
       - name: Run chart-testing (install)
         run: ct install --config ./.github/ct.yaml
 

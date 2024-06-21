@@ -81,13 +81,12 @@ scheduler:
     manager:
       schedulerClusterID: 1
 
-seedPeer:
+seedClient:
   config:
-    scheduler:
-      manager:
-        seedPeer:
-          enable: true
-          clusterID: 1
+    seedPeer:
+      enable: true
+      type: super
+      clusterID: 1
 
 manager:
   enable: false
@@ -175,7 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
 | client.dfinit.image.tag | string | `"v0.1.82"` | Image tag. |
-| client.enable | bool | `false` | Enable client. |
+| client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"hostPath":{"path":"/var/lib/dragonfly/","type":"DirectoryOrCreate"},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -218,139 +217,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{}` | Update strategy for replicas. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
-| containerRuntime | object | `{"containerd":{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"crio":{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]},"docker":{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]},"extraInitContainers":[],"initContainer":{"image":{"digest":"","pullPolicy":"IfNotPresent","registry":"docker.io","repository":"dragonflyoss/openssl","tag":"latest"}}}` | [Experimental] Container runtime support. Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O. |
-| containerRuntime.containerd | object | `{"configFileName":"","configPathDir":"/etc/containerd","enable":false,"injectConfigPath":false,"injectRegistryCredencials":{"auth":"","enable":false,"identitytoken":"","password":"","username":""},"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] Containerd support. |
-| containerRuntime.containerd.configFileName | string | `""` | Custom config file name, default is config.toml. This is workaround for kops provider, see https://github.com/kubernetes/kops/pull/13090 for more details. |
-| containerRuntime.containerd.configPathDir | string | `"/etc/containerd"` | Custom config path directory, default is /etc/containerd. e.g. rke2 generator config path is /var/lib/rancher/rke2/agent/etc/containerd/config.toml, docs: https://github.com/rancher/rke2/blob/master/docs/advanced.md#configuring-containerd. |
-| containerRuntime.containerd.enable | bool | `false` | Enable containerd support. Inject mirror config into ${containerRuntime.containerd.configPathDir}/config.toml, if config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, the config take effect real time, but if config_path is not enabled in ${containerRuntime.containerd.configPathDir}/config.toml, need restart containerd to take effect. When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "1", inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd. When the version in ${containerRuntime.containerd.configPathDir}/config.toml is "2":   1. when config_path is enabled in ${containerRuntime.containerd.configPathDir}/config.toml, inject containerRuntime.containerd.registries into config_path,   2. when containerRuntime.containerd.injectConfigPath=true, inject config_path into ${containerRuntime.containerd.configPathDir}/config.toml and inject containerRuntime.containerd.registries into config_path,   3. when not config_path in ${containerRuntime.containerd.configPathDir}/config.toml and containerRuntime.containerd.injectConfigPath=false, inject dfdaemon.config.proxy.registryMirror.url as registry mirror and restart containerd. |
-| containerRuntime.containerd.injectConfigPath | bool | `false` | Config path for multiple registries. By default, init container will check ${containerRuntime.containerd.configPathDir}/config.toml, whether is config_path configured, if not, init container will just add the dfdaemon.config.proxy.registryMirror.url for registry mirror. When configPath is true, init container will inject config_path=${containerRuntime.containerd.configPathDir}/certs.d and configure all registries. |
-| containerRuntime.containerd.injectRegistryCredencials | object | `{"auth":"","enable":false,"identitytoken":"","password":"","username":""}` | Credencials for authenticating to private registries. By default this is aplicable for single registry mode, for reference see docs: https://github.com/containerd/containerd/blob/v1.6.4/docs/cri/registry.md#configure-registry-credentials. |
-| containerRuntime.crio | object | `{"enable":false,"registries":["https://ghcr.io","https://quay.io","https://harbor.example.com:8443"]}` | [Experimental] CRI-O support. |
-| containerRuntime.crio.enable | bool | `false` | Enable CRI-O support. Inject drop-in mirror config into /etc/containers/registries.conf.d. |
-| containerRuntime.docker | object | `{"caCert":{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"},"enable":false,"injectHosts":true,"insecure":false,"registryDomains":["ghcr.io","quay.io"],"registryPorts":[443],"restart":false,"skipHosts":["127.0.0.1","docker.io"]}` | [Experimental] Support docker, when use docker-shim in Kubernetes, please set containerRuntime.docker.enable to true. For supporting docker, we need generate CA and update certs, then hijack registries traffic, By default, it's unnecessary to restart docker daemon when pull image from private registries, this feature is support explicit registries in containerRuntime.registry.domains, default domains is ghcr.io, quay.io, please update your registries by `--set containerRuntime.registry.domains='{harbor.example.com,harbor.example.net}' --set containerRuntime.registry.injectHosts=true --set containerRuntime.docker.enable=true`. Caution:   **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.   Because the original `daemonset` in Kubernetes did not support `Surging Rolling Update` policy.   When kill current dfdaemon pod, the new pod image can not be pulled anymore.   If you can not change runtime from docker to others, remind to choose a plan when upgrade dfdaemon:     Option 1: pull newly dfdaemon image manually before upgrade dragonfly, or use [ImagePullJob](https://openkruise.io/docs/user-manuals/imagepulljob) to pull image automate.     Option 2: keep the image registry of dragonfly is different from common registries and add host in `containerRuntime.docker.skipHosts`. Caution: docker hub image is not supported without restart docker daemon. When need pull image from docker hub or any other registries not in containerRuntime.registry.domains, set containerRuntime.docker.restart=true this feature will inject proxy config into docker.service and restart docker daemon. Caution: set restart to true only when live restore is enable. Requirement: Docker Engine v1.2.0+ without Rootless. |
-| containerRuntime.docker.caCert | object | `{"commonName":"Dragonfly Authority CA","countryName":"CN","localityName":"Hangzhou","organizationName":"Dragonfly","stateOrProvinceName":"Hangzhou"}` | CA cert info for generating. |
-| containerRuntime.docker.enable | bool | `false` | Enable docker support. Inject ca cert into /etc/docker/certs.d/, Refer: https://docs.docker.com/engine/security/certificates/. |
-| containerRuntime.docker.injectHosts | bool | `true` | Inject domains into /etc/hosts to force redirect traffic to dfdaemon. Caution: This feature need dfdaemon to implement SNI Proxy, confirm image tag is greater than or equal to v2.0.0. When use certs and inject hosts in docker, no necessary to restart docker daemon. |
-| containerRuntime.docker.insecure | bool | `false` | Skip verify remote tls cert in dfdaemon. If registry cert is private or self-signed, set to true. Caution: this option is test only. When deploy in production, should not skip verify tls cert. |
-| containerRuntime.docker.registryDomains | list | `["ghcr.io","quay.io"]` | Registry domains. By default, docker pull image via https, currently, by default 443 port with https. If not standard port, update registryPorts. |
-| containerRuntime.docker.registryPorts | list | `[443]` | Registry ports. |
-| containerRuntime.docker.restart | bool | `false` | Restart docker daemon to redirect traffic to dfdaemon. When containerRuntime.docker.restart=true, containerRuntime.docker.injectHosts and containerRuntime.registry.domains is ignored. If did not want restart docker daemon, keep containerRuntime.docker.restart=false and containerRuntime.docker.injectHosts=true. |
-| containerRuntime.docker.skipHosts | list | `["127.0.0.1","docker.io"]` | Skip hosts. Some traffic did not redirect to dragonfly, like 127.0.0.1, and the image registries of dragonfly itself. The format likes NO_PROXY in golang, refer: https://github.com/golang/net/blob/release-branch.go1.15/http/httpproxy/proxy.go#L39. Caution: Some registries use s3 or oss for backend storage, when add registries to skipHosts, don't forget add the corresponding backend storage. |
-| containerRuntime.extraInitContainers | list | `[]` | Additional init containers. |
-| containerRuntime.initContainer | object | `{"image":{"digest":"","pullPolicy":"IfNotPresent","registry":"docker.io","repository":"dragonflyoss/openssl","tag":"latest"}}` | The image name of init container, need include openssl for ca generating. |
-| containerRuntime.initContainer.image.digest | string | `""` | Image digest. |
-| containerRuntime.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| containerRuntime.initContainer.image.registry | string | `"docker.io"` | Image registry. |
-| containerRuntime.initContainer.image.repository | string | `"dragonflyoss/openssl"` | Image repository. |
-| containerRuntime.initContainer.image.tag | string | `"latest"` | Image tag. |
-| dfdaemon.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
-| dfdaemon.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
-| dfdaemon.config.cacheDir | string | `""` | Dynconfig cache directory. |
-| dfdaemon.config.console | bool | `false` | Console shows log on console. |
-| dfdaemon.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory. |
-| dfdaemon.config.download.calculateDigest | bool | `false` | Calculate digest, when only pull images, can be false to save cpu and memory. |
-| dfdaemon.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option. |
-| dfdaemon.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
-| dfdaemon.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |
-| dfdaemon.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port. |
-| dfdaemon.config.download.perPeerRateLimit | string | `"512Mi"` | Per peer task limit per second[B]. |
-| dfdaemon.config.download.prefetch | bool | `false` | When request data with range header, prefetch data not in range. |
-| dfdaemon.config.download.totalRateLimit | string | `"1024Mi"` | Total download limit per second[B]. |
-| dfdaemon.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval. |
-| dfdaemon.config.health.path | string | `"/server/ping"` |  |
-| dfdaemon.config.health.tcpListen.port | int | `40901` |  |
-| dfdaemon.config.host.idc | string | `""` | IDC deployed by daemon. |
-| dfdaemon.config.host.location | string | `""` | Geographical location, separated by "|" characters. |
-| dfdaemon.config.jaeger | string | `""` |  |
-| dfdaemon.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not. it is usefully when upgrade daemon service, all local cache will be saved. default is false. |
-| dfdaemon.config.logDir | string | `""` | Log directory. |
-| dfdaemon.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
-| dfdaemon.config.networkTopology.enable | bool | `false` | Enable networkTopology service. |
-| dfdaemon.config.networkTopology.probe.interval | string | `"20m"` | interval is the interval of probing hosts. |
-| dfdaemon.config.objectStorage.enable | bool | `false` | Enable object storage service. |
-| dfdaemon.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task. |
-| dfdaemon.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
-| dfdaemon.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option. |
-| dfdaemon.config.objectStorage.tcpListen.port | int | `65004` | Listen port. |
-| dfdaemon.config.pluginDir | string | `""` | Plugin directory. |
-| dfdaemon.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
-| dfdaemon.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
-| dfdaemon.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
-| dfdaemon.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget. |
-| dfdaemon.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host. |
-| dfdaemon.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true. |
-| dfdaemon.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror. |
-| dfdaemon.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option. |
-| dfdaemon.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net. it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace. Linux only. |
-| dfdaemon.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"10m","seedPeer":{"clusterID":1,"enable":false,"type":"super"}},"netAddrs":null,"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml. |
-| dfdaemon.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon. |
-| dfdaemon.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager. |
-| dfdaemon.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr. |
-| dfdaemon.config.scheduler.manager.refreshInterval | string | `"10m"` | Scheduler list refresh interval. |
-| dfdaemon.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id. |
-| dfdaemon.config.scheduler.manager.seedPeer.enable | bool | `false` | Enable seed peer mode. |
-| dfdaemon.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
-| dfdaemon.config.scheduler.netAddrs | string | `nil` | Scheduler service address, netAddr is a list, there are two fields type and addr.    Also set dfdaemon.config.scheduler.manager.enable to false to take effect. |
-| dfdaemon.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout. |
-| dfdaemon.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
-| dfdaemon.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
-| dfdaemon.config.security.certSpec.dnsNames | string | `nil` | DNSNames is a list of dns names be set on the certificate. |
-| dfdaemon.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
-| dfdaemon.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
-| dfdaemon.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
-| dfdaemon.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
-| dfdaemon.config.storage.diskGCThreshold | string | `"50Gi"` | Disk GC Threshold, when the disk usage is above 50Gi, start to gc the oldest tasks. |
-| dfdaemon.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id. |
-| dfdaemon.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data. io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action                           the download file in date directory will be the peer data for uploading to other peers. io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers                            when user delete or change this file, this peer data will be corrupted. default is io.d7y.storage.v2.advance. |
-| dfdaemon.config.storage.taskExpireTime | string | `"6h"` | Task data expire time. when there is no access to a task data, this task will be gc. |
-| dfdaemon.config.upload.rateLimit | string | `"1024Mi"` | Upload limit per second[B]. |
-| dfdaemon.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option. |
-| dfdaemon.config.upload.tcpListen.port | int | `65002` | Listen port. |
-| dfdaemon.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
-| dfdaemon.config.workHome | string | `""` | Work directory. |
-| dfdaemon.containerPort | int | `65001` | Pod containerPort. |
-| dfdaemon.daemonsetAnnotations | object | `{}` | Daemonset annotations. |
-| dfdaemon.enable | bool | `true` | Enable dfdaemon. |
-| dfdaemon.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/daemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
-| dfdaemon.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
-| dfdaemon.fullnameOverride | string | `""` | Override dfdaemon fullname. |
-| dfdaemon.hostAliases | list | `[]` | Host Aliases. |
-| dfdaemon.hostNetwork | bool | `false` | Using hostNetwork when pod with host network can communicate with normal pods with cni network. |
-| dfdaemon.hostPort | int | `65001` | When .hostNetwork == false, and .config.proxy.tcpListen.namespace is empty. many network add-ons do not yet support hostPort. https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/troubleshooting-kubeadm/#hostport-services-do-not-work by default, dfdaemon injects the 65001 port to host network by sharing host network namespace, if you want to use hostPort, please empty .config.proxy.tcpListen.namespace below, and keep .hostNetwork == false. for performance, injecting the 65001 port to host network is better than hostPort. |
-| dfdaemon.image.digest | string | `""` | Image digest. |
-| dfdaemon.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| dfdaemon.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
-| dfdaemon.image.registry | string | `"docker.io"` | Image registry. |
-| dfdaemon.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| dfdaemon.image.tag | string | `"v2.1.49"` | Image tag. |
-| dfdaemon.initContainer.image.digest | string | `""` | Image digest. |
-| dfdaemon.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| dfdaemon.initContainer.image.registry | string | `"docker.io"` | Image registry. |
-| dfdaemon.initContainer.image.repository | string | `"busybox"` | Image repository. |
-| dfdaemon.initContainer.image.tag | string | `"latest"` | Image tag. |
-| dfdaemon.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
-| dfdaemon.metrics.enable | bool | `false` | Enable peer metrics. |
-| dfdaemon.metrics.podMonitor.additionalLabels | object | `{}` | Additional labels. |
-| dfdaemon.metrics.podMonitor.enable | bool | `false` | Enable prometheus pod monitor. ref: https://github.com/coreos/prometheus-operator. |
-| dfdaemon.metrics.podMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
-| dfdaemon.metrics.podMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
-| dfdaemon.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
-| dfdaemon.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
-| dfdaemon.metrics.prometheusRule.rules | list | `[{"alert":"PeerDown","annotations":{"message":"Peer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Peer instance is down"},"expr":"sum(dragonfly_dfdaemon_version{}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"PeerHighNumberOfFailedDownloadTask","annotations":{"message":"Peer has a high number of failed download task","summary":"Peer has a high number of failed download task"},"expr":"sum(irate(dragonfly_dfdaemon_peer_task_failed_total{}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"PeerSuccessRateOfDownloadingTask","annotations":{"message":"Peer's success rate of downloading task is low","summary":"Peer's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_dfdaemon_peer_task_total{container=\"seed-peer\"}[1m])) - sum(rate(dragonfly_dfdaemon_peer_task_failed_total{container=\"seed-peer\"}[1m]))) / sum(rate(dragonfly_dfdaemon_peer_task_total{container=\"seed-peer\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"PeerHighNumberOfFailedGRPCRequest","annotations":{"message":"Peer has a high number of failed grpc request","summary":"Peer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"PeerSuccessRateOfGRPCRequest","annotations":{"message":"Peer's success rate of grpc request is low","summary":"Peer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"dfdaemon.Daemon\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
-| dfdaemon.metrics.service.annotations | object | `{}` | Service annotations. |
-| dfdaemon.metrics.service.labels | object | `{}` | Service labels. |
-| dfdaemon.metrics.service.type | string | `"ClusterIP"` | Service type. |
-| dfdaemon.mountDataDirAsHostPath | bool | `false` | Mount data directory from host. when enabled, mount host path to dfdaemon, or just emptyDir in dfdaemon. |
-| dfdaemon.name | string | `"dfdaemon"` | Dfdaemon name. |
-| dfdaemon.nameOverride | string | `""` | Override dfdaemon name. |
-| dfdaemon.nodeSelector | object | `{}` | Node labels for pod assignment. |
-| dfdaemon.podAnnotations | object | `{}` | Pod annotations. |
-| dfdaemon.podLabels | object | `{}` | Pod labels. |
-| dfdaemon.priorityClassName | string | `""` | Pod priorityClassName. |
-| dfdaemon.resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| dfdaemon.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
-| dfdaemon.tolerations | list | `[]` | List of node taints to tolerate. |
-| dfdaemon.updateStrategy | object | `{}` | Update strategy for replicas. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `nil` | External manager hostname. |
 | externalManager.restPort | int | `8080` | External REST service port. |
@@ -373,13 +239,6 @@ helm delete dragonfly --namespace dragonfly-system
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
-| jaeger.agent.enabled | bool | `false` |  |
-| jaeger.allInOne.enabled | bool | `true` |  |
-| jaeger.collector.enabled | bool | `false` |  |
-| jaeger.enable | bool | `false` | Enable an all-in-one jaeger for tracing every downloading event should not use in production environment. |
-| jaeger.provisionDataStore.cassandra | bool | `false` |  |
-| jaeger.query.enabled | bool | `false` |  |
-| jaeger.storage.type | string | `"none"` |  |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
@@ -622,7 +481,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.upload.rateLimit | int | `20000000000` | rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.verbose | bool | `false` | verbose prints log. |
-| seedClient.enable | bool | `false` | Enable seed client. |
+| seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -669,200 +528,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
-| seedPeer.config.aliveTime | string | `"0s"` | Daemon alive time, when sets 0s, daemon will not auto exit, it is useful for longtime running. |
-| seedPeer.config.announcer.schedulerInterval | string | `"30s"` | schedulerInterval is the interval of announcing scheduler. Announcer will provide the scheduler with peer information for scheduling. Peer information includes cpu, memory, etc. |
-| seedPeer.config.cacheDir | string | `""` | Dynconfig cache directory. |
-| seedPeer.config.console | bool | `false` | Console shows log on console. |
-| seedPeer.config.dataDir | string | `"/var/lib/dragonfly"` | Daemon data storage directory. |
-| seedPeer.config.download.calculateDigest | bool | `false` | Calculate digest, when only pull images, can be false to save cpu and memory. |
-| seedPeer.config.download.downloadGRPC.security | object | `{"insecure":true,"tlsVerify":true}` | Download grpc security option. |
-| seedPeer.config.download.downloadGRPC.unixListen | object | `{"socket":""}` | Download service listen address. current, only support unix domain socket. |
-| seedPeer.config.download.peerGRPC.security | object | `{"insecure":true}` | Peer grpc security option. |
-| seedPeer.config.download.peerGRPC.tcpListen.port | int | `65000` | Listen port. |
-| seedPeer.config.download.perPeerRateLimit | string | `"1024Mi"` | Per peer task limit per second[B]. |
-| seedPeer.config.download.prefetch | bool | `false` | When request data with range header, prefetch data not in range. |
-| seedPeer.config.download.totalRateLimit | string | `"2048Mi"` | Total download limit per second[B]. |
-| seedPeer.config.gcInterval | string | `"1m0s"` | Daemon gc task running interval. |
-| seedPeer.config.health.path | string | `"/server/ping"` |  |
-| seedPeer.config.health.tcpListen.port | int | `40901` |  |
-| seedPeer.config.host.idc | string | `""` | IDC deployed by daemon. |
-| seedPeer.config.host.location | string | `""` | Geographical location, separated by "|" characters. |
-| seedPeer.config.jaeger | string | `""` |  |
-| seedPeer.config.keepStorage | bool | `false` | When daemon exit, keep peer task data or not. it is usefully when upgrade daemon service, all local cache will be saved. default is false. |
-| seedPeer.config.logDir | string | `""` | Log directory. |
-| seedPeer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
-| seedPeer.config.networkTopology.enable | bool | `false` | Enable networkTopology service. |
-| seedPeer.config.networkTopology.probe.interval | string | `"20m"` | interval is the interval of probing hosts. |
-| seedPeer.config.objectStorage.enable | bool | `false` | Enable object storage service. |
-| seedPeer.config.objectStorage.filter | string | `"Expires&Signature&ns"` | Filter is used to generate a unique Task ID by filtering unnecessary query params in the URL, it is separated by & character. When filter: "Expires&Signature&ns", for example:  http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task. |
-| seedPeer.config.objectStorage.maxReplicas | int | `3` | MaxReplicas is the maximum number of replicas of an object cache in seed peers. |
-| seedPeer.config.objectStorage.security | object | `{"insecure":true,"tlsVerify":true}` | Object storage service security option. |
-| seedPeer.config.objectStorage.tcpListen.port | int | `65004` | Listen port. |
-| seedPeer.config.pluginDir | string | `""` | Plugin directory. |
-| seedPeer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| seedPeer.config.proxy.defaultFilter | string | `"Expires&Signature&ns"` | Filter for hash url. when defaultFilter: "Expires&Signature&ns", for example: http://localhost/xyz?Expires=111&Signature=222&ns=docker.io and http://localhost/xyz?Expires=333&Signature=999&ns=docker.io is same task, it is also possible to override the default filter by adding the X-Dragonfly-Filter header through the proxy. |
-| seedPeer.config.proxy.defaultTag | string | `""` | Tag the task. when the value of the default tag is different, the same download url can be divided into different tasks according to the tag, it is also possible to override the default tag by adding the X-Dragonfly-Tag header through the proxy. |
-| seedPeer.config.proxy.proxies[0] | object | `{"regx":"blobs/sha256.*"}` | Proxy all http image layer download requests with dfget. |
-| seedPeer.config.proxy.registryMirror.dynamic | bool | `true` | When enabled, use value of "X-Dragonfly-Registry" in http header for remote instead of url host. |
-| seedPeer.config.proxy.registryMirror.insecure | bool | `false` | When the cert of above url is secure, set insecure to true. |
-| seedPeer.config.proxy.registryMirror.url | string | `"https://index.docker.io"` | URL for the registry mirror. |
-| seedPeer.config.proxy.security | object | `{"insecure":true,"tlsVerify":false}` | Proxy security option. |
-| seedPeer.config.proxy.tcpListen.namespace | string | `"/run/dragonfly/net"` | Namespace stands the linux net namespace, like /proc/1/ns/net. it's useful for running daemon in pod with ip allocated and listening the special port in host net namespace. Linux only. |
-| seedPeer.config.scheduler | object | `{"disableAutoBackSource":false,"manager":{"enable":true,"netAddrs":null,"refreshInterval":"10m","seedPeer":{"clusterID":1,"enable":true,"keepAlive":{"interval":"5s"},"type":"super"}},"scheduleTimeout":"30s"}` | Scheduler config, netAddrs is auto-configured in templates/dfdaemon/dfdaemon-configmap.yaml. |
-| seedPeer.config.scheduler.disableAutoBackSource | bool | `false` | Disable auto back source in dfdaemon. |
-| seedPeer.config.scheduler.manager.enable | bool | `true` | Get scheduler list dynamically from manager. |
-| seedPeer.config.scheduler.manager.netAddrs | string | `nil` | Manager service address, netAddr is a list, there are two fields type and addr. |
-| seedPeer.config.scheduler.manager.refreshInterval | string | `"10m"` | Scheduler list refresh interval. |
-| seedPeer.config.scheduler.manager.seedPeer.clusterID | int | `1` | Associated seed peer cluster id. |
-| seedPeer.config.scheduler.manager.seedPeer.enable | bool | `true` | Enable seed peer mode. |
-| seedPeer.config.scheduler.manager.seedPeer.keepAlive.interval | string | `"5s"` | Manager keepalive interval. |
-| seedPeer.config.scheduler.manager.seedPeer.type | string | `"super"` | Seed peer supports "super", "strong" and "weak" types. |
-| seedPeer.config.scheduler.scheduleTimeout | string | `"30s"` | Schedule timeout. |
-| seedPeer.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
-| seedPeer.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
-| seedPeer.config.security.certSpec.dnsNames | list | `["dragonfly-seed-peer","dragonfly-seed-peer.dragonfly-system.svc","dragonfly-seed-peer.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
-| seedPeer.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
-| seedPeer.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
-| seedPeer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
-| seedPeer.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
-| seedPeer.config.storage.diskGCThresholdPercent | int | `90` | Disk GC Threshold Percent, when the disk usage is above 90%, start to gc the oldest tasks. |
-| seedPeer.config.storage.multiplex | bool | `true` | Set to ture for reusing underlying storage for same task id. |
-| seedPeer.config.storage.strategy | string | `"io.d7y.storage.v2.simple"` | Storage strategy when process task data. io.d7y.storage.v2.simple : download file to data directory first, then copy to output path, this is default action.                           the download file in date directory will be the peer data for uploading to other peers. io.d7y.storage.v2.advance: download file directly to output path with postfix, hard link to final output,                            avoid copy to output path, fast than simple strategy, but:                            the output file with postfix will be the peer data for uploading to other peers.                            when user delete or change this file, this peer data will be corrupted. default is io.d7y.storage.v2.advance. |
-| seedPeer.config.storage.taskExpireTime | string | `"6h"` | Task data expire time. when there is no access to a task data, this task will be gc. |
-| seedPeer.config.upload.rateLimit | string | `"2048Mi"` | Upload limit per second[B]. |
-| seedPeer.config.upload.security | object | `{"insecure":true,"tlsVerify":false}` | Upload grpc security option. |
-| seedPeer.config.upload.tcpListen.port | int | `65002` | Listen port. |
-| seedPeer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
-| seedPeer.config.workHome | string | `""` | Work directory. |
-| seedPeer.enable | bool | `true` | Enable dfdaemon seed peer. |
-| seedPeer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/daemon","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
-| seedPeer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
-| seedPeer.fullnameOverride | string | `""` | Override scheduler fullname. |
-| seedPeer.hostAliases | list | `[]` | Host Aliases. |
-| seedPeer.hostNetwork | bool | `false` | hostNetwork specify if host network should be enabled for peer pod. |
-| seedPeer.image.digest | string | `""` | Image digest. |
-| seedPeer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| seedPeer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
-| seedPeer.image.registry | string | `"docker.io"` | Image registry. |
-| seedPeer.image.repository | string | `"dragonflyoss/dfdaemon"` | Image repository. |
-| seedPeer.image.tag | string | `"v2.1.49"` | Image tag. |
-| seedPeer.initContainer.image.digest | string | `""` | Image digest. |
-| seedPeer.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| seedPeer.initContainer.image.registry | string | `"docker.io"` | Image registry. |
-| seedPeer.initContainer.image.repository | string | `"busybox"` | Image repository. |
-| seedPeer.initContainer.image.tag | string | `"latest"` | Image tag. |
-| seedPeer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
-| seedPeer.metrics.enable | bool | `false` | Enable seed peer metrics. |
-| seedPeer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
-| seedPeer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule ref: https://github.com/coreos/prometheus-operator. |
-| seedPeer.metrics.prometheusRule.rules | list | `[{"alert":"SeedPeerDown","annotations":{"message":"Seed peer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Seed peer instance is down"},"expr":"sum(dragonfly_dfdaemon_version{container=\"seed-peer\"}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"SeedPeerHighNumberOfFailedDownloadTask","annotations":{"message":"Seed peer has a high number of failed download task","summary":"Seed peer has a high number of failed download task"},"expr":"sum(irate(dragonfly_dfdaemon_seed_peer_download_failure_total{}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"SeedPeerSuccessRateOfDownloadingTask","annotations":{"message":"Seed peer's success rate of downloading task is low","summary":"Seed peer's success rate of downloading task is low"},"expr":"(sum(rate(dragonfly_dfdaemon_seed_peer_download_total{}[1m])) - sum(rate(dragonfly_dfdaemon_seed_peer_download_failure_total{}[1m]))) / sum(rate(dragonfly_dfdaemon_seed_peer_download_total{}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"SeedPeerHighNumberOfFailedGRPCRequest","annotations":{"message":"Seed peer has a high number of failed grpc request","summary":"Seed peer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"SeedPeerSuccessRateOfGRPCRequest","annotations":{"message":"Seed peer's success rate of grpc request is low","summary":"Seed peer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"cdnsystem.Seeder\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
-| seedPeer.metrics.service.annotations | object | `{}` | Service annotations. |
-| seedPeer.metrics.service.labels | object | `{}` | Service labels. |
-| seedPeer.metrics.service.type | string | `"ClusterIP"` | Service type. |
-| seedPeer.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels |
-| seedPeer.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
-| seedPeer.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
-| seedPeer.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
-| seedPeer.name | string | `"seed-peer"` | Seed peer name. |
-| seedPeer.nameOverride | string | `""` | Override scheduler name. |
-| seedPeer.nodeSelector | object | `{}` | Node labels for pod assignment. |
-| seedPeer.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
-| seedPeer.persistence.annotations | object | `{}` | Persistence annotations. |
-| seedPeer.persistence.enable | bool | `true` | Enable persistence for seed peer. |
-| seedPeer.persistence.size | string | `"8Gi"` | Persistence persistence size. |
-| seedPeer.podAnnotations | object | `{}` | Pod annotations. |
-| seedPeer.podLabels | object | `{}` | Pod labels. |
-| seedPeer.priorityClassName | string | `""` | Pod priorityClassName. |
-| seedPeer.replicas | int | `3` | Number of Pods to launch. |
-| seedPeer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| seedPeer.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedPeer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
-| seedPeer.tolerations | list | `[]` | List of node taints to tolerate. |
-| seedPeer.updateStrategy | object | `{}` | Update strategy for replicas. |
-| trainer.config.console | bool | `false` | Console shows log on console. |
-| trainer.config.jaeger | string | `""` |  |
-| trainer.config.manager.Addr | string | `"127.0.0.1:65003"` | Manager Service Address. |
-| trainer.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
-| trainer.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
-| trainer.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
-| trainer.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
-| trainer.config.security.certSpec.dnsNames | list | `["dragonfly-trainer","dragonfly-trainer.dragonfly-system.svc","dragonfly-trainer.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
-| trainer.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
-| trainer.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period of certificate. |
-| trainer.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
-| trainer.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
-| trainer.config.server.advertiseIP | string | `""` | Advertise ip. |
-| trainer.config.server.advertisePort | int | `9090` | Advertise port. |
-| trainer.config.server.dataDir | string | `""` | Storage directory. |
-| trainer.config.server.listenIP | string | `"0.0.0.0"` | Listen ip. |
-| trainer.config.server.logDir | string | `""` | Log directory. |
-| trainer.config.server.port | int | `9090` | Server port. |
-| trainer.config.server.workHome | string | `""` | Work directory. |
-| trainer.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
-| trainer.containerPort | int | `9090` | Pod containerPort. |
-| trainer.deploymentAnnotations | object | `{}` | Deployment annotations. |
-| trainer.enable | bool | `false` | Enable trainer. |
-| trainer.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/trainer","name":"logs"}]` | Extra volumeMounts for trainer. |
-| trainer.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for trainer. |
-| trainer.fullnameOverride | string | `""` | Override trainer fullname. |
-| trainer.hostAliases | list | `[]` | Host Aliases. |
-| trainer.image.digest | string | `""` | Image digest. |
-| trainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| trainer.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
-| trainer.image.registry | string | `"docker.io"` | Image registry. |
-| trainer.image.repository | string | `"dragonflyoss/trainer"` | Image repository. |
-| trainer.image.tag | string | `"v2.1.49"` | Image tag. |
-| trainer.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
-| trainer.metrics.enable | bool | `false` | Enable trainer metrics. |
-| trainer.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
-| trainer.metrics.prometheusRule.enable | bool | `false` | Enable prometheus rule. ref: https://github.com/coreos/prometheus-operator. |
-| trainer.metrics.prometheusRule.rules | list | `[{"alert":"TrainerDown","annotations":{"message":"Trainer instance {{ \"{{ $labels.instance }}\" }} is down","summary":"Trainer instance is down"},"expr":"sum(dragonfly_trainer_version{}) == 0","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedGRPCRequest","annotations":{"message":"Trainer has a high number of failed grpc request","summary":"Trainer has a high number of failed grpc request"},"expr":"sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfGRPCRequest","annotations":{"message":"Trainer's success rate of grpc request is low","summary":"Trainer's success rate of grpc request is low"},"expr":"(sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"OK\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"NotFound\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"PermissionDenied\"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\",grpc_code=\"InvalidArgument\"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service=\"trainer.Trainer\",grpc_type=\"unary\"}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}},{"alert":"TrainerHighNumberOfFailedRESTRequest","annotations":{"message":"Trainer has a high number of failed rest request","summary":"Trainer has a high number of failed rest request"},"expr":"sum(rate(dragonfly_trainer_requests_total{}[1m])) - sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) > 100","for":"1m","labels":{"severity":"warning"}},{"alert":"TrainerSuccessRateOfRESTRequest","annotations":{"message":"Trainer's success rate of rest request is low","summary":"Trainer's success rate of rest request is low"},"expr":"sum(rate(dragonfly_trainer_requests_total{code=~\"[12]..\"}[1m])) / sum(rate(dragonfly_trainer_requests_total{}[1m])) < 0.6","for":"5m","labels":{"severity":"critical"}}]` | Prometheus rules. |
-| trainer.metrics.service.annotations | object | `{}` | Service annotations. |
-| trainer.metrics.service.labels | object | `{}` | Service labels. |
-| trainer.metrics.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels. |
-| trainer.metrics.serviceMonitor.enable | bool | `false` | Enable prometheus service monitor. ref: https://github.com/coreos/prometheus-operator. |
-| trainer.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
-| trainer.metrics.serviceMonitor.scrapeTimeout | string | `"10s"` | Timeout after which the scrape is ended. |
-| trainer.name | string | `"trainer"` | trainer name. |
-| trainer.nameOverride | string | `""` | Override trainer name. |
-| trainer.nodeSelector | object | `{}` | Node labels for pod assignment. |
-| trainer.podAnnotations | object | `{}` | Pod annotations. |
-| trainer.podLabels | object | `{}` | Pod labels. |
-| trainer.priorityClassName | string | `""` | Pod priorityClassName. |
-| trainer.replicas | int | `1` | Number of Pods to launch. |
-| trainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| trainer.service.annotations | object | `{}` | Service annotations. |
-| trainer.service.labels | object | `{}` | Service labels. |
-| trainer.service.type | string | `"ClusterIP"` | Service type. |
-| trainer.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
-| trainer.tolerations | list | `[]` | List of node taints to tolerate. |
-| trainer.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
-| triton.aws | object | `{"accessKeyID":"","region":"","secretAccessKey":""}` | Credentials information. |
-| triton.deploymentAnnotations | object | `{}` | Deployment annotations. |
-| triton.enable | bool | `false` | Enable triton. |
-| triton.fullnameOverride | string | `""` | Override triton fullname. |
-| triton.grpcPort | int | `8001` | GRPC service port. |
-| triton.hostAliases | list | `[]` | Host Aliases. |
-| triton.image.digest | string | `""` | Image digest. |
-| triton.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
-| triton.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
-| triton.image.registry | string | `"nvcr.io"` | Image registry. |
-| triton.image.repository | string | `"nvidia/tritonserver"` | Image repository. |
-| triton.image.tag | string | `"23.06-py3"` | Image tag. |
-| triton.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
-| triton.modelRepositoryPath | string | `""` | Model repository path. |
-| triton.name | string | `"triton"` | triton name. |
-| triton.nameOverride | string | `""` | Override triton name. |
-| triton.nodeSelector | object | `{}` | Node labels for pod assignment. |
-| triton.podAnnotations | object | `{}` | Pod annotations. |
-| triton.priorityClassName | string | `""` | Pod priorityClassName. |
-| triton.replicas | int | `3` | Number of Pods to launch. |
-| triton.restPort | int | `8000` | REST service port. |
-| triton.service.type | string | `"LoadBalancer"` | Service type. |
-| triton.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
-| triton.tolerations | list | `[]` | List of node taints to tolerate. |
-| triton.updateStrategy | object | `{}` | Update strategy for replicas. |
 
 ## Chart dependencies
 
@@ -870,4 +535,3 @@ helm delete dragonfly --namespace dragonfly-system
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 9.4.6 |
 | https://charts.bitnami.com/bitnami | redis | 17.4.3 |
-| https://jaegertracing.github.io/helm-charts | jaeger | 0.66.1 |
