@@ -1,20 +1,14 @@
-1. Get the scheduler address by running these commands:
+1. Get the manager address by running these commands:
+  export MANAGER_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ include "dragonfly.fullname" . }},release={{ .Release.Name }},component=manager" -o jsonpath={.items[0].metadata.name})
+  export MANAGER_CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $MANAGER_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  kubectl --namespace {{ .Release.Namespace }} port-forward $MANAGER_POD_NAME 8080:$MANAGER_CONTAINER_PORT
+  echo "Visit http://127.0.0.1:8080 to use your manager"
+
+2. Get the scheduler address by running these commands:
   export SCHEDULER_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ include "dragonfly.fullname" . }},release={{ .Release.Name }},component=scheduler" -o jsonpath={.items[0].metadata.name})
   export SCHEDULER_CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $SCHEDULER_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
   kubectl --namespace {{ .Release.Namespace }} port-forward $SCHEDULER_POD_NAME 8002:$SCHEDULER_CONTAINER_PORT
   echo "Visit http://127.0.0.1:8002 to use your scheduler"
 
-2. Get the dfdaemon port by running these commands:
-  export DFDAEMON_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ include "dragonfly.fullname" . }},release={{ .Release.Name }},component=dfdaemon" -o jsonpath={.items[0].metadata.name})
-  export DFDAEMON_CONTAINER_PORT=$(kubectl get pod --namespace {{ .Release.Namespace }} $DFDAEMON_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-  You can use $DFDAEMON_CONTAINER_PORT as a proxy port in Node.
-
 3. Configure runtime to use dragonfly:
   https://d7y.io/docs/getting-started/quick-start/kubernetes/
-
-{{ if .Values.jaeger.enable }}
-4. Get Jaeger query URL by running these commands:
-  export JAEGER_QUERY_PORT=$(kubectl --namespace {{ .Release.Namespace }} get services {{ .Release.Name }}-jaeger-query -o jsonpath="{.spec.ports[0].port}")
-  kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ .Release.Name }}-jaeger-query 16686:$JAEGER_QUERY_PORT
-  echo "Visit http://127.0.0.1:16686/search?limit=20&lookback=1h&maxDuration&minDuration&service=dragonfly to query download events"
-{{- end }}

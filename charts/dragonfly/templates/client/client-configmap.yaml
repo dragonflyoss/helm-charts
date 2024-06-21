@@ -49,7 +49,5 @@ data:
     {{- if .Values.client.config.tracing }}
     tracing:
 {{ toYaml .Values.client.config.tracing | indent 6 }}
-    {{- else if .Values.jaeger.enable }}
-    jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
     {{- end }}
 {{- end }}

@@ -37,8 +37,8 @@ nodes:
   - role: control-plane
     image: kindest/node:v1.23.17
     extraPortMappings:
-      - containerPort: 65001
-        hostPort: 65001
+      - containerPort: 4001
+        hostPort: 4001
         protocol: TCP
     extraMounts:
       - hostPath: ./config.toml
@@ -83,7 +83,7 @@ Install Dragonfly using the configuration:
 
 ```shell
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --wait --timeout 10m --dependency-update --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly --set dfdaemon.config.download.prefetch=true,seedPeer.config.download.prefetch=true
+$ helm install --wait --timeout 10m --dependency-update --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly --set client.config.proxy.prefetch=true,seedClient.config.proxy.prefetch=true
 NAME: dragonfly
 LAST DEPLOYED: Fri Apr  7 10:35:12 2023
 NAMESPACE: dragonfly-system
@@ -97,12 +97,7 @@ NOTES:
   kubectl --namespace dragonfly-system port-forward $SCHEDULER_POD_NAME 8002:$SCHEDULER_CONTAINER_PORT
   echo "Visit http://127.0.0.1:8002 to use your scheduler"
 
-2. Get the dfdaemon port by running these commands:
-  export DFDAEMON_POD_NAME=$(kubectl get pods --namespace dragonfly-system -l "app=dragonfly,release=dragonfly,component=dfdaemon" -o jsonpath={.items[0].metadata.name})
-  export DFDAEMON_CONTAINER_PORT=$(kubectl get pod --namespace dragonfly-system $DFDAEMON_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-  You can use $DFDAEMON_CONTAINER_PORT as a proxy port in Node.
-
-3. Configure runtime to use dragonfly:
+2. Configure runtime to use dragonfly:
   https://d7y.io/docs/getting-started/quick-start/kubernetes/
 ```
 
@@ -112,7 +107,7 @@ Check that Dragonfly is deployed successfully:
 
 ```shell
 $ kubectl wait po --all -n dragonfly-system --for=condition=ready --timeout=10m
-pod/dragonfly-dfdaemon-gs924 condition met
+pod/dragonfly-client-gs924 condition met
 pod/dragonfly-manager-5d97fd88fb-txnw9 condition met
 pod/dragonfly-manager-5d97fd88fb-v2nmh condition met
 pod/dragonfly-manager-5d97fd88fb-xg6wr condition met
@@ -124,9 +119,9 @@ pod/dragonfly-redis-replicas-2 condition met
 pod/dragonfly-scheduler-0 condition met
 pod/dragonfly-scheduler-1 condition met
 pod/dragonfly-scheduler-2 condition met
-pod/dragonfly-seed-peer-0 condition met
-pod/dragonfly-seed-peer-1 condition met
-pod/dragonfly-seed-peer-2 condition met
+pod/dragonfly-seed-client-0 condition met
+pod/dragonfly-seed-client-1 condition met
+pod/dragonfly-seed-client-2 condition met
 ```
 
 ## Install Nydus based on Helm Charts
@@ -215,15 +210,9 @@ Verify downloaded Nydus image via Dragonfly based on mirror mode:
 <!-- markdownlint-disable -->
 
 ```shell
-$ DFDAEMON_POD_NAME=`kubectl -n dragonfly-system get pod -l component=dfdaemon --no-headers -o custom-columns=NAME:metadata.name`
-$ kubectl -n dragonfly-system exec -it ${DFDAEMON_POD_NAME} -- sh -c 'grep "peer task done" /var/log/dragonfly/daemon/core.log'
-{"level":"info","ts":"2023-04-10 07:30:57.596","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 1116ms","peer":"10.244.0.5-1-53419631-8a14-4325-b5f2-c4ef01a02853","task":"d6a7aaa926dccd3376f91378f58d3a1a0871302d0afee718fd991a6849b422a7","component":"PeerTask","trace":"977c114a06b6d3a12fc680b28b57a43d"}
-{"level":"info","ts":"2023-04-10 07:30:58.594","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 2116ms","peer":"10.244.0.5-1-4c45ed29-4931-4cfc-a8e7-ba06a7575518","task":"984629e0ba47eeccd65ffea34d1369d71bb821169c83918795cceb4e9774d3eb","component":"PeerTask","trace":"e9249680e787c9a13935aee1b280665a"}
-{"level":"info","ts":"2023-04-10 07:30:58.598","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 2133ms","peer":"10.244.0.5-1-45e3cd5b-cac6-43f0-be82-398cab978e83","task":"571f792ad3e2b12cc28407f8f14d17a44925e0151aff947773bdac5bec64b8d6","component":"PeerTask","trace":"f4e79e09ac293603875b9542c9b24bb4"}
-{"level":"info","ts":"2023-04-10 07:30:58.905","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 2377ms","peer":"10.244.0.5-1-6d51916a-13cb-4e50-8ba0-886e786e32eb","task":"023b961410d8776250215268f3569fa4ccb01bf1c557ca0e73888c4dd8c23ace","component":"PeerTask","trace":"285f5ecf084873e4311526136438d571"}
-{"level":"info","ts":"2023-04-10 07:30:59.452","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 538ms","peer":"10.244.0.5-1-b7b2235f-4b0f-4253-8a1f-cdf7bd86f096","task":"23dee111679d459440e4839200940534037f1ba101bd7b7af57c9b7123f96882","component":"PeerTask","trace":"63d5147c7bd01455ce3c537f18463b12"}
-{"level":"info","ts":"2023-04-10 07:31:01.722","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 4123ms","peer":"10.244.0.5-1-0dbbfe12-df46-4e3b-98dc-fa6c8f2a514c","task":"15c51bc09cf57b4c5c1c04e9cbdf17fa4560c6ad10b5b32680f0b8cd63bb900b","component":"PeerTask","trace":"b9bcac5bfe5d1f1871db22911d7d71b5"}
-{"level":"info","ts":"2023-04-10 07:31:02.897","caller":"peer/peertask_conductor.go:1330","msg":"peer task done, cost: 6483ms","peer":"10.244.0.5-1-be485ea5-6d54-4f56-8f56-bdbe76ec8469","task":"0fe34e3fcb64d49b09fe7c759f47a373b7590fe4dbe1da6d9c732eee516e4cb4","component":"PeerTask","trace":"daa2ffd1021779dfbd3162ead765e0ba"}
+$ CLIENT_POD_NAME=`kubectl -n dragonfly-system get pod -l component=client --no-headers -o custom-columns=NAME:metadata.name`
+$ kubectl -n dragonfly-system exec -it ${CLIENT_POD_NAME} -- sh -c 'grep "download task succeeded" /var/log/dragonfly/dfdaemon/dfdaemon.log'
+2024-05-28T12:36:24.861903Z INFO download_task: dragonfly-client/src/grpc/dfdaemon_download.rs:276: download task succeeded host_id="127.0.0.1-kind-worker" task_id="4535f073321f0d1908b8c3ad63a1d59324573c0083961c5bcb7f38ac72ad598d" peer_id="127.0.0.1-kind-worker-13095fb5-786a-4908-b8c1-744be144b383"
 ```
 
 <!-- markdownlint-restore -->
@@ -246,7 +235,7 @@ Create Draognfly configuration file `d7y-config.yaml`, configuration content is 
 
 ```shell
 cat <<EOF > d7y-config.yaml
-seedPeer:
+seedClient:
   persistence:
     storageClass: "alicloud-disk-essd"
     size: 20Gi
@@ -277,7 +266,7 @@ Install Dragonfly using the params:
 
 ```shell
 $ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
-$ helm install --wait --timeout 10m --dependency-update --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly --set dfdaemon.config.download.prefetch=true,seedPeer.config.download.prefetch=true-f d7y-config.yaml
+$ helm install --wait --timeout 10m --dependency-update --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly --set client.config.proxy.prefetch=true,seedClient.config.proxy.prefetch=true-f d7y-config.yaml
 NAME: dragonfly
 LAST DEPLOYED: Fri Apr  7 10:35:12 2023
 NAMESPACE: dragonfly-system
@@ -291,12 +280,7 @@ NOTES:
   kubectl --namespace dragonfly-system port-forward $SCHEDULER_POD_NAME 8002:$SCHEDULER_CONTAINER_PORT
   echo "Visit http://127.0.0.1:8002 to use your scheduler"
 
-2. Get the dfdaemon port by running these commands:
-  export DFDAEMON_POD_NAME=$(kubectl get pods --namespace dragonfly-system -l "app=dragonfly,release=dragonfly,component=dfdaemon" -o jsonpath={.items[0].metadata.name})
-  export DFDAEMON_CONTAINER_PORT=$(kubectl get pod --namespace dragonfly-system $DFDAEMON_POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
-  You can use $DFDAEMON_CONTAINER_PORT as a proxy port in Node.
-
-3. Configure runtime to use dragonfly:
+2. Configure runtime to use dragonfly:
   https://d7y.io/docs/getting-started/quick-start/kubernetes/
 ```
 
@@ -306,7 +290,7 @@ Check that Dragonfly is deployed successfully:
 
 ```shell
 $ kubectl wait po --all -n dragonfly-system --for=condition=ready --timeout=10m
-pod/dragonfly-dfdaemon-gs924 condition met
+pod/dragonfly-client-gs924 condition met
 pod/dragonfly-manager-5d97fd88fb-txnw9 condition met
 pod/dragonfly-manager-5d97fd88fb-v2nmh condition met
 pod/dragonfly-manager-5d97fd88fb-xg6wr condition met
@@ -318,7 +302,7 @@ pod/dragonfly-redis-replicas-2 condition met
 pod/dragonfly-scheduler-0 condition met
 pod/dragonfly-scheduler-1 condition met
 pod/dragonfly-scheduler-2 condition met
-pod/dragonfly-seed-peer-0 condition met
-pod/dragonfly-seed-peer-1 condition met
-pod/dragonfly-seed-peer-2 condition met
+pod/dragonfly-seed-client-0 condition met
+pod/dragonfly-seed-client-1 condition met
+pod/dragonfly-seed-client-2 condition met
 ```

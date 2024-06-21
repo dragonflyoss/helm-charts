@@ -48,10 +48,8 @@ data:
 {{ toYaml .Values.seedClient.config.metrics | indent 6 }}
     stats:
 {{ toYaml .Values.seedClient.config.stats | indent 6 }}
-    {{- if .Values.seedClient.config.tracing }}
+    {{- if .Values.client.config.tracing }}
     tracing:
-{{ toYaml .Values.seedClient.config.tracing | indent 6 }}
-    {{- else if .Values.jaeger.enable }}
-    jaeger: http://{{ $.Release.Name }}-jaeger-collector.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }}:14268/api/traces
+{{ toYaml .Values.client.config.tracing | indent 6 }}
     {{- end }}
 {{- end }}

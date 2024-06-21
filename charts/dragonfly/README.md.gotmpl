@@ -81,13 +81,12 @@ scheduler:
     manager:
       schedulerClusterID: 1
 
-seedPeer:
+seedClient:
   config:
-    scheduler:
-      manager:
-        seedPeer:
-          enable: true
-          clusterID: 1
+    seedPeer:
+      enable: true
+      type: super
+      clusterID: 1
 
 manager:
   enable: false

@@ -63,38 +63,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{ template "dragonfly.fullname" . }}-dfinit
 {{- end -}}
 
-{{/*
-Create a default fully qualified seed peer name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "dragonfly.seedPeer.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.seedPeer.name }}
-{{- end -}}
-
-{{/*
-Create a default fully qualified dfdaemon name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "dragonfly.dfdaemon.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.dfdaemon.name }}
-{{- end -}}
-
-{{/*
-Create a default fully qualified trainer name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "dragonfly.trainer.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.trainer.name }}
-{{- end -}}
-
-{{/*
-Create a default fully qualified triton name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "dragonfly.triton.fullname" -}}
-{{ template "dragonfly.fullname" . }}-{{ .Values.triton.name }}
-{{- end -}}
-
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Return the proper image name
@@ -157,34 +125,6 @@ Return the proper image name (for the client dfinit image)
 {{- end -}}
 
 {{/*
-Return the proper image name (for the dfdaemon image)
-*/}}
-{{- define "dfdaemon.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.dfdaemon.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the seedPeer image)
-*/}}
-{{- define "seedPeer.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.seedPeer.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the trainer image)
-*/}}
-{{- define "trainer.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.trainer.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the triton image)
-*/}}
-{{- define "triton.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.triton.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
 Return the proper image name (for the manager initContainer image)
 */}}
 {{- define "manager.initContainer.image" -}}
@@ -210,27 +150,6 @@ Return the proper image name (for the seedClient initContainer image)
 */}}
 {{- define "seedClient.initContainer.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.seedClient.initContainer.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the dfdaemon initContainer image)
-*/}}
-{{- define "dfdaemon.initContainer.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.dfdaemon.initContainer.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the seedPeer initContainer image)
-*/}}
-{{- define "seedPeer.initContainer.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.seedPeer.initContainer.image "global" .Values.global ) -}}
-{{- end -}}
-
-{{/*
-Return the proper image name (for the containerRuntime initContainer image)
-*/}}
-{{- define "containerRuntime.initContainer.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.containerRuntime.initContainer.image "global" .Values.global ) -}}
 {{- end -}}
 
 {{/* vim: set filetype=mustache: */}}
