@@ -50,7 +50,7 @@ data:
       redis:
         {{- if .Values.redis.enable }}
         addrs:
-        - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
+        - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
         {{- else }}
         addrs:
