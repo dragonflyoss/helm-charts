@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.66
+version: 1.1.67
 appVersion: 2.1.49
 keywords:
   - dragonfly
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Remove the unnecessary dependency on Dragonfly chart.
-    - Update Rust client for Dragonfly chart.
+    - Use headless service for redis.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -39,9 +38,9 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.48
+      image: dragonflyoss/manager:v2.1.49
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.48
+      image: dragonflyoss/scheduler:v2.1.49
     - name: client
       image: dragonflyoss/client:v0.1.81
     - name: seed-client
