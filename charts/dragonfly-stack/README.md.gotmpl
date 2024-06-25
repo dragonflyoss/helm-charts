@@ -1,0 +1,133 @@
+# Dragonfly Stack Helm Chart
+
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/search?repo=dragonfly-stack)
+
+Collects Dragonfly component and Nydus component into a single chart to provide a complete solution for the Dragonfly stack.
+
+## TL;DR
+
+```shell
+helm repo add dragonfly-stack https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly-stask
+```
+
+## Introduction
+
+Dragonfly is an open source intelligent P2P based image and file distribution system. Its goal is to tackle all distribution problems in cloud native scenarios. Currently Dragonfly focuses on being:
+
+- Simple: well-defined user-facing API (HTTP), non-invasive to all container engines;
+- Efficient: Seed peer support, P2P based file distribution to save enterprise bandwidth;
+- Intelligent: host level speed limit, intelligent flow control due to host detection;
+- Secure: block transmission encryption, HTTPS connection support.
+
+Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an Incubating Level Project. Originally it was born to solve all kinds of distribution at very large scales, such as application distribution, cache distribution, log distribution, image distribution, and so on.
+
+## Prerequisites
+
+- Kubernetes cluster 1.20+
+- Helm v3.8.0+
+
+## Installation Guide
+
+When use Dragonfly in Kubernetes, a container runtime must be configured. These work can be done by init script in this charts.
+
+For more detail about installation is available in [Kubernetes with Dragonfly](https://d7y.io/docs/getting-started/quick-start/kubernetes/)
+
+We recommend read the details about [Kubernetes with Dragonfly](https://d7y.io/docs/getting-started/quick-start/kubernetes/) before install.
+
+> **We did not recommend to using dragonfly with docker in Kubernetes** due to many reasons: 1. no fallback image pulling policy. 2. deprecated in Kubernetes.
+
+## Installation
+
+### Install with custom configuration
+
+Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers. This example uses external mysql and redis.
+
+```yaml
+dragonfly:
+  mysql:
+    enable: false
+
+  externalMysql:
+    migrate: true
+    host: mysql-host
+    username: dragonfly
+    password: dragonfly
+    database: manager
+    port: 3306
+
+  redis:
+    enable: false
+
+  externalRedis:
+    addrs:
+      - redis.example.com:6379
+    password: dragonfly
+```
+
+Install dragonfly-stack chart with release name `dragonfly`:
+
+```shell
+helm repo add dragonfly-stack https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly-stack -f values.yaml
+```
+
+### Install with an existing manager
+
+Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
+
+```yaml
+dragonfly:
+  scheduler:
+    config:
+      manager:
+        schedulerClusterID: 1
+
+  seedClient:
+    config:
+      seedPeer:
+        enable: true
+        type: super
+        clusterID: 1
+
+  manager:
+    enable: false
+
+  externalManager:
+    enable: true
+    host: "dragonfly-manager.dragonfly-system.svc.cluster.local"
+    restPort: 8080
+    grpcPort: 65003
+
+  redis:
+    enable: false
+
+  externalRedis:
+    addrs:
+      - redis.example.com:6379
+    password: dragonfly
+
+  mysql:
+    enable: false
+```
+
+Install dragonfly-stack chart with release name `dragonfly`:
+
+```shell
+helm repo add dragonfly-stack https://dragonflyoss.github.io/helm-charts/
+helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly-stack -f values.yaml
+```
+
+## Uninstall
+
+Uninstall the `dragonfly` deployment:
+
+```shell
+helm delete dragonfly --namespace dragonfly-system
+```
+
+{{ template "chart.valuesSection" . }}
+
+## Chart dependencies
+
+{{ template "chart.requirementsTable" . }}

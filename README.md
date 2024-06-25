@@ -1,5 +1,6 @@
 # Dragonfly Community Helm Charts
 
+[![Dragonfly Stack Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly-stack)](https://artifacthub.io/packages/helm/dragonfly/dragonfly-stack)
 [![Dragonfly Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/helm/dragonfly/dragonfly)
 [![Nydus Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/nydus-snapshotter)](https://artifacthub.io/packages/helm/dragonfly/nydus-snapshotter)
 ![Release Charts](https://github.com/dragonflyoss/helm-charts/workflows/Release%20Charts/badge.svg?branch=main)
@@ -20,9 +21,10 @@ Please refer to the [document][install] to install Dragonfly & Nydus on Kubernet
 
 ## Documentation
 
-- [Install Dragonfly & Nydus on Kubernetes][install]
+- [Install Dragonfly Stack on Kubernetes](./charts/dragonfly-stack/README.md)
 - [Install Dragonfly on Kubernetes](./charts/dragonfly/README.md)
 - [Install Nydus on Kubernetes](./charts/nydus-snapshotter/README.md)
+- [Install Dragonfly & Nydus on Kubernetes][install]
 
 ## Community
 

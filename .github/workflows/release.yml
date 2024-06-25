@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - charts/dragonfly-stack/Chart.yaml
       - charts/dragonfly/Chart.yaml
       - charts/nydus-snapshotter/Chart.yaml
 
