@@ -1,13 +1,27 @@
 # nydus-snapshotter Helm Chart Values
+#
+global:
+  # -- Global Docker image registry.
+  imageRegistry: ""
+  # -- Global Docker registry secret names as an array.
+  imagePullSecrets: []
+  # -- Global node labels for pod assignment.
+  nodeSelector: {}
 
 # -- nydus-snapshotter name
 name: nydus-snapshotter
-# -- Image repository
-image: ghcr.io/containerd/nydus-snapshotter
-# -- Image tag
-tag: v0.9.0
-# -- Image pull policy
-pullPolicy: Always
+image:
+  # -- Image registry.
+  registry: ghcr.io
+  # -- Image repository.
+  repository: containerd/nydus-snapshotter
+  # -- Image tag.
+  tag: v0.9.0
+  # -- Image pull policy.
+  pullPolicy: Always
+  # -- Image pull secrets.
+  # @default -- `[]` (defaults to global.imagePullSecrets).
+  pullSecrets: []
 # -- Let nydus-snapshotter run in host network
 hostNetwork: true
 # -- Let nydus-snapshotter use the host's pid namespace
@@ -54,8 +68,16 @@ dragonfly:
 # Choose special container runtime in Kubernetes.
 # Support: Containerd, Docker, CRI-O
 containerRuntime:
-  # -- The image name of init container, just to update container runtime configuration file
-  initContainerImage: ghcr.io/liubin/toml-cli:v0.0.7
+  initContainer:
+    image:
+      # -- Image registry.
+      registry: ghcr.io
+      # -- Image repository.
+      repository: liubin/toml-cli
+      # -- Image tag.
+      tag: v0.0.7
+      # -- Image pull policy.
+      pullPolicy: Always
 
   # -- [Experimental] Containerd support
   containerd:
