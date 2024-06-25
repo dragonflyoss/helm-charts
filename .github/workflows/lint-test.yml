@@ -66,6 +66,12 @@ jobs:
       - name: Add bitnami chart repos
         run: helm repo add bitnami https://charts.bitnami.com/bitnami
 
+      - name: Add dragonfly chart repos
+        run: helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
+
+      - name: Add nydus-snapshotter chart repos
+        run: helm repo add nydus-snapshotter https://dragonflyoss.github.io/helm-charts/
+
       - name: Run chart-testing (install)
         run: ct install --config ./.github/ct.yaml
 

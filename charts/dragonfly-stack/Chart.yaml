@@ -3,7 +3,7 @@ name: dragonfly-stack
 description: Collects Dragonfly component and Nydus component into a single chart to provide a complete solution for the Dragonfly stack.
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: 2.1.49
 keywords:
   - dragonfly-stack
