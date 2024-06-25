@@ -58,29 +58,37 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | args | list | `[]` | Args to overwrite default nydus-snapshotter startup command |
-| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainerImage":"ghcr.io/liubin/toml-cli:v0.0.7"}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
+| containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":true},"initContainer":{"image":{"pullPolicy":"Always","registry":"ghcr.io","repository":"liubin/toml-cli","tag":"v0.0.7"}}}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
 | containerRuntime.containerd | object | `{"configFile":"/etc/containerd/config.toml","enable":true}` | [Experimental] Containerd support |
 | containerRuntime.containerd.configFile | string | `"/etc/containerd/config.toml"` | Custom config path directory, default is /etc/containerd/config.toml |
 | containerRuntime.containerd.enable | bool | `true` | Enable containerd support Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile}, |
-| containerRuntime.initContainerImage | string | `"ghcr.io/liubin/toml-cli:v0.0.7"` | The image name of init container, just to update container runtime configuration file |
+| containerRuntime.initContainer.image.pullPolicy | string | `"Always"` | Image pull policy. |
+| containerRuntime.initContainer.image.registry | string | `"ghcr.io"` | Image registry. |
+| containerRuntime.initContainer.image.repository | string | `"liubin/toml-cli"` | Image repository. |
+| containerRuntime.initContainer.image.tag | string | `"v0.0.7"` | Image tag. |
 | daemonsetAnnotations | object | `{}` | Daemonset annotations |
 | dragonfly.enable | bool | `true` | Enable dragonfly |
 | dragonfly.mirrorConfig[0].auth_through | bool | `false` |  |
 | dragonfly.mirrorConfig[0].headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
 | dragonfly.mirrorConfig[0].host | string | `"http://127.0.0.1:65001"` |  |
 | dragonfly.mirrorConfig[0].ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
+| global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |
+| global.imageRegistry | string | `""` | Global Docker image registry. |
+| global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | hostAliases | list | `[]` | Host Aliases |
 | hostNetwork | bool | `true` | Let nydus-snapshotter run in host network |
 | hostPid | bool | `true` | Let nydus-snapshotter use the host's pid namespace |
-| image | string | `"ghcr.io/containerd/nydus-snapshotter"` | Image repository |
+| image.pullPolicy | string | `"Always"` | Image pull policy. |
+| image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| image.registry | string | `"ghcr.io"` | Image registry. |
+| image.repository | string | `"containerd/nydus-snapshotter"` | Image repository. |
+| image.tag | string | `"v0.9.0"` | Image tag. |
 | name | string | `"nydus-snapshotter"` | nydus-snapshotter name |
 | nodeSelector | object | `{}` | Node labels for pod assignment |
 | podAnnotations | object | `{}` | Pod annotations |
 | podLabels | object | `{}` | Pod labels |
 | priorityClassName | string | `""` | Pod priorityClassName |
-| pullPolicy | string | `"Always"` | Image pull policy |
 | resources | object | `{"limits":{"cpu":"2","memory":"2Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits |
-| tag | string | `"v0.9.0"` | Image tag |
 | terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds |
 | tolerations | list | `[]` | List of node taints to tolerate |
 
