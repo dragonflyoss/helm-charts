@@ -566,4 +566,4 @@ helm delete dragonfly --namespace dragonfly-system
 | Repository | Name | Version |
 |------------|------|---------|
 | https://dragonflyoss.github.io/helm-charts/ | dragonfly | 1.1.67 |
-| https://dragonflyoss.github.io/helm-charts/ | nydus-snapshotter | 0.0.9 |
+| https://dragonflyoss.github.io/helm-charts/ | nydus-snapshotter | 0.0.10 |
