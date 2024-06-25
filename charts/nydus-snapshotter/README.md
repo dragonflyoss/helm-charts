@@ -70,8 +70,8 @@ helm delete nydus-snapshotter --namespace nydus-snapshotter
 | dragonfly.enable | bool | `true` | Enable dragonfly |
 | dragonfly.mirrorConfig[0].auth_through | bool | `false` |  |
 | dragonfly.mirrorConfig[0].headers.X-Dragonfly-Registry | string | `"https://index.docker.io"` |  |
-| dragonfly.mirrorConfig[0].host | string | `"http://127.0.0.1:65001"` |  |
-| dragonfly.mirrorConfig[0].ping_url | string | `"http://127.0.0.1:40901/server/ping"` |  |
+| dragonfly.mirrorConfig[0].host | string | `"http://127.0.0.1:4001"` |  |
+| dragonfly.mirrorConfig[0].ping_url | string | `"http://127.0.0.1:4003/healthy"` |  |
 | global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |

@@ -1,0 +1,1520 @@
+# Dragonfly Stack Helm Chart Values.
+global:
+  # -- Global Docker image registry.
+  imageRegistry: ""
+  # -- Global Docker registry secret names as an array.
+  imagePullSecrets: []
+  # -- Global node labels for pod assignment.
+  nodeSelector: {}
+  # -- Global storageClass for Persistent Volume(s).
+  storageClass: ""
+
+# Using default values from https://github.com/dragonflyoss/helm-charts/blob/main/charts/dragonfly/values.yaml
+dragonfly:
+  enabled: true
+  manager:
+    # -- Enable manager.
+    enable: true
+    # -- Manager name.
+    name: manager
+    # -- Override manager name.
+    nameOverride: ""
+    # -- Override manager fullname.
+    fullnameOverride: ""
+    # -- maxProcs Limits the number of operating system threads that can execute user-level.
+    # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+    maxProcs: ""
+    # -- Number of Pods to launch.
+    replicas: 3
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/manager
+      # -- Image tag.
+      tag: v2.1.49
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Image pull secrets.
+      # @default -- `[]` (defaults to global.imagePullSecrets).
+      pullSecrets: []
+    # -- Host Aliases.
+    hostAliases: []
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
+    # -- Pod priorityClassName.
+    priorityClassName: ""
+    # -- Node labels for pod assignment.
+    nodeSelector: {}
+    # -- Pod terminationGracePeriodSeconds.
+    terminationGracePeriodSeconds:
+    # -- List of node taints to tolerate.
+    tolerations: []
+    # -- Pod annotations.
+    podAnnotations: {}
+    # -- Pod labels.
+    podLabels: {}
+    # -- Update strategy for replicas.
+    updateStrategy:
+      type: RollingUpdate
+    # -- Deployment annotations.
+    deploymentAnnotations: {}
+    # -- Extra volumes for manager.
+    extraVolumes:
+      - name: logs
+        emptyDir: {}
+    # -- Extra volumeMounts for manager.
+    extraVolumeMounts:
+      - name: logs
+        mountPath: /var/log/dragonfly/manager
+    # -- REST service port.
+    restPort: 8080
+    # -- GRPC service port.
+    grpcPort: 65003
+    service:
+      # -- Service type.
+      type: ClusterIP
+      # -- Service labels.
+      labels: {}
+      # -- Service annotations.
+      annotations: {}
+    initContainer:
+      image:
+        # -- Image registry.
+        registry: docker.io
+        # -- Image repository.
+        repository: busybox
+        # -- Image tag.
+        tag: latest
+        # -- Image digest.
+        digest: ""
+        # -- Image pull policy.
+        pullPolicy: IfNotPresent
+    ingress:
+      # -- Enable ingress.
+      enable: false
+      # -- Ingress class name. Requirement: kubernetes >=1.18.
+      className: ""
+      # -- Ingress annotations.
+      annotations: {}
+      # -- Ingress host path.
+      path: /
+      # -- Ingress path type. Requirement: kubernetes >=1.18.
+      pathType: ImplementationSpecific
+      # -- Manager ingress hosts.
+      hosts: []
+      # -- Ingress TLS configuration.
+      tls: []
+    config:
+      server:
+        grpc:
+          # -- GRPC advertise ip.
+          advertiseIP: ""
+        rest:
+          tls:
+            # -- Certificate file path.
+            cert: ""
+            # -- Key file path.
+            key: ""
+        # -- Work directory.
+        workHome: ""
+        # -- Log directory.
+        logDir: ""
+        # -- Dynconfig cache directory.
+        cacheDir: ""
+        # -- Plugin directory.
+        pluginDir: ""
+      auth:
+        jwt:
+          # -- Realm name to display to the user, default value is Dragonfly.
+          realm: "Dragonfly"
+          # -- Key is secret key used for signing, default value is
+          # encoded base64 of dragonfly.
+          # Please change the key in production.
+          key: "ZHJhZ29uZmx5Cg=="
+          # -- Timeout is duration that a jwt token is valid,
+          # default duration is two days.
+          timeout: 48h
+          # -- MaxRefresh field allows clients to refresh their token
+          # until MaxRefresh has passed, default duration is two days.
+          maxRefresh: 48h
+      cache:
+        redis:
+          # -- Redis cache TTL duration.
+          ttl: 5m
+        local:
+          # -- Size of LFU cache.
+          size: 200000
+          # -- Local cache TTL duration.
+          ttl: 3m
+      job:
+        # -- Sync peers configuration.
+        syncPeers:
+          # -- interval is the interval for syncing all peers information from the scheduler and
+          # display peers information in the manager console.
+          interval: 24h
+          # -- timeout is the timeout for syncing peers information from the single scheduler.
+          timeout: 10m
+        # -- Preheat configuration.
+        preheat:
+          # -- registryTimeout is the timeout for requesting registry to get token and manifest.
+          registryTimeout: 1m
+        # # TLS configuration.
+        # tls:
+        #   # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
+        #   caCert: ''
+      objectStorage:
+        # -- Enable object storage.
+        enable: false
+        # -- Name is object storage name of type, it can be s3 or oss.
+        name: s3
+        # -- Reigon is storage region.
+        region: ""
+        # -- Endpoint is datacenter endpoint.
+        endpoint: ""
+        # -- AccessKey is access key ID.
+        accessKey: ""
+        # -- SecretKey is access key secret.
+        secretKey: ""
+        # -- S3ForcePathStyle sets force path style for s3, true by default.
+        # Set this to `true` to force the request to use path-style addressing,
+        # i.e., `http://s3.amazonaws.com/BUCKET/KEY`. By default, the S3 client
+        # will use virtual hosted bucket addressing when possible
+        # (`http://BUCKET.s3.amazonaws.com/KEY`).
+        # Refer to https://github.com/aws/aws-sdk-go/blob/main/aws/config.go#L118.
+        s3ForcePathStyle: true
+      security:
+        # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+        # If AutoIssueCert is false, any other option in Security will be ignored.
+        autoIssueCert: false
+        # -- CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string.
+        caCert: ""
+        # -- CAKey is the CA private key, it can be path or PEM format string.
+        caKey: ""
+        # -- TLSPolicy controls the grpc shandshake behaviors:
+        #   force: both ClientHandshake and ServerHandshake are only support tls.
+        #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.
+        #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls).
+        # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+        # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+        # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+        tlsPolicy: "prefer"
+        certSpec:
+          # -- DNSNames is a list of dns names be set on the certificate.
+          dnsNames:
+            - "dragonfly-manager"
+            - "dragonfly-manager.dragonfly-system.svc"
+            - "dragonfly-manager.dragonfly-system.svc.cluster.local"
+          # -- IPAddresses is a list of ip addresses be set on the certificate.
+          ipAddresses:
+          # -- ValidityPeriod is the validity period  of certificate.
+          validityPeriod: 87600h
+      network:
+        # -- enableIPv6 enables ipv6.
+        enableIPv6: false
+      # -- Console shows log on console.
+      console: false
+      # -- Whether to enable debug level logger and enable pprof.
+      verbose: false
+      # -- Listen port for pprof, only valid when the verbose option is true
+      # default is -1. If it is 0, pprof will use a random port.
+      pprofPort: -1
+      # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces.
+      jaeger: ""
+    metrics:
+      # -- Enable manager metrics.
+      enable: false
+      service:
+        # -- Service type.
+        type: ClusterIP
+        # -- Service labels.
+        labels: {}
+        # -- Service annotations.
+        annotations: {}
+      serviceMonitor:
+        # -- Enable prometheus service monitor.
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Interval at which metrics should be scraped.
+        interval: 30s
+        # -- Timeout after which the scrape is ended.
+        scrapeTimeout: 10s
+      prometheusRule:
+        # -- Enable prometheus rule.
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Prometheus rules.
+        rules:
+          - alert: ManagerDown
+            expr: sum(dragonfly_manager_version{}) == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Manager instance is down
+              message: Manager instance {{ "{{ $labels.instance }}" }} is down
+          - alert: ManagerHighNumberOfFailedGRPCRequest
+            expr: sum(rate(grpc_server_started_total{grpc_service="manager.Manager",grpc_type="unary"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="InvalidArgument"}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Manager has a high number of failed grpc request
+              message: Manager has a high number of failed grpc request
+          - alert: ManagerSuccessRateOfGRPCRequest
+            expr: (sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="manager.Manager",grpc_type="unary",grpc_code="InvalidArgument"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service="manager.Manager",grpc_type="unary"}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Manager's success rate of grpc request is low
+              message: Manager's success rate of grpc request is low
+          - alert: ManagerHighNumberOfFailedRESTRequest
+            expr: sum(rate(dragonfly_manager_requests_total{}[1m])) - sum(rate(dragonfly_manager_requests_total{code=~"[12].."}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Manager has a high number of failed rest request
+              message: Manager has a high number of failed rest request
+          - alert: ManagerSuccessRateOfRESTRequest
+            expr: sum(rate(dragonfly_manager_requests_total{code=~"[12].."}[1m])) / sum(rate(dragonfly_manager_requests_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Manager's success rate of rest request is low
+              message: Manager's success rate of rest request is low
+
+  scheduler:
+    # -- Enable scheduler.
+    enable: true
+    # -- Scheduler name.
+    name: scheduler
+    # -- Override scheduler name.
+    nameOverride: ""
+    # -- Override scheduler fullname.
+    fullnameOverride: ""
+    # -- maxProcs Limits the number of operating system threads that can execute user-level.
+    # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+    maxProcs: ""
+    # -- Number of Pods to launch.
+    replicas: 3
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/scheduler
+      # -- Image tag.
+      tag: v2.1.49
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Image pull secrets.
+      # @default -- `[]` (defaults to global.imagePullSecrets).
+      pullSecrets: []
+    # -- Host Aliases.
+    hostAliases: []
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "4"
+        memory: "8Gi"
+    service:
+      # -- Service type.
+      type: ClusterIP
+      # -- Service labels.
+      labels: {}
+      # -- Service annotations.
+      annotations: {}
+    # -- Pod priorityClassName.
+    priorityClassName: ""
+    # -- Node labels for pod assignment.
+    nodeSelector: {}
+    # -- Pod terminationGracePeriodSeconds.
+    terminationGracePeriodSeconds:
+    # -- List of node taints to tolerate.
+    tolerations: []
+    # -- Pod annotations.
+    podAnnotations: {}
+    # -- Pod labels.
+    podLabels: {}
+    # -- Update strategy for replicas.
+    updateStrategy: {}
+    # -- Statefulset annotations.
+    statefulsetAnnotations: {}
+    # -- Pod containerPort.
+    containerPort: 8002
+    # -- Extra volumes for scheduler.
+    extraVolumes:
+      - name: logs
+        emptyDir: {}
+    # -- Extra volumeMounts for scheduler.
+    extraVolumeMounts:
+      - name: logs
+        mountPath: /var/log/dragonfly/scheduler
+    initContainer:
+      image:
+        # -- Image registry.
+        registry: docker.io
+        # -- Image repository.
+        repository: busybox
+        # -- Image tag.
+        tag: latest
+        # -- Image digest.
+        digest: ""
+        # -- Image pull policy.
+        pullPolicy: IfNotPresent
+    config:
+      server:
+        # -- Advertise ip.
+        advertiseIP: ""
+        # -- Advertise port.
+        advertisePort: 8002
+        # -- Listen ip.
+        listenIP: "0.0.0.0"
+        # -- Server port.
+        port: 8002
+        # -- Work directory.
+        workHome: ""
+        # -- Log directory.
+        logDir: ""
+        # -- Dynconfig cache directory.
+        cacheDir: ""
+        # -- Plugin directory.
+        pluginDir: ""
+        # -- Storage directory.
+        dataDir: ""
+      scheduler:
+        # -- Algorithm configuration to use different scheduling algorithms,
+        # default configuration supports "default", "ml" and "nt".
+        # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm, "nt" is the rule-based and networkTopology-based scheduling algorithm.
+        # It also supports user plugin extension, the algorithm value is "plugin",
+        # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
+        # the dragonfly working directory plugins.
+        algorithm: default
+        # -- backToSourceCount is single task allows the peer to back-to-source count.
+        backToSourceCount: 200
+        # -- retryBackToSourceLimit reaches the limit, then the peer back-to-source.
+        retryBackToSourceLimit: 5
+        # -- Retry scheduling limit times.
+        retryLimit: 7
+        # -- Retry scheduling interval.
+        retryInterval: 700ms
+        gc:
+          # -- pieceDownloadTimeout is the timeout of downloading piece.
+          pieceDownloadTimeout: 30m
+          # -- peerGCInterval is the interval of peer gc.
+          peerGCInterval: 10s
+          # -- peerTTL is the ttl of peer. If the peer has been downloaded by other peers,
+          # then PeerTTL will be reset.
+          peerTTL: 24h
+          # -- taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task,
+          # then the task will also be reclaimed.
+          taskGCInterval: 30m
+          # -- hostGCInterval is the interval of host gc.
+          hostGCInterval: 6h
+          # -- hostTTL is time to live of host. If host announces message to scheduler,
+          # then HostTTl will be reset.
+          hostTTL: 1h
+        networkTopology:
+          # -- collectInterval is the interval of collecting network topology.
+          collectInterval: 2h
+          probe:
+            # -- queueLength is the length of probe queue.
+            queueLength: 5
+            # -- count is the number of probing hosts.
+            count: 10
+          cache:
+            # -- interval is cache cleanup interval.
+            interval: 5m
+            # -- ttl is networkTopology cache items ttl.
+            ttl: 5m
+      # -- resource configuration.
+      resource:
+        # -- task configuration.
+        task:
+          # -- downloadTiny is the configuration of downloading tiny task by scheduler.
+          downloadTiny:
+            # -- scheme is download tiny task scheme.
+            scheme: http
+            # -- timeout is http request timeout.
+            timeout: 1m
+            # -- tls is download tiny task TLS configuration.
+            tls:
+              # -- insecureSkipVerify controls whether a client verifies the
+              # server's certificate chain and hostname.
+              insecureSkipVerify: true
+      dynconfig:
+        # -- Type is deprecated and is no longer used.
+        # Please remove it from your configuration.
+        type: manager
+        # -- Dynamic config refresh interval.
+        refreshInterval: 1m
+      host:
+        # -- IDC is the idc of scheduler instance.
+        idc: ""
+        # -- Location is the location of scheduler instance.
+        location: ""
+      manager:
+        # -- Associated scheduler cluster id.
+        schedulerClusterID: 1
+        keepAlive:
+          # -- Manager keepalive interval.
+          interval: 5s
+      seedPeer:
+        # -- scheduler enable seed peer as P2P peer,
+        # if the value is false, P2P network will not be back-to-source through
+        # seed peer but by dfdaemon and preheat feature does not work.
+        enable: true
+      storage:
+        # -- maxSize sets the maximum size in megabytes of storage file.
+        maxSize: 100
+        # -- maxBackups sets the maximum number of storage files to retain.
+        maxBackups: 10
+        # -- bufferSize sets the size of buffer container,
+        # if the buffer is full, write all the records in the buffer to the file.
+        bufferSize: 100
+      security:
+        # -- AutoIssueCert indicates to issue client certificates for all grpc call.
+        # If AutoIssueCert is false, any other option in Security will be ignored.
+        autoIssueCert: false
+        # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
+        caCert: ""
+        # -- TLSVerify indicates to verify certificates.
+        tlsVerify: false
+        # -- TLSPolicy controls the grpc shandshake behaviors:
+        #   force: both ClientHandshake and ServerHandshake are only support tls.
+        #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.
+        #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls).
+        # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
+        # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
+        # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
+        tlsPolicy: "prefer"
+        certSpec:
+          # -- DNSNames is a list of dns names be set on the certificate.
+          dnsNames:
+            - "dragonfly-scheduler"
+            - "dragonfly-scheduler.dragonfly-system.svc"
+            - "dragonfly-scheduler.dragonfly-system.svc.cluster.local"
+          # -- IPAddresses is a list of ip addresses be set on the certificate.
+          ipAddresses:
+          # -- ValidityPeriod is the validity period  of certificate.
+          validityPeriod: 4320h
+      network:
+        # -- enableIPv6 enables ipv6.
+        enableIPv6: false
+      # -- Console shows log on console.
+      console: false
+      # -- Whether to enable debug level logger and enable pprof.
+      verbose: false
+      # -- Listen port for pprof, only valid when the verbose option is true.
+      # default is -1. If it is 0, pprof will use a random port.
+      pprofPort: -1
+      # - Jaeger endpoint url, like: http://jaeger.dragonfly.svc:14268/api/traces.
+      jaeger: ""
+    metrics:
+      # -- Enable scheduler metrics.
+      enable: false
+      # -- Enable host metrics.
+      enableHost: false
+      service:
+        # -- Service type.
+        type: ClusterIP
+        # -- Service labels.
+        labels: {}
+        # -- Service annotations.
+        annotations: {}
+      serviceMonitor:
+        # -- Enable prometheus service monitor.
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Interval at which metrics should be scraped.
+        interval: 30s
+        # -- Timeout after which the scrape is ended.
+        scrapeTimeout: 10s
+      prometheusRule:
+        # -- Enable prometheus rule
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Prometheus rules.
+        rules:
+          - alert: SchedulerDown
+            expr: sum(dragonfly_scheduler_version{}) == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler instance is down
+              message: Scheduler instance {{ "{{ $labels.instance }}" }} is down
+          - alert: SchedulerHighNumberOfFailedDownloadPeer
+            expr: sum(irate(dragonfly_scheduler_download_peer_finished_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed download peer
+              message: Scheduler has a high number of failed download peer
+          - alert: SchedulerSuccessRateOfDownloadingPeer
+            expr: (sum(rate(dragonfly_scheduler_download_peer_finished_total{}[1m])) - sum(rate(dragonfly_scheduler_download_peer_finished_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_download_peer_finished_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of downloading peer is low
+              message: Scheduler's success rate of downloading peer is low
+          - alert: SchedulerHighNumberOfFailedRegisterPeer
+            expr: sum(irate(dragonfly_scheduler_register_peer_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed register peer
+              message: Scheduler has a high number of failed register peer
+          - alert: SchedulerSuccessRateOfRegisterTask
+            expr: (sum(rate(dragonfly_scheduler_register_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_register_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_register_peer_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of register peer is low
+              message: Scheduler's success rate of register peer is low
+          - alert: SchedulerHighNumberOfFailedLeavePeer
+            expr: sum(irate(dragonfly_scheduler_leave_peer_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed leave peer
+              message: Scheduler has a high number of failed leave peer
+          - alert: SchedulerSuccessRateOfLeavingPeer
+            expr: (sum(rate(dragonfly_scheduler_leave_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_leave_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_leave_peer_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of leaving peer is low
+              message: Scheduler's success rate of leaving peer is low
+          - alert: SchedulerHighNumberOfFailedStatTask
+            expr: sum(irate(dragonfly_scheduler_stat_task_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed stat task
+              message: Scheduler has a high number of failed stat task
+          - alert: SchedulerSuccessRateOfStatTask
+            expr: (sum(rate(dragonfly_scheduler_stat_task_total{}[1m])) - sum(rate(dragonfly_scheduler_stat_task_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_stat_task_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of stat task is low
+              message: Scheduler's success rate of stat task is low
+          - alert: SchedulerHighNumberOfFailedAnnouncePeer
+            expr: sum(irate(dragonfly_scheduler_announce_peer_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed announce peer
+              message: Scheduler has a high number of failed announce peer
+          - alert: SchedulerSuccessRateOfAnnouncingPeer
+            expr: (sum(rate(dragonfly_scheduler_announce_peer_total{}[1m])) - sum(rate(dragonfly_scheduler_announce_peer_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_announce_peer_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of announcing peer is low
+              message: Scheduler's success rate of announcing peer is low
+          - alert: SchedulerHighNumberOfFailedLeaveHost
+            expr: sum(irate(dragonfly_scheduler_leave_host_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed leave host
+              message: Scheduler has a high number of failed leave host
+          - alert: SchedulerSuccessRateOfLeavingHost
+            expr: (sum(rate(dragonfly_scheduler_leave_host_total{}[1m])) - sum(rate(dragonfly_scheduler_leave_host_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_leave_host_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of leaving host is low
+              message: Scheduler's success rate of leaving host is low
+          - alert: SchedulerHighNumberOfFailedAnnounceHost
+            expr: sum(irate(dragonfly_scheduler_announce_host_failure_total{}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed annoucne host
+              message: Scheduler has a high number of failed annoucne host
+          - alert: SchedulerSuccessRateOfAnnouncingHost
+            expr: (sum(rate(dragonfly_scheduler_announce_host_total{}[1m])) - sum(rate(dragonfly_scheduler_announce_host_failure_total{}[1m]))) / sum(rate(dragonfly_scheduler_announce_host_total{}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of announcing host is low
+              message: Scheduler's success rate of announcing host is low
+          - alert: SchedulerHighNumberOfFailedGRPCRequest
+            expr: sum(rate(grpc_server_started_total{grpc_service="scheduler.Scheduler",grpc_type="unary"}[1m])) - sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="InvalidArgument"}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Scheduler has a high number of failed grpc request
+              message: Scheduler has a high number of failed grpc request
+          - alert: SchedulerSuccessRateOfGRPCRequest
+            expr: (sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="OK"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="NotFound"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="PermissionDenied"}[1m])) + sum(rate(grpc_server_handled_total{grpc_service="scheduler.Scheduler",grpc_type="unary",grpc_code="InvalidArgument"}[1m]))) / sum(rate(grpc_server_started_total{grpc_service="scheduler.Scheduler",grpc_type="unary"}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Scheduler's success rate of grpc request is low
+              message: Scheduler's success rate of grpc request is low
+
+  seedClient:
+    # -- Enable seed client.
+    enable: true
+    # -- Seed client name.
+    name: seed-client
+    # -- Override scheduler name.
+    nameOverride: ""
+    # -- Override scheduler fullname.
+    fullnameOverride: ""
+    # -- maxProcs Limits the number of operating system threads that can execute user-level.
+    # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+    maxProcs: ""
+    # -- Number of Pods to launch.
+    replicas: 3
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/client
+      # -- Image tag.
+      tag: v0.1.82
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Image pull secrets.
+      # @default -- `[]` (defaults to global.imagePullSecrets).
+      pullSecrets: []
+    # -- Host Aliases.
+    hostAliases: []
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
+    # -- Pod priorityClassName.
+    priorityClassName: ""
+    # -- Node labels for pod assignment.
+    nodeSelector: {}
+    # -- Pod terminationGracePeriodSeconds.
+    terminationGracePeriodSeconds:
+    # -- List of node taints to tolerate.
+    tolerations: []
+    # -- Pod annotations.
+    podAnnotations: {}
+    # -- Pod labels.
+    podLabels: {}
+    # -- Update strategy for replicas.
+    updateStrategy: {}
+    # -- Statefulset annotations.
+    statefulsetAnnotations: {}
+    initContainer:
+      image:
+        # -- Image registry.
+        registry: docker.io
+        # -- Image repository.
+        repository: busybox
+        # -- Image tag.
+        tag: latest
+        # -- Image digest.
+        digest: ""
+        # -- Image pull policy.
+        pullPolicy: IfNotPresent
+    # -- Extra volumes for dfdaemon.
+    extraVolumes:
+      - name: logs
+        emptyDir: {}
+    # -- Extra volumeMounts for dfdaemon.
+    extraVolumeMounts:
+      - name: logs
+        mountPath: /var/log/dragonfly/dfdaemon/
+    persistence:
+      # -- Enable persistence for seed peer.
+      enable: true
+      # -- Persistence annotations.
+      annotations: {}
+      # -- Persistence access modes.
+      accessModes:
+        - ReadWriteOnce
+      # -- Persistence persistence size.
+      size: 50Gi
+      ## Seed client data Persistent Volume Storage Class.
+      ## If defined, storageClassName: <storageClass>.
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning.
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack).
+      ##
+      # storageClass: "-".
+    service:
+      # -- Service type.
+      type: ClusterIP
+      # -- Service labels.
+      labels: {}
+      # -- Service annotations.
+      annotations: {}
+    config:
+      # -- verbose prints log.
+      verbose: false
+      log:
+        # -- Specify the logging level [trace, debug, info, warn, error]
+        level: info
+      # -- host is the host configuration for dfdaemon.
+      host:
+        ## idc is the idc of the host.
+        idc: ""
+        ## location is the location of the host.
+        location: ""
+        ## hostname is the hostname of the host.
+        # hostname: ""
+        ## ip is the advertise ip of the host.
+        # ip: ""
+      server:
+        # -- pluginDir is the directory to store plugins.
+        pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+        # -- cacheDir is the directory to store cache files.
+        cacheDir: /var/cache/dragonfly/dfdaemon/
+      download:
+        server:
+          # -- socketPath is the unix socket path for dfdaemon GRPC service.
+          socketPath: /var/run/dragonfly/dfdaemon.sock
+        # -- rateLimit is the default rate limit of the download speed in bps(bytes per second), default is 20Gbps.
+        rateLimit: 20000000000
+        # --  pieceTimeout is the timeout for downloading a piece from source.
+        pieceTimeout: 30s
+        # -- concurrentPieceCount is the number of concurrent pieces to download.
+        concurrentPieceCount: 16
+      upload:
+        server:
+          # -- port is the port to the grpc server.
+          port: 4000
+          ## ip is the listen ip of the grpc server.
+          # ip: ""
+        # -- rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps.
+        rateLimit: 20000000000
+      manager:
+        # -- addrs is manager addresses.
+        addrs: []
+      scheduler:
+        # -- announceInterval is the interval to announce peer to the scheduler.
+        # Announcer will provide the scheduler with peer information for scheduling,
+        # peer information includes cpu, memory, etc.
+        announceInterval: 1m
+        # -- scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source
+        # download if enableBackToSource is true, otherwise dfdaemon will return download failed.
+        scheduleTimeout: 30s
+        # -- maxScheduleCount is the max count of schedule.
+        maxScheduleCount: 5
+      seedPeer:
+        # -- enable indicates whether enable seed peer.
+        enable: true
+        # -- type is the type of seed peer.
+        type: super
+        # -- clusterID is the cluster id of the seed peer cluster.
+        clusterID: 1
+        # -- keepaliveInterval is the interval to keep alive with manager.
+        keepaliveInterval: 15s
+      dynconfig:
+        # -- refreshInterval is the interval to refresh dynamic configuration from manager.
+        refreshInterval: 1m
+      storage:
+        # -- dir is the directory to store task's metadata and content.
+        dir: /var/lib/dragonfly/
+        # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
+        keep: false
+        # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
+        writeBufferSize: 131072
+        # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
+        readBufferSize: 131072
+      gc:
+        # -- interval is the interval to do gc.
+        interval: 900s
+        policy:
+          # -- taskTTL is the ttl of the task.
+          taskTTL: 168h
+          # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+          # If the disk usage is greater than the threshold, dfdaemon will do gc.
+          distHighThresholdPercent: 80
+          # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+          # If the disk usage is less than the threshold, dfdaemon will stop gc.
+          distLowThresholdPercent: 60
+      proxy:
+        server:
+          # -- port is the port to the proxy server.
+          port: 4001
+          ## ip is the listen ip of the proxy server.
+          # ip: ""
+          ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+          ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+          ## When client requests via the proxy, the client should not verify the server cert and set
+          ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+          ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+          ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+          ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+          ## the proxy can intercept the request by the server cert.
+          # caCert: ""
+          ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+          ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+          ## When client requests via the proxy, the client should not verify the server cert and set
+          ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+          ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+          ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+          ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+          ## the proxy can intercept the request by the server cert.
+          # caKey: ""
+        # -- rules is the list of rules for the proxy server.
+        # regex is the regex of the request url.
+        # useTLS indicates whether use tls for the proxy backend.
+        # redirect is the redirect url.
+        # filteredQueryParams is the filtered query params to generate the task id.
+        # When filter is ["Signature", "Expires", "ns"], for example:
+        # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
+        # will generate the same task id.
+        # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+        rules:
+          - regex: "blobs/sha256.*"
+            # useTLS: false
+            # redirect: ""
+            # filteredQueryParams: []
+        registryMirror:
+          # -- addr is the default address of the registry mirror. Proxy will start a registry mirror service for the
+          # client to pull the image. The client can use the default address of the registry mirror in
+          # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
+          # of registry mirror.
+          addr: https://index.docker.io
+          ## certs is the client certs path with PEM format for the registry.
+          ## If registry use self-signed cert, the client should set the
+          ## cert for the registry mirror.
+          # certs: ""
+        # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
+        disableBackToSource: false
+        # -- prefetch pre-downloads full of the task when download with range request.
+        prefetch: false
+        # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
+        readBufferSize: 32768
+      security:
+        # -- enable indicates whether enable security.
+        enable: false
+      health:
+        server:
+          # -- port is the port to the health server.
+          port: 4003
+          ## ip is the listen ip of the health server.
+          # ip: ""
+      metrics:
+        server:
+          # -- port is the port to the metrics server.
+          port: 4002
+          ## ip is the listen ip of the metrics server.
+          # ip: ""
+      stats:
+        server:
+          # -- port is the port to the stats server.
+          port: 4004
+          ## ip is the listen ip of the stats server.
+          # ip: ""
+      ## tracing is the tracing configuration for dfdaemon.
+      # tracing:
+        ## addr is the address to report tracing log.
+        # addr: ""
+    metrics:
+      # -- Enable seed client metrics.
+      enable: false
+      service:
+        # -- Service type.
+        type: ClusterIP
+        # -- Service labels.
+        labels: {}
+        # -- Service annotations.
+        annotations: {}
+      serviceMonitor:
+        # -- Enable prometheus service monitor.
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels
+        additionalLabels: {}
+        # -- Interval at which metrics should be scraped.
+        interval: 30s
+        # -- Timeout after which the scrape is ended.
+        scrapeTimeout: 10s
+      prometheusRule:
+        # -- Enable prometheus rule
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Prometheus rules.
+        rules:
+          - alert: SeedClientDown
+            expr: sum(dragonfly_client_version{container="seed-client"}) == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Seed client instance is down
+              message: Seed client instance {{ "{{ $labels.instance }}" }} is down
+          - alert: SeedClientHighNumberOfFailedDownloadTask
+            expr: sum(irate(dragonfly_client_download_task_failure_total{container="seed-client"}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Seed client has a high number of failed download task
+              message: Seed client has a high number of failed download task
+          - alert: SeedClientSuccessRateOfDownloadingTask
+            expr: (sum(rate(dragonfly_client_download_task_total{container="seed-client"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container="seed-client"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container="seed-client"}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Seed client's success rate of downloading task is low
+              message: Seed client's success rate of downloading task is low
+
+  client:
+    # -- Enable client.
+    enable: true
+    # -- Client name.
+    name: client
+    # -- Override scheduler name.
+    nameOverride: ""
+    # -- Override scheduler fullname.
+    fullnameOverride: ""
+    # -- maxProcs Limits the number of operating system threads that can execute user-level.
+    # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
+    maxProcs: ""
+    image:
+      # -- Image registry.
+      registry: docker.io
+      # -- Image repository.
+      repository: dragonflyoss/client
+      # -- Image tag.
+      tag: v0.1.82
+      # -- Image digest.
+      digest: ""
+      # -- Image pull policy.
+      pullPolicy: IfNotPresent
+      # -- Image pull secrets.
+      # @default -- `[]` (defaults to global.imagePullSecrets).
+      pullSecrets: []
+    # -- Host Aliases.
+    hostAliases: []
+    # -- hostPID allows visibility of processes on the host for peer pod.
+    hostPID: true
+    # -- hostIPC specify if host IPC should be enabled for peer pod.
+    hostIPC: true
+    # -- hostNetwork specify if host network should be enabled for peer pod.
+    hostNetwork: true
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
+    # -- Pod priorityClassName.
+    priorityClassName: ""
+    # -- Node labels for pod assignment.
+    nodeSelector: {}
+    # -- Pod terminationGracePeriodSeconds.
+    terminationGracePeriodSeconds:
+    # -- List of node taints to tolerate.
+    tolerations: []
+    # -- Pod annotations.
+    podAnnotations: {}
+    # -- Pod labels.
+    podLabels: {}
+    # -- Update strategy for replicas.
+    updateStrategy: {}
+    # -- Statefulset annotations.
+    statefulsetAnnotations: {}
+    initContainer:
+      image:
+        # -- Image registry.
+        registry: docker.io
+        # -- Image repository.
+        repository: busybox
+        # -- Image tag.
+        tag: latest
+        # -- Image digest.
+        digest: ""
+        # -- Image pull policy.
+        pullPolicy: IfNotPresent
+    # -- Extra volumes for dfdaemon.
+    extraVolumes:
+      - name: storage
+        hostPath:
+          path: /var/lib/dragonfly/
+          type: DirectoryOrCreate
+      - name: logs
+        emptyDir: {}
+    # -- Extra volumeMounts for dfdaemon.
+    extraVolumeMounts:
+      - name: storage
+        mountPath: /var/lib/dragonfly/
+      - name: logs
+        mountPath: /var/log/dragonfly/dfdaemon/
+    dfinit:
+      # -- Enable dfinit to override configuration of container runtime.
+      enable: false
+      image:
+        # -- Image registry.
+        registry: docker.io
+        # -- Image repository.
+        repository: dragonflyoss/dfinit
+        # -- Image tag.
+        tag: v0.1.82
+        # -- Image digest.
+        digest: ""
+        # -- Image pull policy.
+        pullPolicy: IfNotPresent
+      config:
+        # -- verbose prints log.
+        verbose: true
+        log:
+          # -- Specify the logging level [trace, debug, info, warn, error]
+          level: info
+        proxy:
+          # -- addr is the proxy server address of dfdaemon.
+          addr: http://127.0.0.1:4001
+        containerRuntime:
+          containerd:
+            # -- configPath is the path of containerd configuration file.
+            configPath: /etc/containerd/config.toml
+            # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
+            # refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace
+            # portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server
+            # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
+            # capabilities is the list of capabilities in containerd configuration, refer to
+            # https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field.
+            registries:
+              - hostNamespace: docker.io
+                serverAddr: https://index.docker.io
+                capabilities: ["pull", "resolve"]
+              - hostNamespace: ghcr.io
+                serverAddr: https://ghcr.io
+                capabilities: ["pull", "resolve"]
+          # crio:
+            # # -- configPath is the path of cri-o registries's configuration file.
+            # configPath: /etc/containers/registries.conf
+            # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+            # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+            # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+            # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+            # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+            # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+            # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+            # registries:
+              # - prefix: docker.io
+                # location: docker.io
+              # - prefix: ghcr.io
+                # location: ghcr.io
+    config:
+      # -- verbose prints log.
+      verbose: false
+      log:
+        # -- Specify the logging level [trace, debug, info, warn, error]
+        level: info
+      # -- host is the host configuration for dfdaemon.
+      host:
+        ## idc is the idc of the host.
+        idc: ""
+        ## location is the location of the host.
+        location: ""
+        ## hostname is the hostname of the host.
+        # hostname: ""
+        ## ip is the advertise ip of the host.
+        # ip: ""
+      server:
+        # -- pluginDir is the directory to store plugins.
+        pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+        # -- cacheDir is the directory to store cache files.
+        cacheDir: /var/cache/dragonfly/dfdaemon/
+      download:
+        server:
+          # -- socketPath is the unix socket path for dfdaemon GRPC service.
+          socketPath: /var/run/dragonfly/dfdaemon.sock
+        # -- rateLimit is the default rate limit of the download speed in bps(bytes per second), default is 20Gbps.
+        rateLimit: 20000000000
+        # --  pieceTimeout is the timeout for downloading a piece from source.
+        pieceTimeout: 30s
+        # -- concurrentPieceCount is the number of concurrent pieces to download.
+        concurrentPieceCount: 16
+      upload:
+        server:
+          # -- port is the port to the grpc server.
+          port: 4000
+          ## ip is the listen ip of the grpc server.
+          # ip: ""
+        # -- rateLimit is the default rate limit of the upload speed in bps(bytes per second), default is 20Gbps.
+        rateLimit: 20000000000
+      manager:
+        # -- addrs is manager addresses.
+        addrs: []
+      scheduler:
+        # -- announceInterval is the interval to announce peer to the scheduler.
+        # Announcer will provide the scheduler with peer information for scheduling,
+        # peer information includes cpu, memory, etc.
+        announceInterval: 5m
+        # -- scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source
+        # download if enableBackToSource is true, otherwise dfdaemon will return download failed.
+        scheduleTimeout: 30s
+        # -- maxScheduleCount is the max count of schedule.
+        maxScheduleCount: 5
+        # -- enableBackToSource indicates whether enable back-to-source download, when the scheduling failed.
+        enableBackToSource: true
+      dynconfig:
+        # -- refreshInterval is the interval to refresh dynamic configuration from manager.
+        refreshInterval: 5m
+      storage:
+        # -- dir is the directory to store task's metadata and content.
+        dir: /var/lib/dragonfly/
+        # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
+        keep: false
+        # -- writeBufferSize is the buffer size for writing piece to disk, default is 128KB.
+        writeBufferSize: 131072
+        # -- readBufferSize is the buffer size for reading piece from disk, default is 128KB.
+        readBufferSize: 131072
+      gc:
+        # -- interval is the interval to do gc.
+        interval: 900s
+        policy:
+          # -- taskTTL is the ttl of the task.
+          taskTTL: 168h
+          # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+          # If the disk usage is greater than the threshold, dfdaemon will do gc.
+          distHighThresholdPercent: 80
+          # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+          # If the disk usage is less than the threshold, dfdaemon will stop gc.
+          distLowThresholdPercent: 60
+      proxy:
+        server:
+          # -- port is the port to the proxy server.
+          port: 4001
+          ## ip is the listen ip of the proxy server.
+          # ip: ""
+          ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+          ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+          ## When client requests via the proxy, the client should not verify the server cert and set
+          ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+          ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+          ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+          ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+          ## the proxy can intercept the request by the server cert.
+          # caCert: ""
+          ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+          ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+          ## When client requests via the proxy, the client should not verify the server cert and set
+          ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+          ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+          ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+          ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+          ## the proxy can intercept the request by the server cert.
+          # caKey: ""
+        # -- rules is the list of rules for the proxy server.
+        # regex is the regex of the request url.
+        # useTLS indicates whether use tls for the proxy backend.
+        # redirect is the redirect url.
+        # filteredQueryParams is the filtered query params to generate the task id.
+        # When filter is ["Signature", "Expires", "ns"], for example:
+        # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
+        # will generate the same task id.
+        # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+        rules:
+          - regex: "blobs/sha256.*"
+            # useTLS: false
+            # redirect: ""
+            # filteredQueryParams: []
+        registryMirror:
+          # -- addr is the default address of the registry mirror. Proxy will start a registry mirror service for the
+          # client to pull the image. The client can use the default address of the registry mirror in
+          # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
+          # of registry mirror.
+          addr: https://index.docker.io
+          ## certs is the client certs path with PEM format for the registry.
+          ## If registry use self-signed cert, the client should set the
+          ## cert for the registry mirror.
+          # certs: ""
+        # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
+        disableBackToSource: false
+        # -- prefetch pre-downloads full of the task when download with range request.
+        prefetch: false
+        # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
+        readBufferSize: 32768
+      security:
+        # -- enable indicates whether enable security.
+        enable: false
+      health:
+        server:
+          # -- port is the port to the health server.
+          port: 4003
+          ## ip is the listen ip of the health server.
+          # ip: ""
+      metrics:
+        server:
+          # -- port is the port to the metrics server.
+          port: 4002
+          ## ip is the listen ip of the metrics server.
+          # ip: ""
+      stats:
+        server:
+          # -- port is the port to the stats server.
+          port: 4004
+          ## ip is the listen ip of the stats server.
+          # ip: ""
+      ## tracing is the tracing configuration for dfdaemon.
+      # tracing:
+        ## addr is the address to report tracing log.
+        # addr: ""
+    metrics:
+      # -- Enable client metrics.
+      enable: false
+      service:
+        # -- Service type.
+        type: ClusterIP
+        # -- Service labels.
+        labels: {}
+        # -- Service annotations.
+        annotations: {}
+      serviceMonitor:
+        # -- Enable prometheus service monitor.
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels
+        additionalLabels: {}
+        # -- Interval at which metrics should be scraped.
+        interval: 30s
+        # -- Timeout after which the scrape is ended.
+        scrapeTimeout: 10s
+      prometheusRule:
+        # -- Enable prometheus rule
+        # ref: https://github.com/coreos/prometheus-operator.
+        enable: false
+        # -- Additional labels.
+        additionalLabels: {}
+        # -- Prometheus rules.
+        rules:
+          - alert: ClientDown
+            expr: sum(dragonfly_client_version{container="client"}) == 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Client instance is down
+              message: Client instance {{ "{{ $labels.instance }}" }} is down
+          - alert: ClientHighNumberOfFailedDownloadTask
+            expr: sum(irate(dragonfly_client_download_task_failure_total{container="client"}[1m])) > 100
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: Client has a high number of failed download task
+              message: Client has a high number of failed download task
+          - alert: ClientSuccessRateOfDownloadingTask
+            expr: (sum(rate(dragonfly_client_download_task_total{container="client"}[1m])) - sum(rate(dragonfly_client_download_task_failure_total{container="client"}[1m]))) / sum(rate(dragonfly_client_download_task_total{container="client"}[1m])) < 0.6
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: Client's success rate of downloading task is low
+              message: Client's success rate of downloading task is low
+
+  externalManager:
+    # -- External manager hostname.
+    host:
+    # -- External REST service port.
+    restPort: 8080
+    # -- External GRPC service port.
+    grpcPort: 65003
+
+  mysql:
+    # -- Enable mysql with docker container.
+    enable: true
+    # -- Cluster domain.
+    clusterDomain: "cluster.local"
+    # -- Running GORM migration.
+    migrate: true
+    auth:
+      # -- Mysql hostname.
+      host: ""
+      # -- Mysql root password.
+      rootPassword: dragonfly-root
+      # -- Mysql username.
+      username: dragonfly
+      # -- Mysql password.
+      password: dragonfly
+      # -- Mysql database name.
+      database: manager
+    primary:
+      service:
+        # -- Mysql port.
+        port: 3306
+
+  externalMysql:
+    # -- Running GORM migration.
+    migrate: true
+    # -- External mysql hostname.
+    host:
+    # -- External mysql username.
+    username: dragonfly
+    # -- External mysql password.
+    password: dragonfly
+    # -- External mysql database name.
+    database: manager
+    # -- External mysql port.
+    port: 3306
+
+  redis:
+    # -- Enable redis cluster with docker container.
+    enable: true
+    # -- Cluster domain.
+    clusterDomain: "cluster.local"
+    auth:
+      # -- Enable password authentication.
+      enabled: true
+      # -- Redis password.
+      password: dragonfly
+    master:
+      service:
+        ports:
+          # -- Redis master service port.
+          redis: 6379
+
+  externalRedis:
+    # -- External redis server addresses.
+    addrs:
+      - "redis.example.com:6379"
+    # -- External redis sentinel master name.
+    masterName: ""
+    # -- External redis username.
+    username: ""
+    # -- External redis password.
+    password: ""
+    # -- External redis db.
+    db: 0
+    # -- External redis broker db.
+    brokerDB: 1
+    # -- External redis backend db.
+    backendDB: 2
+    # -- External redis networkTopology db.
+    networkTopologyDB: 3
+
+# Using default values from https://github.com/dragonflyoss/helm-charts/blob/main/charts/nydus-snapshotter/values.yaml
+nydus-snapshotter:
+  enabled: true
+  # -- nydus-snapshotter name
+  name: nydus-snapshotter
+  image:
+    # -- Image registry.
+    registry: ghcr.io
+    # -- Image repository.
+    repository: containerd/nydus-snapshotter
+    # -- Image tag.
+    tag: v0.9.0
+    # -- Image pull policy.
+    pullPolicy: Always
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
+  # -- Let nydus-snapshotter run in host network
+  hostNetwork: true
+  # -- Let nydus-snapshotter use the host's pid namespace
+  hostPid: true
+  # -- Host Aliases
+  hostAliases: []
+  # -- Args to overwrite default nydus-snapshotter startup command
+  args: []
+  # -- Pod resource requests and limits
+  resources:
+    requests:
+      cpu: "0"
+      memory: "0"
+    limits:
+      cpu: "2"
+      memory: "2Gi"
+  # -- Pod priorityClassName
+  priorityClassName: ""
+  # -- Node labels for pod assignment
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds
+  terminationGracePeriodSeconds:
+  # -- List of node taints to tolerate
+  tolerations: []
+  # -- Pod annotations
+  podAnnotations: {}
+  # -- Pod labels
+  podLabels: {}
+  # -- Daemonset annotations
+  daemonsetAnnotations: {}
+  dragonfly:
+    # -- Enable dragonfly
+    enable: true
+    mirrorConfig:
+    - host: "http://dragonfly-seed-client:4001"
+      auth_through: false
+      headers:
+        "X-Dragonfly-Registry": "https://index.docker.io"
+      ping_url: "http://dragonfly-seed-client:4003/healthy"
+  # -- [Experimental] Container runtime support
+  # Choose special container runtime in Kubernetes.
+  # Support: Containerd, Docker, CRI-O
+  containerRuntime:
+    initContainer:
+      image:
+        # -- Image registry.
+        registry: ghcr.io
+        # -- Image repository.
+        repository: liubin/toml-cli
+        # -- Image tag.
+        tag: v0.0.7
+        # -- Image pull policy.
+        pullPolicy: Always
+    # -- [Experimental] Containerd support
+    containerd:
+      # -- Enable containerd support
+      # Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile},
+      enable: true
+      # -- Custom config path directory, default is /etc/containerd/config.toml
+      configFile: "/etc/containerd/config.toml"

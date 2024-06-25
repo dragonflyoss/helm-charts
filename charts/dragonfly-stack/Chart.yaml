@@ -1,0 +1,52 @@
+apiVersion: v2
+name: dragonfly-stack
+description: Collects Dragonfly component and Nydus component into a single chart to provide a complete solution for the Dragonfly stack.
+icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+type: application
+version: 0.1.0
+appVersion: 2.1.49
+keywords:
+  - dragonfly-stack
+  - dragonfly
+  - nydus
+  - d7y
+  - P2P
+  - image
+
+maintainers:
+  - name: gaius-qi
+    email: gaius.qi@gmail.com
+  - name: imeoer
+    email: imeoer@gmail.com
+
+home: https://d7y.io/
+
+sources:
+  - https://github.com/dragonflyoss/Dragonfly2
+  - https://github.com/dragonflyoss/client
+  - https://github.com/dragonflyoss/image-service
+  - https://github.com/containerd/nydus-snapshotter/
+
+annotations:
+  artifacthub.io/changes: |
+    - Init commit for dragonfly-stack.
+
+  artifacthub.io/links: |
+    - name: Chart Source
+      url: https://github.com/dragonflyoss/helm-charts
+    - name: Source
+      url: https://github.com/dragonflyoss/Dragonfly2
+    - name: Source
+      url: https://github.com/dragonflyoss/client
+    - name: Source
+      url: https://github.com/containerd/nydus-snapshotter
+
+dependencies:
+  - name: dragonfly
+    version: 1.1.67
+    repository: https://dragonflyoss.github.io/helm-charts/
+    condition: dragonfly.enable
+  - name: nydus-snapshotter
+    version: 0.0.10
+    repository: https://dragonflyoss.github.io/helm-charts/
+    condition: nydus-snapshotter.enable
