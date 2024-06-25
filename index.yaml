@@ -11248,6 +11248,59 @@ entries:
           url: https://github.com/containerd/nydus-snapshotter
     apiVersion: v2
     appVersion: 2.1.49
+    created: "2024-06-25T10:08:00.643937398Z"
+    dependencies:
+    - condition: dragonfly.enable
+      name: dragonfly
+      repository: https://dragonflyoss.github.io/helm-charts/
+      version: 1.1.67
+    - condition: nydus-snapshotter.enable
+      name: nydus-snapshotter
+      repository: https://dragonflyoss.github.io/helm-charts/
+      version: 0.0.10
+    description: Collects Dragonfly component and Nydus component into a single chart
+      to provide a complete solution for the Dragonfly stack.
+    digest: 5379045117de93072dc87be3dcd9fbc4792332bf87a4ef238dd26b4d5695ba04
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly-stack
+    - dragonfly
+    - nydus
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: imeoer@gmail.com
+      name: imeoer
+    - email: adamqqq@163.com
+      name: adamqqqplay
+    name: dragonfly-stack
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-stack-0.1.1/dragonfly-stack-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/changes: |
+        - Init commit for dragonfly-stack.
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
+    appVersion: 2.1.49
     created: "2024-06-25T06:49:40.968306227Z"
     dependencies:
     - condition: dragonfly.enable
@@ -11716,4 +11769,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-06-25T06:49:41.080654639Z"
+generated: "2024-06-25T10:08:00.644252516Z"
