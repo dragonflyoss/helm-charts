@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Use master service for redis.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.49
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.49
+        - name: client
+          image: dragonflyoss/client:v0.1.81
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.81
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.81
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.49
+    created: "2024-07-01T04:06:46.398421983Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.4.6
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.4.3
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 102e02a88ee2caee91715fa36f2ed1c39df0edee8a5734cf0e32f01fd233cef5
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.68/dragonfly-1.1.68.tgz
+    version: 1.1.68
+  - annotations:
+      artifacthub.io/changes: |
         - Use headless service for redis.
       artifacthub.io/images: |
         - name: manager
@@ -11769,4 +11827,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-06-25T10:08:00.644252516Z"
+generated: "2024-07-01T04:06:46.398890075Z"
