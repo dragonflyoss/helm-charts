@@ -86,6 +86,8 @@ spec:
         {{- if .Values.client.dfinit.config.verbose }}
         - --verbose
         {{- end }}
+        resources:
+{{ toYaml .Values.client.initContainer.resources | indent 12 }}
         volumeMounts:
         - name: dfinit-config
           mountPath: "/etc/dragonfly"
@@ -118,6 +120,8 @@ spec:
           {{- else }}
           echo "no container runtime to restart"
           {{- end }}
+        resources:
+{{ toYaml .Values.client.initContainer.resources | indent 12 }}
       {{- end }}
       containers:
       - name: client
