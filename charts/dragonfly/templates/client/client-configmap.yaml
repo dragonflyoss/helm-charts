@@ -26,7 +26,7 @@ data:
       {{- else if .Values.manager.enable }}
       - http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
       {{- else }}
-      - {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+      - http://{{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- end }}
     scheduler:
 {{ toYaml .Values.client.config.scheduler | indent 6 }}
