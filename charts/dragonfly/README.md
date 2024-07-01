@@ -193,6 +193,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | client.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | client.initContainer.image.tag | string | `"latest"` | Image tag. |
+| client.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | client.metrics.enable | bool | `false` | Enable client metrics. |
 | client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -302,6 +303,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | manager.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | manager.initContainer.image.tag | string | `"latest"` | Image tag. |
+| manager.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | manager.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | manager.metrics.enable | bool | `false` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -415,6 +417,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | scheduler.initContainer.image.tag | string | `"latest"` | Image tag. |
+| scheduler.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | scheduler.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | scheduler.metrics.enable | bool | `false` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
@@ -497,6 +500,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | seedClient.initContainer.image.tag | string | `"latest"` | Image tag. |
+| seedClient.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedClient.metrics.enable | bool | `false` | Enable seed client metrics. |
 | seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |

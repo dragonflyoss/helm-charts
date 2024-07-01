@@ -92,6 +92,14 @@ manager:
     # -- Service annotations.
     annotations: {}
   initContainer:
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
     image:
       # -- Image registry.
       registry: docker.io
@@ -375,6 +383,14 @@ scheduler:
     - name: logs
       mountPath: /var/log/dragonfly/scheduler
   initContainer:
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
     image:
       # -- Image registry.
       registry: docker.io
@@ -756,6 +772,14 @@ seedClient:
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
     image:
       # -- Image registry.
       registry: docker.io
@@ -1076,6 +1100,14 @@ client:
   # -- Statefulset annotations.
   statefulsetAnnotations: {}
   initContainer:
+    # -- Pod resource requests and limits.
+    resources:
+      requests:
+        cpu: "0"
+        memory: "0"
+      limits:
+        cpu: "2"
+        memory: "4Gi"
     image:
       # -- Image registry.
       registry: docker.io

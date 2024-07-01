@@ -75,6 +75,8 @@ spec:
         {{- else }}
         command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
+        resources:
+{{ toYaml .Values.scheduler.initContainer.resources | indent 12 }}
       containers:
       - name: scheduler
         image: {{ template "scheduler.image" . }}
