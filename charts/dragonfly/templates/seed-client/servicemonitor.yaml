@@ -3,6 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "dragonfly.seedClient.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     app: {{ template "dragonfly.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}

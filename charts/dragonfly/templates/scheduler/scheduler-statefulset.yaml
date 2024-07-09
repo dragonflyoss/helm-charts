@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "dragonfly.scheduler.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}

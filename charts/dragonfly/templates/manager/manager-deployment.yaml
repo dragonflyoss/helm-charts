@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.manager.name }}
   name: {{ template "dragonfly.manager.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   annotations:
   {{- if .Values.manager.deploymentAnnotations }}
 {{ toYaml .Values.manager.deploymentAnnotations | indent 4 }}

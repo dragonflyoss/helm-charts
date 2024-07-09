@@ -9,6 +9,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ template "dragonfly.manager.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     app: {{ template "dragonfly.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}

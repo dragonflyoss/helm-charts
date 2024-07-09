@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "dragonfly.client.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     app: {{ template "dragonfly.fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
