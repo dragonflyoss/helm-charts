@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.seedClient.name }}
   name: {{ template "dragonfly.seedClient.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
   annotations:
   {{- if .Values.seedClient.statefulsetAnnotations }}
 {{ toYaml .Values.seedClient.statefulsetAnnotations | indent 4 }}
