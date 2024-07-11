@@ -151,14 +151,16 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.client.config.upload.server.port }}"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}"]
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.client.config.upload.server.port }}"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}"]
           initialDelaySeconds: 15
-          periodSeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"

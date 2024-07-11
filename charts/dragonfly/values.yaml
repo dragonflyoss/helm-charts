@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.50
+    tag: v2.1.51
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -333,7 +333,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.50
+    tag: v2.1.51
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
