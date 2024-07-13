@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Change probe timeout for client.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.51
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.51
+        - name: client
+          image: dragonflyoss/client:v0.1.82
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.82
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.82
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.51
+    created: "2024-07-13T15:13:00.855140417Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: e07749d749105038996828468aebb477ba6f7779d13bbbf721389f430079b83e
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.1.74/dragonfly-1.1.74.tgz
+    version: 1.1.74
+  - annotations:
+      artifacthub.io/changes: |
         - Change readinessProbe and livenessProbe for client and seed-client.
       artifacthub.io/images: |
         - name: manager
@@ -12117,4 +12175,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-07-11T07:32:13.455231187Z"
+generated: "2024-07-13T15:13:00.855624792Z"
