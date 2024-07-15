@@ -236,7 +236,7 @@ manager:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
     # -- Console shows log on console.
-    console: false
+    console: true
     # -- Whether to enable debug level logger and enable pprof.
     verbose: false
     # -- Listen port for pprof, only valid when the verbose option is true
@@ -544,7 +544,7 @@ scheduler:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
     # -- Console shows log on console.
-    console: false
+    console: true
     # -- Whether to enable debug level logger and enable pprof.
     verbose: false
     # -- Listen port for pprof, only valid when the verbose option is true.
@@ -828,7 +828,7 @@ seedClient:
     annotations: {}
   config:
     # -- verbose prints log.
-    verbose: false
+    verbose: true
     log:
       # -- Specify the logging level [trace, debug, info, warn, error]
       level: info
@@ -1192,7 +1192,7 @@ client:
               # location: ghcr.io
   config:
     # -- verbose prints log.
-    verbose: false
+    verbose: true
     log:
       # -- Specify the logging level [trace, debug, info, warn, error]
       level: info
