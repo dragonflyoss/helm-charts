@@ -162,7 +162,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.writeBufferSize | int | `131072` | writeBufferSize is the buffer size for writing piece to disk, default is 128KB. |
 | client.config.upload.rateLimit | string | `"10GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 10GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
-| client.config.verbose | bool | `false` | verbose prints log. |
+| client.config.verbose | bool | `true` | verbose prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io"},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io"}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. |
 | client.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
@@ -247,7 +247,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.local.size | int | `200000` | Size of LFU cache. |
 | manager.config.cache.local.ttl | string | `"3m"` | Local cache TTL duration. |
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
-| manager.config.console | bool | `false` | Console shows log on console. |
+| manager.config.console | bool | `true` | Console shows log on console. |
 | manager.config.jaeger | string | `""` |  |
 | manager.config.job.preheat | object | `{"registryTimeout":"1m"}` | Preheat configuration. |
 | manager.config.job.preheat.registryTimeout | string | `"1m"` | registryTimeout is the timeout for requesting registry to get token and manifest. |
@@ -347,7 +347,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | redis.enable | bool | `true` | Enable redis cluster with docker container. |
 | redis.master.service.ports.redis | int | `6379` | Redis master service port. |
-| scheduler.config.console | bool | `false` | Console shows log on console. |
+| scheduler.config.console | bool | `true` | Console shows log on console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval. |
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance. |
@@ -484,7 +484,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.writeBufferSize | int | `131072` | writeBufferSize is the buffer size for writing piece to disk, default is 128KB. |
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
-| seedClient.config.verbose | bool | `false` | verbose prints log. |
+| seedClient.config.verbose | bool | `true` | verbose prints log. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
