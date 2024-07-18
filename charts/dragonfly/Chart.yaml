@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.1.76
+version: 1.1.77
 appVersion: 2.1.51
 keywords:
   - dragonfly
@@ -27,7 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Print the logs to the console when the service is started.
+    - Change rateLimit to human readable format in client.
+    - Update client image version to v0.1.88.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -42,11 +43,11 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.1.51
     - name: client
-      image: dragonflyoss/client:v0.1.86
+      image: dragonflyoss/client:v0.1.88
     - name: seed-client
-      image: dragonflyoss/client:v0.1.86
+      image: dragonflyoss/client:v0.1.88
     - name: dfinit
-      image: dragonflyoss/dfinit:v0.1.86
+      image: dragonflyoss/dfinit:v0.1.88
 
 dependencies:
   - name: mysql
