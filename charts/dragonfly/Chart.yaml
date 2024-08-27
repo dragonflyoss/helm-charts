@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Update client image version to v0.1.95.
+    - Update client image version to v0.1.103.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -38,15 +38,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.53
+      image: dragonflyoss/manager:v2.1.55
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.53
+      image: dragonflyoss/scheduler:v2.1.55
     - name: client
-      image: dragonflyoss/client:v0.1.95
+      image: dragonflyoss/client:v0.1.103
     - name: seed-client
-      image: dragonflyoss/client:v0.1.95
+      image: dragonflyoss/client:v0.1.103
     - name: dfinit
-      image: dragonflyoss/dfinit:v0.1.95
+      image: dragonflyoss/dfinit:v0.1.103
 
 dependencies:
   - name: mysql

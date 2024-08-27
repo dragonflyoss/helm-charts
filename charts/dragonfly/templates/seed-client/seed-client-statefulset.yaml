@@ -56,7 +56,7 @@ spec:
       {{- if quote .Values.seedClient.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.seedClient.terminationGracePeriodSeconds }}
       {{- end }}
-      {{- if and (.Capabilities.APIVersions.Has "scheduling.k8s.io/v1beta1") (.Values.seedClient.priorityClassName) }}
+      {{- if .Values.seedClient.priorityClassName }}
       priorityClassName: {{ .Values.seedClient.priorityClassName }}
       {{- end }}
       {{- with .Values.seedClient.image.pullSecrets | default .Values.global.imagePullSecrets }}
