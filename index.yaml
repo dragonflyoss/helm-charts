@@ -3,6 +3,65 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update Dragonfly version to 2.1.56.
+        - Update client version to 0.1.107.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.56
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.56
+        - name: client
+          image: dragonflyoss/client:v0.1.107
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.107
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.107
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.56
+    created: "2024-09-09T02:35:53.884012356Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 53f9bee55fb2c756de34cedf20aeee95682fb887c46c484a4671242f476a2f66
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.2.7/dragonfly-1.2.7.tgz
+    version: 1.2.7
+  - annotations:
+      artifacthub.io/changes: |
         - Change capacity and quantum for manager job.
       artifacthub.io/images: |
         - name: manager
@@ -12759,4 +12818,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-04T03:34:48.168149448Z"
+generated: "2024-09-09T02:35:53.88449572Z"
