@@ -1176,13 +1176,22 @@ client:
           # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
           # capabilities is the list of capabilities in containerd configuration, refer to
           # https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field.
+          # skip_verify is the flag to skip verifying the server's certificate, refer to
+          # https://github.com/containerd/containerd/blob/main/docs/hosts.md#bypass-tls-verification-example.
+          # ca (Certificate Authority Certification) can be set to a path or an array of paths each pointing
+          # to a ca file for use in authenticating with the registry namespace, refer to
+          # https://github.com/containerd/containerd/blob/main/docs/hosts.md#ca-field.
           registries:
             - hostNamespace: docker.io
               serverAddr: https://index.docker.io
               capabilities: ["pull", "resolve"]
+              skipVerify: true
+              # ca: []
             - hostNamespace: ghcr.io
               serverAddr: https://ghcr.io
               capabilities: ["pull", "resolve"]
+              skipVerify: true
+              # ca: []
         # crio:
           # # -- configPath is the path of cri-o registries's configuration file.
           # configPath: /etc/containers/registries.conf
