@@ -952,6 +952,9 @@ seedClient:
       # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
       # will generate the same task id.
       # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+      # `X-Dragonfly-Use-P2P` header can instead of the regular expression of the rule. If the value is "true",
+      # the request will use P2P technology to distribute the content. If the value is "false",
+      # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
         - regex: "blobs/sha256.*"
           # useTLS: false
@@ -1318,6 +1321,9 @@ client:
       # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
       # will generate the same task id.
       # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
+      # `X-Dragonfly-Use-P2P` header can instead of the regular expression of the rule. If the value is "true",
+      # the request will use P2P technology to distribute the content. If the value is "false",
+      # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
         - regex: "blobs/sha256.*"
           # useTLS: false
