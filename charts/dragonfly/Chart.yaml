@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.2.8
+version: 1.2.9
 appVersion: 2.1.56
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add skipVerify and ca config for dfinit.
+    - Add X-Dragonfly-Use-P2P comment for proxy rules in dfdaemon.
 
   artifacthub.io/links: |
     - name: Chart Source
