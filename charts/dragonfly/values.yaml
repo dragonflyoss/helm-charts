@@ -176,9 +176,15 @@ manager:
         # -- fillInterval is the interval for refilling the bucket.
         fillInterval: 1m
         # -- capacity is the maximum number of requests that can be consumed in a single fillInterval.
-        capacity: 10
+        capacity: 5
         # -- quantum is the number of tokens taken from the bucket for each request.
-        quantum: 10
+        quantum: 5
+      # -- gc configuration.
+      gc:
+        # -- interval is the interval of gc.
+        interval: 24h
+        # -- ttl is the ttl of job.
+        ttl: 24h
       # -- Sync peers configuration.
       syncPeers:
         # -- interval is the interval for syncing all peers information from the scheduler and
