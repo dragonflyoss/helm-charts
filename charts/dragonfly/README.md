@@ -250,12 +250,15 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `true` | Console shows log on console. |
 | manager.config.jaeger | string | `""` |  |
+| manager.config.job.gc | object | `{"interval":"24h","ttl":"24h"}` | gc configuration. |
+| manager.config.job.gc.interval | string | `"24h"` | interval is the interval of gc. |
+| manager.config.job.gc.ttl | string | `"24h"` | ttl is the ttl of job. |
 | manager.config.job.preheat | object | `{"registryTimeout":"1m"}` | Preheat configuration. |
 | manager.config.job.preheat.registryTimeout | string | `"1m"` | registryTimeout is the timeout for requesting registry to get token and manifest. |
-| manager.config.job.rateLimit | object | `{"capacity":10,"fillInterval":"1m","quantum":10}` | rateLimit configuration. |
-| manager.config.job.rateLimit.capacity | int | `10` | capacity is the maximum number of requests that can be consumed in a single fillInterval. |
+| manager.config.job.rateLimit | object | `{"capacity":5,"fillInterval":"1m","quantum":5}` | rateLimit configuration. |
+| manager.config.job.rateLimit.capacity | int | `5` | capacity is the maximum number of requests that can be consumed in a single fillInterval. |
 | manager.config.job.rateLimit.fillInterval | string | `"1m"` | fillInterval is the interval for refilling the bucket. |
-| manager.config.job.rateLimit.quantum | int | `10` | quantum is the number of tokens taken from the bucket for each request. |
+| manager.config.job.rateLimit.quantum | int | `5` | quantum is the number of tokens taken from the bucket for each request. |
 | manager.config.job.syncPeers | object | `{"interval":"24h","timeout":"10m"}` | Sync peers configuration. |
 | manager.config.job.syncPeers.interval | string | `"24h"` | interval is the interval for syncing all peers information from the scheduler and display peers information in the manager console. |
 | manager.config.job.syncPeers.timeout | string | `"10m"` | timeout is the timeout for syncing peers information from the single scheduler. |
