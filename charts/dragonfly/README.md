@@ -160,6 +160,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.keep | bool | `false` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | client.config.storage.readBufferSize | int | `131072` | readBufferSize is the buffer size for reading piece from disk, default is 128KB. |
 | client.config.storage.writeBufferSize | int | `131072` | writeBufferSize is the buffer size for writing piece to disk, default is 128KB. |
+| client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
 | client.config.upload.rateLimit | string | `"10GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 10GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.verbose | bool | `true` | verbose prints log. |
