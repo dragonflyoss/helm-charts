@@ -1247,6 +1247,8 @@ client:
         port: 4000
         ## ip is the listen ip of the grpc server.
         # ip: ""
+      # -- disableShared indicates whether disable to share data with other peers.
+      disableShared: false
       # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 10GiB/s.
       rateLimit: 10GiB
     manager:
