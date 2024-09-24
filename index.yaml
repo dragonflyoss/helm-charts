@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Change job ratelimit to 10 in manager.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.56
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.56
+        - name: client
+          image: dragonflyoss/client:v0.1.107
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.107
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.107
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.56
+    created: "2024-09-24T14:42:11.486584729Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 6819d40bd33185f1423efc29c5a1cf09de7890b7c04fee0282fc7c49bce4bfea
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.2.13/dragonfly-1.2.13.tgz
+    version: 1.2.13
+  - annotations:
+      artifacthub.io/changes: |
         - Reduce host gc interval to clear offline peers' metadata in time.
       artifacthub.io/images: |
         - name: manager
@@ -13108,4 +13166,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-23T02:44:09.324134154Z"
+generated: "2024-09-24T14:42:11.487081526Z"
