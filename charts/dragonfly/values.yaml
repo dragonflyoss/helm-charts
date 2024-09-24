@@ -176,9 +176,9 @@ manager:
         # -- fillInterval is the interval for refilling the bucket.
         fillInterval: 1m
         # -- capacity is the maximum number of requests that can be consumed in a single fillInterval.
-        capacity: 5
+        capacity: 10
         # -- quantum is the number of tokens taken from the bucket for each request.
-        quantum: 5
+        quantum: 10
       # -- gc configuration.
       gc:
         # -- interval is the interval of gc.
