@@ -93,6 +93,8 @@ manager:
     labels: {}
     # -- Service annotations.
     annotations: {}
+    # -- Service nodePort.
+    nodePort: ""
   initContainer:
     # -- Pod resource requests and limits.
     resources:
@@ -372,6 +374,8 @@ scheduler:
     labels: {}
     # -- Service annotations.
     annotations: {}
+    # -- Service nodePort.
+    nodePort: ""
   # -- Pod priorityClassName.
   priorityClassName: ""
   # -- Node labels for pod assignment.
@@ -840,6 +844,8 @@ seedClient:
     labels: {}
     # -- Service annotations.
     annotations: {}
+    # -- Service nodePort.
+    nodePort: ""
   config:
     # -- verbose prints log.
     verbose: true
