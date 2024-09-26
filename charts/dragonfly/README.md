@@ -335,6 +335,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.restPort | int | `8080` | REST service port. |
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.labels | object | `{}` | Service labels. |
+| manager.service.nodePort | string | `""` | Service nodePort. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -450,6 +451,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | scheduler.service.annotations | object | `{}` | Service annotations. |
 | scheduler.service.labels | object | `{}` | Service labels. |
+| scheduler.service.nodePort | string | `""` | Service nodePort. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
@@ -536,6 +538,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.service.annotations | object | `{}` | Service annotations. |
 | seedClient.service.labels | object | `{}` | Service labels. |
+| seedClient.service.nodePort | string | `""` | Service nodePort. |
 | seedClient.service.type | string | `"ClusterIP"` | Service type. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |

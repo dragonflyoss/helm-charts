@@ -28,6 +28,9 @@ spec:
       name: http-grpc
       protocol: TCP
       targetPort: {{ .Values.manager.grpcPort }}
+{{- if eq .Values.manager.service.type "NodePort" }}
+      nodePort: {{ .Values.manager.service.nodePort }}
+{{- end }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
     release: {{ .Release.Name }}

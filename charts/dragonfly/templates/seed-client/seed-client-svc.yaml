@@ -32,6 +32,9 @@ spec:
       name: http-stats
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.stats.server.port }}
+{{- if eq .Values.seedClient.service.type "NodePort" }}
+      nodePort: {{ .Values.seedClient.service.nodePort }}
+{{- end }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
     release: {{ .Release.Name }}
