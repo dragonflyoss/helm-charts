@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.56
+    tag: v2.1.59
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -198,10 +198,12 @@ manager:
       preheat:
         # -- registryTimeout is the timeout for requesting registry to get token and manifest.
         registryTimeout: 1m
-      # # TLS configuration.
-      # tls:
-      #   # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
-      #   caCert: ''
+        tls:
+          # -- insecureSkipVerify controls whether a client verifies the
+          # server's certificate chain and hostname.
+          insecureSkipVerify: false
+        # # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
+        # caCert: ''
     objectStorage:
       # -- Enable object storage.
       enable: false
@@ -349,7 +351,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.56
+    tag: v2.1.59
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -757,7 +759,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.107
+    tag: v0.1.109
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1084,7 +1086,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.107
+    tag: v0.1.109
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1167,7 +1169,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.107
+      tag: v0.1.109
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
