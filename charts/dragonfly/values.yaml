@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.56
+    tag: v2.1.59
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -198,10 +198,12 @@ manager:
       preheat:
         # -- registryTimeout is the timeout for requesting registry to get token and manifest.
         registryTimeout: 1m
-      # # TLS configuration.
-      # tls:
-      #   # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
-      #   caCert: ''
+        tls:
+          # -- insecureSkipVerify controls whether a client verifies the
+          # server's certificate chain and hostname.
+          insecureSkipVerify: false
+        # # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
+        # caCert: ''
     objectStorage:
       # -- Enable object storage.
       enable: false
@@ -349,7 +351,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.56
+    tag: v2.1.59
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -445,7 +447,7 @@ scheduler:
     scheduler:
       # -- Algorithm configuration to use different scheduling algorithms,
       # default configuration supports "default", "ml" and "nt".
-      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm, "nt" is the rule-based and networkTopology-based scheduling algorithm.
+      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm.
       # It also supports user plugin extension, the algorithm value is "plugin",
       # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
       # the dragonfly working directory plugins.
@@ -474,19 +476,6 @@ scheduler:
         # -- hostTTL is time to live of host. If host announces message to scheduler,
         # then HostTTl will be reset.
         hostTTL: 1h
-      networkTopology:
-        # -- collectInterval is the interval of collecting network topology.
-        collectInterval: 2h
-        probe:
-          # -- queueLength is the length of probe queue.
-          queueLength: 5
-          # -- count is the number of probing hosts.
-          count: 10
-        cache:
-          # -- interval is cache cleanup interval.
-          interval: 5m
-          # -- ttl is networkTopology cache items ttl.
-          ttl: 5m
     # -- resource configuration.
     resource:
       # -- task configuration.
@@ -757,7 +746,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.107
+    tag: v0.1.109
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1084,7 +1073,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.107
+    tag: v0.1.109
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1167,7 +1156,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.107
+      tag: v0.1.109
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1514,5 +1503,3 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
-  # -- External redis networkTopology db.
-  networkTopologyDB: 3

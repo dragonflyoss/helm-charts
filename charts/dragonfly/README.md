@@ -174,7 +174,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v0.1.107"` | Image tag. |
+| client.dfinit.image.tag | string | `"v0.1.109"` | Image tag. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"hostPath":{"path":"/var/lib/dragonfly/","type":"DirectoryOrCreate"},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -188,7 +188,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v0.1.107"` | Image tag. |
+| client.image.tag | string | `"v0.1.109"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -233,7 +233,6 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
 | externalRedis.masterName | string | `""` | External redis sentinel master name. |
-| externalRedis.networkTopologyDB | int | `3` | External redis networkTopology db. |
 | externalRedis.password | string | `""` | External redis password. |
 | externalRedis.username | string | `""` | External redis username. |
 | fullnameOverride | string | `""` | Override dragonfly fullname. |
@@ -253,8 +252,9 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.job.gc | object | `{"interval":"24h","ttl":"24h"}` | gc configuration. |
 | manager.config.job.gc.interval | string | `"24h"` | interval is the interval of gc. |
 | manager.config.job.gc.ttl | string | `"24h"` | ttl is the ttl of job. |
-| manager.config.job.preheat | object | `{"registryTimeout":"1m"}` | Preheat configuration. |
+| manager.config.job.preheat | object | `{"registryTimeout":"1m","tls":{"insecureSkipVerify":false}}` | Preheat configuration. |
 | manager.config.job.preheat.registryTimeout | string | `"1m"` | registryTimeout is the timeout for requesting registry to get token and manifest. |
+| manager.config.job.preheat.tls.insecureSkipVerify | bool | `false` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |
 | manager.config.job.rateLimit | object | `{"capacity":10,"fillInterval":"1m","quantum":10}` | rateLimit configuration. |
 | manager.config.job.rateLimit.capacity | int | `10` | capacity is the maximum number of requests that can be consumed in a single fillInterval. |
 | manager.config.job.rateLimit.fillInterval | string | `"1m"` | fillInterval is the interval for refilling the bucket. |
@@ -298,7 +298,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.1.56"` | Image tag. |
+| manager.image.tag | string | `"v2.1.59"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -373,7 +373,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.resource.task.downloadTiny.timeout | string | `"1m"` | timeout is http request timeout. |
 | scheduler.config.resource.task.downloadTiny.tls | object | `{"insecureSkipVerify":true}` | tls is download tiny task TLS configuration. |
 | scheduler.config.resource.task.downloadTiny.tls.insecureSkipVerify | bool | `true` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |
-| scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm, "nt" is the rule-based and networkTopology-based scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
+| scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
 | scheduler.config.scheduler.gc.hostGCInterval | string | `"5m"` | hostGCInterval is the interval of host gc. |
 | scheduler.config.scheduler.gc.hostTTL | string | `"1h"` | hostTTL is time to live of host. If host announces message to scheduler, then HostTTl will be reset. |
@@ -381,11 +381,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | peerTTL is the ttl of peer. If the peer has been downloaded by other peers, then PeerTTL will be reset. |
 | scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
-| scheduler.config.scheduler.networkTopology.cache.interval | string | `"5m"` | interval is cache cleanup interval. |
-| scheduler.config.scheduler.networkTopology.cache.ttl | string | `"5m"` | ttl is networkTopology cache items ttl. |
-| scheduler.config.scheduler.networkTopology.collectInterval | string | `"2h"` | collectInterval is the interval of collecting network topology. |
-| scheduler.config.scheduler.networkTopology.probe.count | int | `10` | count is the number of probing hosts. |
-| scheduler.config.scheduler.networkTopology.probe.queueLength | int | `5` | queueLength is the length of probe queue. |
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
 | scheduler.config.scheduler.retryInterval | string | `"700ms"` | Retry scheduling interval. |
 | scheduler.config.scheduler.retryLimit | int | `7` | Retry scheduling limit times. |
@@ -421,7 +416,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.1.56"` | Image tag. |
+| scheduler.image.tag | string | `"v2.1.59"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -505,7 +500,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v0.1.107"` | Image tag. |
+| seedClient.image.tag | string | `"v0.1.109"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

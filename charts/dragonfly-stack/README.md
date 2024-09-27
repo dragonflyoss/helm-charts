@@ -233,7 +233,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.externalRedis.brokerDB | int | `1` | External redis broker db. |
 | dragonfly.externalRedis.db | int | `0` | External redis db. |
 | dragonfly.externalRedis.masterName | string | `""` | External redis sentinel master name. |
-| dragonfly.externalRedis.networkTopologyDB | int | `3` | External redis networkTopology db. |
 | dragonfly.externalRedis.password | string | `""` | External redis password. |
 | dragonfly.externalRedis.username | string | `""` | External redis username. |
 | dragonfly.manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
@@ -357,7 +356,7 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.scheduler.config.resource.task.downloadTiny.timeout | string | `"1m"` | timeout is http request timeout. |
 | dragonfly.scheduler.config.resource.task.downloadTiny.tls | object | `{"insecureSkipVerify":true}` | tls is download tiny task TLS configuration. |
 | dragonfly.scheduler.config.resource.task.downloadTiny.tls.insecureSkipVerify | bool | `true` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |
-| dragonfly.scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm, "nt" is the rule-based and networkTopology-based scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
+| dragonfly.scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | dragonfly.scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
 | dragonfly.scheduler.config.scheduler.gc.hostGCInterval | string | `"6h"` | hostGCInterval is the interval of host gc. |
 | dragonfly.scheduler.config.scheduler.gc.hostTTL | string | `"1h"` | hostTTL is time to live of host. If host announces message to scheduler, then HostTTl will be reset. |
@@ -365,11 +364,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.scheduler.config.scheduler.gc.peerTTL | string | `"24h"` | peerTTL is the ttl of peer. If the peer has been downloaded by other peers, then PeerTTL will be reset. |
 | dragonfly.scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | dragonfly.scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
-| dragonfly.scheduler.config.scheduler.networkTopology.cache.interval | string | `"5m"` | interval is cache cleanup interval. |
-| dragonfly.scheduler.config.scheduler.networkTopology.cache.ttl | string | `"5m"` | ttl is networkTopology cache items ttl. |
-| dragonfly.scheduler.config.scheduler.networkTopology.collectInterval | string | `"2h"` | collectInterval is the interval of collecting network topology. |
-| dragonfly.scheduler.config.scheduler.networkTopology.probe.count | int | `10` | count is the number of probing hosts. |
-| dragonfly.scheduler.config.scheduler.networkTopology.probe.queueLength | int | `5` | queueLength is the length of probe queue. |
 | dragonfly.scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
 | dragonfly.scheduler.config.scheduler.retryInterval | string | `"700ms"` | Retry scheduling interval. |
 | dragonfly.scheduler.config.scheduler.retryLimit | int | `7` | Retry scheduling limit times. |
