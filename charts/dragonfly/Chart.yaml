@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Remove the network topology configuration for the scheduler.
+    - Remove the network topology configuration.
 
   artifacthub.io/links: |
     - name: Chart Source
