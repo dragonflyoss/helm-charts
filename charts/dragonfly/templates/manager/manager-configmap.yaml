@@ -22,9 +22,7 @@ data:
         {{- end }}
       grpc:
         advertiseIP: {{ .Values.manager.config.server.grpc.advertiseIP }}
-        port:
-          start: {{ .Values.manager.grpcPort }}
-          end: {{ .Values.manager.grpcPort }}
+        port: {{ .Values.manager.grpcPort }}
       workHome: {{ .Values.manager.config.server.workHome }}
       logDir: {{ .Values.manager.config.server.logDir }}
       cacheDir: {{ .Values.manager.config.server.cacheDir }}

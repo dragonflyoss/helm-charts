@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.2.16
-appVersion: 2.1.59
+version: 1.2.17
+appVersion: 2.1.61
 keywords:
   - dragonfly
   - d7y
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Remove the network topology configuration.
+    - Remove grpc port with start and end in manager.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -38,15 +38,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.1.59
+      image: dragonflyoss/manager:v2.1.61
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.1.59
+      image: dragonflyoss/scheduler:v2.1.61
     - name: client
-      image: dragonflyoss/client:v0.1.109
+      image: dragonflyoss/client:v0.1.111
     - name: seed-client
-      image: dragonflyoss/client:v0.1.109
+      image: dragonflyoss/client:v0.1.111
     - name: dfinit
-      image: dragonflyoss/dfinit:v0.1.109
+      image: dragonflyoss/dfinit:v0.1.111
 
 dependencies:
   - name: mysql
