@@ -41,8 +41,6 @@ data:
 {{ toYaml .Values.seedClient.config.gc | indent 6 }}
     proxy:
 {{ toYaml .Values.seedClient.config.proxy | indent 6 }}
-    security:
-{{ toYaml .Values.seedClient.config.security | indent 6 }}
     health:
 {{ toYaml .Values.seedClient.config.health | indent 6 }}
     metrics:

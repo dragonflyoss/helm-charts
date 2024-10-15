@@ -152,7 +152,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | client.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
-| client.config.security.enable | bool | `false` | enable indicates whether enable security. |
 | client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
@@ -271,13 +270,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.objectStorage.s3ForcePathStyle | bool | `true` | S3ForcePathStyle sets force path style for s3, true by default. Set this to `true` to force the request to use path-style addressing, i.e., `http://s3.amazonaws.com/BUCKET/KEY`. By default, the S3 client will use virtual hosted bucket addressing when possible (`http://BUCKET.s3.amazonaws.com/KEY`). Refer to https://github.com/aws/aws-sdk-go/blob/main/aws/config.go#L118. |
 | manager.config.objectStorage.secretKey | string | `""` | SecretKey is access key secret. |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
-| manager.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
-| manager.config.security.caCert | string | `""` | CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string. |
-| manager.config.security.caKey | string | `""` | CAKey is the CA private key, it can be path or PEM format string. |
-| manager.config.security.certSpec.dnsNames | list | `["dragonfly-manager","dragonfly-manager.dragonfly-system.svc","dragonfly-manager.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
-| manager.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
-| manager.config.security.certSpec.validityPeriod | string | `"87600h"` | ValidityPeriod is the validity period  of certificate. |
-| manager.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
 | manager.config.server.cacheDir | string | `""` | Dynconfig cache directory. |
 | manager.config.server.grpc.advertiseIP | string | `""` | GRPC advertise ip. |
 | manager.config.server.logDir | string | `""` | Log directory. |
@@ -384,13 +376,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `5` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
 | scheduler.config.scheduler.retryInterval | string | `"700ms"` | Retry scheduling interval. |
 | scheduler.config.scheduler.retryLimit | int | `7` | Retry scheduling limit times. |
-| scheduler.config.security.autoIssueCert | bool | `false` | AutoIssueCert indicates to issue client certificates for all grpc call. If AutoIssueCert is false, any other option in Security will be ignored. |
-| scheduler.config.security.caCert | string | `""` | CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string. |
-| scheduler.config.security.certSpec.dnsNames | list | `["dragonfly-scheduler","dragonfly-scheduler.dragonfly-system.svc","dragonfly-scheduler.dragonfly-system.svc.cluster.local"]` | DNSNames is a list of dns names be set on the certificate. |
-| scheduler.config.security.certSpec.ipAddresses | string | `nil` | IPAddresses is a list of ip addresses be set on the certificate. |
-| scheduler.config.security.certSpec.validityPeriod | string | `"4320h"` | ValidityPeriod is the validity period  of certificate. |
-| scheduler.config.security.tlsPolicy | string | `"prefer"` | TLSPolicy controls the grpc shandshake behaviors:   force: both ClientHandshake and ServerHandshake are only support tls.   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls). Notice: If the drgaonfly service has been deployed, a two-step upgrade is required. The first step is to set tlsPolicy to default, and then upgrade the dragonfly services. The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services. |
-| scheduler.config.security.tlsVerify | bool | `false` | TLSVerify indicates to verify certificates. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work. |
 | scheduler.config.server.advertiseIP | string | `""` | Advertise ip. |
 | scheduler.config.server.advertisePort | int | `8002` | Advertise port. |
@@ -475,7 +460,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | seedClient.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
-| seedClient.config.security.enable | bool | `false` | enable indicates whether enable security. |
 | seedClient.config.seedPeer.clusterID | int | `1` | clusterID is the cluster id of the seed peer cluster. |
 | seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
 | seedClient.config.seedPeer.keepaliveInterval | string | `"15s"` | keepaliveInterval is the interval to keep alive with manager. |

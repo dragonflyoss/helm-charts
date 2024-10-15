@@ -224,32 +224,6 @@ manager:
       # (`http://BUCKET.s3.amazonaws.com/KEY`).
       # Refer to https://github.com/aws/aws-sdk-go/blob/main/aws/config.go#L118.
       s3ForcePathStyle: true
-    security:
-      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
-      # If AutoIssueCert is false, any other option in Security will be ignored.
-      autoIssueCert: false
-      # -- CACert is the CA certificate for all grpc tls handshake, it can be path or PEM format string.
-      caCert: ""
-      # -- CAKey is the CA private key, it can be path or PEM format string.
-      caKey: ""
-      # -- TLSPolicy controls the grpc shandshake behaviors:
-      #   force: both ClientHandshake and ServerHandshake are only support tls.
-      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.
-      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls).
-      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
-      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
-      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
-      tlsPolicy: "prefer"
-      certSpec:
-        # -- DNSNames is a list of dns names be set on the certificate.
-        dnsNames:
-          - "dragonfly-manager"
-          - "dragonfly-manager.dragonfly-system.svc"
-          - "dragonfly-manager.dragonfly-system.svc.cluster.local"
-        # -- IPAddresses is a list of ip addresses be set on the certificate.
-        ipAddresses:
-        # -- ValidityPeriod is the validity period  of certificate.
-        validityPeriod: 87600h
     network:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
@@ -521,32 +495,6 @@ scheduler:
       # -- bufferSize sets the size of buffer container,
       # if the buffer is full, write all the records in the buffer to the file.
       bufferSize: 100
-    security:
-      # -- AutoIssueCert indicates to issue client certificates for all grpc call.
-      # If AutoIssueCert is false, any other option in Security will be ignored.
-      autoIssueCert: false
-      # -- CACert is the root CA certificate for all grpc tls handshake, it can be path or PEM format string.
-      caCert: ""
-      # -- TLSVerify indicates to verify certificates.
-      tlsVerify: false
-      # -- TLSPolicy controls the grpc shandshake behaviors:
-      #   force: both ClientHandshake and ServerHandshake are only support tls.
-      #   prefer: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support tls.
-      #   default: ServerHandshake supports tls and insecure (non-tls), ClientHandshake will only support insecure (non-tls).
-      # Notice: If the drgaonfly service has been deployed, a two-step upgrade is required.
-      # The first step is to set tlsPolicy to default, and then upgrade the dragonfly services.
-      # The second step is to set tlsPolicy to prefer, and tthen completely upgrade the dragonfly services.
-      tlsPolicy: "prefer"
-      certSpec:
-        # -- DNSNames is a list of dns names be set on the certificate.
-        dnsNames:
-          - "dragonfly-scheduler"
-          - "dragonfly-scheduler.dragonfly-system.svc"
-          - "dragonfly-scheduler.dragonfly-system.svc.cluster.local"
-        # -- IPAddresses is a list of ip addresses be set on the certificate.
-        ipAddresses:
-        # -- ValidityPeriod is the validity period  of certificate.
-        validityPeriod: 4320h
     network:
       # -- enableIPv6 enables ipv6.
       enableIPv6: false
@@ -818,14 +766,14 @@ seedClient:
       - ReadWriteOnce
     # -- Persistence persistence size.
     size: 50Gi
-    ## Seed client data Persistent Volume Storage Class.
-    ## If defined, storageClassName: <storageClass>.
-    ## If set to "-", storageClassName: "", which disables dynamic provisioning.
-    ## If undefined (the default) or set to null, no storageClassName spec is
-    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-    ##   GKE, AWS & OpenStack).
-    ##
-    # storageClass: "-".
+  # # Seed client data Persistent Volume Storage Class.
+  # # If defined, storageClassName: <storageClass>.
+  # # If set to "-", storageClassName: "", which disables dynamic provisioning.
+  # # If undefined (the default) or set to null, no storageClassName spec is
+  # #   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  # #   GKE, AWS & OpenStack).
+  # #
+  # storageClass: "-".
   service:
     # -- Service type.
     type: ClusterIP
@@ -843,14 +791,14 @@ seedClient:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      ## idc is the idc of the host.
+      # idc is the idc of the host.
       idc: ""
-      ## location is the location of the host.
+      # location is the location of the host.
       location: ""
-      ## hostname is the hostname of the host.
-      # hostname: ""
-      ## ip is the advertise ip of the host.
-      # ip: ""
+    # # hostname is the hostname of the host.
+    # hostname: ""
+    # # ip is the advertise ip of the host.
+    # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
@@ -870,8 +818,8 @@ seedClient:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-        ## ip is the listen ip of the grpc server.
-        # ip: ""
+      # # ip is the listen ip of the grpc server.
+      # ip: ""
       # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
     manager:
@@ -924,26 +872,26 @@ seedClient:
       server:
         # -- port is the port to the proxy server.
         port: 4001
-        ## ip is the listen ip of the proxy server.
-        # ip: ""
-        ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
-        ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
-        ## When client requests via the proxy, the client should not verify the server cert and set
-        ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-        ## the proxy can intercept the request by the server cert.
-        # caCert: ""
-        ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
-        ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
-        ## When client requests via the proxy, the client should not verify the server cert and set
-        ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-        ## the proxy can intercept the request by the server cert.
-        # caKey: ""
+      # # ip is the listen ip of the proxy server.
+      # ip: ""
+      # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+      # # If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+      # # When client requests via the proxy, the client should not verify the server cert and set
+      # # insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+      # # the proxy can intercept the request by the server cert.
+      # caCert: ""
+      # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+      # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+      # # When client requests via the proxy, the client should not verify the server cert and set
+      # # insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+      # # the proxy can intercept the request by the server cert.
+      # caKey: ""
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.
       # useTLS indicates whether use tls for the proxy backend.
@@ -967,40 +915,37 @@ seedClient:
         # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
         # of registry mirror.
         addr: https://index.docker.io
-        ## certs is the client certs path with PEM format for the registry.
-        ## If registry use self-signed cert, the client should set the
-        ## cert for the registry mirror.
-        # certs: ""
+      # # cert is the client cert path with PEM format for the registry.
+      # # If registry use self-signed cert, the client should set the
+      # # cert for the registry mirror.
+      # cert: ""
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
-    security:
-      # -- enable indicates whether enable security.
-      enable: false
     health:
       server:
         # -- port is the port to the health server.
         port: 4003
-        ## ip is the listen ip of the health server.
-        # ip: ""
+      # # ip is the listen ip of the health server.
+      # ip: ""
     metrics:
       server:
         # -- port is the port to the metrics server.
         port: 4002
-        ## ip is the listen ip of the metrics server.
-        # ip: ""
+      # # ip is the listen ip of the metrics server.
+      # ip: ""
     stats:
       server:
         # -- port is the port to the stats server.
         port: 4004
-        ## ip is the listen ip of the stats server.
-        # ip: ""
-    ## tracing is the tracing configuration for dfdaemon.
+      # # ip is the listen ip of the stats server.
+      # ip: ""
+    # # tracing is the tracing configuration for dfdaemon.
     # tracing:
-      ## addr is the address to report tracing log.
+      # # addr is the address to report tracing log.
       # addr: ""
   metrics:
     # -- Enable seed client metrics.
@@ -1219,14 +1164,14 @@ client:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      ## idc is the idc of the host.
+      # idc is the idc of the host.
       idc: ""
-      ## location is the location of the host.
+      # location is the location of the host.
       location: ""
-      ## hostname is the hostname of the host.
-      # hostname: ""
-      ## ip is the advertise ip of the host.
-      # ip: ""
+    # # hostname is the hostname of the host.
+    # hostname: ""
+    # # ip is the advertise ip of the host.
+    # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
@@ -1246,8 +1191,8 @@ client:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-        ## ip is the listen ip of the grpc server.
-        # ip: ""
+      # # ip is the listen ip of the grpc server.
+      # ip: ""
       # -- disableShared indicates whether disable to share data with other peers.
       disableShared: false
       # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 10GiB/s.
@@ -1295,26 +1240,26 @@ client:
       server:
         # -- port is the port to the proxy server.
         port: 4001
-        ## ip is the listen ip of the proxy server.
-        # ip: ""
-        ## caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
-        ## If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
-        ## When client requests via the proxy, the client should not verify the server cert and set
-        ## insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-        ## the proxy can intercept the request by the server cert.
-        # caCert: ""
-        ## caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
-        ## If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
-        ## When client requests via the proxy, the client should not verify the server cert and set
-        ## insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-        ## you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-        ## Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-        ## and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-        ## the proxy can intercept the request by the server cert.
-        # caKey: ""
+      # # ip is the listen ip of the proxy server.
+      # ip: ""
+      # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
+      # # If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
+      # # When client requests via the proxy, the client should not verify the server cert and set
+      # # insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+      # # the proxy can intercept the request by the server cert.
+      # caCert: ""
+      # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
+      # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
+      # # When client requests via the proxy, the client should not verify the server cert and set
+      # # insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
+      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
+      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
+      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
+      # # the proxy can intercept the request by the server cert.
+      # caKey: ""
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.
       # useTLS indicates whether use tls for the proxy backend.
@@ -1338,40 +1283,37 @@ client:
         # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
         # of registry mirror.
         addr: https://index.docker.io
-        ## certs is the client certs path with PEM format for the registry.
-        ## If registry use self-signed cert, the client should set the
-        ## cert for the registry mirror.
-        # certs: ""
+      # # cert is the client cert path with PEM format for the registry.
+      # # If registry use self-signed cert, the client should set the
+      # # cert for the registry mirror.
+      # cert: ""
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
       prefetch: false
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
-    security:
-      # -- enable indicates whether enable security.
-      enable: false
     health:
       server:
         # -- port is the port to the health server.
         port: 4003
-        ## ip is the listen ip of the health server.
-        # ip: ""
+      # # ip is the listen ip of the health server.
+      # ip: ""
     metrics:
       server:
         # -- port is the port to the metrics server.
         port: 4002
-        ## ip is the listen ip of the metrics server.
-        # ip: ""
+      # # ip is the listen ip of the metrics server.
+      # ip: ""
     stats:
       server:
         # -- port is the port to the stats server.
         port: 4004
-        ## ip is the listen ip of the stats server.
-        # ip: ""
-    ## tracing is the tracing configuration for dfdaemon.
+      # # ip is the listen ip of the stats server.
+      # ip: ""
+    # # tracing is the tracing configuration for dfdaemon.
     # tracing:
-      ## addr is the address to report tracing log.
+      # # addr is the address to report tracing log.
       # addr: ""
   metrics:
     # -- Enable client metrics.

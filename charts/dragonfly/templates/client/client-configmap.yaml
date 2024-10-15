@@ -39,8 +39,6 @@ data:
 {{ toYaml .Values.client.config.gc | indent 6 }}
     proxy:
 {{ toYaml .Values.client.config.proxy | indent 6 }}
-    security:
-{{ toYaml .Values.client.config.security | indent 6 }}
     health:
 {{ toYaml .Values.client.config.health | indent 6 }}
     metrics:
