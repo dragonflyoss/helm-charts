@@ -140,7 +140,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.health.server.port | int | `4003` | port is the port to the health server. |
 | client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| client.config.manager.addrs | list | `[]` | addrs is manager addresses. |
+| client.config.manager.addr | string | `""` | addr is manager address. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | client.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
@@ -173,7 +173,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v0.1.111"` | Image tag. |
+| client.dfinit.image.tag | string | `"v0.1.112"` | Image tag. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"hostPath":{"path":"/var/lib/dragonfly/","type":"DirectoryOrCreate"},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -187,7 +187,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v0.1.111"` | Image tag. |
+| client.image.tag | string | `"v0.1.112"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -358,13 +358,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
 | scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
-| scheduler.config.resource | object | `{"task":{"downloadTiny":{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}}}` | resource configuration. |
-| scheduler.config.resource.task | object | `{"downloadTiny":{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}}` | task configuration. |
-| scheduler.config.resource.task.downloadTiny | object | `{"scheme":"http","timeout":"1m","tls":{"insecureSkipVerify":true}}` | downloadTiny is the configuration of downloading tiny task by scheduler. |
-| scheduler.config.resource.task.downloadTiny.scheme | string | `"http"` | scheme is download tiny task scheme. |
-| scheduler.config.resource.task.downloadTiny.timeout | string | `"1m"` | timeout is http request timeout. |
-| scheduler.config.resource.task.downloadTiny.tls | object | `{"insecureSkipVerify":true}` | tls is download tiny task TLS configuration. |
-| scheduler.config.resource.task.downloadTiny.tls.insecureSkipVerify | bool | `true` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
 | scheduler.config.scheduler.gc.hostGCInterval | string | `"5m"` | hostGCInterval is the interval of host gc. |
@@ -449,7 +442,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
 | seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| seedClient.config.manager.addrs | list | `[]` | addrs is manager addresses. |
+| seedClient.config.manager.addr | string | `""` | addr is manager address. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `false` | prefetch pre-downloads full of the task when download with range request. |
@@ -484,7 +477,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v0.1.111"` | Image tag. |
+| seedClient.image.tag | string | `"v0.1.112"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

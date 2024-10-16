@@ -31,8 +31,6 @@ data:
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
-    resource:
-{{ toYaml .Values.scheduler.config.resource | indent 6 }}
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
     host:

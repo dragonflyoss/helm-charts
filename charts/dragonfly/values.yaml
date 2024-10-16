@@ -135,6 +135,14 @@ manager:
       grpc:
         # -- GRPC advertise ip.
         advertiseIP: ""
+      # # GRPC server tls configuration.
+      # tls:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # Certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/server.crt
+      #   # Key file path for mTLS.
+      #   key: /etc/ssl/private/server.pem
       rest:
         tls:
           # -- Certificate file path.
@@ -408,6 +416,15 @@ scheduler:
       listenIP: "0.0.0.0"
       # -- Server port.
       port: 8002
+    # # GRPC server tls configuration.
+    # tls:
+    #   # CA certificate file path for mTLS.
+    #   caCert: /etc/ssl/certs/ca.crt
+    #   # Certificate file path for mTLS.
+    #   cert: /etc/ssl/certs/server.crt
+    #   # Key file path for mTLS.
+    #   key: /etc/ssl/private/server.pem
+    #
       # -- Work directory.
       workHome: ""
       # -- Log directory.
@@ -450,21 +467,6 @@ scheduler:
         # -- hostTTL is time to live of host. If host announces message to scheduler,
         # then HostTTl will be reset.
         hostTTL: 1h
-    # -- resource configuration.
-    resource:
-      # -- task configuration.
-      task:
-        # -- downloadTiny is the configuration of downloading tiny task by scheduler.
-        downloadTiny:
-          # -- scheme is download tiny task scheme.
-          scheme: http
-          # -- timeout is http request timeout.
-          timeout: 1m
-          # -- tls is download tiny task TLS configuration.
-          tls:
-            # -- insecureSkipVerify controls whether a client verifies the
-            # server's certificate chain and hostname.
-            insecureSkipVerify: true
     dynconfig:
       # -- Type is deprecated and is no longer used.
       # Please remove it from your configuration.
@@ -482,11 +484,27 @@ scheduler:
       keepAlive:
         # -- Manager keepalive interval.
         interval: 5s
+    # # GRPC client tls configuration.
+    # tls:
+    #   # CA certificate file path for mTLS.
+    #   caCert: /etc/ssl/certs/ca.crt
+    #   # Certificate file path for mTLS.
+    #   cert: /etc/ssl/certs/client.crt
+    #   # Key file path for mTLS.
+    #   key: /etc/ssl/private/client.pem
     seedPeer:
       # -- scheduler enable seed peer as P2P peer,
       # if the value is false, P2P network will not be back-to-source through
       # seed peer but by dfdaemon and preheat feature does not work.
       enable: true
+    # # GRPC client tls configuration.
+    # tls:
+    #   # CA certificate file path for mTLS.
+    #   caCert: /etc/ssl/certs/ca.crt
+    #   # Certificate file path for mTLS.
+    #   cert: /etc/ssl/certs/client.crt
+    #   # Key file path for mTLS.
+    #   key: /etc/ssl/private/client.pem
     storage:
       # -- maxSize sets the maximum size in megabytes of storage file.
       maxSize: 100
@@ -694,7 +712,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.111
+    tag: v0.1.112
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -820,11 +838,33 @@ seedClient:
         port: 4000
       # # ip is the listen ip of the grpc server.
       # ip: ""
+      # # CA certificate file path for mTLS.
+      # caCert: /etc/ssl/certs/ca.crt
+      # # GRPC server certificate file path for mTLS.
+      # cert: /etc/ssl/certs/server.crt
+      # # GRPC server key file path for mTLS.
+      # key: /etc/ssl/private/server.pem
+      #
+    # # Client configuration for remote peer's upload server.
+    # client:
+    #   # CA certificate file path for mTLS.
+    #   caCert: /etc/ssl/certs/ca.crt
+    #   # GRPC client certificate file path for mTLS.
+    #   cert: /etc/ssl/certs/client.crt
+    #   # GRPC client key file path for mTLS.
+    #   key: /etc/ssl/private/client.pem
+      #
       # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
     manager:
-      # -- addrs is manager addresses.
-      addrs: []
+      # -- addr is manager address.
+      addr: ""
+    # # CA certificate file path for mTLS.
+    # caCert: /etc/ssl/certs/ca.crt
+    # # GRPC client certificate file path for mTLS.
+    # cert: /etc/ssl/certs/client.crt
+    # # GRPC client key file path for mTLS.
+    # key: /etc/ssl/private/client.pem
     scheduler:
       # -- announceInterval is the interval to announce peer to the scheduler.
       # Announcer will provide the scheduler with peer information for scheduling,
@@ -835,6 +875,12 @@ seedClient:
       scheduleTimeout: 30s
       # -- maxScheduleCount is the max count of schedule.
       maxScheduleCount: 5
+    # # CA certificate file path for mTLS.
+    # caCert: /etc/ssl/certs/ca.crt
+    # # GRPC client certificate file path for mTLS.
+    # cert: /etc/ssl/certs/client.crt
+    # # GRPC client key file path for mTLS.
+    # key: /etc/ssl/private/client.pem
     seedPeer:
       # -- enable indicates whether enable seed peer.
       enable: true
@@ -883,6 +929,7 @@ seedClient:
       # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
       # # the proxy can intercept the request by the server cert.
       # caCert: ""
+      #
       # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
       # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
       # # When client requests via the proxy, the client should not verify the server cert and set
@@ -892,6 +939,7 @@ seedClient:
       # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
       # # the proxy can intercept the request by the server cert.
       # caKey: ""
+      #
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.
       # useTLS indicates whether use tls for the proxy backend.
@@ -919,6 +967,7 @@ seedClient:
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
       # cert: ""
+      #
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
@@ -1018,7 +1067,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.111
+    tag: v0.1.112
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1101,7 +1150,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.111
+      tag: v0.1.112
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1193,13 +1242,35 @@ client:
         port: 4000
       # # ip is the listen ip of the grpc server.
       # ip: ""
+      # # CA certificate file path for mTLS.
+      # caCert: /etc/ssl/certs/ca.crt
+      # # GRPC server certificate file path for mTLS.
+      # cert: /etc/ssl/certs/server.crt
+      # # GRPC server key file path for mTLS.
+      # key: /etc/ssl/private/server.pem
+      #
+    # # Client configuration for remote peer's upload server.
+    # client:
+    #   # CA certificate file path for mTLS.
+    #   caCert: /etc/ssl/certs/ca.crt
+    #   # GRPC client certificate file path for mTLS.
+    #   cert: /etc/ssl/certs/client.crt
+    #   # GRPC client key file path for mTLS.
+    #   key: /etc/ssl/private/client.pem
+      #
       # -- disableShared indicates whether disable to share data with other peers.
       disableShared: false
       # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 10GiB/s.
       rateLimit: 10GiB
     manager:
-      # -- addrs is manager addresses.
-      addrs: []
+      # -- addr is manager address.
+      addr: ""
+    # # CA certificate file path for mTLS.
+    # caCert: /etc/ssl/certs/ca.crt
+    # # GRPC client certificate file path for mTLS.
+    # cert: /etc/ssl/certs/client.crt
+    # # GRPC client key file path for mTLS.
+    # key: /etc/ssl/private/client.pem
     scheduler:
       # -- announceInterval is the interval to announce peer to the scheduler.
       # Announcer will provide the scheduler with peer information for scheduling,
@@ -1212,6 +1283,12 @@ client:
       maxScheduleCount: 5
       # -- enableBackToSource indicates whether enable back-to-source download, when the scheduling failed.
       enableBackToSource: true
+    # # CA certificate file path for mTLS.
+    # caCert: /etc/ssl/certs/ca.crt
+    # # GRPC client certificate file path for mTLS.
+    # cert: /etc/ssl/certs/client.crt
+    # # GRPC client key file path for mTLS.
+    # key: /etc/ssl/private/client.pem
     dynconfig:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
       refreshInterval: 5m
@@ -1251,6 +1328,7 @@ client:
       # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
       # # the proxy can intercept the request by the server cert.
       # caCert: ""
+      #
       # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
       # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
       # # When client requests via the proxy, the client should not verify the server cert and set
@@ -1260,6 +1338,7 @@ client:
       # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
       # # the proxy can intercept the request by the server cert.
       # caKey: ""
+      #
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.
       # useTLS indicates whether use tls for the proxy backend.
@@ -1287,6 +1366,7 @@ client:
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
       # cert: ""
+      #
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
