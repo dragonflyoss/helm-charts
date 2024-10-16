@@ -31,8 +31,6 @@ data:
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
-    resource:
-{{ toYaml .Values.scheduler.config.resource | indent 6 }}
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
     host:
@@ -65,8 +63,6 @@ data:
         {{- end }}
     storage:
 {{ toYaml .Values.scheduler.config.storage | indent 6 }}
-    security:
-{{ toYaml .Values.scheduler.config.security | indent 6 }}
     network:
 {{ toYaml .Values.scheduler.config.network | indent 6 }}
     metrics:

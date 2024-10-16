@@ -21,13 +21,12 @@ data:
     upload:
 {{ toYaml .Values.client.config.upload | indent 6 }}
     manager:
-      addrs:
       {{- if .Values.client.config.manager.addrs }}
-{{ toYaml .Values.client.config.manager.addrs | indent 6 }}
+      addr: {{ .Values.client.config.manager.addr }}
       {{- else if .Values.manager.enable }}
-      - http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
+      addr: http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
       {{- else }}
-      - http://{{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
+      addr: http://{{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- end }}
     scheduler:
 {{ toYaml .Values.client.config.scheduler | indent 6 }}
@@ -39,8 +38,6 @@ data:
 {{ toYaml .Values.client.config.gc | indent 6 }}
     proxy:
 {{ toYaml .Values.client.config.proxy | indent 6 }}
-    security:
-{{ toYaml .Values.client.config.security | indent 6 }}
     health:
 {{ toYaml .Values.client.config.health | indent 6 }}
     metrics:
