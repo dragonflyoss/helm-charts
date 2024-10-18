@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.60
+    tag: v2.1.61
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -333,7 +333,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.60
+    tag: v2.1.61
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -940,6 +940,16 @@ seedClient:
       # # the proxy can intercept the request by the server cert.
       # caKey: ""
       #
+      # # basic_auth is the basic auth configuration for HTTP proxy in dfdaemon. If basic_auth is not
+      # # empty, the proxy will use the basic auth to authenticate the client by Authorization
+      # # header. The value of the Authorization header is "Basic base64(username:password)", refer
+      # # to https://en.wikipedia.org/wiki/Basic_access_authentication.
+      # basicAuth:
+      #   # username is the username for basic auth.
+      #   username: "admin"
+      #   # password is the password for basic auth.
+      #   password: "dragonfly"
+      #
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.
       # useTLS indicates whether use tls for the proxy backend.
@@ -1338,6 +1348,16 @@ client:
       # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
       # # the proxy can intercept the request by the server cert.
       # caKey: ""
+      #
+      # # basic_auth is the basic auth configuration for HTTP proxy in dfdaemon. If basic_auth is not
+      # # empty, the proxy will use the basic auth to authenticate the client by Authorization
+      # # header. The value of the Authorization header is "Basic base64(username:password)", refer
+      # # to https://en.wikipedia.org/wiki/Basic_access_authentication.
+      # basicAuth:
+      #   # username is the username for basic auth.
+      #   username: "admin"
+      #   # password is the password for basic auth.
+      #   password: "dragonfly"
       #
       # -- rules is the list of rules for the proxy server.
       # regex is the regex of the request url.

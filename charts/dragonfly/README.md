@@ -290,7 +290,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.1.60"` | Image tag. |
+| manager.image.tag | string | `"v2.1.61"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -394,7 +394,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.1.60"` | Image tag. |
+| scheduler.image.tag | string | `"v2.1.61"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
