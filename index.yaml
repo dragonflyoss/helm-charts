@@ -3,6 +3,65 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update client version to v0.1.113.
+        - Add prefetch comment for dfdaemon.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.61
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.61
+        - name: client
+          image: dragonflyoss/client:v0.1.113
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.113
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.113
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/Dragonfly2
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.61
+    created: "2024-10-22T05:47:03.234120589Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 17ae1b02a6f1ed2951d74f9e271e71d11029640d2c726f1055900dedf18ea342
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/Dragonfly2
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.2.20/dragonfly-1.2.20.tgz
+    version: 1.2.20
+  - annotations:
+      artifacthub.io/changes: |
         - Add basic auth configuration for dfdaemon.
         - Update tag of the image to v2.1.61.
       artifacthub.io/images: |
@@ -13461,4 +13520,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-10-18T11:39:31.620550711Z"
+generated: "2024-10-22T05:47:03.234622688Z"
