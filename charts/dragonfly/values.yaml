@@ -712,7 +712,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.112
+    tag: v0.1.113
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -981,6 +981,9 @@ seedClient:
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
+      # `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config.
+      # If the value is "true", the range request will prefetch the entire file.
+      # If the value is "false", the range request will fetch the range content.
       prefetch: false
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
@@ -1077,7 +1080,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.112
+    tag: v0.1.113
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1160,7 +1163,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.112
+      tag: v0.1.113
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1390,6 +1393,9 @@ client:
       # -- disableBackToSource indicates whether disable to download back-to-source when download failed.
       disableBackToSource: false
       # -- prefetch pre-downloads full of the task when download with range request.
+      # `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config.
+      # If the value is "true", the range request will prefetch the entire file.
+      # If the value is "false", the range request will fetch the range content.
       prefetch: false
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
