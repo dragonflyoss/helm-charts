@@ -523,7 +523,7 @@ helm delete dragonfly --namespace dragonfly-system
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
 | nydus-snapshotter.args | list | `[]` | Args to overwrite default nydus-snapshotter startup command |
-| nydus-snapshotter.containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":false},"initContainer":{"image":{"pullPolicy":"Always","registry":"ghcr.io","repository":"liubin/toml-cli","tag":"v0.0.7"}}}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O |
+| nydus-snapshotter.containerRuntime | object | `{"containerd":{"configFile":"/etc/containerd/config.toml","enable":false},"initContainer":{"image":{"pullPolicy":"Always","registry":"ghcr.io","repository":"liubin/toml-cli","tag":"v0.0.7"}}}` | [Experimental] Container runtime support Choose special container runtime in Kubernetes. Support: Containerd, Docker, CRI-O, Podman. |
 | nydus-snapshotter.containerRuntime.containerd | object | `{"configFile":"/etc/containerd/config.toml","enable":false}` | [Experimental] Containerd support |
 | nydus-snapshotter.containerRuntime.containerd.configFile | string | `"/etc/containerd/config.toml"` | Custom config path directory, default is /etc/containerd/config.toml |
 | nydus-snapshotter.containerRuntime.containerd.enable | bool | `false` | Enable containerd support Inject nydus-snapshotter config into ${containerRuntime.containerd.configFile}, |
