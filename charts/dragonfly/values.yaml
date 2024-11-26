@@ -1233,6 +1233,10 @@ client:
               # location: docker.io
             # - prefix: ghcr.io
               # location: ghcr.io
+          # docker:
+          # # -- configPath is the path of docker configuration file where the proxy addr will be set.
+          # # Refer to https://docs.docker.com/engine/daemon/proxy/
+          # configPath: /etc/docker/daemon.json
   config:
     # -- verbose prints log.
     verbose: true
