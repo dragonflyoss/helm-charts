@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.1.64
+    tag: v2.1.65
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -333,7 +333,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.1.64
+    tag: v2.1.65
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -712,7 +712,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.118
+    tag: v0.1.124
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -985,6 +985,9 @@ seedClient:
       # If the value is "true", the range request will prefetch the entire file.
       # If the value is "false", the range request will fetch the range content.
       prefetch: false
+      # -- prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 2GiB/s.
+      # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
+      prefetchRateLimit: 2GiB
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
     health:
@@ -1080,7 +1083,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.1.118
+    tag: v0.1.124
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1163,7 +1166,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.1.118
+      tag: v0.1.124
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1416,6 +1419,9 @@ client:
       # If the value is "true", the range request will prefetch the entire file.
       # If the value is "false", the range request will fetch the range content.
       prefetch: false
+      # -- prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 2GiB/s.
+      # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
+      prefetchRateLimit: 2GiB
       # -- readBufferSize is the buffer size for reading piece from disk, default is 32KB.
       readBufferSize: 32768
     health:
