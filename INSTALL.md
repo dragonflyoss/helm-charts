@@ -22,7 +22,7 @@ This document will help you experience how to use [Dragonfly](https://d7y.io) & 
 Download containerd configuration for kind.
 
 ```shell
-curl -fsSL -o config.toml https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/test/testdata/containerd/config.toml
+curl -fsSL -o config.toml https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/test/testdata/containerd/config.toml
 ```
 
 Create kind cluster configuration file `kind-config.yaml`, configuration content is as follows:
@@ -132,7 +132,7 @@ Install Nydus using the default configuration, for more information about mirror
 <!-- markdownlint-disable -->
 
 ```shell
-$ curl -fsSL -o config-nydus.yaml https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/test/testdata/charts/config-nydus.yaml
+$ curl -fsSL -o config-nydus.yaml https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/test/testdata/charts/config-nydus.yaml
 $ helm install --wait --timeout 10m --dependency-update --create-namespace --namespace nydus-snapshotter nydus-snapshotter dragonfly/nydus-snapshotter -f config-nydus.yaml
 NAME: nydus-snapshotter
 LAST DEPLOYED: Fri Apr  7 10:40:50 2023
