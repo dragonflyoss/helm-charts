@@ -1,9 +1,9 @@
 apiVersion: v2
 name: dragonfly-stack
 description: Collects Dragonfly component and Nydus component into a single chart to provide a complete solution for the Dragonfly stack.
-icon: https://raw.githubusercontent.com/dragonflyoss/Dragonfly2/main/docs/images/logo/dragonfly.svg
+icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.1.1
+version: 0.1.2
 appVersion: 2.1.49
 keywords:
   - dragonfly-stack
@@ -24,20 +24,20 @@ maintainers:
 home: https://d7y.io/
 
 sources:
-  - https://github.com/dragonflyoss/Dragonfly2
+  - https://github.com/dragonflyoss/dragonfly
   - https://github.com/dragonflyoss/client
   - https://github.com/dragonflyoss/image-service
   - https://github.com/containerd/nydus-snapshotter/
 
 annotations:
   artifacthub.io/changes: |
-    - Init commit for dragonfly-stack.
+    - Rename repo Dragonfly2 to dragonfly.
 
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
     - name: Source
-      url: https://github.com/dragonflyoss/Dragonfly2
+      url: https://github.com/dragonflyoss/dragonfly
     - name: Source
       url: https://github.com/dragonflyoss/client
     - name: Source
