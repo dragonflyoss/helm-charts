@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Rename repo Dragonfly2 to dragonfly.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.1.65
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.1.65
+        - name: client
+          image: dragonflyoss/client:v0.1.125
+        - name: seed-client
+          image: dragonflyoss/client:v0.1.125
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.1.125
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.1.65
+    created: "2024-12-20T09:14:07.854034336Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 6e3ec6f350642391ef6a6a91b33a988267b1370169acdc2522ad6f481aab8b13
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.2.27/dragonfly-1.2.27.tgz
+    version: 1.2.27
+  - annotations:
+      artifacthub.io/changes: |
         - Update client version to 0.1.125.
       artifacthub.io/images: |
         - name: manager
@@ -13337,6 +13395,59 @@ entries:
   dragonfly-stack:
   - annotations:
       artifacthub.io/changes: |
+        - Rename repo Dragonfly2 to dragonfly.
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+        - name: Source
+          url: https://github.com/containerd/nydus-snapshotter
+    apiVersion: v2
+    appVersion: 2.1.49
+    created: "2024-12-20T09:14:08.061919267Z"
+    dependencies:
+    - condition: dragonfly.enable
+      name: dragonfly
+      repository: https://dragonflyoss.github.io/helm-charts/
+      version: 1.1.67
+    - condition: nydus-snapshotter.enable
+      name: nydus-snapshotter
+      repository: https://dragonflyoss.github.io/helm-charts/
+      version: 0.0.10
+    description: Collects Dragonfly component and Nydus component into a single chart
+      to provide a complete solution for the Dragonfly stack.
+    digest: 0ffd71c422d1d12152db76dd9949e9f47ac64fd257e1dcfba0c88a821cd46914
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly-stack
+    - dragonfly
+    - nydus
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: imeoer@gmail.com
+      name: imeoer
+    - email: adamqqq@163.com
+      name: adamqqqplay
+    name: dragonfly-stack
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    - https://github.com/dragonflyoss/image-service
+    - https://github.com/containerd/nydus-snapshotter/
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-stack-0.1.2/dragonfly-stack-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/changes: |
         - Init commit for dragonfly-stack.
       artifacthub.io/links: |
         - name: Chart Source
@@ -13870,4 +13981,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2024-12-09T14:12:18.537939889Z"
+generated: "2024-12-20T09:14:08.062953602Z"
