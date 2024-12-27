@@ -177,7 +177,7 @@ manager:
         ttl: 5m
       local:
         # -- Size of LFU cache.
-        size: 200000
+        size: 50000
         # -- Local cache TTL duration.
         ttl: 3m
     job:
