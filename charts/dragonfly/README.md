@@ -244,7 +244,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
 | manager.config.auth.jwt.timeout | string | `"48h"` | Timeout is duration that a jwt token is valid, default duration is two days. |
-| manager.config.cache.local.size | int | `200000` | Size of LFU cache. |
+| manager.config.cache.local.size | int | `50000` | Size of LFU cache. |
 | manager.config.cache.local.ttl | string | `"3m"` | Local cache TTL duration. |
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `true` | Console shows log on console. |
