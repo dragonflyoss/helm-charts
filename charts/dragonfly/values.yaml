@@ -177,7 +177,7 @@ manager:
         ttl: 5m
       local:
         # -- Size of LFU cache.
-        size: 50000
+        size: 30000
         # -- Local cache TTL duration.
         ttl: 3m
     job:
@@ -192,9 +192,9 @@ manager:
       # -- gc configuration.
       gc:
         # -- interval is the interval of gc.
-        interval: 24h
+        interval: 3h
         # -- ttl is the ttl of job.
-        ttl: 24h
+        ttl: 6h
       # -- Sync peers configuration.
       syncPeers:
         # -- interval is the interval for syncing all peers information from the scheduler and

@@ -244,14 +244,14 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
 | manager.config.auth.jwt.timeout | string | `"48h"` | Timeout is duration that a jwt token is valid, default duration is two days. |
-| manager.config.cache.local.size | int | `50000` | Size of LFU cache. |
+| manager.config.cache.local.size | int | `30000` | Size of LFU cache. |
 | manager.config.cache.local.ttl | string | `"3m"` | Local cache TTL duration. |
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `true` | Console shows log on console. |
 | manager.config.jaeger | string | `""` |  |
-| manager.config.job.gc | object | `{"interval":"24h","ttl":"24h"}` | gc configuration. |
-| manager.config.job.gc.interval | string | `"24h"` | interval is the interval of gc. |
-| manager.config.job.gc.ttl | string | `"24h"` | ttl is the ttl of job. |
+| manager.config.job.gc | object | `{"interval":"3h","ttl":"6h"}` | gc configuration. |
+| manager.config.job.gc.interval | string | `"3h"` | interval is the interval of gc. |
+| manager.config.job.gc.ttl | string | `"6h"` | ttl is the ttl of job. |
 | manager.config.job.preheat | object | `{"registryTimeout":"1m","tls":{"insecureSkipVerify":false}}` | Preheat configuration. |
 | manager.config.job.preheat.registryTimeout | string | `"1m"` | registryTimeout is the timeout for requesting registry to get token and manifest. |
 | manager.config.job.preheat.tls.insecureSkipVerify | bool | `false` | insecureSkipVerify controls whether a client verifies the server's certificate chain and hostname. |

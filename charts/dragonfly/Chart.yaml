@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.2.28
+version: 1.2.29
 appVersion: 2.1.65
 keywords:
   - dragonfly
@@ -27,7 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Change LFU size to 50000 in the manager cache.
+    - Change LFU size to 30000 in the manager cache.
+    - Change job GC TTL and interval in manager.
 
   artifacthub.io/links: |
     - name: Chart Source
