@@ -46,6 +46,8 @@ nodeSelector: {}
 terminationGracePeriodSeconds:
 # -- List of node taints to tolerate
 tolerations: []
+# -- Pod affinity
+affinity: {}
 # -- Pod annotations
 podAnnotations: {}
 # -- Pod labels
