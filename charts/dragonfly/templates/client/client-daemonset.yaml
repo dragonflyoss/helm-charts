@@ -100,6 +100,14 @@ spec:
         - name: crio-config-dir
           mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.crio.configPath }}
         {{- end }}
+        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.podman) }}
+        - name: podman-config-dir
+          mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.podman.configPath }}
+        {{- end }}
+        {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.docker) }}
+        - name: docker-config-dir
+          mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.docker.configPath }}
+        {{- end }}
       {{- end }}
       {{- if .Values.client.dfinit.enable }}
       - name: restart-container-runtime
@@ -118,6 +126,12 @@ spec:
           {{- else if .Values.client.dfinit.config.containerRuntime.crio }}
           nsenter -t 1 -m -- systemctl restart crio.service
           echo "restart cri-o"
+          {{- else if .Values.client.dfinit.config.containerRuntime.podman }}
+          nsenter -t 1 -m -- systemctl restart podman.service
+          echo "restart podman"
+          {{- else if .Values.client.dfinit.config.containerRuntime.docker }}
+          nsenter -t 1 -m -- systemctl restart docker.service
+          echo "restart docker"
           {{- else }}
           echo "no container runtime to restart"
           {{- end }}
@@ -186,6 +200,18 @@ spec:
       - name: crio-config-dir
         hostPath:
           path: {{ dir .Values.client.dfinit.config.containerRuntime.crio.configPath }}
+          type: DirectoryOrCreate
+      {{- end }}
+      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.podman) }}
+      - name: podman-config-dir
+        hostPath:
+          path: {{ dir .Values.client.dfinit.config.containerRuntime.podman.configPath }}
+          type: DirectoryOrCreate
+      {{- end }}
+      {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.docker) }}
+      - name: docker-config-dir
+        hostPath:
+          path: {{ dir .Values.client.dfinit.config.containerRuntime.docker.configPath }}
           type: DirectoryOrCreate
       {{- end }}
       {{- if .Values.client.extraVolumes }}
