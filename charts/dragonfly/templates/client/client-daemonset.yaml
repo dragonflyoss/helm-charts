@@ -178,6 +178,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        - mountPath: /var/run/dragonfly
+          name: socket-dir
         {{- if .Values.client.extraVolumeMounts }}
         {{- toYaml .Values.client.extraVolumeMounts | nindent 8 }}
         {{- end }}
@@ -185,6 +187,10 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.client.fullname" . }}
+      - name: socket-dir
+        hostPath:
+            path: /var/run/dragonfly
+            type: DirectoryOrCreate
       {{- if .Values.client.dfinit.enable }}
       - name: dfinit-config
         configMap:
