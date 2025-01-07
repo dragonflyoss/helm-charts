@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Optimize volumes and volumeMounts for unix domain socket(UDS).
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.2.0
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.2.0
+        - name: client
+          image: dragonflyoss/client:v0.2.1
+        - name: seed-client
+          image: dragonflyoss/client:v0.2.1
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.2.1
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.2.0
+    created: "2025-01-07T09:57:19.118692896Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 2c7d7e7631ec6d712c8e0fd171e11d0986008cf15d7d5ccd7baf0d9d7813056f
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.3.4/dragonfly-1.3.4.tgz
+    version: 1.3.4
+  - annotations:
+      artifacthub.io/changes: |
         - Export unix domain socket(UDS) to host.
       artifacthub.io/images: |
         - name: manager
@@ -14332,4 +14390,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-01-07T09:31:08.860812236Z"
+generated: "2025-01-07T09:57:19.119359215Z"
