@@ -178,8 +178,8 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
-        - mountPath: /var/run/dragonfly
-          name: socket-dir
+        - name: socket-dir
+          mountPath: /var/run/dragonfly
         {{- if .Values.client.extraVolumeMounts }}
         {{- toYaml .Values.client.extraVolumeMounts | nindent 8 }}
         {{- end }}
