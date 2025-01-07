@@ -712,7 +712,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.0
+    tag: v0.2.1
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1083,7 +1083,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.0
+    tag: v0.2.1
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1166,7 +1166,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.2.0
+      tag: v0.2.1
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1236,7 +1236,7 @@ client:
               # location: docker.io
             # - prefix: ghcr.io
               # location: ghcr.io
-          # docker:
+        # docker:
           # # -- configPath is the path of docker configuration file where the proxy addr will be set.
           # # Refer to https://docs.docker.com/engine/daemon/proxy/
           # configPath: /etc/docker/daemon.json
