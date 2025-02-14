@@ -26,6 +26,7 @@ spec:
       targetPort: {{ .Values.manager.restPort }}
     - port: {{ .Values.manager.grpcPort }}
       name: http-grpc
+      appProtocol: grpc
       protocol: TCP
       targetPort: {{ .Values.manager.grpcPort }}
 {{- if eq .Values.manager.service.type "NodePort" }}
