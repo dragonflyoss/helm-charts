@@ -1146,9 +1146,7 @@ client:
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: storage
-      hostPath:
-        path: /var/lib/dragonfly/
-        type: DirectoryOrCreate
+      emptyDir: {}
     - name: logs
       emptyDir: {}
   # -- Extra volumeMounts for dfdaemon.
