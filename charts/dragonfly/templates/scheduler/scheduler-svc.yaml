@@ -22,6 +22,7 @@ spec:
   ports:
     - port: {{ .Values.scheduler.config.server.port }}
       name: http-grpc
+      appProtocol: grpc
       protocol: TCP
       targetPort: {{ .Values.scheduler.config.server.port }}
 {{- if eq .Values.scheduler.service.type "NodePort" }}
