@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add request rate limit for client's grpc server.
+    - Support Istio by specifying the appProtocol type for services
 
   artifacthub.io/links: |
     - name: Chart Source
