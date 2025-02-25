@@ -88,7 +88,7 @@ spec:
         - --verbose
         {{- end }}
         resources:
-{{ toYaml .Values.client.initContainer.resources | indent 12 }}
+{{ toYaml .Values.client.initContainer.resources | indent 10 }}
         volumeMounts:
         - name: dfinit-config
           mountPath: "/etc/dragonfly"
@@ -136,7 +136,7 @@ spec:
           echo "no container runtime to restart"
           {{- end }}
         resources:
-{{ toYaml .Values.client.initContainer.resources | indent 12 }}
+{{ toYaml .Values.client.initContainer.resources | indent 10 }}
       {{- end }}
       containers:
       - name: client
@@ -148,7 +148,7 @@ spec:
         - --verbose
         {{- end }}
         resources:
-{{ toYaml .Values.client.resources | indent 12 }}
+{{ toYaml .Values.client.resources | indent 10 }}
         env:
         {{- if .Values.client.maxProcs }}
         - name: GOMAXPROCS
