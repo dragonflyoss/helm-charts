@@ -77,7 +77,7 @@ spec:
         command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
         resources:
-{{ toYaml .Values.seedClient.initContainer.resources | indent 12 }}
+{{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
       containers:
       - name: seed-client
         image: {{ template "seedClient.image" . }}
@@ -88,7 +88,7 @@ spec:
         - --verbose
         {{- end }}
         resources:
-{{ toYaml .Values.seedClient.resources | indent 12 }}
+{{ toYaml .Values.seedClient.resources | indent 10 }}
         env:
         {{- if .Values.seedClient.maxProcs }}
         - name: GOMAXPROCS

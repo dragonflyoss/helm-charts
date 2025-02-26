@@ -73,7 +73,7 @@ spec:
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.master.service.ports.redis }}; do echo waiting for redis; sleep 2; done;']
         resources:
-{{ toYaml .Values.manager.initContainer.resources | indent 12 }}
+{{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
       {{- if .Values.mysql.enable }}
       - name: wait-for-mysql
@@ -81,7 +81,7 @@ spec:
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
         resources:
-{{ toYaml .Values.manager.initContainer.resources | indent 12 }}
+{{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
       {{- end }}
       containers:
@@ -89,7 +89,7 @@ spec:
         image: {{ template "manager.image" . }}
         imagePullPolicy: {{ .Values.manager.image.pullPolicy | quote }}
         resources:
-{{ toYaml .Values.manager.resources | indent 12 }}
+{{ toYaml .Values.manager.resources | indent 10 }}
         env:
         {{- if .Values.manager.maxProcs }}
         - name: GOMAXPROCS
