@@ -3,6 +3,65 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Update client version to 0.2.14.
+        - Update dragonfly version to 2.2.1-rc.2.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.2.1-rc.2
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.2.1-rc.2
+        - name: client
+          image: dragonflyoss/client:v0.2.14
+        - name: seed-client
+          image: dragonflyoss/client:v0.2.14
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.2.14
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.2.1-rc.2
+    created: "2025-02-26T08:06:17.821733815Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 84bd809c1119d800b9698c1782103ce2bb6a5d8047357ad3d20b00376aca6f24
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.3.10/dragonfly-1.3.10.tgz
+    version: 1.3.10
+  - annotations:
+      artifacthub.io/changes: |
         - Add request rate limit for client's grpc server.
       artifacthub.io/images: |
         - name: manager
@@ -14681,4 +14740,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-02-14T10:32:07.079244825Z"
+generated: "2025-02-26T08:06:17.822279562Z"
