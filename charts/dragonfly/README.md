@@ -435,18 +435,18 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.taskTTL | string | `"168h"` | taskTTL is the ttl of the task. |
-| seedClient.config.health.server.port | int | `4013` | port is the port to the health server. |
+| seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
 | seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addr | string | `""` | addr is manager address. |
-| seedClient.config.metrics.server.port | int | `4012` | port is the port to the metrics server. |
+| seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
 | seedClient.config.proxy.prefetchRateLimit | string | `"5GiB"` | prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
 | seedClient.config.proxy.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*"}]` | rules is the list of rules for the proxy server. regex is the regex of the request url. useTLS indicates whether use tls for the proxy backend. redirect is the redirect url. filteredQueryParams is the filtered query params to generate the task id. When filter is ["Signature", "Expires", "ns"], for example: http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io will generate the same task id. Default value includes the filtered query params of s3, gcs, oss, obs, cos. `X-Dragonfly-Use-P2P` header can instead of the regular expression of the rule. If the value is "true", the request will use P2P technology to distribute the content. If the value is "false", but url matches the regular expression in rules. The request will also use P2P technology to distribute the content. |
-| seedClient.config.proxy.server.port | int | `4011` | port is the port to the proxy server. |
+| seedClient.config.proxy.server.port | int | `4001` | port is the port to the proxy server. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | seedClient.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
@@ -456,13 +456,13 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
 | seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
-| seedClient.config.stats.server.port | int | `4014` | port is the port to the stats server. |
+| seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | seedClient.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | seedClient.config.storage.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | seedClient.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
-| seedClient.config.upload.server.port | int | `4010` | port is the port to the grpc server. |
+| seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
 | seedClient.config.verbose | bool | `true` | verbose prints log. |
 | seedClient.enable | bool | `true` | Enable seed client. |

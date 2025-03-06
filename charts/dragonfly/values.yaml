@@ -815,7 +815,7 @@ seedClient:
     upload:
       server:
         # -- port is the port to the grpc server.
-        port: 4010
+        port: 4000
       # # ip is the listen ip of the grpc server.
       # ip: ""
       # # CA certificate file path for mTLS.
@@ -898,7 +898,7 @@ seedClient:
     proxy:
       server:
         # -- port is the port to the proxy server.
-        port: 4011
+        port: 4001
       # # ip is the listen ip of the proxy server.
       # ip: ""
       # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
@@ -974,19 +974,19 @@ seedClient:
     health:
       server:
         # -- port is the port to the health server.
-        port: 4013
+        port: 4003
       # # ip is the listen ip of the health server.
       # ip: ""
     metrics:
       server:
         # -- port is the port to the metrics server.
-        port: 4012
+        port: 4002
       # # ip is the listen ip of the metrics server.
       # ip: ""
     stats:
       server:
         # -- port is the port to the stats server.
-        port: 4014
+        port: 4004
       # # ip is the listen ip of the stats server.
       # ip: ""
     # # tracing is the tracing configuration for dfdaemon.

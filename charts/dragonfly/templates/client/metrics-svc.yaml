@@ -22,8 +22,9 @@ spec:
   ports:
   - port: {{ .Values.client.config.metrics.server.port }}
     name: http-metrics
-    targetPort: {{ .Values.client.config.metrics.server.port }}
+    appProtocol: http
     protocol: TCP
+    targetPort: {{ .Values.client.config.metrics.server.port }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.client.name }}
