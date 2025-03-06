@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Support Istio by specifying the appProtocol type for services
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.2.1-rc.2
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.2.1-rc.2
+        - name: client
+          image: dragonflyoss/client:v0.2.17
+        - name: seed-client
+          image: dragonflyoss/client:v0.2.17
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.2.17
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.2.1-rc.2
+    created: "2025-03-06T10:27:12.499966895Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: e1f393c7707b402c228199884690625bbc9e51ea98f2296949a44c14c3d9fc87
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.3.12/dragonfly-1.3.12.tgz
+    version: 1.3.12
+  - annotations:
+      artifacthub.io/changes: |
         - Update client version to 0.2.17.
         - Set hostNetwork to true by default to avoid the CNI plugin.
         - Optimize the default value of resources.
@@ -14800,4 +14858,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-03-06T08:46:31.105988149Z"
+generated: "2025-03-06T10:27:12.500518539Z"
