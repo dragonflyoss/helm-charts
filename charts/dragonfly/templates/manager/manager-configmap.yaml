@@ -67,8 +67,6 @@ data:
 {{ toYaml .Values.manager.config.cache | indent 6 }}
     job:
 {{ toYaml .Values.manager.config.job | indent 6 }}
-    objectStorage:
-{{ toYaml .Values.manager.config.objectStorage | indent 6 }}
     network:
 {{ toYaml .Values.manager.config.network | indent 6 }}
     metrics:

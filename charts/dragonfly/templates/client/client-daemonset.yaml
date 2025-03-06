@@ -39,16 +39,16 @@ spec:
 {{ toYaml .Values.client.podAnnotations | indent 8 }}
       {{- end }}
     spec:
-      {{- with .Values.client.nodeSelector | default .Values.global.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       hostNetwork: {{ .Values.client.hostNetwork }}
       {{- if .Values.client.hostNetwork }}
       dnsPolicy: "ClusterFirstWithHostNet"
       {{- end }}
       hostPID: {{ .Values.client.hostPID }}
       hostIPC: {{ .Values.client.hostIPC }}
+      {{- with .Values.client.nodeSelector | default .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.client.tolerations }}
       tolerations:
 {{ toYaml .Values.client.tolerations | indent 8 }}
