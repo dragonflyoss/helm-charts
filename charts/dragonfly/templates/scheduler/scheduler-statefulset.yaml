@@ -41,6 +41,10 @@ spec:
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
     spec:
+      hostNetwork: {{ .Values.scheduler.hostNetwork }}
+      {{- if .Values.scheduler.hostNetwork }}
+      dnsPolicy: "ClusterFirstWithHostNet"
+      {{- end }}
       {{- with .Values.scheduler.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
