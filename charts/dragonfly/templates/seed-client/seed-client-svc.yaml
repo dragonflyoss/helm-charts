@@ -22,14 +22,17 @@ spec:
   ports:
     - port: {{ .Values.seedClient.config.proxy.server.port }}
       name: http-proxy
+      appProtocol: http
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.proxy.server.port }}
     - port: {{ .Values.seedClient.config.health.server.port }}
       name: http-health
+      appProtocol: http
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.health.server.port }}
     - port: {{ .Values.seedClient.config.stats.server.port }}
       name: http-stats
+      appProtocol: http
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.stats.server.port }}
 {{- if eq .Values.seedClient.service.type "NodePort" }}

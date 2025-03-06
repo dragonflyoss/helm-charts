@@ -22,10 +22,11 @@ spec:
   ports:
     - port: {{ .Values.manager.restPort }}
       name: http-rest
+      appProtocol: http
       protocol: TCP
       targetPort: {{ .Values.manager.restPort }}
     - port: {{ .Values.manager.grpcPort }}
-      name: http-grpc
+      name: grpc
       appProtocol: grpc
       protocol: TCP
       targetPort: {{ .Values.manager.grpcPort }}

@@ -22,8 +22,9 @@ spec:
   ports:
   - port: 8000
     name: http-metrics
-    targetPort: 8000
+    appProtocol: http
     protocol: TCP
+    targetPort: 8000
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.scheduler.name }}
