@@ -41,6 +41,10 @@ spec:
 {{ toYaml .Values.scheduler.podAnnotations | indent 8 }}
       {{- end }}
     spec:
+      hostNetwork: {{ .Values.scheduler.hostNetwork }}
+      {{- if .Values.scheduler.hostNetwork }}
+      dnsPolicy: "ClusterFirstWithHostNet"
+      {{- end }}
       {{- with .Values.scheduler.nodeSelector | default .Values.global.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -77,13 +81,13 @@ spec:
         command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
         resources:
-{{ toYaml .Values.scheduler.initContainer.resources | indent 12 }}
+{{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
       containers:
       - name: scheduler
         image: {{ template "scheduler.image" . }}
         imagePullPolicy: {{ .Values.scheduler.image.pullPolicy | quote }}
         resources:
-{{ toYaml .Values.scheduler.resources | indent 12 }}
+{{ toYaml .Values.scheduler.resources | indent 10 }}
         env:
         {{- if .Values.scheduler.maxProcs }}
         - name: GOMAXPROCS
