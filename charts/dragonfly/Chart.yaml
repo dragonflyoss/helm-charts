@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.3.13
+version: 1.3.14
 appVersion: 2.2.1-rc.2
 keywords:
   - dragonfly
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Support specifying the appProtocol type for services.
-    - Change ports of seed client services.
+    - Set default prefetch to true in client.
 
   artifacthub.io/links: |
     - name: Chart Source
