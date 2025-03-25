@@ -189,8 +189,8 @@ spec:
           name: {{ template "dragonfly.client.fullname" . }}
       - name: socket-dir
         hostPath:
-            path: /var/run/dragonfly
-            type: DirectoryOrCreate
+          path: /var/run/dragonfly
+          type: DirectoryOrCreate
       {{- if .Values.client.dfinit.enable }}
       - name: dfinit-config
         configMap:
