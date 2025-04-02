@@ -688,7 +688,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.19
+    tag: v0.2.22
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1064,7 +1064,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.19
+    tag: v0.2.22
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1145,7 +1145,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.2.19
+      tag: v0.2.22
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
