@@ -219,7 +219,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
-| client.updateStrategy | object | `{}` | Update strategy for replicas. |
+| client.updateStrategy | object | `{"rollingUpdate":{"maxSurge":0,"maxUnavailable":20},"type":"RollingUpdate"}` | Update strategy for replicas. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `nil` | External manager hostname. |
@@ -287,7 +287,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.2.2-rc.0"` | Image tag. |
+| manager.image.tag | string | `"v2.2.2"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -389,7 +389,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.2.2-rc.0"` | Image tag. |
+| scheduler.image.tag | string | `"v2.2.2"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
