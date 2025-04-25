@@ -34,7 +34,8 @@ spec:
 {{ toYaml .Values.client.podLabels | indent 8 }}
         {{- end }}
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/client/client-configmap.yaml") . | sha256sum }}
+        checksum/client-config: {{ include (print $.Template.BasePath "/client/client-configmap.yaml") . | sha256sum }}
+        checksum/dfinit-config: {{ include (print $.Template.BasePath "/client/dfinit-configmap.yaml") . | sha256sum }}
       {{- if .Values.client.podAnnotations }}
 {{ toYaml .Values.client.podAnnotations | indent 8 }}
       {{- end }}
