@@ -177,6 +177,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
 | client.dfinit.image.tag | string | `"v0.2.24"` | Image tag. |
+| client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
