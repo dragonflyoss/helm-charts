@@ -236,6 +236,8 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.db | int | `0` | External redis db. |
 | externalRedis.masterName | string | `""` | External redis sentinel master name. |
 | externalRedis.password | string | `""` | External redis password. |
+| externalRedis.sentinelPassword | string | `""` | External redis sentinel password. |
+| externalRedis.sentinelUsername | string | `""` | External redis sentinel addresses. |
 | externalRedis.username | string | `""` | External redis username. |
 | fullnameOverride | string | `""` | Override dragonfly fullname. |
 | global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |

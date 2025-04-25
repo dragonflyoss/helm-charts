@@ -28,6 +28,8 @@ data:
         masterName: {{ .Values.externalRedis.masterName }}
         username: {{ .Values.externalRedis.username }}
         password: {{ .Values.externalRedis.password }}
+        sentinelUsername: {{ .Values.externalRedis.sentinelUsername }}
+        sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
@@ -58,6 +60,8 @@ data:
         masterName: {{ .Values.externalRedis.masterName }}
         username: {{ .Values.externalRedis.username }}
         password: {{ .Values.externalRedis.password }}
+        sentinelUsername: {{ .Values.externalRedis.sentinelUsername }}
+        sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
         {{- end }}
