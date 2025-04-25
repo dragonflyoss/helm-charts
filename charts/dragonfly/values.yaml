@@ -1556,6 +1556,10 @@ externalRedis:
   username: ""
   # -- External redis password.
   password: ""
+  # -- External redis sentinel addresses.
+  sentinelUsername: ""
+  # -- External redis sentinel password.
+  sentinelPassword: ""
   # -- External redis db.
   db: 0
   # -- External redis broker db.
