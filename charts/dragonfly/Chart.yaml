@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - add autoRestartContainerRuntime option 
+    - add restartContainerRuntime option
 
   artifacthub.io/links: |
     - name: Chart Source

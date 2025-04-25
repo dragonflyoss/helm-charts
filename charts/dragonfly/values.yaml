@@ -1143,8 +1143,8 @@ client:
   dfinit:
     # -- Enable dfinit to override configuration of container runtime.
     enable: false
-    # -- autoRestartContainerRuntime indicates whether to restart container runtime when dfinit is enabled.
-    autoRestartContainerRuntime: true
+    # -- restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted.
+    restartContainerRuntime: true
     image:
       # -- Image registry.
       registry: docker.io
