@@ -112,7 +112,7 @@ spec:
           mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.docker.configPath }}
         {{- end }}
       {{- end }}
-      {{- if .Values.client.dfinit.enable }}
+      {{- if and .Values.client.dfinit.enable .Values.client.dfinit.autoRestartContainerRuntime  }}
       - name: restart-container-runtime
         image: {{ template "client.initContainer.image" . }}
         imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}

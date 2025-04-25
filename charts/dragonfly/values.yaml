@@ -1143,6 +1143,8 @@ client:
   dfinit:
     # -- Enable dfinit to override configuration of container runtime.
     enable: false
+    # -- autoRestartContainerRuntime indicates whether to restart container runtime when dfinit is enabled.
+    autoRestartContainerRuntime: true
     image:
       # -- Image registry.
       registry: docker.io
