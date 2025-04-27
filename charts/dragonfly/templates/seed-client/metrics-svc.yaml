@@ -1,4 +1,4 @@
-{{- if and .Values.seedClient.metrics.enable .Values.seedClient.metrics.serviceMonitor.enable }}
+{{- if .Values.seedClient.metrics.enable }}
 apiVersion: v1
 kind: Service
 metadata:
