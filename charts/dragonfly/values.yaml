@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.2.3-rc.0
+    tag: v2.2.3-rc.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -315,7 +315,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.2.3-rc.0
+    tag: v2.2.3-rc.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -688,7 +688,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.26
+    tag: v0.2.27
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -809,7 +809,7 @@ seedClient:
       # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
-      pieceTimeout: 60s
+      pieceTimeout: 120s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
       concurrentPieceCount: 16
     upload:
@@ -910,6 +910,8 @@ seedClient:
       writeBufferSize: 4194304
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
+      # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
+      writePieceTimeout: 90s
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -1091,7 +1093,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.26
+    tag: v0.2.27
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1178,7 +1180,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.2.26
+      tag: v0.2.27
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1282,9 +1284,9 @@ client:
       # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
-      pieceTimeout: 60s
+      pieceTimeout: 120s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 16
+      concurrentPieceCount: 8
     upload:
       server:
         # -- port is the port to the grpc server.
@@ -1378,6 +1380,8 @@ client:
       writeBufferSize: 4194304
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
+      # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
+      writePieceTimeout: 90s
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
