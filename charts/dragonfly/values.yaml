@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.2.3-rc.2
+    tag: v2.2.3
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -315,7 +315,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.2.3-rc.2
+    tag: v2.2.3
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -434,12 +434,12 @@ scheduler:
       # -- Retry scheduling limit times.
       retryLimit: 5
       # -- Retry scheduling interval.
-      retryInterval: 50ms
+      retryInterval: 1s
       gc:
         # -- pieceDownloadTimeout is the timeout of downloading piece.
         pieceDownloadTimeout: 30m
         # -- peerGCInterval is the interval of peer gc.
-        peerGCInterval: 10s
+        peerGCInterval: 5m
         # -- peerTTL is the ttl of peer. If the peer has been downloaded by other peers,
         # then PeerTTL will be reset.
         peerTTL: 48h
@@ -688,7 +688,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.27
+    tag: v0.2.30
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -917,7 +917,7 @@ seedClient:
       interval: 900s
       policy:
         # -- taskTTL is the ttl of the task.
-        taskTTL: 168h
+        taskTTL: 720h
         # -- distHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
         distHighThresholdPercent: 80
@@ -1093,7 +1093,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.27
+    tag: v0.2.30
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1180,7 +1180,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.2.27
+      tag: v0.2.30
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1387,7 +1387,7 @@ client:
       interval: 900s
       policy:
         # -- taskTTL is the ttl of the task.
-        taskTTL: 168h
+        taskTTL: 720h
         # -- distHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
         distHighThresholdPercent: 80
