@@ -277,7 +277,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
-| manager.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
+| manager.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
@@ -380,7 +380,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
-| scheduler.config.verbose | bool | `false` | Whether to enable debug level logger and enable pprof. |
+| scheduler.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
