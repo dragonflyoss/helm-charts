@@ -87,8 +87,8 @@ spec:
         imagePullPolicy: {{ .Values.client.dfinit.image.pullPolicy }}
         args:
         - --log-level={{ .Values.client.dfinit.config.log.level }}
-        {{- if .Values.client.dfinit.config.verbose }}
-        - --verbose
+        {{- if .Values.client.dfinit.config.console }}
+        - --console
         {{- end }}
         resources:
 {{ toYaml .Values.client.initContainer.resources | indent 10 }}
@@ -147,8 +147,8 @@ spec:
         imagePullPolicy: {{ .Values.client.image.pullPolicy | quote }}
         args:
         - --log-level={{ .Values.client.config.log.level }}
-        {{- if .Values.client.config.verbose }}
-        - --verbose
+        {{- if .Values.client.config.console }}
+        - --console
         {{- end }}
         resources:
 {{ toYaml .Values.client.resources | indent 10 }}
