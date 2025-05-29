@@ -88,8 +88,8 @@ spec:
         imagePullPolicy: {{ .Values.seedClient.image.pullPolicy | quote }}
         args:
         - --log-level={{ .Values.client.config.log.level }}
-        {{- if .Values.seedClient.config.verbose }}
-        - --verbose
+        {{- if .Values.seedClient.config.console }}
+        - --console
         {{- end }}
         resources:
 {{ toYaml .Values.seedClient.resources | indent 10 }}

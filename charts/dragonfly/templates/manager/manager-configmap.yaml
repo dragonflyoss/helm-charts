@@ -79,7 +79,6 @@ data:
     {{- if .Values.manager.config.verbose }}
     pprof-port: {{ .Values.manager.config.pprofPort }}
     {{- end }}
-    {{- if .Values.manager.config.jaeger }}
-    jaeger: {{ .Values.manager.config.jaeger }}
-    {{- end }}
+    tracing:
+{{ toYaml .Values.manager.config.tracing | indent 6 }}
 {{- end }}

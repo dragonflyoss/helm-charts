@@ -128,6 +128,7 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| client.config.console | bool | `true` | console prints log. |
 | client.config.download.concurrentPieceCount | int | `8` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"120s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
@@ -166,18 +167,17 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
-| client.config.verbose | bool | `true` | verbose prints log. |
+| client.dfinit.config.console | bool | `true` | console prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io","skipVerify":true},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io","skipVerify":true}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. skip_verify is the flag to skip verifying the server's certificate, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#bypass-tls-verification-example. ca (Certificate Authority Certification) can be set to a path or an array of paths each pointing to a ca file for use in authenticating with the registry namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#ca-field. |
 | client.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.dfinit.config.proxy.addr | string | `"http://127.0.0.1:4001"` | addr is the proxy server address of dfdaemon. |
-| client.dfinit.config.verbose | bool | `true` | verbose prints log. |
 | client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
 | client.dfinit.image.digest | string | `""` | Image digest. |
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v0.2.30"` | Image tag. |
+| client.dfinit.image.tag | string | `"v0.2.31"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -192,7 +192,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v0.2.30"` | Image tag. |
+| client.image.tag | string | `"v0.2.31"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -254,7 +254,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.cache.local.ttl | string | `"3m"` | Local cache TTL duration. |
 | manager.config.cache.redis.ttl | string | `"5m"` | Redis cache TTL duration. |
 | manager.config.console | bool | `true` | Console shows log on console. |
-| manager.config.jaeger | string | `""` |  |
 | manager.config.job.gc | object | `{"interval":"3h","ttl":"6h"}` | gc configuration. |
 | manager.config.job.gc.interval | string | `"3h"` | interval is the interval of gc. |
 | manager.config.job.gc.ttl | string | `"6h"` | ttl is the ttl of job. |
@@ -268,7 +267,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.job.syncPeers | object | `{"interval":"24h","timeout":"10m"}` | Sync peers configuration. |
 | manager.config.job.syncPeers.interval | string | `"24h"` | interval is the interval for syncing all peers information from the scheduler and display peers information in the manager console. |
 | manager.config.job.syncPeers.timeout | string | `"10m"` | timeout is the timeout for syncing peers information from the single scheduler. |
-| manager.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
 | manager.config.server.cacheDir | string | `""` | Dynconfig cache directory. |
 | manager.config.server.grpc.advertiseIP | string | `""` | GRPC advertise ip. |
@@ -277,6 +275,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
+| manager.config.tracing.addr | string | `""` |  |
 | manager.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
@@ -354,10 +353,8 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance. |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance. |
-| scheduler.config.jaeger | string | `""` |  |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval. |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
-| scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 enables ipv6. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
@@ -380,6 +377,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
+| scheduler.config.tracing.addr | string | `""` |  |
 | scheduler.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
@@ -429,6 +427,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
+| seedClient.config.console | bool | `true` | console prints log. |
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"120s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
@@ -469,7 +468,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
-| seedClient.config.verbose | bool | `true` | verbose prints log. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -481,7 +479,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v0.2.30"` | Image tag. |
+| seedClient.image.tag | string | `"v0.2.31"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
