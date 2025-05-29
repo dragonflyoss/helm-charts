@@ -3,6 +3,65 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump client verison to v0.2.31.
+        - Rename verbose to conosle in client.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.2.3
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.2.3
+        - name: client
+          image: dragonflyoss/client:v0.2.31
+        - name: seed-client
+          image: dragonflyoss/client:v0.2.31
+        - name: dfinit
+          image: dragonflyoss/dfinit:v0.2.31
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.2.3
+    created: "2025-05-29T04:08:07.210691076Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 75068743c3e723ae43402548da71784c73832a541a8d8b738ddbcc479ba00b71
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.3.31/dragonfly-1.3.31.tgz
+    version: 1.3.31
+  - annotations:
+      artifacthub.io/changes: |
         - Set console to true for manager and scheduler.
       artifacthub.io/images: |
         - name: manager
@@ -15911,4 +15970,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-05-26T13:11:11.999224028Z"
+generated: "2025-05-29T04:08:07.211311472Z"
