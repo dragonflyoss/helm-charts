@@ -4,7 +4,6 @@ kind: Deployment
 metadata:
   labels:
     app: {{ template "dragonfly.fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.manager.name }}

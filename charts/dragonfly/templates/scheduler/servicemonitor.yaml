@@ -6,7 +6,6 @@ metadata:
   namespace: {{ include "common.names.namespace" . | quote }}
   labels:
     app: {{ template "dragonfly.name" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     component: {{ .Values.scheduler.name }}
