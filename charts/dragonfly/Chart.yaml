@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - refactor(client, manager, scheduler, seed-client): remove redundant chart label 
+    - refactor(client, manager, scheduler, seed-client): remove redundant chart label
 
   artifacthub.io/links: |
     - name: Chart Source
