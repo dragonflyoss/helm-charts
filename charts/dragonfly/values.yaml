@@ -224,6 +224,8 @@ manager:
     tracing:
       # - Jaeger endpoint url, like: jaeger.dragonfly.svc:4317.
       addr: ""
+      # - Headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable manager metrics.
     enable: true
@@ -497,6 +499,8 @@ scheduler:
     tracing:
       # - Jaeger endpoint url, like: jaeger.dragonfly.svc:4317.
       addr: ""
+      # - Headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -1018,6 +1022,8 @@ seedClient:
     # tracing:
       # # addr is the address to report tracing log, like jaeger.dragonfly.svc:4317.
       # addr: ""
+      # # Headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1488,6 +1494,8 @@ client:
     # tracing:
       # # addr is the address to report tracing log, like jaeger.dragonfly.svc:4317.
       # addr: ""
+      # # Headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable client metrics.
     enable: true

@@ -276,6 +276,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
 | manager.config.tracing.addr | string | `""` |  |
+| manager.config.tracing.headers | object | `{}` |  |
 | manager.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
@@ -378,6 +379,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
 | scheduler.config.tracing.addr | string | `""` |  |
+| scheduler.config.tracing.headers | object | `{}` |  |
 | scheduler.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
