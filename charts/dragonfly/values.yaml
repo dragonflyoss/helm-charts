@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.2.4-beta.1
+    tag: v2.2.4-rc.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -221,11 +221,16 @@ manager:
     # -- Listen port for pprof, only valid when the verbose option is true
     # default is -1. If it is 0, pprof will use a random port.
     pprofPort: -1
-    tracing:
-      # - Jaeger endpoint url, like: jaeger.dragonfly.svc:4317.
-      addr: ""
-      # - Headers is the grpc's headers to send with tracing log.
-      headers: {}
+    # # tracing is the tracing configuration for dfdaemon.
+    # tracing:
+    #   # Protocol specifies the communication protocol for the tracing server.
+    #   # Supported values: "http", "https", "grpc" (default: None).
+    #   # This determines how tracing logs are transmitted to the server.
+    #   protocol: grpc
+    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+    #   endpoint: localhost:4317
+    #   # headers is the grpc's headers to send with tracing log.
+    #   headers: {}
   metrics:
     # -- Enable manager metrics.
     enable: true
@@ -315,7 +320,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.2.4-beta.1
+    tag: v2.2.4-rc.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -496,11 +501,16 @@ scheduler:
     # -- Listen port for pprof, only valid when the verbose option is true.
     # default is -1. If it is 0, pprof will use a random port.
     pprofPort: -1
-    tracing:
-      # - Jaeger endpoint url, like: jaeger.dragonfly.svc:4317.
-      addr: ""
-      # - Headers is the grpc's headers to send with tracing log.
-      headers: {}
+    # # tracing is the tracing configuration for dfdaemon.
+    # tracing:
+    #   # Protocol specifies the communication protocol for the tracing server.
+    #   # Supported values: "http", "https", "grpc" (default: None).
+    #   # This determines how tracing logs are transmitted to the server.
+    #   protocol: grpc
+    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+    #   endpoint: localhost:4317
+    #   # headers is the grpc's headers to send with tracing log.
+    #   headers: {}
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -688,7 +698,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.35
+    tag: v0.2.37
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1032,10 +1042,14 @@ seedClient:
       # ip: ""
     # # tracing is the tracing configuration for dfdaemon.
     # tracing:
-      # # addr is the address to report tracing log, like jaeger.dragonfly.svc:4317.
-      # addr: ""
-      # # Headers is the grpc's headers to send with tracing log.
-      # headers: {}
+    #   # Protocol specifies the communication protocol for the tracing server.
+    #   # Supported values: "http", "https", "grpc" (default: None).
+    #   # This determines how tracing logs are transmitted to the server.
+    #   protocol: grpc
+    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+    #   endpoint: localhost:4317
+    #   # headers is the grpc's headers to send with tracing log.
+    #   headers: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1107,7 +1121,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v0.2.35
+    tag: v0.2.37
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1194,7 +1208,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v0.2.35
+      tag: v0.2.37
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1516,10 +1530,14 @@ client:
       # ip: ""
     # # tracing is the tracing configuration for dfdaemon.
     # tracing:
-      # # addr is the address to report tracing log, like jaeger.dragonfly.svc:4317.
-      # addr: ""
-      # # Headers is the grpc's headers to send with tracing log.
-      # headers: {}
+    #   # Protocol specifies the communication protocol for the tracing server.
+    #   # Supported values: "http", "https", "grpc" (default: None).
+    #   # This determines how tracing logs are transmitted to the server.
+    #   protocol: grpc
+    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+    #   endpoint: localhost:4317
+    #   # headers is the grpc's headers to send with tracing log.
+    #   headers: {}
   metrics:
     # -- Enable client metrics.
     enable: true
