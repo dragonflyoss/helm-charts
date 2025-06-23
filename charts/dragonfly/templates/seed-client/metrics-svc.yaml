@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.seedClient.name }}-metrics
 {{- if .Values.seedClient.metrics.service.labels }}
-{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{ toYaml .Values.seedClient.metrics.service.labels | indent 4 }}
 {{- end }}
 {{- if .Values.seedClient.metrics.service.annotations }}
   annotations:

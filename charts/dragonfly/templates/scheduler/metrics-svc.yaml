@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
     component: {{ .Values.scheduler.name }}-metrics
 {{- if .Values.scheduler.metrics.service.labels }}
-{{ toYaml .Values.metrics.service.labels | indent 4 }}
+{{ toYaml .Values.scheduler.metrics.service.labels | indent 4 }}
 {{- end }}
 {{- if .Values.scheduler.metrics.service.annotations }}
   annotations:
