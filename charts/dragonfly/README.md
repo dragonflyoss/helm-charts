@@ -129,6 +129,7 @@ helm delete dragonfly --namespace dragonfly-system
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | client.config.console | bool | `true` | console prints log. |
+| client.config.download.collectedPieceTimeout | string | `"10s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | client.config.download.concurrentPieceCount | int | `8` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"120s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
@@ -267,15 +268,15 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.job.syncPeers | object | `{"interval":"24h","timeout":"10m"}` | Sync peers configuration. |
 | manager.config.job.syncPeers.interval | string | `"24h"` | interval is the interval for syncing all peers information from the scheduler and display peers information in the manager console. |
 | manager.config.job.syncPeers.timeout | string | `"10m"` | timeout is the timeout for syncing peers information from the single scheduler. |
-| manager.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true default is -1. If it is 0, pprof will use a random port. |
+| manager.config.pprofPort | int | `-1` | Listen port for pprof, default is -1 (meaning disabled). |
 | manager.config.server.cacheDir | string | `""` | Dynconfig cache directory. |
 | manager.config.server.grpc.advertiseIP | string | `""` | GRPC advertise ip. |
 | manager.config.server.logDir | string | `""` | Log directory. |
+| manager.config.server.logLevel | string | `"info"` | logLevel specifies the logging level for the manager. Default: "info" Supported values: "debug", "info", "warn", "error", "panic", "fatal" |
 | manager.config.server.pluginDir | string | `""` | Plugin directory. |
 | manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
-| manager.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
@@ -354,7 +355,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance. |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval. |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
-| scheduler.config.pprofPort | int | `-1` | Listen port for pprof, only valid when the verbose option is true. default is -1. If it is 0, pprof will use a random port. |
+| scheduler.config.pprofPort | int | `-1` | Listen port for pprof, default is -1 (meaning disabled). |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
 | scheduler.config.scheduler.gc.hostGCInterval | string | `"5m"` | hostGCInterval is the interval of host gc. |
@@ -373,10 +374,10 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.dataDir | string | `""` | Storage directory. |
 | scheduler.config.server.listenIP | string | `"0.0.0.0"` | Listen ip. |
 | scheduler.config.server.logDir | string | `""` | Log directory. |
+| scheduler.config.server.logLevel | string | `"info"` | logLevel specifies the logging level for the scheduler. Default: "info" Supported values: "debug", "info", "warn", "error", "panic", "fatal" |
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
-| scheduler.config.verbose | bool | `true` | Whether to enable debug level logger and enable pprof. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
@@ -426,6 +427,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.console | bool | `true` | console prints log. |
+| seedClient.config.download.collectedPieceTimeout | string | `"10s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"120s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
