@@ -73,10 +73,7 @@ data:
       addr: ":8000"
       enableHost: {{ .Values.scheduler.metrics.enableHost }}
     console: {{ .Values.scheduler.config.console }}
-    verbose: {{ .Values.scheduler.config.verbose }}
-    {{- if .Values.scheduler.config.verbose }}
-    pprof-port: {{ .Values.scheduler.config.pprofPort }}
-    {{- end }}
+    pprofPort: {{ .Values.scheduler.config.pprofPort }}
     tracing:
 {{ toYaml .Values.scheduler.config.tracing | indent 6 }}
 {{- end }}

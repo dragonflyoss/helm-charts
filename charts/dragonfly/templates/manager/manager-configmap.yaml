@@ -25,6 +25,7 @@ data:
           start: {{ .Values.manager.grpcPort }}
           end: {{ .Values.manager.grpcPort }}
       workHome: {{ .Values.manager.config.server.workHome }}
+      logLevel: {{ .Values.manager.config.server.logLevel }}
       logDir: {{ .Values.manager.config.server.logDir }}
       cacheDir: {{ .Values.manager.config.server.cacheDir }}
       pluginDir: {{ .Values.manager.config.server.pluginDir }}
@@ -74,10 +75,7 @@ data:
       enable: {{ .Values.manager.metrics.enable }}
       addr: ":8000"
     console: {{ .Values.manager.config.console }}
-    verbose: {{ .Values.manager.config.verbose }}
-    {{- if .Values.manager.config.verbose }}
-    pprof-port: {{ .Values.manager.config.pprofPort }}
-    {{- end }}
+    pprofPort: {{ .Values.manager.config.pprofPort }}
     tracing:
 {{ toYaml .Values.manager.config.tracing | indent 6 }}
 {{- end }}

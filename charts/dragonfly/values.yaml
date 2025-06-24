@@ -153,6 +153,10 @@ manager:
           key: ""
       # -- Work directory.
       workHome: ""
+      # -- logLevel specifies the logging level for the manager.
+      # Default: "info"
+      # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
+      logLevel: "info"
       # -- Log directory.
       logDir: ""
       # -- Dynconfig cache directory.
@@ -216,10 +220,7 @@ manager:
         # caCert: ''
     # -- Console shows log on console.
     console: true
-    # -- Whether to enable debug level logger and enable pprof.
-    verbose: true
-    # -- Listen port for pprof, only valid when the verbose option is true
-    # default is -1. If it is 0, pprof will use a random port.
+    # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
     # # tracing is the tracing configuration for dfdaemon.
     # tracing:
@@ -416,6 +417,10 @@ scheduler:
     #
       # -- Work directory.
       workHome: ""
+      # -- logLevel specifies the logging level for the scheduler.
+      # Default: "info"
+      # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
+      logLevel: "info"
       # -- Log directory.
       logDir: ""
       # -- Dynconfig cache directory.
@@ -496,10 +501,7 @@ scheduler:
     #   key: /etc/ssl/private/client.pem
     # -- Console shows log on console.
     console: true
-    # -- Whether to enable debug level logger and enable pprof.
-    verbose: true
-    # -- Listen port for pprof, only valid when the verbose option is true.
-    # default is -1. If it is 0, pprof will use a random port.
+    # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
     # # tracing is the tracing configuration for dfdaemon.
     # tracing:
@@ -820,6 +822,8 @@ seedClient:
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 120s
+      # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
+      collectedPieceTimeout: 10s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
       concurrentPieceCount: 16
     upload:
@@ -1313,6 +1317,8 @@ client:
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 120s
+      # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
+      collectedPieceTimeout: 10s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
       concurrentPieceCount: 8
     upload:
