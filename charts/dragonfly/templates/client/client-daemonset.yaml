@@ -22,13 +22,11 @@ spec:
     matchLabels:
       app: {{ template "dragonfly.fullname" . }}
       component: "{{ .Values.client.name }}"
-      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "dragonfly.fullname" . }}
         component: "{{ .Values.client.name }}"
-        release: {{ .Release.Name }}
         {{- if .Values.client.podLabels }}
 {{ toYaml .Values.client.podLabels | indent 8 }}
         {{- end }}
