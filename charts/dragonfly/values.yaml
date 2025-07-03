@@ -700,7 +700,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.0
+    tag: v1.0.1
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -821,7 +821,7 @@ seedClient:
       # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
-      pieceTimeout: 120s
+      pieceTimeout: 40s
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 10s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
@@ -925,7 +925,7 @@ seedClient:
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
-      writePieceTimeout: 90s
+      writePieceTimeout: 30s
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -1125,7 +1125,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.0
+    tag: v1.0.1
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1212,7 +1212,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.0.0
+      tag: v1.0.1
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1316,7 +1316,7 @@ client:
       # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
-      pieceTimeout: 120s
+      pieceTimeout: 40s
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 10s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
@@ -1415,7 +1415,7 @@ client:
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
-      writePieceTimeout: 90s
+      writePieceTimeout: 30s
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
