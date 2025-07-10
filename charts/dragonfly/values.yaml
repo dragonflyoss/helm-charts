@@ -222,18 +222,17 @@ manager:
     console: true
     # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-    #   path: "/v1/traces"
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      endpoint: ""
+      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      path: ""
+      # -- headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable manager metrics.
     enable: true
@@ -505,18 +504,17 @@ scheduler:
     console: true
     # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-    #   path: "/v1/traces"
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      endpoint: ""
+      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      path: ""
+      # -- headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -1048,18 +1046,17 @@ seedClient:
         port: 4004
       # # ip is the listen ip of the stats server.
       # ip: ""
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-    #   path: "/v1/traces"
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      endpoint: ""
+      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      path: ""
+      # -- headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1540,18 +1537,17 @@ client:
         port: 4004
       # # ip is the listen ip of the stats server.
       # ip: ""
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-    #   path: "/v1/traces"
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      endpoint: ""
+      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      path: ""
+      # -- headers is the grpc's headers to send with tracing log.
+      headers: {}
   metrics:
     # -- Enable client metrics.
     enable: true

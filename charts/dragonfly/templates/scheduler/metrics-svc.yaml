@@ -27,5 +27,4 @@ spec:
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.scheduler.name }}
-    release: {{ .Release.Name }}
 {{- end }}

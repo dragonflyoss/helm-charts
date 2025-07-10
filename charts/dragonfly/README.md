@@ -164,6 +164,10 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | client.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | client.config.storage.writePieceTimeout | string | `"30s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
+| client.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
+| client.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
+| client.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
+| client.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
 | client.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
@@ -277,6 +281,10 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
+| manager.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
+| manager.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
+| manager.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
+| manager.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
@@ -378,6 +386,10 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
+| scheduler.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
+| scheduler.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
+| scheduler.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
+| scheduler.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
@@ -465,6 +477,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | seedClient.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | seedClient.config.storage.writePieceTimeout | string | `"30s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
+| seedClient.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
+| seedClient.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
+| seedClient.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
+| seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
