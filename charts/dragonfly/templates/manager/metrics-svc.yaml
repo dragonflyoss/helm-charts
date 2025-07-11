@@ -26,6 +26,5 @@ spec:
     targetPort: 8000
   selector:
     app: {{ template "dragonfly.fullname" . }}
-    release: {{ .Release.Name }}
     component: {{ .Values.manager.name }}
 {{- end }}

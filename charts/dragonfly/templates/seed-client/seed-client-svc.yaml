@@ -39,6 +39,5 @@ spec:
 {{- end }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
-    release: {{ .Release.Name }}
     component: {{ .Values.seedClient.name }}
 {{- end }}
