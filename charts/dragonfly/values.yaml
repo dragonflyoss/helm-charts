@@ -809,7 +809,7 @@ seedClient:
     # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
-      pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
       # -- cacheDir is the directory to store cache files.
       cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
@@ -1304,7 +1304,7 @@ client:
     # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
-      pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
       # -- cacheDir is the directory to store cache files.
       cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
