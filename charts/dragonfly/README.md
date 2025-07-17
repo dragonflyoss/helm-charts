@@ -157,16 +157,13 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | client.config.scheduler.scheduleTimeout | string | `"3h"` | scheduleTimeout is timeout for the scheduler to respond to a scheduling request from dfdaemon, default is 3 hours.  If the scheduler's response time for a scheduling decision exceeds this timeout, dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.  Behavior upon timeout:   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly     from the source.   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.  **Important Considerations Regarding Timeout Triggers**: This timeout isn't solely for the scheduler's direct response. It can also be triggered if the overall duration of the client's interaction with the scheduler for a task (e.g., client downloading initial pieces and reporting their status back to the scheduler) exceeds `schedule_timeout`. During such client-side processing and reporting, the scheduler might be awaiting these updates before sending its comprehensive scheduling response, and this entire period is subject to the `schedule_timeout`.  **Configuration Guidance**: To prevent premature timeouts, `schedule_timeout` should be configured to a value greater than the maximum expected time for the *entire scheduling interaction*. This includes:   1. The scheduler's own processing and response time.   2. The time taken by the client to download any initial pieces and download all pieces finished,      as this communication is part of the scheduling phase.  Setting this value too low can lead to `TokioStreamElapsed` errors even if the network and scheduler are functioning correctly but the combined interaction time is longer than the configured timeout. |
 | client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
-| client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
+| client.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | client.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | client.config.storage.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | client.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | client.config.storage.writePieceTimeout | string | `"30s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
-| client.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
-| client.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
-| client.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
 | client.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
 | client.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
@@ -281,10 +278,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.rest.tls.cert | string | `""` | Certificate file path. |
 | manager.config.server.rest.tls.key | string | `""` | Key file path. |
 | manager.config.server.workHome | string | `""` | Work directory. |
-| manager.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
-| manager.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
-| manager.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
-| manager.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
+| manager.config.tracing.protocol | string | `"grpc"` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
@@ -386,9 +380,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Server port. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
-| scheduler.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
-| scheduler.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
-| scheduler.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
 | scheduler.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
@@ -470,16 +461,13 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.seedPeer.keepaliveInterval | string | `"15s"` | keepaliveInterval is the interval to keep alive with manager. |
 | seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
 | seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
-| seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
+| seedClient.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | seedClient.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
 | seedClient.config.storage.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | seedClient.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | seedClient.config.storage.writePieceTimeout | string | `"30s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
-| seedClient.config.tracing.endpoint | string | `""` | endpoint is the endpoint to report tracing log, example: "localhost:4317". |
-| seedClient.config.tracing.headers | object | `{}` | headers is the grpc's headers to send with tracing log. |
-| seedClient.config.tracing.path | string | `""` | path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https". |
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |

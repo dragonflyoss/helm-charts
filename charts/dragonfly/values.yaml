@@ -226,13 +226,13 @@ manager:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
-      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      endpoint: ""
-      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      path: ""
-      # -- headers is the grpc's headers to send with tracing log.
-      headers: {}
+      protocol: "grpc"
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable manager metrics.
     enable: true
@@ -509,12 +509,12 @@ scheduler:
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
       protocol: ""
-      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      endpoint: ""
-      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      path: ""
-      # -- headers is the grpc's headers to send with tracing log.
-      headers: {}
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -811,7 +811,7 @@ seedClient:
     # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
-      pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
       # -- cacheDir is the directory to store cache files.
       cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
@@ -1051,12 +1051,12 @@ seedClient:
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
       protocol: ""
-      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      endpoint: ""
-      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      path: ""
-      # -- headers is the grpc's headers to send with tracing log.
-      headers: {}
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1307,7 +1307,7 @@ client:
     # ip: ""
     server:
       # -- pluginDir is the directory to store plugins.
-      pluginDir: /var/lib/dragonfly/plugins/dfdaemon/
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
       # -- cacheDir is the directory to store cache files.
       cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
@@ -1542,12 +1542,12 @@ client:
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
       protocol: ""
-      # -- endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      endpoint: ""
-      # -- path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      path: ""
-      # -- headers is the grpc's headers to send with tracing log.
-      headers: {}
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable client metrics.
     enable: true
