@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.3.0
+    tag: v2.3.1-beta.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -222,16 +222,17 @@ manager:
     console: true
     # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: "grpc"
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable manager metrics.
     enable: true
@@ -321,7 +322,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.3.0
+    tag: v2.3.1-beta.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -503,16 +504,17 @@ scheduler:
     console: true
     # -- Listen port for pprof, default is -1 (meaning disabled).
     pprofPort: -1
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -700,7 +702,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.1
+    tag: v1.0.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1044,16 +1046,17 @@ seedClient:
         port: 4004
       # # ip is the listen ip of the stats server.
       # ip: ""
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1125,7 +1128,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.1
+    tag: v1.0.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1212,7 +1215,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.0.1
+      tag: v1.0.2
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1534,16 +1537,17 @@ client:
         port: 4004
       # # ip is the listen ip of the stats server.
       # ip: ""
-    # # tracing is the tracing configuration for dfdaemon.
-    # tracing:
-    #   # Protocol specifies the communication protocol for the tracing server.
-    #   # Supported values: "http", "https", "grpc" (default: None).
-    #   # This determines how tracing logs are transmitted to the server.
-    #   protocol: grpc
-    #   # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-    #   endpoint: localhost:4317
-    #   # headers is the grpc's headers to send with tracing log.
-    #   headers: {}
+    tracing:
+      # -- Protocol specifies the communication protocol for the tracing server.
+      # Supported values: "http", "https", "grpc" (default: None).
+      # This determines how tracing logs are transmitted to the server.
+      protocol: ""
+      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
+      # endpoint: ""
+      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
+      # path: ""
+      # # headers is the grpc's headers to send with tracing log.
+      # headers: {}
   metrics:
     # -- Enable client metrics.
     enable: true

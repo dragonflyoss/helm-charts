@@ -27,6 +27,5 @@ spec:
   selector:
     matchLabels:
       app: {{ template "dragonfly.name" . }}
-      release: {{ .Release.Name }}
       component: {{ .Values.scheduler.name }}-metrics
 {{- end }}
