@@ -73,7 +73,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with an existing manager
 
-Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
+Create the `values.yaml` configuration file. Need to configure the scheduler cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
 
 ```yaml
 scheduler:
@@ -83,10 +83,11 @@ scheduler:
 
 seedClient:
   config:
+    host:
+      schedulerClusterID: 1
     seedPeer:
       enable: true
       type: super
-      clusterID: 1
 
 manager:
   enable: false
