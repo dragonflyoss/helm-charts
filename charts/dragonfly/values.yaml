@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.3.1-rc.2
+    tag: v2.3.1-rc.4
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -322,7 +322,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.3.1-rc.2
+    tag: v2.3.1-rc.4
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -702,7 +702,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.9
+    tag: v1.0.11
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -801,6 +801,11 @@ seedClient:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
+      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # NOTE: This field is used to identify the cluster to which the scheduler belongs.
+      # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
+      # The system will automatically create a scheduler cluster with an ID of 1 by default.
+      schedulerClusterID: 1
       # idc is the idc of the host.
       idc: ""
       # location is the location of the host.
@@ -910,10 +915,6 @@ seedClient:
       enable: true
       # -- type is the type of seed peer.
       type: super
-      # -- clusterID is the cluster id of the seed peer cluster.
-      clusterID: 1
-      # -- keepaliveInterval is the interval to keep alive with manager.
-      keepaliveInterval: 15s
     dynconfig:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
       refreshInterval: 1m
@@ -1128,7 +1129,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.9
+    tag: v1.0.11
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1215,7 +1216,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.0.9
+      tag: v1.0.11
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1297,6 +1298,11 @@ client:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
+      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # NOTE: This field is used to identify the cluster to which the scheduler belongs.
+      # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
+      # The system will automatically create a scheduler cluster with an ID of 1 by default.
+      schedulerClusterID: 1
       # idc is the idc of the host.
       idc: ""
       # location is the location of the host.

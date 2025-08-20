@@ -73,7 +73,7 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ### Install with an existing manager
 
-Create the `values.yaml` configuration file. Need to configure the cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
+Create the `values.yaml` configuration file. Need to configure the scheduler cluster id associated with scheduler and seed peer. This example is to deploy a cluster using the existing manager and redis.
 
 ```yaml
 scheduler:
@@ -83,10 +83,11 @@ scheduler:
 
 seedClient:
   config:
+    host:
+      schedulerClusterID: 1
     seedPeer:
       enable: true
       type: super
-      clusterID: 1
 
 manager:
   enable: false
@@ -141,7 +142,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | client.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
 | client.config.health.server.port | int | `4003` | port is the port to the health server. |
-| client.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
+| client.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addr | string | `""` | addr is manager address. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
@@ -179,7 +180,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.0.9"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.0.11"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -194,7 +195,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.0.9"` | Image tag. |
+| client.image.tag | string | `"v1.0.11"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -292,7 +293,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.3.1-rc.2"` | Image tag. |
+| manager.image.tag | string | `"v2.3.1-rc.4"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -393,7 +394,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.3.1-rc.2"` | Image tag. |
+| scheduler.image.tag | string | `"v2.3.1-rc.4"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -442,7 +443,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
 | seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
-| seedClient.config.host | object | `{"idc":"","location":""}` | host is the host configuration for dfdaemon. |
+| seedClient.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addr | string | `""` | addr is manager address. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
@@ -456,9 +457,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | announceInterval is the interval to announce peer to the scheduler. Announcer will provide the scheduler with peer information for scheduling, peer information includes cpu, memory, etc. |
 | seedClient.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | seedClient.config.scheduler.scheduleTimeout | string | `"3h"` | scheduleTimeout is timeout for the scheduler to respond to a scheduling request from dfdaemon, default is 3 hours.  If the scheduler's response time for a scheduling decision exceeds this timeout, dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.  Behavior upon timeout:   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly     from the source.   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.  **Important Considerations Regarding Timeout Triggers**: This timeout isn't solely for the scheduler's direct response. It can also be triggered if the overall duration of the client's interaction with the scheduler for a task (e.g., client downloading initial pieces and reporting their status back to the scheduler) exceeds `schedule_timeout`. During such client-side processing and reporting, the scheduler might be awaiting these updates before sending its comprehensive scheduling response, and this entire period is subject to the `schedule_timeout`.  **Configuration Guidance**: To prevent premature timeouts, `schedule_timeout` should be configured to a value greater than the maximum expected time for the *entire scheduling interaction*. This includes:   1. The scheduler's own processing and response time.   2. The time taken by the client to download any initial pieces and download all pieces finished,      as this communication is part of the scheduling phase.  Setting this value too low can lead to `TokioStreamElapsed` errors even if the network and scheduler are functioning correctly but the combined interaction time is longer than the configured timeout. |
-| seedClient.config.seedPeer.clusterID | int | `1` | clusterID is the cluster id of the seed peer cluster. |
 | seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
-| seedClient.config.seedPeer.keepaliveInterval | string | `"15s"` | keepaliveInterval is the interval to keep alive with manager. |
 | seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
 | seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
 | seedClient.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
@@ -483,7 +482,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.0.9"` | Image tag. |
+| seedClient.image.tag | string | `"v1.0.11"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
