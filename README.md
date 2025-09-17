@@ -28,18 +28,16 @@ Please refer to the [document][install] to install Dragonfly & Nydus on Kubernet
 
 ## Community
 
-Join the conversation and help the community.
+Join the conversation and help the community grow. Here are the ways to get involved:
 
 - **Slack Channel**: [#dragonfly](https://cloud-native.slack.com/messages/dragonfly/) on [CNCF Slack](https://slack.cncf.io/)
-- **Github Discussions**: [Dragonfly Discussion Forum](https://github.com/dragonflyoss/dragonfly/discussions)
+- **Github Discussions**: [Dragonfly Discussion Forum][discussion]
 - **Developer Group**: <dragonfly-developers@googlegroups.com>
-- **Maintainer Group**: <dragonfly-maintainers@googlegroups.com>
+- **Mailing Lists**:
+  - **Developers**: <dragonfly-developers@googlegroups.com>
+  - **Maintainers**: <dragonfly-maintainers@googlegroups.com>
 - **Twitter**: [@dragonfly_oss](https://twitter.com/dragonfly_oss)
-- **DingTalk**: [22880028764](https://qr.dingtalk.com/action/joingroup?code=v1,k1,pkV9IbsSyDusFQdByPSK3HfCG61ZCLeb8b/lpQ3uUqI=&_dt_no_comment=1&origin=11)
-
-## License
-
-Apache 2.0 License. Please see [License File][license] for more information.
+- **DingTalk Group**: `22880028764`
 
 [license]: LICENSE
 [install]: INSTALL.md
