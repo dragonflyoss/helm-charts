@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.3.1
+    tag: v2.3.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -322,7 +322,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.3.1
+    tag: v2.3.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -702,7 +702,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.18
+    tag: v1.0.21
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1129,7 +1129,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.18
+    tag: v1.0.21
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1216,7 +1216,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.0.18
+      tag: v1.0.21
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
