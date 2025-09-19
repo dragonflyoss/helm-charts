@@ -342,6 +342,7 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.auth.username | string | `"dragonfly"` | Mysql username. |
 | mysql.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | mysql.enable | bool | `true` | Enable mysql with docker container. |
+| mysql.image.repository | string | `"bitnamilegacy/mysql"` |  |
 | mysql.migrate | bool | `true` | Running GORM migration. |
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
@@ -350,6 +351,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | redis.enable | bool | `true` | Enable redis cluster with docker container. |
+| redis.image.repository | string | `"bitnamilegacy/redis"` |  |
 | redis.master.service.ports.redis | int | `6379` | Redis master service port. |
 | scheduler.config.console | bool | `true` | Console shows log on console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval. |

@@ -1618,6 +1618,8 @@ externalManager:
 mysql:
   # -- Enable mysql with docker container.
   enable: true
+  image:
+    repository: bitnamilegacy/mysql
   # -- Cluster domain.
   clusterDomain: "cluster.local"
   # -- Running GORM migration.
@@ -1655,6 +1657,8 @@ externalMysql:
 redis:
   # -- Enable redis cluster with docker container.
   enable: true
+  image:
+    repository: bitnamilegacy/redis
   # -- Cluster domain.
   clusterDomain: "cluster.local"
   auth:
