@@ -163,6 +163,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.client.config.stats.server.port }}
           protocol: TCP
+        - containerPort: {{ .Values.client.config.storage.server.tcpPort }}
+          protocol: TCP
+        - containerPort: {{ .Values.client.config.storage.server.quicPort }}
+          protocol: TCP
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}"]
