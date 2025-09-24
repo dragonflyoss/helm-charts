@@ -106,6 +106,10 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.seedClient.config.stats.server.port }}
           protocol: TCP
+        - containerPort: {{ .Values.seedClient.config.storage.server.tcpPort }}
+          protocol: TCP
+        - containerPort: {{ .Values.seedClient.config.storage.server.quicPort }}
+          protocol: TCP
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}"]

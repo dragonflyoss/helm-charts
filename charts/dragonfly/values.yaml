@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.3.2
+    tag: v2.3.3-rc.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -322,7 +322,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.3.2
+    tag: v2.3.3-rc.0
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -702,7 +702,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.21
+    tag: v1.0.23
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -825,6 +825,10 @@ seedClient:
         socketPath: /var/run/dragonfly/dfdaemon.sock
         # -- request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s.
         requestRateLimit: 4000
+      # -- Protocol that peers use to download piece (e.g., "tcp", "quic").
+      # When dfdaemon acts as a parent, it announces this protocol so downstream
+      # peers fetch pieces using it.
+      protocol: tcp
       # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
       rateLimit: 50GiB
       # --  pieceTimeout is the timeout for downloading a piece from source.
@@ -919,6 +923,13 @@ seedClient:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
       refreshInterval: 1m
     storage:
+      server:
+        # -- port is the port to the tcp server.
+        tcpPort: 4005
+        # -- port is the port to the quic server.
+        quicPort: 4006
+      # # ip is the listen ip of the storage server.
+      # ip: ""
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
@@ -1129,7 +1140,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.0.21
+    tag: v1.0.23
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1216,7 +1227,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.0.21
+      tag: v1.0.23
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1317,6 +1328,10 @@ client:
       # -- cacheDir is the directory to store cache files.
       cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
+      # -- Protocol that peers use to download piece (e.g., "tcp", "quic").
+      # When dfdaemon acts as a parent, it announces this protocol so downstream
+      # peers fetch pieces using it.
+      protocol: tcp
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
@@ -1415,6 +1430,13 @@ client:
       # -- refreshInterval is the interval to refresh dynamic configuration from manager.
       refreshInterval: 5m
     storage:
+      server:
+        # -- port is the port to the tcp server.
+        tcpPort: 4005
+        # -- port is the port to the quic server.
+        quicPort: 4006
+      # # ip is the listen ip of the storage server.
+      # ip: ""
       # -- dir is the directory to store task's metadata and content.
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
