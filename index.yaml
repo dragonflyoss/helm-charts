@@ -3,6 +3,65 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump Client to v1.0.26.
+        - Bump Manager and Scheduler to v2.3.3-rc.1.
+      artifacthub.io/images: |
+        - name: manager
+         image: dragonflyoss/manager:v2.3.3-rc.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.3.3-rc.1
+        - name: client
+          image: dragonflyoss/client:v1.0.26
+        - name: seed-client
+          image: dragonflyoss/client:v1.0.26
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.0.26
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.3.3-rc.1
+    created: "2025-09-26T12:06:09.259365839Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 06d0e6b93cfe395761f436581ead02c6e42ba266e9ab1a685d90e0700c31a691
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.4.11/dragonfly-1.4.11.tgz
+    version: 1.4.11
+  - annotations:
+      artifacthub.io/changes: |
         - Bump Client to v1.0.23.
         - Bump Manager and Scheduler to v2.3.3-rc.0.
       artifacthub.io/images: |
@@ -17145,4 +17204,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-09-24T10:56:32.005469473Z"
+generated: "2025-09-26T12:06:09.260157935Z"
