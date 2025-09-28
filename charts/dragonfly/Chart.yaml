@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.4.11
+version: 1.4.12
 appVersion: 2.3.3-rc.1
 keywords:
   - dragonfly
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Bump Client to v1.0.26.
-    - Bump Manager and Scheduler to v2.3.3-rc.1.
+    - Update description for download.protocol.
 
   artifacthub.io/links: |
     - name: Chart Source

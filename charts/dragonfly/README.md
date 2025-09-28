@@ -133,7 +133,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.download.collectedPieceTimeout | string | `"10s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | client.config.download.concurrentPieceCount | int | `8` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
-| client.config.download.protocol | string | `"tcp"` | Protocol that peers use to download piece (e.g., "tcp", "quic"). When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. |
+| client.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | client.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.download.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s. |
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
@@ -439,7 +439,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.download.collectedPieceTimeout | string | `"10s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
-| seedClient.config.download.protocol | string | `"tcp"` | Protocol that peers use to download piece (e.g., "tcp", "quic"). When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. |
+| seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | seedClient.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.download.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
