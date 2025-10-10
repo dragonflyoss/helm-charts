@@ -20,7 +20,7 @@ data:
     upload:
 {{ toYaml .Values.seedClient.config.upload | indent 6 }}
     manager:
-      {{- if .Values.seedClient.config.manager.addrs }}
+      {{- if .Values.seedClient.config.manager.addr }}
       addr: {{ .Values.seedClient.config.manager.addr }}
       {{- else if .Values.manager.enable }}
       addr: http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
