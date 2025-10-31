@@ -2,7 +2,7 @@
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/search?repo=dragonfly)
 
-Provide efficient, stable, secure, low-cost file and image distribution services to be the best practice and standard solution in the related Cloud-Native area.
+Delivers efficient, stable, and secure data distribution and acceleration powered by P2P technology.
 
 ## TL;DR
 
@@ -13,14 +13,11 @@ helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly
 
 ## Introduction
 
-Dragonfly is an open source intelligent P2P based image and file distribution system. Its goal is to tackle all distribution problems in cloud native scenarios. Currently Dragonfly focuses on being:
-
-- Simple: well-defined user-facing API (HTTP), non-invasive to all container engines;
-- Efficient: Seed peer support, P2P based file distribution to save enterprise bandwidth;
-- Intelligent: host level speed limit, intelligent flow control due to host detection;
-- Secure: block transmission encryption, HTTPS connection support.
-
-Dragonfly is now hosted by the Cloud Native Computing Foundation (CNCF) as an Incubating Level Project. Originally it was born to solve all kinds of distribution at very large scales, such as application distribution, cache distribution, log distribution, image distribution, and so on.
+Delivers efficient, stable, and secure data distribution and acceleration powered by P2P technology,
+with an optional content‑addressable filesystem that accelerates OCI container launch.
+It aims to provide a best‑practice, standards‑based solution for cloud‑native architectures,
+improving large‑scale delivery of files, container images, OCI artifacts, AI/ML models, caches,
+logs, dependencies, etc.
 
 ## Prerequisites
 
