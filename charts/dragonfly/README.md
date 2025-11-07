@@ -136,8 +136,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
-| client.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
-| client.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| client.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| client.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | client.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
 | client.config.health.server.port | int | `4003` | port is the port to the health server. |
 | client.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
@@ -180,7 +180,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.0.38"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.1.0"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -195,7 +195,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.0.38"` | Image tag. |
+| client.image.tag | string | `"v1.1.0"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -293,7 +293,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.3.4-rc.0"` | Image tag. |
+| manager.image.tag | string | `"v2.3.4"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -370,7 +370,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `3` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
-| scheduler.config.scheduler.retryInterval | string | `"1s"` | Retry scheduling interval. |
+| scheduler.config.scheduler.retryInterval | string | `"2s"` | Retry scheduling interval. |
 | scheduler.config.scheduler.retryLimit | int | `5` | Retry scheduling limit times. |
 | scheduler.config.seedPeer.enable | bool | `true` | scheduler enable seed peer as P2P peer, if the value is false, P2P network will not be back-to-source through seed peer but by dfdaemon and preheat feature does not work. |
 | scheduler.config.server.advertiseIP | string | `""` | Advertise ip. |
@@ -396,7 +396,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.3.4-rc.0"` | Image tag. |
+| scheduler.image.tag | string | `"v2.3.4"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -433,7 +433,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.console | bool | `true` | console prints log. |
-| seedClient.config.download.collectedPieceTimeout | string | `"10s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
+| seedClient.config.download.collectedPieceTimeout | string | `"30s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | seedClient.config.download.concurrentPieceCount | int | `32` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
@@ -442,8 +442,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
-| seedClient.config.gc.policy.distHighThresholdPercent | int | `80` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
-| seedClient.config.gc.policy.distLowThresholdPercent | int | `60` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| seedClient.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| seedClient.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
 | seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
 | seedClient.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
@@ -487,7 +487,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.0.38"` | Image tag. |
+| seedClient.image.tag | string | `"v1.1.0"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
