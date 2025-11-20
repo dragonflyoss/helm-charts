@@ -34,4 +34,3 @@ subjects:
 - kind: ServiceAccount
   name: {{ template "nydus-snapshotter.fullname" . }}-sa
   namespace: {{ .Release.Namespace }}
-
