@@ -49,6 +49,6 @@ dependencies:
     repository: https://dragonflyoss.github.io/helm-charts/
     condition: dragonfly.enable
   - name: nydus-snapshotter
-    version: 0.0.10
+    version: 0.0.11
     repository: https://dragonflyoss.github.io/helm-charts/
     condition: nydus-snapshotter.enable
