@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump client image to v1.1.2.
+      artifacthub.io/images: |
+        - name: manager
+         image: dragonflyoss/manager:v2.3.4
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.3.4
+        - name: client
+          image: dragonflyoss/client:v1.1.2
+        - name: seed-client
+          image: dragonflyoss/client:v1.1.2
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.1.2
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.3.4
+    created: "2025-11-25T13:36:10.864901479Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 6e8c758f7fbb53e8bfae77f1d7010596e8c5b07a9c6151202c20fc0539102f60
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.5.2/dragonfly-1.5.2.tgz
+    version: 1.5.2
+  - annotations:
+      artifacthub.io/changes: |
         - Bump client image to v1.1.1.
         - Change the default value of collectedPieceTimeout in seed peer.
       artifacthub.io/images: |
@@ -17674,4 +17732,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-11-24T04:17:33.203191241Z"
+generated: "2025-11-25T13:36:10.866022295Z"
