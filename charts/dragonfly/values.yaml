@@ -702,7 +702,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.1.0
+    tag: v1.1.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -838,7 +838,7 @@ seedClient:
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 5s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 32
+      concurrentPieceCount: 16
     upload:
       server:
         # -- port is the port to the grpc server.
@@ -1142,7 +1142,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.1.1
+    tag: v1.1.2
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1229,7 +1229,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.1.1
+      tag: v1.1.2
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1348,7 +1348,7 @@ client:
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 360s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 32
+      concurrentPieceCount: 16
     upload:
       server:
         # -- port is the port to the grpc server.
