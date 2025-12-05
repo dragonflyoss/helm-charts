@@ -3,7 +3,6 @@
 [![Dragonfly Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly)](https://artifacthub.io/packages/helm/dragonfly/dragonfly)
 [![Nydus Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/nydus-snapshotter)](https://artifacthub.io/packages/helm/dragonfly/nydus-snapshotter)
 [![Dragonfly Stack Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dragonfly-stack)](https://artifacthub.io/packages/helm/dragonfly/dragonfly-stack)
-![Release Charts](https://github.com/dragonflyoss/helm-charts/workflows/Release%20Charts/badge.svg?branch=main)
 [![Releases downloads](https://img.shields.io/github/downloads/dragonflyoss/helm-charts/total.svg)](https://github.com/dragonflyoss/helm-charts/releases)
 
 Helm charts for Dragonfly Community.
