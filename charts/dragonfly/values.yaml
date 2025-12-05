@@ -1030,7 +1030,7 @@ seedClient:
         # the task ID is derived from the blob digest rather than the full URL. This enables deduplication across
         # registries - the same blob from different registries shares one task ID, eliminating redundant downloads
         # and storage.
-        enableTaskIDBasedBlobDigest: false
+        enableTaskIDBasedBlobDigest: true
       # # cert is the client cert path with PEM format for the registry.
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
@@ -1545,7 +1545,7 @@ client:
         # the task ID is derived from the blob digest rather than the full URL. This enables deduplication across
         # registries - the same blob from different registries shares one task ID, eliminating redundant downloads
         # and storage.
-        enableTaskIDBasedBlobDigest: false
+        enableTaskIDBasedBlobDigest: true
       # # cert is the client cert path with PEM format for the registry.
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
