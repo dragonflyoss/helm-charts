@@ -1025,6 +1025,12 @@ seedClient:
         # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
         # of registry mirror.
         addr: https://index.docker.io
+        # -- enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation
+        # when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>),
+        # the task ID is derived from the blob digest rather than the full URL. This enables deduplication across
+        # registries - the same blob from different registries shares one task ID, eliminating redundant downloads
+        # and storage.
+        enableTaskIDBasedBlobDigest: false
       # # cert is the client cert path with PEM format for the registry.
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
@@ -1534,6 +1540,12 @@ client:
         # configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address
         # of registry mirror.
         addr: https://index.docker.io
+        # -- enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation
+        # when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>),
+        # the task ID is derived from the blob digest rather than the full URL. This enables deduplication across
+        # registries - the same blob from different registries shares one task ID, eliminating redundant downloads
+        # and storage.
+        enableTaskIDBasedBlobDigest: false
       # # cert is the client cert path with PEM format for the registry.
       # # If registry use self-signed cert, the client should set the
       # # cert for the registry mirror.
