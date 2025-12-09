@@ -155,8 +155,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | dragonfly.client.config.scheduler.scheduleTimeout | string | `"30s"` | scheduleTimeout is the timeout for scheduling. If the scheduling timesout, dfdaemon will back-to-source download if enableBackToSource is true, otherwise dfdaemon will return download failed. |
 | dragonfly.client.config.security.enable | bool | `false` | enable indicates whether enable security. |
-| dragonfly.client.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
-| dragonfly.client.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | dragonfly.client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | dragonfly.client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | dragonfly.client.config.storage.keep | bool | `false` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
@@ -461,8 +459,6 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
 | dragonfly.seedClient.config.seedPeer.keepaliveInterval | string | `"15s"` | keepaliveInterval is the interval to keep alive with manager. |
 | dragonfly.seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
-| dragonfly.seedClient.config.server.cacheDir | string | `"/var/cache/dragonfly/dfdaemon/"` | cacheDir is the directory to store cache files. |
-| dragonfly.seedClient.config.server.pluginDir | string | `"/var/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | dragonfly.seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | dragonfly.seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | dragonfly.seedClient.config.storage.keep | bool | `false` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
