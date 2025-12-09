@@ -13,8 +13,6 @@ data:
   dfdaemon.yaml: |-
     host:
 {{ toYaml .Values.client.config.host | indent 6 }}
-    server:
-{{ toYaml .Values.client.config.server | indent 6 }}
     download:
 {{ toYaml .Values.client.config.download | indent 6 }}
     upload:
