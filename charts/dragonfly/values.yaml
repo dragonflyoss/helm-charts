@@ -817,8 +817,6 @@ seedClient:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
-      # -- cacheDir is the directory to store cache files.
-      cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
@@ -1333,8 +1331,6 @@ client:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
-      # -- cacheDir is the directory to store cache files.
-      cacheDir: /var/cache/dragonfly/dfdaemon/
     download:
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
