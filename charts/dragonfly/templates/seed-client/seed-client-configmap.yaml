@@ -13,6 +13,8 @@ data:
   dfdaemon.yaml: |-
     host:
 {{ toYaml .Values.seedClient.config.host | indent 6 }}
+    server:
+{{ toYaml .Values.seedClient.config.server | indent 6 }}
     download:
 {{ toYaml .Values.seedClient.config.download | indent 6 }}
     upload:

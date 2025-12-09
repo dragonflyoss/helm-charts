@@ -814,6 +814,9 @@ seedClient:
     # hostname: ""
     # # ip is the advertise ip of the host.
     # ip: ""
+    server:
+      # -- pluginDir is the directory to store plugins.
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
     download:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
@@ -1325,6 +1328,9 @@ client:
     # hostname: ""
     # # ip is the advertise ip of the host.
     # ip: ""
+    server:
+      # -- pluginDir is the directory to store plugins.
+      pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
     download:
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
