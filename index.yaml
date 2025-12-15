@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add backend configuration for client and seedClient
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.3.4
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.3.4
+        - name: client
+          image: dragonflyoss/client:v1.1.7
+        - name: seed-client
+          image: dragonflyoss/client:v1.1.7
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.1.7
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.3.5
+    created: "2025-12-15T08:48:28.561882787Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: acf3f6fa7aae50ea8f05ac15d76751604bac53d1ed8a68cab125756d980c9afc
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.5.8/dragonfly-1.5.8.tgz
+    version: 1.5.8
+  - annotations:
+      artifacthub.io/changes: |
         - Remove config.server.cacheDir on client and seedClient
       artifacthub.io/images: |
         - name: manager
@@ -18023,4 +18081,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-12-09T08:48:49.584605703Z"
+generated: "2025-12-15T08:48:28.562621385Z"
