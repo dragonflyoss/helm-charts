@@ -1075,6 +1075,9 @@ seedClient:
       # path: ""
       # # headers is the grpc's headers to send with tracing log.
       # headers: {}
+    backend:
+      # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
+      requestHeader: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1588,6 +1591,9 @@ client:
       # path: ""
       # # headers is the grpc's headers to send with tracing log.
       # headers: {}
+    backend:
+      # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
+      requestHeader: {}
   metrics:
     # -- Enable client metrics.
     enable: true

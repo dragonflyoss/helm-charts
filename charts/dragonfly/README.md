@@ -126,6 +126,7 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| client.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | client.config.console | bool | `true` | console prints log. |
 | client.config.download.collectedPieceTimeout | string | `"360s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | client.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
@@ -432,6 +433,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
+| seedClient.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | seedClient.config.console | bool | `true` | console prints log. |
 | seedClient.config.download.collectedPieceTimeout | string | `"5s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
