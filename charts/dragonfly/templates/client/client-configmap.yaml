@@ -46,3 +46,5 @@ data:
     tracing:
 {{ toYaml .Values.client.config.tracing | indent 6 }}
 {{- end }}
+    backend:
+{{ toYaml .Values.client.config.backend | indent 6 }}
