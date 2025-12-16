@@ -24,6 +24,64 @@ entries:
           url: https://github.com/dragonflyoss/client
     apiVersion: v2
     appVersion: 2.3.5
+    created: "2025-12-16T03:54:16.220523915Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 3498e80b7e46244ced10bc63ee9979e568e77963ce0dd3638278817b9ac25535
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.5.9/dragonfly-1.5.9.tgz
+    version: 1.5.9
+  - annotations:
+      artifacthub.io/changes: |
+        - Add backend configuration for client and seedClient
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.3.4
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.3.4
+        - name: client
+          image: dragonflyoss/client:v1.1.7
+        - name: seed-client
+          image: dragonflyoss/client:v1.1.7
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.1.7
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.3.5
     created: "2025-12-15T08:48:28.561882787Z"
     dependencies:
     - condition: mysql.enable
@@ -18081,4 +18139,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2025-12-15T08:48:28.562621385Z"
+generated: "2025-12-16T03:54:16.221974621Z"
