@@ -1078,6 +1078,15 @@ seedClient:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
+      # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
+      # requests. Without caching, each piece request may trigger the same 307 redirect again,
+      # repeating the redirect flow and adding extra latency. Caching the resolved redirect URL
+      # reduces repeated redirects and improves request performance.
+      enableCacheTemporaryRedirect: true
+      # -- cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After
+      # this duration, the cached redirect target will expire and be re-resolved.
+      cacheTemporaryRedirectTTL: 600s
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1594,6 +1603,15 @@ client:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
+      # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
+      # requests. Without caching, each piece request may trigger the same 307 redirect again,
+      # repeating the redirect flow and adding extra latency. Caching the resolved redirect URL
+      # reduces repeated redirects and improves request performance.
+      enableCacheTemporaryRedirect: true
+      # -- cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After
+      # this duration, the cached redirect target will expire and be re-resolved.
+      cacheTemporaryRedirectTTL: 600s
   metrics:
     # -- Enable client metrics.
     enable: true
