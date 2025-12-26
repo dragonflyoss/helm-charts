@@ -252,6 +252,90 @@ helm delete dragonfly --namespace dragonfly-system
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
+| injector.affinity | object | `{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchLabels":{"app":"dragonfly","component":"injector"}},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}}` | Pod affinity. |
+| injector.affinity | object | `{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchLabels":{"app":"dragonfly","component":"injector"}},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}}` | Pod affinity. |
+| injector.affinity | object | `{"podAntiAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"podAffinityTerm":{"labelSelector":{"matchLabels":{"app":"dragonfly","component":"injector"}},"topologyKey":"kubernetes.io/hostname"},"weight":100}]}}` | Pod affinity. |
+| injector.certManager | object | `{"duration":"8760h","enable":true,"renewBefore":"720h","secretName":"dragonfly-injector-webhook-cert"}` | Cert-manager configuration. |
+| injector.certManager | object | `{"duration":"8760h","enable":true,"renewBefore":"720h","secretName":"dragonfly-injector-webhook-cert"}` | Cert-manager configuration. |
+| injector.certManager | object | `{"duration":"8760h","enable":true,"renewBefore":"720h","secretName":"dragonfly-injector-webhook-cert"}` | Cert-manager configuration. |
+| injector.config | object | `{"cli_tools_dir_path":"/dragonfly-tools","cli_tools_image":"dragonflyoss/toolkits:latest","enable":true,"proxy_port":4001}` | Injector configuration. |
+| injector.config | object | `{"cli_tools_dir_path":"/dragonfly-tools","cli_tools_image":"dragonflyoss/toolkits:latest","enable":true,"proxy_port":4001}` | Injector configuration. |
+| injector.config | object | `{"cli_tools_dir_path":"/dragonfly-tools","cli_tools_image":"dragonflyoss/toolkits:latest","enable":true,"proxy_port":4001}` | Injector configuration. |
+| injector.enable | bool | `false` | Enable injector. |
+| injector.enable | bool | `false` | Enable injector. |
+| injector.enable | bool | `false` | Enable injector. |
+| injector.healthPort | int | `8081` | Health probe port. |
+| injector.healthPort | int | `8081` | Health probe port. |
+| injector.healthPort | int | `8081` | Health probe port. |
+| injector.image.digest | string | `""` | Image digest. |
+| injector.image.digest | string | `""` | Image digest. |
+| injector.image.digest | string | `""` | Image digest. |
+| injector.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| injector.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| injector.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| injector.image.pullSecrets | list | `[]` | Image pull secrets. |
+| injector.image.pullSecrets | list | `[]` | Image pull secrets. |
+| injector.image.pullSecrets | list | `[]` | Image pull secrets. |
+| injector.image.registry | string | `"docker.io"` | Image registry. |
+| injector.image.registry | string | `"docker.io"` | Image registry. |
+| injector.image.registry | string | `"docker.io"` | Image registry. |
+| injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
+| injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
+| injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
+| injector.image.tag | string | `"latest"` | Image tag. |
+| injector.image.tag | string | `"latest"` | Image tag. |
+| injector.image.tag | string | `"latest"` | Image tag. |
+| injector.leaderElection | object | `{"enable":true}` | Leader election configuration. |
+| injector.leaderElection | object | `{"enable":true}` | Leader election configuration. |
+| injector.leaderElection | object | `{"enable":true}` | Leader election configuration. |
+| injector.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"timeoutSeconds":5}` | Liveness probe configuration. |
+| injector.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"timeoutSeconds":5}` | Liveness probe configuration. |
+| injector.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"timeoutSeconds":5}` | Liveness probe configuration. |
+| injector.metricsPort | int | `8443` | Metrics service port. |
+| injector.metricsPort | int | `8443` | Metrics service port. |
+| injector.metricsPort | int | `8443` | Metrics service port. |
+| injector.metricsSecure | bool | `true` | Enable secure metrics serving. |
+| injector.metricsSecure | bool | `true` | Enable secure metrics serving. |
+| injector.metricsSecure | bool | `true` | Enable secure metrics serving. |
+| injector.name | string | `"injector"` | Injector name. |
+| injector.name | string | `"injector"` | Injector name. |
+| injector.name | string | `"injector"` | Injector name. |
+| injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| injector.podAnnotations | object | `{}` | Pod annotations. |
+| injector.podAnnotations | object | `{}` | Pod annotations. |
+| injector.podAnnotations | object | `{}` | Pod annotations. |
+| injector.podLabels | object | `{}` | Pod labels. |
+| injector.podLabels | object | `{}` | Pod labels. |
+| injector.podLabels | object | `{}` | Pod labels. |
+| injector.priorityClassName | string | `""` | Pod priorityClassName. |
+| injector.priorityClassName | string | `""` | Pod priorityClassName. |
+| injector.priorityClassName | string | `""` | Pod priorityClassName. |
+| injector.readinessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":5}` | Readiness probe configuration. |
+| injector.readinessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":5}` | Readiness probe configuration. |
+| injector.readinessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"timeoutSeconds":5}` | Readiness probe configuration. |
+| injector.replicas | int | `2` | Number of Pods to launch. |
+| injector.replicas | int | `2` | Number of Pods to launch. |
+| injector.replicas | int | `2` | Number of Pods to launch. |
+| injector.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Pod resource requests and limits. |
+| injector.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Pod resource requests and limits. |
+| injector.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Pod resource requests and limits. |
+| injector.service.type | string | `"ClusterIP"` | Service type. |
+| injector.service.type | string | `"ClusterIP"` | Service type. |
+| injector.service.type | string | `"ClusterIP"` | Service type. |
+| injector.tolerations | list | `[]` | List of node taints to tolerate. |
+| injector.tolerations | list | `[]` | List of node taints to tolerate. |
+| injector.tolerations | list | `[]` | List of node taints to tolerate. |
+| injector.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
+| injector.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
+| injector.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
+| injector.webhook | object | `{"caBundle":"","failurePolicy":"Fail","namespaceSelector":{"matchExpressions":[{"key":"dragonfly.io/inject","operator":"In","values":["true"]},{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","kube-public","kube-node-lease","dragonfly-system"]}]},"timeoutSeconds":10}` | Webhook configuration. |
+| injector.webhook | object | `{"caBundle":"","failurePolicy":"Fail","namespaceSelector":{"matchExpressions":[{"key":"dragonfly.io/inject","operator":"In","values":["true"]},{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","kube-public","kube-node-lease","dragonfly-system"]}]},"timeoutSeconds":10}` | Webhook configuration. |
+| injector.webhook | object | `{"caBundle":"","failurePolicy":"Fail","namespaceSelector":{"matchExpressions":[{"key":"dragonfly.io/inject","operator":"In","values":["true"]},{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","kube-public","kube-node-lease","dragonfly-system"]}]},"timeoutSeconds":10}` | Webhook configuration. |
+| injector.webhookPort | int | `9443` | Webhook service port. |
+| injector.webhookPort | int | `9443` | Webhook service port. |
+| injector.webhookPort | int | `9443` | Webhook service port. |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
