@@ -55,7 +55,7 @@ spec:
       {{- if quote .Values.manager.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ .Values.manager.terminationGracePeriodSeconds }}
       {{- end }}
-      {{- if .Values.scheduler.priorityClassName }}
+      {{- if .Values.manager.priorityClassName }}
       priorityClassName: {{ .Values.manager.priorityClassName }}
       {{- end }}
       {{- with .Values.manager.image.pullSecrets | default .Values.global.imagePullSecrets }}
