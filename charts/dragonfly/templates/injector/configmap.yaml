@@ -1,0 +1,13 @@
+{{- if .Values.injector.enable }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-config
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+data:
+  config.yaml: |
+    {{- toYaml .Values.injector.config | nindent 4 }}
+{{- end }}

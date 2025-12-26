@@ -182,3 +182,17 @@ Return  the proper Storage Class
 {{- end -}}
 
 {{- end -}}
+
+{{/*
+Create a default fully qualified injector name.
+*/}}
+{{- define "dragonfly.injector.fullname" -}}
+{{ template "dragonfly.fullname" . }}-{{ .Values.injector.name }}
+{{- end -}}
+
+{{/*
+Return the proper image name (for the injector image)
+*/}}
+{{- define "injector.image" -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
+{{- end -}}
