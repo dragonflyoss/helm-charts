@@ -1,0 +1,24 @@
+{{- if .Values.injector.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-webhook-service
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+spec:
+  type: {{ .Values.injector.service.type }}
+  ports:
+    - name: webhook
+      port: 443
+      targetPort: {{ .Values.injector.webhookPort }}
+      protocol: TCP
+    - name: metrics
+      port: {{ .Values.injector.metricsPort }}
+      targetPort: {{ .Values.injector.metricsPort }}
+      protocol: TCP
+  selector:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+{{- end }}
