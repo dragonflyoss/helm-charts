@@ -1,0 +1,45 @@
+{{- if .Values.injector.enable }}
+{{- if .Values.injector.certManager.enable }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-selfsigned-issuer
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-serving-cert
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+spec:
+  secretName: {{ .Values.injector.certManager.secretName }}
+  duration: {{ .Values.injector.certManager.duration }}
+  renewBefore: {{ .Values.injector.certManager.renewBefore }}
+  subject:
+    organizations:
+      - dragonfly
+  commonName: {{ template "dragonfly.injector.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc
+  dnsNames:
+    - {{ template "dragonfly.injector.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc
+    - {{ template "dragonfly.injector.fullname" . }}-webhook-service.{{ template "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+  issuerRef:
+    kind: Issuer
+    name: {{ template "dragonfly.injector.fullname" . }}-selfsigned-issuer
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+{{- end }}
+{{- end }}

@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.5.9
+version: 1.5.10
 appVersion: 2.3.5
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add backend configuration for client and seedClient
+    - Add injector support for automatic pod injection of P2P proxy settings
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -47,6 +47,8 @@ annotations:
       image: dragonflyoss/client:v1.1.7
     - name: dfinit
       image: dragonflyoss/dfinit:v1.1.7
+    - name: injector
+      image: dragonflyoss/injector:latest
 
 dependencies:
   - name: mysql

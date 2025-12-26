@@ -1,0 +1,47 @@
+{{- if .Values.injector.enable }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-webhook
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+  {{- if .Values.injector.certManager.enable }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ template "common.names.namespace" . }}/{{ template "dragonfly.injector.fullname" . }}-serving-cert
+  {{- end }}
+webhooks:
+  - name: mpod-v1.d7y.io
+    admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: {{ template "dragonfly.injector.fullname" . }}-webhook-service
+        namespace: {{ template "common.names.namespace" . }}
+        path: /mutate--v1-pod
+        port: 443
+      {{- if not .Values.injector.certManager.enable }}
+      {{- if .Values.injector.webhook.caBundle }}
+      caBundle: {{ .Values.injector.webhook.caBundle }}
+      {{- end }}
+      {{- end }}
+    failurePolicy: {{ .Values.injector.webhook.failurePolicy }}
+    matchPolicy: Equivalent
+    namespaceSelector:
+      {{- toYaml .Values.injector.webhook.namespaceSelector | nindent 6 }}
+    objectSelector: {}
+    reinvocationPolicy: Never
+    rules:
+      - apiGroups:
+          - ""
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - pods
+        scope: "*"
+    sideEffects: None
+    timeoutSeconds: {{ .Values.injector.webhook.timeoutSeconds }}
+{{- end }}
