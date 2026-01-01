@@ -1,0 +1,79 @@
+{{- if .Values.injector.enable }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "dragonfly.injector.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "dragonfly.injector.fullname" . }}
+    namespace: {{ template "common.names.namespace" . }}
+---
+{{- if .Values.injector.leaderElection.enable }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-leader-election
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "dragonfly.injector.fullname" . }}-leader-election
+  namespace: {{ template "common.names.namespace" . }}
+  labels:
+    app: {{ template "dragonfly.name" . }}
+    component: {{ .Values.injector.name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "dragonfly.injector.fullname" . }}-leader-election
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "dragonfly.injector.fullname" . }}
+    namespace: {{ template "common.names.namespace" . }}
+{{- end }}
+{{- end }}
