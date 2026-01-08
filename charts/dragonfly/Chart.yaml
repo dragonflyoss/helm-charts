@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.5.10
-appVersion: 2.3.5
+version: 1.6.0
+appVersion: 2.4.0
 keywords:
   - dragonfly
   - d7y
@@ -27,7 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add backend configuration for client and seedClient
+    - Bump Dragonfly to v2.4.0.
+    - Bump Client to v1.2.0.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -38,15 +39,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.3.4
+      image: dragonflyoss/manager:v2.4.0
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.3.4
+      image: dragonflyoss/scheduler:v2.4.0
     - name: client
-      image: dragonflyoss/client:v1.1.15
+      image: dragonflyoss/client:v1.2.0
     - name: seed-client
-      image: dragonflyoss/client:v1.1.15
+      image: dragonflyoss/client:v1.2.0
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.1.15
+      image: dragonflyoss/dfinit:v1.2.0
 
 dependencies:
   - name: mysql

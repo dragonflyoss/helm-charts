@@ -128,6 +128,9 @@ helm delete dragonfly --namespace dragonfly-system
 |-----|------|---------|-------------|
 | client.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | client.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| client.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
+| client.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
+| client.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
 | client.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | client.config.console | bool | `true` | console prints log. |
 | client.config.download.collectedPieceTimeout | string | `"360s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
@@ -135,13 +138,15 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.download.pieceTimeout | string | `"360s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | client.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
-| client.config.download.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s. |
+| client.config.download.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s. |
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
 | client.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | client.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
-| client.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
+| client.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_cache_task_ttl as the persistent cache task's ttl. |
+| client.config.gc.policy.persistentTaskTTL | string | `"24h"` | Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the persistent task's ttl. |
+| client.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
 | client.config.health.server.port | int | `4003` | port is the port to the health server. |
 | client.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
@@ -172,7 +177,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
 | client.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
-| client.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
+| client.config.upload.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s. |
 | client.dfinit.config.console | bool | `true` | console prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io","skipVerify":true},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io","skipVerify":true}]` | registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. skip_verify is the flag to skip verifying the server's certificate, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#bypass-tls-verification-example. ca (Certificate Authority Certification) can be set to a path or an array of paths each pointing to a ca file for use in authenticating with the registry namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#ca-field. |
@@ -183,7 +188,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.1.15"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.2.0"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -198,7 +203,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.1.15"` | Image tag. |
+| client.image.tag | string | `"v1.2.0"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -296,7 +301,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.3.4"` | Image tag. |
+| manager.image.tag | string | `"v2.4.0"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -399,7 +404,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.3.4"` | Image tag. |
+| scheduler.image.tag | string | `"v2.4.0"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -437,6 +442,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | seedClient.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| seedClient.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
+| seedClient.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
+| seedClient.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
 | seedClient.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | seedClient.config.console | bool | `true` | console prints log. |
 | seedClient.config.download.collectedPieceTimeout | string | `"5s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
@@ -444,13 +452,15 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | seedClient.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
-| seedClient.config.download.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s. |
+| seedClient.config.download.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
 | seedClient.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
 | seedClient.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
-| seedClient.config.gc.policy.taskTTL | string | `"720h"` | taskTTL is the ttl of the task. |
+| seedClient.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_cache_task_ttl as the persistent cache task's ttl. |
+| seedClient.config.gc.policy.persistentTaskTTL | string | `"24h"` | Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the persistent task's ttl. |
+| seedClient.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
 | seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
 | seedClient.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
@@ -477,11 +487,11 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.server.quicPort | int | `4006` | port is the port to the quic server. |
 | seedClient.config.storage.server.tcpPort | int | `4005` | port is the port to the tcp server. |
 | seedClient.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
-| seedClient.config.storage.writePieceTimeout | string | `"30s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
+| seedClient.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
-| seedClient.config.upload.server.requestRateLimit | int | `4000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s. |
+| seedClient.config.upload.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
@@ -493,7 +503,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.1.15"` | Image tag. |
+| seedClient.image.tag | string | `"v1.2.0"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
