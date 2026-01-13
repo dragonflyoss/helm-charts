@@ -123,13 +123,9 @@ spec:
           toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.disable_snapshot_annotations false
           toml set --overwrite $etcContainerd plugins.\"io.containerd.grpc.v1.cri\".containerd.snapshotter nydus
 
-          # toml command not support to set block, so just use cat command.
-          cat << EOF >> $etcContainerd
-          [proxy_plugins]
-            [proxy_plugins.nydus]
-              type = "snapshot"
-              address = "/run/containerd-nydus/containerd-nydus-grpc.sock"
-          EOF
+          #toml will create "proxy_plugins" table if it doesn't exist
+          toml set --overwrite $etcContainerd 'proxy_plugins.nydus.address' '/run/containerd-nydus/containerd-nydus-grpc.sock'
+          toml set --overwrite $etcContainerd 'proxy_plugins.nydus.type' 'snapshot'
 
         volumeMounts:
         - name: containerd-conf
