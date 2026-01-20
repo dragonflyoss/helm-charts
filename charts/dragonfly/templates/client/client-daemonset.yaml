@@ -154,6 +154,14 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.client.maxProcs }}
         {{- end }}
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: {{ .Values.client.config.upload.server.port }}
           protocol: TCP
