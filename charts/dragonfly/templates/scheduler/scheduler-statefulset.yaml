@@ -105,14 +105,18 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 15
-          periodSeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
       volumes:
       - name: config
         configMap:

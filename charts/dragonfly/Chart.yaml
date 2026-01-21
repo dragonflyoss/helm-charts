@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.6.4
+version: 1.6.5
 appVersion: 2.4.1-beta.1
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add network.enableIPv6 config for instance.
+    - Set connection timeout and rpc timeout for grpc-health-probe.
 
   artifacthub.io/links: |
     - name: Chart Source
