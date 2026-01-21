@@ -120,16 +120,18 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}"]
-          initialDelaySeconds: 5
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+          initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 5
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
