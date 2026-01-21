@@ -45,6 +45,8 @@ data:
 {{ toYaml .Values.client.config.stats | indent 6 }}
     tracing:
 {{ toYaml .Values.client.config.tracing | indent 6 }}
-{{- end }}
     backend:
 {{ toYaml .Values.client.config.backend | indent 6 }}
+    network:
+{{ toYaml .Values.client.config.network | indent 6 }}
+{{- end }}

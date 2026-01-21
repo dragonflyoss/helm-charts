@@ -152,6 +152,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addr | string | `""` | addr is manager address. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
+| client.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | client.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
 | client.config.proxy.prefetchRateLimit | string | `"5GiB"` | prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
@@ -188,7 +189,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.2.3"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.2.5"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -203,7 +204,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.2.3"` | Image tag. |
+| client.image.tag | string | `"v1.2.5"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -278,6 +279,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.job.syncPeers | object | `{"interval":"24h","timeout":"10m"}` | Sync peers configuration. |
 | manager.config.job.syncPeers.interval | string | `"24h"` | interval is the interval for syncing all peers information from the scheduler and display peers information in the manager console. |
 | manager.config.job.syncPeers.timeout | string | `"10m"` | timeout is the timeout for syncing peers information from the single scheduler. |
+| manager.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | manager.config.pprofPort | int | `-1` | Listen port for pprof, default is -1 (meaning disabled). |
 | manager.config.server.cacheDir | string | `""` | Dynconfig cache directory. |
 | manager.config.server.grpc.advertiseIP | string | `""` | GRPC advertise ip. |
@@ -301,7 +303,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.4.1-beta.0"` | Image tag. |
+| manager.image.tag | string | `"v2.4.1-beta.1"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -368,6 +370,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance. |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval. |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
+| scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, default is -1 (meaning disabled). |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
@@ -404,7 +407,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.4.1-beta.0"` | Image tag. |
+| scheduler.image.tag | string | `"v2.4.1-beta.1"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -466,6 +469,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addr | string | `""` | addr is manager address. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
+| seedClient.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
 | seedClient.config.proxy.prefetchRateLimit | string | `"5GiB"` | prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
@@ -503,7 +507,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.2.3"` | Image tag. |
+| seedClient.image.tag | string | `"v1.2.5"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
