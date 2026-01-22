@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add extra environment variables for pod.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.4.1-beta.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.4.1-beta.1
+        - name: client
+          image: dragonflyoss/client:v1.2.5
+        - name: seed-client
+          image: dragonflyoss/client:v1.2.5
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.2.5
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.4.1-beta.1
+    created: "2026-01-22T09:12:41.852845415Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 9099dfca113fd17f40a858c928e351e37ba43c417fc6a983f491ef9f0f3114ee
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.6.6/dragonfly-1.6.6.tgz
+    version: 1.6.6
+  - annotations:
+      artifacthub.io/changes: |
         - Set connection timeout and rpc timeout for grpc-health-probe.
       artifacthub.io/images: |
         - name: manager
@@ -18547,4 +18605,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-01-21T10:45:21.256104076Z"
+generated: "2026-01-22T09:12:41.853609371Z"
