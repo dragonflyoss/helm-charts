@@ -76,6 +76,8 @@ manager:
     type: RollingUpdate
   # -- Deployment annotations.
   deploymentAnnotations: {}
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
@@ -372,6 +374,8 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort.
   containerPort: 8002
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for scheduler.
   extraVolumes:
     - name: logs
@@ -764,6 +768,8 @@ seedClient:
       digest: ""
       # -- Image pull policy.
       pullPolicy: IfNotPresent
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1256,6 +1262,8 @@ client:
       digest: ""
       # -- Image pull policy.
       pullPolicy: IfNotPresent
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: storage

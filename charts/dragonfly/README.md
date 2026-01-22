@@ -192,6 +192,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.tag | string | `"v1.2.5"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
+| client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -292,6 +293,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.tracing.protocol | string | `"grpc"` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
+| manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
@@ -397,6 +399,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
+| scheduler.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
 | scheduler.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for scheduler. |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -497,6 +500,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s. |
 | seedClient.enable | bool | `true` | Enable seed client. |
+| seedClient.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
