@@ -96,6 +96,9 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.manager.maxProcs }}
         {{- end }}
+        {{- if .Values.manager.extraEnvVars }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.manager.extraEnvVars "context" $) | nindent 8 }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.manager.restPort }}
           protocol: TCP

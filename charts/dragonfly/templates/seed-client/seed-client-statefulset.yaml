@@ -95,6 +95,9 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.seedClient.maxProcs }}
         {{- end }}
+        {{- if .Values.seedClient.extraEnvVars }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.seedClient.extraEnvVars "context" $) | nindent 8 }}
+        {{- end }}
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:

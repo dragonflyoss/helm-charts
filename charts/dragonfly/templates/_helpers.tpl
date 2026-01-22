@@ -70,7 +70,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{ template "dragonfly.fullname" . }}-dfinit
 {{- end -}}
 
-{{/* vim: set filetype=mustache: */}}
 {{/*
 Return the proper image name
 {{ include "common.images.image" ( dict "imageRoot" .Values.path.to.the.image "global" .Values.global ) }}
@@ -159,7 +158,6 @@ Return the proper image name (for the seedClient initContainer image)
 {{- include "common.images.image" ( dict "imageRoot" .Values.seedClient.initContainer.image "global" .Values.global ) -}}
 {{- end -}}
 
-{{/* vim: set filetype=mustache: */}}
 {{/*
 Return  the proper Storage Class
 {{ include "common.storage.class" ( dict "persistence" .Values.path.to.the.persistence "global" $) }}
@@ -180,5 +178,23 @@ Return  the proper Storage Class
       {{- printf "storageClassName: %s" $storageClass -}}
   {{- end -}}
 {{- end -}}
+{{- end -}}
 
+{{/*
+Renders a value that contains template perhaps with scope if the scope is present.
+Usage:
+{{ include "common.tplvalues.render" ( dict "value" .Values.path.to.the.Value "context" $ ) }}
+{{ include "common.tplvalues.render" ( dict "value" .Values.path.to.the.Value "context" $ "scope" $app ) }}
+*/}}
+{{- define "common.tplvalues.render" -}}
+{{- $value := typeIs "string" .value | ternary .value (.value | toYaml) }}
+{{- if contains "{{" (toJson .value) }}
+  {{- if .scope }}
+      {{- tpl (cat "{{- with $.RelativeScope -}}" $value "{{- end }}") (merge (dict "RelativeScope" .scope) .context) }}
+  {{- else }}
+    {{- tpl $value .context }}
+  {{- end }}
+{{- else }}
+    {{- $value }}
+{{- end }}
 {{- end -}}
