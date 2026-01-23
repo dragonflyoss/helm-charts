@@ -18,6 +18,7 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.client.metrics.service.type }}
+  clusterIP: {{ .Values.client.metrics.service.clusterIP }}
   ports:
   - port: {{ .Values.client.config.metrics.server.port }}
     name: http-metrics
