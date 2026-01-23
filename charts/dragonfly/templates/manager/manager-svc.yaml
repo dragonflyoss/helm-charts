@@ -18,6 +18,7 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.manager.service.type }}
+  clusterIP: {{ .Values.manager.service.clusterIP }}
   ports:
     - port: {{ .Values.manager.restPort }}
       name: http-rest

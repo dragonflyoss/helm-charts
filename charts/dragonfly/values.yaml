@@ -93,6 +93,8 @@ manager:
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ""
     # -- Service labels.
     labels: {}
     # -- Service annotations.
@@ -244,6 +246,8 @@ manager:
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ""
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -350,6 +354,8 @@ scheduler:
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ""
     # -- Service labels.
     labels: {}
     # -- Service annotations.
@@ -533,6 +539,8 @@ scheduler:
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ""
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -799,6 +807,8 @@ seedClient:
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ""
     # -- Service labels.
     labels: {}
     # -- Service annotations.
@@ -1133,6 +1143,8 @@ seedClient:
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ""
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -1688,6 +1700,8 @@ client:
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ""
       # -- Service labels.
       labels: {}
       # -- Service annotations.
