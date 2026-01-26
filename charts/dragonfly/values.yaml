@@ -139,6 +139,9 @@ manager:
   config:
     server:
       grpc:
+        # -- RequestRateLimit is the maximum number of requests per second for the gRPC server. It limits both the rate of
+        # unary gRPC requests and the rate of new stream gRPC connection, default is 4000 req/s.
+        requestRateLimit: 4000
         # -- GRPC advertise ip.
         advertiseIP: ""
       # # GRPC server tls configuration.
@@ -412,6 +415,10 @@ scheduler:
       pullPolicy: IfNotPresent
   config:
     server:
+      # -- RequestRateLimit is the maximum number of requests per second for the gRPC server.
+      # It limits both the rate of unary gRPC requests and the rate of new stream gRPC
+      # connection, default is 4000 req/s.
+      requestRateLimit: 4000
       # -- Advertise ip.
       advertiseIP: ""
       # -- Advertise port.
@@ -720,7 +727,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.2.7
+    tag: v1.2.9
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -843,8 +850,18 @@ seedClient:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s.
-        requestRateLimit: 5000
+        # -- requestRateLimit is the rate limit of the download request in dfdaemon, default is 4000 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 4000
+        # -- requestbufferSize is the buffer size of the download request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
       # peers fetch pieces using it.
@@ -906,9 +923,9 @@ seedClient:
       # dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.
       #
       # Behavior upon timeout:
-      #   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
+      # - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
       #     from the source.
-      #   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
+      # - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
       #
       # **Important Considerations Regarding Timeout Triggers**:
       # This timeout isn't solely for the scheduler's direct response. It can also be triggered
@@ -922,9 +939,9 @@ seedClient:
       # To prevent premature timeouts, `schedule_timeout` should be configured to a value
       # greater than the maximum expected time for the *entire scheduling interaction*.
       # This includes:
-      #   1. The scheduler's own processing and response time.
-      #   2. The time taken by the client to download any initial pieces and download all pieces finished,
-      #      as this communication is part of the scheduling phase.
+      # 1. The scheduler's own processing and response time.
+      # 2. The time taken by the client to download any initial pieces and download all pieces finished,
+      #    as this communication is part of the scheduling phase.
       #
       # Setting this value too low can lead to `TokioStreamElapsed` errors even if the
       # network and scheduler are functioning correctly but the combined interaction time
@@ -1212,7 +1229,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.2.7
+    tag: v1.2.9
     # -- Image digest.
     digest: ""
     # -- Image pull policy.
@@ -1301,7 +1318,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.2.7
+      tag: v1.2.9
       # -- Image digest.
       digest: ""
       # -- Image pull policy.
@@ -1409,8 +1426,18 @@ client:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s.
-        requestRateLimit: 5000
+        # -- requestRateLimit is the rate limit of the download request in dfdaemon, default is 50 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 50
+        # -- requestbufferSize is the buffer size of the download request channel in dfdaemon, default is 500.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 500
       # -- bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
       # -- backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s.
@@ -1468,9 +1495,9 @@ client:
       # dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.
       #
       # Behavior upon timeout:
-      #   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
+      # - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
       #     from the source.
-      #   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
+      # - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
       #
       # **Important Considerations Regarding Timeout Triggers**:
       # This timeout isn't solely for the scheduler's direct response. It can also be triggered
@@ -1484,9 +1511,9 @@ client:
       # To prevent premature timeouts, `schedule_timeout` should be configured to a value
       # greater than the maximum expected time for the *entire scheduling interaction*.
       # This includes:
-      #   1. The scheduler's own processing and response time.
-      #   2. The time taken by the client to download any initial pieces and download all pieces finished,
-      #      as this communication is part of the scheduling phase.
+      # 1. The scheduler's own processing and response time.
+      # 2. The time taken by the client to download any initial pieces and download all pieces finished,
+      #    as this communication is part of the scheduling phase.
       #
       # Setting this value too low can lead to `TokioStreamElapsed` errors even if the
       # network and scheduler are functioning correctly but the combined interaction time

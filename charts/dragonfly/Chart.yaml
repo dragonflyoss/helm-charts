@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.6.10
+version: 1.6.11
 appVersion: 2.4.1
 keywords:
   - dragonfly
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Check manager grpcPort is accessible before starting scheduler and seed-client.
-    - Set appProtocol for Service ports when Kubernetes version is >= 1.20.
+    - Add rateLimit configuration for the service component.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -43,11 +42,11 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.4.1
     - name: client
-      image: dragonflyoss/client:v1.2.8
+      image: dragonflyoss/client:v1.2.9
     - name: seed-client
-      image: dragonflyoss/client:v1.2.8
+      image: dragonflyoss/client:v1.2.9
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.2.8
+      image: dragonflyoss/dfinit:v1.2.9
 
 dependencies:
   - name: mysql
