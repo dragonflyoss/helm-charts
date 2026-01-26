@@ -42,11 +42,11 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.4.1
     - name: client
-      image: dragonflyoss/client:v1.2.8
+      image: dragonflyoss/client:v1.2.9
     - name: seed-client
-      image: dragonflyoss/client:v1.2.8
+      image: dragonflyoss/client:v1.2.9
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.2.8
+      image: dragonflyoss/dfinit:v1.2.9
 
 dependencies:
   - name: mysql
