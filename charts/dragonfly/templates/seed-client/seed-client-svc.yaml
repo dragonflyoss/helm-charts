@@ -22,17 +22,23 @@ spec:
   ports:
     - port: {{ .Values.seedClient.config.proxy.server.port }}
       name: http-proxy
+      {{- if semverCompare ">=1.20" .Capabilities.KubeVersion.Version }}
       appProtocol: http
+      {{- end }}
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.proxy.server.port }}
     - port: {{ .Values.seedClient.config.health.server.port }}
       name: http-health
+      {{- if semverCompare ">=1.20" .Capabilities.KubeVersion.Version }}
       appProtocol: http
+      {{- end }}
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.health.server.port }}
     - port: {{ .Values.seedClient.config.stats.server.port }}
       name: http-stats
+      {{- if semverCompare ">=1.20" .Capabilities.KubeVersion.Version }}
       appProtocol: http
+      {{- end }}
       protocol: TCP
       targetPort: {{ .Values.seedClient.config.stats.server.port }}
 {{- if eq .Values.seedClient.service.type "NodePort" }}

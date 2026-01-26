@@ -22,7 +22,9 @@ spec:
   ports:
     - port: {{ .Values.manager.restPort }}
       name: http-rest
+      {{- if semverCompare ">=1.20" .Capabilities.KubeVersion.Version }}
       appProtocol: http
+      {{- end }}
       protocol: TCP
       targetPort: {{ .Values.manager.restPort }}
 {{- if eq .Values.manager.service.type "NodePort" }}
@@ -30,7 +32,9 @@ spec:
 {{- end }}
     - port: {{ .Values.manager.grpcPort }}
       name: grpc
+      {{- if semverCompare ">=1.20" .Capabilities.KubeVersion.Version }}
       appProtocol: grpc
+      {{- end }}
       protocol: TCP
       targetPort: {{ .Values.manager.grpcPort }}
   selector:

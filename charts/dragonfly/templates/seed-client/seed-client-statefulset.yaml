@@ -73,9 +73,9 @@ spec:
         image: {{ template "seedClient.initContainer.image" . }}
         imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
         {{- if .Values.manager.enable }}
-        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.grpcPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
-        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.grpcPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
         resources:
 {{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
