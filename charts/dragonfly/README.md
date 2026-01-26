@@ -133,11 +133,12 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
 | client.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | client.config.console | bool | `true` | console prints log. |
+| client.config.download.backToSourceBandwidthLimit | string | `"50GB"` | backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s. |
+| client.config.download.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s. |
 | client.config.download.collectedPieceTimeout | string | `"360s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | client.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"360s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
-| client.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.download.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s. |
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
@@ -155,7 +156,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | client.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
-| client.config.proxy.prefetchRateLimit | string | `"5GiB"` | prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
+| client.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
 | client.config.proxy.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | client.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>), the task ID is derived from the blob digest rather than the full URL. This enables deduplication across registries - the same blob from different registries shares one task ID, eliminating redundant downloads and storage. |
@@ -175,8 +176,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | client.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
 | client.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
+| client.config.upload.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s. |
 | client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
-| client.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.upload.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s. |
 | client.dfinit.config.console | bool | `true` | console prints log. |
@@ -458,11 +459,12 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
 | seedClient.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | seedClient.config.console | bool | `true` | console prints log. |
+| seedClient.config.download.backToSourceBandwidthLimit | string | `"50GB"` | backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s. |
+| seedClient.config.download.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s. |
 | seedClient.config.download.collectedPieceTimeout | string | `"5s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
-| seedClient.config.download.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s. |
 | seedClient.config.download.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the download request in the download grpc server, default is 5000 req/s. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
@@ -480,7 +482,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
-| seedClient.config.proxy.prefetchRateLimit | string | `"5GiB"` | prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
+| seedClient.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
 | seedClient.config.proxy.readBufferSize | int | `4194304` | readBufferSize is the buffer size for reading piece from disk, default is 4MiB. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | seedClient.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>), the task ID is derived from the blob digest rather than the full URL. This enables deduplication across registries - the same blob from different registries shares one task ID, eliminating redundant downloads and storage. |
@@ -501,7 +503,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.writeBufferSize | int | `4194304` | writeBufferSize is the buffer size for writing piece to disk, default is 4MiB. |
 | seedClient.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
-| seedClient.config.upload.rateLimit | string | `"50GiB"` | rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s. |
+| seedClient.config.upload.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `5000` | request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s. |
 | seedClient.enable | bool | `true` | Enable seed client. |
