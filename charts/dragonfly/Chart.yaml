@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.6.9
+version: 1.6.10
 appVersion: 2.4.1
 keywords:
   - dragonfly
@@ -27,7 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add ClusterIP for services.
+    - Check manager grpcPort is accessible before starting scheduler and seed-client.
+    - Set appProtocol for Service ports when Kubernetes version is >= 1.20.
 
   artifacthub.io/links: |
     - name: Chart Source
