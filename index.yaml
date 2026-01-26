@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add rateLimit configuration for the service component.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.4.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.4.1
+        - name: client
+          image: dragonflyoss/client:v1.2.9
+        - name: seed-client
+          image: dragonflyoss/client:v1.2.9
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.2.9
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.4.1
+    created: "2026-01-26T14:17:23.153612793Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 5b9108b05b87ccb9fc9a831c3011c1e285d341d5e0dc793d3541b4c2c4eb58a1
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.6.11/dragonfly-1.6.11.tgz
+    version: 1.6.11
+  - annotations:
+      artifacthub.io/changes: |
         - Check manager grpcPort is accessible before starting scheduler and seed-client.
         - Set appProtocol for Service ports when Kubernetes version is >= 1.20.
       artifacthub.io/images: |
@@ -18838,4 +18896,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-01-26T10:00:34.150986256Z"
+generated: "2026-01-26T14:17:23.154772926Z"
