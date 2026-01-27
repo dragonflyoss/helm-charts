@@ -850,13 +850,13 @@ seedClient:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- requestRateLimit is the rate limit of the download request in dfdaemon, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 4000 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
         requestRateLimit: 4000
-        # -- requestbufferSize is the buffer size of the download request channel in dfdaemon, default is 1000.
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 1000.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
@@ -890,8 +890,18 @@ seedClient:
       # cert: /etc/ssl/certs/server.crt
       # # GRPC server key file path for mTLS.
       # key: /etc/ssl/private/server.pem
-        # -- request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s.
-        requestRateLimit: 5000
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 4000
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
     # # Client configuration for remote peer's upload server.
     # client:
     #   # CA certificate file path for mTLS.
@@ -1426,13 +1436,13 @@ client:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- requestRateLimit is the rate limit of the download request in dfdaemon, default is 50 req/s.
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 50 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
         requestRateLimit: 50
-        # -- requestbufferSize is the buffer size of the download request channel in dfdaemon, default is 500.
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 500.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
@@ -1460,8 +1470,18 @@ client:
       # cert: /etc/ssl/certs/server.crt
       # # GRPC server key file path for mTLS.
       # key: /etc/ssl/private/server.pem
-        # -- request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 5000 req/s.
-        requestRateLimit: 5000
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 200 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 200
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
     # # Client configuration for remote peer's upload server.
     # client:
     #   # CA certificate file path for mTLS.
