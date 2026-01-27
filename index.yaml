@@ -3,6 +3,64 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add rateLimit configuration for the upload server in dfdaemon.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.4.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.4.1
+        - name: client
+          image: dragonflyoss/client:v1.2.9
+        - name: seed-client
+          image: dragonflyoss/client:v1.2.9
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.2.9
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.4.1
+    created: "2026-01-27T03:56:29.3631047Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.1.1
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 30e8e470c637f63e27152be6e0ccd420ff83376a6b455315225e492a019a37c1
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.6.12/dragonfly-1.6.12.tgz
+    version: 1.6.12
+  - annotations:
+      artifacthub.io/changes: |
         - Add rateLimit configuration for the service component.
       artifacthub.io/images: |
         - name: manager
@@ -18896,4 +18954,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-01-26T14:17:23.154772926Z"
+generated: "2026-01-27T03:56:29.363864638Z"
