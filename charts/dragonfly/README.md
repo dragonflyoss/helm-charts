@@ -374,14 +374,13 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.master.service.ports.redis | int | `6379` | Redis master service port. |
 | scheduler.config.console | bool | `true` | Console shows log on console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Dynamic config refresh interval. |
-| scheduler.config.dynconfig.type | string | `"manager"` | Type is deprecated and is no longer used. Please remove it from your configuration. |
 | scheduler.config.host.idc | string | `""` | IDC is the idc of scheduler instance. |
 | scheduler.config.host.location | string | `""` | Location is the location of scheduler instance. |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Manager keepalive interval. |
 | scheduler.config.manager.schedulerClusterID | int | `1` | Associated scheduler cluster id. |
 | scheduler.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | scheduler.config.pprofPort | int | `-1` | Listen port for pprof, default is -1 (meaning disabled). |
-| scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration to use different scheduling algorithms, default configuration supports "default", "ml" and "nt". "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm. It also supports user plugin extension, the algorithm value is "plugin", and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to the dragonfly working directory plugins. |
+| scheduler.config.scheduler.algorithm | string | `"default"` | Algorithm configuration for different scheduling algorithms. Currently only supports "default". Also supports custom plugin extensions by setting the algorithm value to "plugin" and placing the compiled `d7y-scheduler-plugin-evaluator.so` file in the dragonfly working directory under the plugins folder. |
 | scheduler.config.scheduler.backToSourceCount | int | `200` | backToSourceCount is single task allows the peer to back-to-source count. |
 | scheduler.config.scheduler.gc.hostGCInterval | string | `"5m"` | hostGCInterval is the interval of host gc. |
 | scheduler.config.scheduler.gc.hostTTL | string | `"1h"` | hostTTL is time to live of host. If host announces message to scheduler, then HostTTl will be reset. |
