@@ -1,23 +1,23 @@
 # Dragonfly Helm Chart Values.
 
 # -- Override dragonfly name.
-nameOverride: ""
+nameOverride: ''
 # -- Override dragonfly fullname.
-fullnameOverride: ""
+fullnameOverride: ''
 # -- Install application cluster domain.
-clusterDomain: "cluster.local"
+clusterDomain: 'cluster.local'
 # -- Override dragonfly namespace.
-namespaceOverride: ""
+namespaceOverride: ''
 
 global:
   # -- Global Docker image registry.
-  imageRegistry: ""
+  imageRegistry: ''
   # -- Global Docker registry secret names as an array.
   imagePullSecrets: []
   # -- Global node labels for pod assignment.
   nodeSelector: {}
   # -- Global storageClass for Persistent Volume(s).
-  storageClass: ""
+  storageClass: ''
 
 manager:
   # -- Enable manager.
@@ -25,12 +25,12 @@ manager:
   # -- Manager name.
   name: manager
   # -- Override manager name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override manager fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -39,9 +39,9 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.4.1
+    tag: v2.4.2
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -54,13 +54,13 @@ manager:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -94,22 +94,22 @@ manager:
     # -- Service type.
     type: ClusterIP
     # -- Service clusterIP.
-    clusterIP: ""
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   initContainer:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -118,14 +118,14 @@ manager:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   ingress:
     # -- Enable ingress.
     enable: false
     # -- Ingress class name. Requirement: kubernetes >=1.18.
-    className: ""
+    className: ''
     # -- Ingress annotations.
     annotations: {}
     # -- Ingress host path.
@@ -140,45 +140,45 @@ manager:
     server:
       grpc:
         # -- GRPC advertise ip.
-        advertiseIP: ""
-      # # GRPC server tls configuration.
-      # tls:
-      #   # CA certificate file path for mTLS.
-      #   caCert: /etc/ssl/certs/ca.crt
-      #   # Certificate file path for mTLS.
-      #   cert: /etc/ssl/certs/server.crt
-      #   # Key file path for mTLS.
-      #   key: /etc/ssl/private/server.pem
-      #
+        advertiseIP: ''
+        # # GRPC server tls configuration.
+        # tls:
+        #   # CA certificate file path for mTLS.
+        #   caCert: /etc/ssl/certs/ca.crt
+        #   # Certificate file path for mTLS.
+        #   cert: /etc/ssl/certs/server.crt
+        #   # Key file path for mTLS.
+        #   key: /etc/ssl/private/server.pem
+        #
         # -- RequestRateLimit is the maximum number of requests per second for the gRPC server. It limits both the rate of
         # unary gRPC requests and the rate of new stream gRPC connection, default is 4000 req/s.
         requestRateLimit: 4000
       rest:
         tls:
           # -- Certificate file path.
-          cert: ""
+          cert: ''
           # -- Key file path.
-          key: ""
+          key: ''
       # -- Work directory.
-      workHome: ""
+      workHome: ''
       # -- logLevel specifies the logging level for the manager.
       # Default: "info"
       # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
-      logLevel: "info"
+      logLevel: 'info'
       # -- Log directory.
-      logDir: ""
+      logDir: ''
       # -- Dynconfig cache directory.
-      cacheDir: ""
+      cacheDir: ''
       # -- Plugin directory.
-      pluginDir: ""
+      pluginDir: ''
     auth:
       jwt:
         # -- Realm name to display to the user, default value is Dragonfly.
-        realm: "Dragonfly"
+        realm: 'Dragonfly'
         # -- Key is secret key used for signing, default value is
         # encoded base64 of dragonfly.
         # Please change the key in production.
-        key: "ZHJhZ29uZmx5Cg=="
+        key: 'ZHJhZ29uZmx5Cg=='
         # -- Timeout is duration that a jwt token is valid,
         # default duration is two days.
         timeout: 48h
@@ -234,7 +234,7 @@ manager:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: "grpc"
+      protocol: 'grpc'
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -251,7 +251,7 @@ manager:
       # -- Service type.
       type: ClusterIP
       # -- Service clusterIP.
-      clusterIP: ""
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -321,12 +321,12 @@ scheduler:
   # -- Scheduler name.
   name: scheduler
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -335,9 +335,9 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.4.1
+    tag: v2.4.2
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -350,24 +350,24 @@ scheduler:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   service:
     # -- Service type.
     type: ClusterIP
     # -- Service clusterIP.
-    clusterIP: ""
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -398,11 +398,11 @@ scheduler:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -411,46 +411,46 @@ scheduler:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   config:
     server:
       # -- Advertise ip.
-      advertiseIP: ""
+      advertiseIP: ''
       # -- Advertise port.
       advertisePort: 8002
       # -- Listen ip.
-      listenIP: "0.0.0.0"
+      listenIP: '0.0.0.0'
       # -- Server port.
       port: 8002
-    # # GRPC server tls configuration.
-    # tls:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # Certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/server.crt
-    #   # Key file path for mTLS.
-    #   key: /etc/ssl/private/server.pem
-    #
+      # # GRPC server tls configuration.
+      # tls:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # Certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/server.crt
+      #   # Key file path for mTLS.
+      #   key: /etc/ssl/private/server.pem
+      #
       # -- RequestRateLimit is the maximum number of requests per second for the gRPC server.
       # It limits both the rate of unary gRPC requests and the rate of new stream gRPC
       # connection, default is 4000 req/s.
       requestRateLimit: 4000
       # -- Work directory.
-      workHome: ""
+      workHome: ''
       # -- logLevel specifies the logging level for the scheduler.
       # Default: "info"
       # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
-      logLevel: "info"
+      logLevel: 'info'
       # -- Log directory.
-      logDir: ""
+      logDir: ''
       # -- Dynconfig cache directory.
-      cacheDir: ""
+      cacheDir: ''
       # -- Plugin directory.
-      pluginDir: ""
+      pluginDir: ''
       # -- Storage directory.
-      dataDir: ""
+      dataDir: ''
     scheduler:
       # -- Algorithm configuration for different scheduling algorithms.
       # Currently only supports "default".
@@ -487,9 +487,9 @@ scheduler:
       refreshInterval: 1m
     host:
       # -- IDC is the idc of scheduler instance.
-      idc: ""
+      idc: ''
       # -- Location is the location of scheduler instance.
-      location: ""
+      location: ''
     manager:
       # -- Associated scheduler cluster id.
       schedulerClusterID: 1
@@ -505,10 +505,6 @@ scheduler:
     #   # Key file path for mTLS.
     #   key: /etc/ssl/private/client.pem
     seedPeer:
-      # -- scheduler enable seed peer as P2P peer,
-      # if the value is false, P2P network will not be back-to-source through
-      # seed peer but by dfdaemon and preheat feature does not work.
-      enable: true
     # # GRPC client tls configuration.
     # tls:
     #   # CA certificate file path for mTLS.
@@ -525,7 +521,7 @@ scheduler:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -544,7 +540,7 @@ scheduler:
       # -- Service type.
       type: ClusterIP
       # -- Service clusterIP.
-      clusterIP: ""
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -710,12 +706,12 @@ seedClient:
   # -- Seed client name.
   name: seed-client
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -724,9 +720,9 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.2.9
+    tag: v1.2.11
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -739,13 +735,13 @@ seedClient:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -764,11 +760,11 @@ seedClient:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -777,7 +773,7 @@ seedClient:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
@@ -812,13 +808,13 @@ seedClient:
     # -- Service type.
     type: ClusterIP
     # -- Service clusterIP.
-    clusterIP: ""
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   config:
     # -- console prints log.
     console: true
@@ -833,9 +829,9 @@ seedClient:
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
       # idc is the idc of the host.
-      idc: ""
+      idc: ''
       # location is the location of the host.
-      location: ""
+      location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
     # # ip is the advertise ip of the host.
@@ -879,15 +875,15 @@ seedClient:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-      # # ip is the listen ip of the grpc server.
-      # ip: ""
-      # # CA certificate file path for mTLS.
-      # caCert: /etc/ssl/certs/ca.crt
-      # # GRPC server certificate file path for mTLS.
-      # cert: /etc/ssl/certs/server.crt
-      # # GRPC server key file path for mTLS.
-      # key: /etc/ssl/private/server.pem
-      #
+        # # ip is the listen ip of the grpc server.
+        # ip: ""
+        # # CA certificate file path for mTLS.
+        # caCert: /etc/ssl/certs/ca.crt
+        # # GRPC server certificate file path for mTLS.
+        # cert: /etc/ssl/certs/server.crt
+        # # GRPC server key file path for mTLS.
+        # key: /etc/ssl/private/server.pem
+        #
         # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
@@ -900,20 +896,20 @@ seedClient:
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
         requestbufferSize: 1000
-    # # Client configuration for remote peer's upload server.
-    # client:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # GRPC client certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # GRPC client key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
-    #
+      # # Client configuration for remote peer's upload server.
+      # client:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # GRPC client certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/client.crt
+      #   # GRPC client key file path for mTLS.
+      #   key: /etc/ssl/private/client.pem
+      #
       # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
     manager:
       # -- addr is manager address.
-      addr: ""
+      addr: ''
     # # CA certificate file path for mTLS.
     # caCert: /etc/ssl/certs/ca.crt
     # # GRPC client certificate file path for mTLS.
@@ -1071,7 +1067,7 @@ seedClient:
       # the request will use P2P technology to distribute the content. If the value is "false",
       # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
-        - regex: "blobs/sha256.*"
+        - regex: 'blobs/sha256.*'
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1126,7 +1122,7 @@ seedClient:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -1171,7 +1167,7 @@ seedClient:
       # -- Service type.
       type: ClusterIP
       # -- Service clusterIP.
-      clusterIP: ""
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -1225,21 +1221,21 @@ client:
   # -- Client name.
   name: client
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   image:
     # -- Image registry.
     registry: docker.io
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.2.9
+    tag: v1.2.11
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -1256,13 +1252,13 @@ client:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "4"
-      memory: "8Gi"
+      cpu: '4'
+      memory: '8Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -1285,11 +1281,11 @@ client:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -1298,7 +1294,7 @@ client:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
@@ -1326,9 +1322,9 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.2.9
+      tag: v1.2.11
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
     config:
@@ -1358,48 +1354,48 @@ client:
           registries:
             - hostNamespace: docker.io
               serverAddr: https://index.docker.io
-              capabilities: ["pull", "resolve"]
+              capabilities: ['pull', 'resolve']
               skipVerify: true
               # ca: []
             - hostNamespace: ghcr.io
               serverAddr: https://ghcr.io
-              capabilities: ["pull", "resolve"]
+              capabilities: ['pull', 'resolve']
               skipVerify: true
               # ca: []
         # crio:
-          # # -- configPath is the path of cri-o registries's configuration file.
-          # configPath: /etc/containers/registries.conf
-          # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          # registries:
-            # - prefix: docker.io
-              # location: docker.io
-            # - prefix: ghcr.io
-              # location: ghcr.io
+        # # -- configPath is the path of cri-o registries's configuration file.
+        # configPath: /etc/containers/registries.conf
+        # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+        # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+        # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+        # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+        # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+        # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+        # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+        # registries:
+        # - prefix: docker.io
+        # location: docker.io
+        # - prefix: ghcr.io
+        # location: ghcr.io
         # podman:
-          # # -- configPath is the path of cri-o registries's configuration file.
-          # configPath: /etc/containers/registries.conf
-          # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          # registries:
-            # - prefix: docker.io
-              # location: docker.io
-            # - prefix: ghcr.io
-              # location: ghcr.io
+        # # -- configPath is the path of cri-o registries's configuration file.
+        # configPath: /etc/containers/registries.conf
+        # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+        # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+        # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+        # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+        # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+        # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+        # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+        # registries:
+        # - prefix: docker.io
+        # location: docker.io
+        # - prefix: ghcr.io
+        # location: ghcr.io
         # docker:
-          # # -- configPath is the path of docker configuration file where the proxy addr will be set.
-          # # Refer to https://docs.docker.com/engine/daemon/proxy/
-          # configPath: /etc/docker/daemon.json
+        # # -- configPath is the path of docker configuration file where the proxy addr will be set.
+        # # Refer to https://docs.docker.com/engine/daemon/proxy/
+        # configPath: /etc/docker/daemon.json
   config:
     # -- console prints log.
     console: true
@@ -1414,9 +1410,9 @@ client:
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
       # idc is the idc of the host.
-      idc: ""
+      idc: ''
       # location is the location of the host.
-      location: ""
+      location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
     # # ip is the advertise ip of the host.
@@ -1460,15 +1456,15 @@ client:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-      # # ip is the listen ip of the grpc server.
-      # ip: ""
-      # # CA certificate file path for mTLS.
-      # caCert: /etc/ssl/certs/ca.crt
-      # # GRPC server certificate file path for mTLS.
-      # cert: /etc/ssl/certs/server.crt
-      # # GRPC server key file path for mTLS.
-      # key: /etc/ssl/private/server.pem
-      #
+        # # ip is the listen ip of the grpc server.
+        # ip: ""
+        # # CA certificate file path for mTLS.
+        # caCert: /etc/ssl/certs/ca.crt
+        # # GRPC server certificate file path for mTLS.
+        # cert: /etc/ssl/certs/server.crt
+        # # GRPC server key file path for mTLS.
+        # key: /etc/ssl/private/server.pem
+        #
         # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 200 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
@@ -1481,22 +1477,22 @@ client:
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
         requestbufferSize: 1000
-    # # Client configuration for remote peer's upload server.
-    # client:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # GRPC client certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # GRPC client key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
-    #
+      # # Client configuration for remote peer's upload server.
+      # client:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # GRPC client certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/client.crt
+      #   # GRPC client key file path for mTLS.
+      #   key: /etc/ssl/private/client.pem
+      #
       # -- disableShared indicates whether disable to share data with other peers.
       disableShared: false
       # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
     manager:
       # -- addr is manager address.
-      addr: ""
+      addr: ''
     # # CA certificate file path for mTLS.
     # caCert: /etc/ssl/certs/ca.crt
     # # GRPC client certificate file path for mTLS.
@@ -1651,7 +1647,7 @@ client:
       # the request will use P2P technology to distribute the content. If the value is "false",
       # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
-        - regex: "blobs/sha256.*"
+        - regex: 'blobs/sha256.*'
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1706,7 +1702,7 @@ client:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -1751,7 +1747,7 @@ client:
       # -- Service type.
       type: ClusterIP
       # -- Service clusterIP.
-      clusterIP: ""
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -1813,12 +1809,12 @@ mysql:
   image:
     repository: bitnamilegacy/mysql
   # -- Cluster domain.
-  clusterDomain: "cluster.local"
+  clusterDomain: 'cluster.local'
   # -- Running GORM migration.
   migrate: true
   auth:
     # -- Mysql hostname.
-    host: ""
+    host: ''
     # -- Mysql root password.
     rootPassword: dragonfly-root
     # -- Mysql username.
@@ -1852,7 +1848,7 @@ redis:
   image:
     repository: bitnamilegacy/redis
   # -- Cluster domain.
-  clusterDomain: "cluster.local"
+  clusterDomain: 'cluster.local'
   auth:
     # -- Enable password authentication.
     enabled: true
@@ -1867,17 +1863,17 @@ redis:
 externalRedis:
   # -- External redis server addresses.
   addrs:
-    - "redis.example.com:6379"
+    - 'redis.example.com:6379'
   # -- External redis sentinel master name.
-  masterName: ""
+  masterName: ''
   # -- External redis username.
-  username: ""
+  username: ''
   # -- External redis password.
-  password: ""
+  password: ''
   # -- External redis sentinel addresses.
-  sentinelUsername: ""
+  sentinelUsername: ''
   # -- External redis sentinel password.
-  sentinelPassword: ""
+  sentinelPassword: ''
   # -- External redis db.
   db: 0
   # -- External redis broker db.
