@@ -28,7 +28,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Bump Dragonfly to v2.4.3.
-    - Bump client to v1.2.13.
+    - Bump client to v1.2.15.
 
   artifacthub.io/links: |
     - name: Chart Source
@@ -43,11 +43,11 @@ annotations:
     - name: scheduler
       image: dragonflyoss/scheduler:v2.4.3
     - name: client
-      image: dragonflyoss/client:v1.2.13
+      image: dragonflyoss/client:v1.2.15
     - name: seed-client
-      image: dragonflyoss/client:v1.2.13
+      image: dragonflyoss/client:v1.2.15
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.2.13
+      image: dragonflyoss/dfinit:v1.2.15
 
 dependencies:
   - name: mysql
