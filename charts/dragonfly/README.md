@@ -361,7 +361,7 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.auth.username | string | `"dragonfly"` | Mysql username. |
 | mysql.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | mysql.enable | bool | `true` | Enable mysql with docker container. |
-| mysql.image.repository | string | `"bitnamilegacy/mysql"` |  |
+| mysql.image.repository | string | `"bitnami/mysql"` |  |
 | mysql.migrate | bool | `true` | Running GORM migration. |
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
@@ -569,5 +569,5 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | mysql | 10.1.1 |
+| https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
 | https://charts.bitnami.com/bitnami | redis | 19.5.5 |
