@@ -198,3 +198,18 @@ Usage:
     {{- $value }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Create a default fully qualified injector name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "dragonfly.injector.fullname" -}}
+{{ template "dragonfly.fullname" . }}-injector
+{{- end -}}
+
+{{/*
+Return the proper image name (for the injector image)
+*/}}
+{{- define "injector.image" -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
+{{- end -}}

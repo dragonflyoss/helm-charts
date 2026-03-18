@@ -1,0 +1,43 @@
+{{- if .Values.injector.enable }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector
+  {{- if .Values.injector.certManager.enable }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ include "common.names.namespace" . }}/{{ template "dragonfly.fullname" . }}-injector-serving-cert
+  {{- end }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    {{- if not .Values.injector.certManager.enable }}
+    caBundle: {{ required "When injector is enabled and injector.certManager.enable is false, you must set .Values.injector.webhook.caBundle to a valid CA bundle" .Values.injector.webhook.caBundle | quote }}
+    {{- end }}
+    service:
+      name: {{ template "dragonfly.fullname" . }}-injector-webhook
+      namespace: {{ include "common.names.namespace" . }}
+      path: /mutate--v1-pod
+  failurePolicy: {{ .Values.injector.webhook.failurePolicy }}
+  name: mpod-v1.d7y.io
+  {{- with .Values.injector.webhook.namespaceSelector }}
+  namespaceSelector:
+{{ toYaml . | indent 4 }}
+  {{- end }}
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+  sideEffects: None
+{{- end }}
