@@ -569,5 +569,5 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | mysql | 10.1.1 |
+| https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
 | https://charts.bitnami.com/bitnami | redis | 19.5.5 |
