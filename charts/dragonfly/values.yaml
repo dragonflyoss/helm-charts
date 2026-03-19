@@ -1807,7 +1807,7 @@ mysql:
   # -- Enable mysql with docker container.
   enable: true
   image:
-    repository: bitnami/mysql
+    repository: bitnamilegacy/mysql
   # -- Cluster domain.
   clusterDomain: 'cluster.local'
   # -- Running GORM migration.
