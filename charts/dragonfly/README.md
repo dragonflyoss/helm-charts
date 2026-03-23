@@ -263,6 +263,43 @@ helm delete dragonfly --namespace dragonfly-system
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
+| injector.affinity | object | `{}` | Pod affinity. |
+| injector.certManager | object | `{"enable":true,"issuer":{"create":true,"kind":"Issuer","name":""}}` | certManager configuration for webhook TLS certificates. cert-manager must be installed in the cluster. |
+| injector.certManager.enable | bool | `true` | Enable cert-manager integration for automatic TLS certificate management. |
+| injector.certManager.issuer | object | `{"create":true,"kind":"Issuer","name":""}` | Issuer configuration. |
+| injector.certManager.issuer.create | bool | `true` | Create a self-signed issuer. If set to false, you must provide an existing issuer. |
+| injector.certManager.issuer.kind | string | `"Issuer"` | Issuer kind (Issuer or ClusterIssuer). |
+| injector.certManager.issuer.name | string | `""` | Issuer name. Leave empty to use auto-created self-signed issuer. |
+| injector.deploymentAnnotations | object | `{}` | Deployment annotations. |
+| injector.enable | bool | `false` | Enable injector. |
+| injector.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| injector.extraVolumeMounts | list | `[]` | Extra volumeMounts for injector. |
+| injector.extraVolumes | list | `[]` | Extra volumes for injector. |
+| injector.image.digest | string | `""` | Image digest. |
+| injector.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| injector.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
+| injector.image.registry | string | `"docker.io"` | Image registry. |
+| injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
+| injector.image.tag | string | `"latest"` | Image tag. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.2.15"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage.digest | string | `""` | Image digest. |
+| injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
+| injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
+| injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
+| injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
+| injector.initContainerImage.tag | string | `"v1.2.15"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.metrics.enable | bool | `false` | Enable injector metrics. |
+| injector.metrics.service.port | int | `8443` | Metrics service port. |
+| injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
+| injector.podAnnotations | object | `{}` | Pod annotations. |
+| injector.podLabels | object | `{}` | Pod labels. |
+| injector.priorityClassName | string | `""` | Pod priorityClassName. |
+| injector.replicas | int | `2` | Number of Pods to launch. |
+| injector.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| injector.terminationGracePeriodSeconds | int | `10` | Pod terminationGracePeriodSeconds. |
+| injector.tolerations | list | `[]` | List of node taints to tolerate. |
+| injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
+| injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | namespaceSelector determines which namespaces the webhook applies to. |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |

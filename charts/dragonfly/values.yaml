@@ -1880,3 +1880,99 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+
+injector:
+  # -- Enable injector.
+  enable: false
+  # -- Number of Pods to launch.
+  replicas: 2
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/injector
+    # -- Image tag.
+    tag: latest
+    # -- Image digest.
+    digest: ''
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
+  # -- Pod resource requests and limits.
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+    limits:
+      cpu: '2'
+      memory: '4Gi'
+  # -- Pod priorityClassName.
+  priorityClassName: ''
+  # -- Node labels for pod assignment.
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds.
+  terminationGracePeriodSeconds: 10
+  # -- List of node taints to tolerate.
+  tolerations: []
+  # -- Pod affinity.
+  affinity: {}
+  # -- Pod annotations.
+  podAnnotations: {}
+  # -- Pod labels.
+  podLabels: {}
+  # -- Deployment annotations.
+  deploymentAnnotations: {}
+  # -- Extra environment variables for pod.
+  extraEnvVars: []
+  # -- Extra volumes for injector.
+  extraVolumes: []
+  # -- Extra volumeMounts for injector.
+  extraVolumeMounts: []
+  # -- initContainerImage is the image configuration for the init container
+  # that will be injected into target pods.
+  initContainerImage:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/client
+    # -- Image tag. Should align with the version of Dragonfly client and seed client.
+    tag: v1.2.15
+    # -- Image digest.
+    digest: ''
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    pullSecrets: []
+  webhook:
+    # -- failurePolicy defines how unrecognized errors and timeout errors
+    # from the admission webhook are handled. Allowed values are "Ignore" or "Fail".
+    failurePolicy: Ignore
+    # -- namespaceSelector determines which namespaces the webhook applies to.
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - cert-manager
+  # -- certManager configuration for webhook TLS certificates.
+  # cert-manager must be installed in the cluster.
+  certManager:
+    # -- Enable cert-manager integration for automatic TLS certificate management.
+    enable: true
+    # -- Issuer configuration.
+    issuer:
+      # -- Issuer name. Leave empty to use auto-created self-signed issuer.
+      name: ''
+      # -- Issuer kind (Issuer or ClusterIssuer).
+      kind: Issuer
+      # -- Create a self-signed issuer. If set to false, you must provide an existing issuer.
+      create: true
+  metrics:
+    # -- Enable injector metrics.
+    enable: false
+    service:
+      # -- Metrics service port.
+      port: 8443
