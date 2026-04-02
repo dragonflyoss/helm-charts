@@ -1,0 +1,159 @@
+{{- if .Values.injector.enable }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-leader-election
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-manager
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-metrics-auth
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-metrics-reader
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-leader-election
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ template "dragonfly.fullname" . }}-injector-leader-election
+subjects:
+- kind: ServiceAccount
+  name: {{ template "dragonfly.fullname" . }}-injector
+  namespace: {{ include "common.names.namespace" . | quote }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-manager
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "dragonfly.fullname" . }}-injector-manager
+subjects:
+- kind: ServiceAccount
+  name: {{ template "dragonfly.fullname" . }}-injector
+  namespace: {{ include "common.names.namespace" . | quote }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-metrics-auth
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ template "dragonfly.fullname" . }}-injector-metrics-auth
+subjects:
+- kind: ServiceAccount
+  name: {{ template "dragonfly.fullname" . }}-injector
+  namespace: {{ include "common.names.namespace" . | quote }}
+{{- end }}
