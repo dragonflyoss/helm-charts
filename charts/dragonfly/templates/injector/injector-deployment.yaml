@@ -1,0 +1,137 @@
+{{- if .Values.injector.enable }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+    control-plane: controller-manager
+  {{- if .Values.injector.deploymentAnnotations }}
+  annotations:
+{{ toYaml .Values.injector.deploymentAnnotations | indent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.injector.replicas }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" . }}
+      component: injector
+      app.kubernetes.io/name: dragonfly-injector
+      control-plane: controller-manager
+  template:
+    metadata:
+      labels:
+        app: {{ template "dragonfly.fullname" . }}
+        component: injector
+        app.kubernetes.io/name: dragonfly-injector
+        control-plane: controller-manager
+        {{- if .Values.injector.podLabels }}
+{{ toYaml .Values.injector.podLabels | indent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/injector/injector-configmap.yaml") . | sha256sum }}
+        kubectl.kubernetes.io/default-container: manager
+      {{- if .Values.injector.podAnnotations }}
+{{ toYaml .Values.injector.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.injector.nodeSelector | default .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.injector.tolerations }}
+      tolerations:
+{{ toYaml .Values.injector.tolerations | indent 8 }}
+      {{- end }}
+      {{- if .Values.injector.affinity }}
+      affinity:
+{{ toYaml .Values.injector.affinity | indent 8 }}
+      {{- end }}
+      {{- if quote .Values.injector.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.injector.terminationGracePeriodSeconds }}
+      {{- end }}
+      {{- if .Values.injector.priorityClassName }}
+      priorityClassName: {{ .Values.injector.priorityClassName }}
+      {{- end }}
+      {{- with .Values.injector.image.pullSecrets | default .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ template "dragonfly.fullname" . }}-injector
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: manager
+        image: {{ include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) }}
+        imagePullPolicy: {{ .Values.injector.image.pullPolicy | quote }}
+        command:
+        - /manager
+        args:
+        - --metrics-bind-address=:8443
+        - --leader-elect
+        - --health-probe-bind-address=:8081
+        - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
+        ports:
+        - containerPort: 9443
+          name: webhook-server
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+        resources:
+{{ toYaml .Values.injector.resources | indent 10 }}
+        {{- if .Values.injector.extraEnvVars }}
+        env:
+        {{- include "common.tplvalues.render" (dict "value" .Values.injector.extraEnvVars "context" $) | nindent 8 }}
+        {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        {{- if or .Values.injector.certManager.enable .Values.injector.webhookCertSecretName }}
+        - mountPath: /tmp/k8s-webhook-server/serving-certs
+          name: webhook-certs
+          readOnly: true
+        {{- end }}
+        - mountPath: /etc/dragonfly
+          name: injector-config
+          readOnly: true
+        {{- if .Values.injector.extraVolumeMounts }}
+        {{- toYaml .Values.injector.extraVolumeMounts | nindent 8 }}
+        {{- end }}
+      volumes:
+      {{- if or .Values.injector.certManager.enable .Values.injector.webhookCertSecretName }}
+      - name: webhook-certs
+        secret:
+          secretName: {{ default (printf "%s-injector-webhook-cert" (include "dragonfly.fullname" .)) .Values.injector.webhookCertSecretSecretName }}
+      {{- end }}
+      - name: injector-config
+        configMap:
+          name: {{ template "dragonfly.fullname" . }}-injector-config
+      {{- if .Values.injector.extraVolumes }}
+      {{- toYaml .Values.injector.extraVolumes | nindent 6 }}
+      {{- end }}
+{{- end }}

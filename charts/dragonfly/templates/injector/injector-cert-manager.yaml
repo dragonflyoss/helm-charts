@@ -1,0 +1,46 @@
+{{- if and .Values.injector.enable .Values.injector.certManager.enable }}
+{{- $issuerKind := default "Issuer" .Values.injector.certManager.issuer.kind }}
+{{- if .Values.injector.certManager.issuer.create }}
+apiVersion: cert-manager.io/v1
+kind: {{ $issuerKind }}
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-selfsigned-issuer
+  {{- if ne $issuerKind "ClusterIssuer" }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  {{- end }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+spec:
+  selfSigned: {}
+{{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector-serving-cert
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+spec:
+  dnsNames:
+  - {{ template "dragonfly.fullname" . }}-injector-webhook.{{ include "common.names.namespace" . }}.svc
+  - {{ template "dragonfly.fullname" . }}-injector-webhook.{{ include "common.names.namespace" . }}.svc.{{ .Values.clusterDomain }}
+  issuerRef:
+    {{- if .Values.injector.certManager.issuer.name }}
+    name: {{ .Values.injector.certManager.issuer.name }}
+    {{- else if .Values.injector.certManager.issuer.create }}
+    name: {{ template "dragonfly.fullname" . }}-injector-selfsigned-issuer
+    {{- else }}
+    {{- fail "injector.certManager.issuer.name must be set when injector.certManager.issuer.create is false" }}
+    {{- end }}
+    kind: {{ $issuerKind }}
+  secretName: {{ template "dragonfly.fullname" . }}-injector-webhook-cert
+{{- end }}
