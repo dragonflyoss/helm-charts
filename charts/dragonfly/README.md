@@ -192,7 +192,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.2.15"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.2.19"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
@@ -208,7 +208,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.2.15"` | Image tag. |
+| client.image.tag | string | `"v1.2.19"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -281,13 +281,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"latest"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.2.15"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.2.19"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.2.15"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.2.19"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -560,7 +560,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.2.15"` | Image tag. |
+| seedClient.image.tag | string | `"v1.2.19"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
