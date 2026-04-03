@@ -73,9 +73,9 @@ spec:
         image: {{ template "scheduler.initContainer.image" . }}
         imagePullPolicy: {{ .Values.scheduler.initContainer.image.pullPolicy }}
         {{- if .Values.manager.enable }}
-        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.grpcPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
-        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.grpcPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
         resources:
 {{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
@@ -89,6 +89,9 @@ spec:
         {{- if .Values.scheduler.maxProcs }}
         - name: GOMAXPROCS
           value: {{ .Values.scheduler.maxProcs }}
+        {{- end }}
+        {{- if .Values.scheduler.extraEnvVars }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.scheduler.extraEnvVars "context" $) | nindent 8 }}
         {{- end }}
         ports:
         - containerPort: {{ .Values.scheduler.containerPort }}
@@ -105,14 +108,18 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 15
-          periodSeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
       volumes:
       - name: config
         configMap:

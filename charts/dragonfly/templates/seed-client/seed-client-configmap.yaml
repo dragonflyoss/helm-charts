@@ -47,6 +47,8 @@ data:
 {{ toYaml .Values.seedClient.config.stats | indent 6 }}
     tracing:
 {{ toYaml .Values.seedClient.config.tracing | indent 6 }}
-{{- end }}
     backend:
 {{ toYaml .Values.seedClient.config.backend | indent 6 }}
+    network:
+{{ toYaml .Values.seedClient.config.network | indent 6 }}
+{{- end }}

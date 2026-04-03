@@ -1,23 +1,23 @@
 # Dragonfly Helm Chart Values.
 
 # -- Override dragonfly name.
-nameOverride: ""
+nameOverride: ''
 # -- Override dragonfly fullname.
-fullnameOverride: ""
+fullnameOverride: ''
 # -- Install application cluster domain.
-clusterDomain: "cluster.local"
+clusterDomain: 'cluster.local'
 # -- Override dragonfly namespace.
-namespaceOverride: ""
+namespaceOverride: ''
 
 global:
   # -- Global Docker image registry.
-  imageRegistry: ""
+  imageRegistry: ''
   # -- Global Docker registry secret names as an array.
   imagePullSecrets: []
   # -- Global node labels for pod assignment.
   nodeSelector: {}
   # -- Global storageClass for Persistent Volume(s).
-  storageClass: ""
+  storageClass: ''
 
 manager:
   # -- Enable manager.
@@ -25,12 +25,12 @@ manager:
   # -- Manager name.
   name: manager
   # -- Override manager name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override manager fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -39,9 +39,9 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.3.4
+    tag: v2.4.3
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -54,13 +54,13 @@ manager:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -76,6 +76,8 @@ manager:
     type: RollingUpdate
   # -- Deployment annotations.
   deploymentAnnotations: {}
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
@@ -91,21 +93,23 @@ manager:
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   initContainer:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -114,14 +118,14 @@ manager:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   ingress:
     # -- Enable ingress.
     enable: false
     # -- Ingress class name. Requirement: kubernetes >=1.18.
-    className: ""
+    className: ''
     # -- Ingress annotations.
     annotations: {}
     # -- Ingress host path.
@@ -136,41 +140,45 @@ manager:
     server:
       grpc:
         # -- GRPC advertise ip.
-        advertiseIP: ""
-      # # GRPC server tls configuration.
-      # tls:
-      #   # CA certificate file path for mTLS.
-      #   caCert: /etc/ssl/certs/ca.crt
-      #   # Certificate file path for mTLS.
-      #   cert: /etc/ssl/certs/server.crt
-      #   # Key file path for mTLS.
-      #   key: /etc/ssl/private/server.pem
+        advertiseIP: ''
+        # # GRPC server tls configuration.
+        # tls:
+        #   # CA certificate file path for mTLS.
+        #   caCert: /etc/ssl/certs/ca.crt
+        #   # Certificate file path for mTLS.
+        #   cert: /etc/ssl/certs/server.crt
+        #   # Key file path for mTLS.
+        #   key: /etc/ssl/private/server.pem
+        #
+        # -- RequestRateLimit is the maximum number of requests per second for the gRPC server. It limits both the rate of
+        # unary gRPC requests and the rate of new stream gRPC connection, default is 4000 req/s.
+        requestRateLimit: 4000
       rest:
         tls:
           # -- Certificate file path.
-          cert: ""
+          cert: ''
           # -- Key file path.
-          key: ""
+          key: ''
       # -- Work directory.
-      workHome: ""
+      workHome: ''
       # -- logLevel specifies the logging level for the manager.
       # Default: "info"
       # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
-      logLevel: "info"
+      logLevel: 'info'
       # -- Log directory.
-      logDir: ""
+      logDir: ''
       # -- Dynconfig cache directory.
-      cacheDir: ""
+      cacheDir: ''
       # -- Plugin directory.
-      pluginDir: ""
+      pluginDir: ''
     auth:
       jwt:
         # -- Realm name to display to the user, default value is Dragonfly.
-        realm: "Dragonfly"
+        realm: 'Dragonfly'
         # -- Key is secret key used for signing, default value is
         # encoded base64 of dragonfly.
         # Please change the key in production.
-        key: "ZHJhZ29uZmx5Cg=="
+        key: 'ZHJhZ29uZmx5Cg=='
         # -- Timeout is duration that a jwt token is valid,
         # default duration is two days.
         timeout: 48h
@@ -226,19 +234,24 @@ manager:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: "grpc"
+      protocol: 'grpc'
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
       # path: ""
       # # headers is the grpc's headers to send with tracing log.
       # headers: {}
+    network:
+      # -- enableIPv6 specifies whether to enable IPv6 networking.
+      enableIPv6: false
   metrics:
     # -- Enable manager metrics.
     enable: true
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -308,12 +321,12 @@ scheduler:
   # -- Scheduler name.
   name: scheduler
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -322,9 +335,9 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.3.4
+    tag: v2.4.3
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -337,22 +350,24 @@ scheduler:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -369,6 +384,8 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort.
   containerPort: 8002
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for scheduler.
   extraVolumes:
     - name: logs
@@ -381,11 +398,11 @@ scheduler:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -394,49 +411,52 @@ scheduler:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
   config:
     server:
       # -- Advertise ip.
-      advertiseIP: ""
+      advertiseIP: ''
       # -- Advertise port.
       advertisePort: 8002
       # -- Listen ip.
-      listenIP: "0.0.0.0"
+      listenIP: '0.0.0.0'
       # -- Server port.
       port: 8002
-    # # GRPC server tls configuration.
-    # tls:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # Certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/server.crt
-    #   # Key file path for mTLS.
-    #   key: /etc/ssl/private/server.pem
-    #
+      # # GRPC server tls configuration.
+      # tls:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # Certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/server.crt
+      #   # Key file path for mTLS.
+      #   key: /etc/ssl/private/server.pem
+      #
+      # -- RequestRateLimit is the maximum number of requests per second for the gRPC server.
+      # It limits both the rate of unary gRPC requests and the rate of new stream gRPC
+      # connection, default is 4000 req/s.
+      requestRateLimit: 4000
       # -- Work directory.
-      workHome: ""
+      workHome: ''
       # -- logLevel specifies the logging level for the scheduler.
       # Default: "info"
       # Supported values: "debug", "info", "warn", "error", "panic", "fatal"
-      logLevel: "info"
+      logLevel: 'info'
       # -- Log directory.
-      logDir: ""
+      logDir: ''
       # -- Dynconfig cache directory.
-      cacheDir: ""
+      cacheDir: ''
       # -- Plugin directory.
-      pluginDir: ""
+      pluginDir: ''
       # -- Storage directory.
-      dataDir: ""
+      dataDir: ''
     scheduler:
-      # -- Algorithm configuration to use different scheduling algorithms,
-      # default configuration supports "default", "ml" and "nt".
-      # "default" is the rule-based scheduling algorithm, "ml" is the machine learning scheduling algorithm.
-      # It also supports user plugin extension, the algorithm value is "plugin",
-      # and the compiled `d7y-scheduler-plugin-evaluator.so` file is added to
-      # the dragonfly working directory plugins.
+      # -- Algorithm configuration for different scheduling algorithms.
+      # Currently only supports "default".
+      # Also supports custom plugin extensions by setting the algorithm value to "plugin"
+      # and placing the compiled `d7y-scheduler-plugin-evaluator.so` file in the
+      # dragonfly working directory under the plugins folder.
       algorithm: default
       # -- backToSourceCount is single task allows the peer to back-to-source count.
       backToSourceCount: 200
@@ -463,16 +483,13 @@ scheduler:
         # then HostTTl will be reset.
         hostTTL: 1h
     dynconfig:
-      # -- Type is deprecated and is no longer used.
-      # Please remove it from your configuration.
-      type: manager
       # -- Dynamic config refresh interval.
       refreshInterval: 1m
     host:
       # -- IDC is the idc of scheduler instance.
-      idc: ""
+      idc: ''
       # -- Location is the location of scheduler instance.
-      location: ""
+      location: ''
     manager:
       # -- Associated scheduler cluster id.
       schedulerClusterID: 1
@@ -488,10 +505,6 @@ scheduler:
     #   # Key file path for mTLS.
     #   key: /etc/ssl/private/client.pem
     seedPeer:
-      # -- scheduler enable seed peer as P2P peer,
-      # if the value is false, P2P network will not be back-to-source through
-      # seed peer but by dfdaemon and preheat feature does not work.
-      enable: true
     # # GRPC client tls configuration.
     # tls:
     #   # CA certificate file path for mTLS.
@@ -508,13 +521,16 @@ scheduler:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
       # path: ""
       # # headers is the grpc's headers to send with tracing log.
       # headers: {}
+    network:
+      # -- enableIPv6 specifies whether to enable IPv6 networking.
+      enableIPv6: false
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -523,6 +539,8 @@ scheduler:
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -688,12 +706,12 @@ seedClient:
   # -- Seed client name.
   name: seed-client
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
   image:
@@ -702,9 +720,9 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.1.6
+    tag: v1.2.19
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -717,13 +735,13 @@ seedClient:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "8"
-      memory: "16Gi"
+      cpu: '8'
+      memory: '16Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -742,11 +760,11 @@ seedClient:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -755,9 +773,11 @@ seedClient:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -787,12 +807,14 @@ seedClient:
   service:
     # -- Service type.
     type: ClusterIP
+    # -- Service clusterIP.
+    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
     # -- Service nodePort.
-    nodePort: ""
+    nodePort: ''
   config:
     # -- console prints log.
     console: true
@@ -807,9 +829,9 @@ seedClient:
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
       # idc is the idc of the host.
-      idc: ""
+      idc: ''
       # location is the location of the host.
-      location: ""
+      location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
     # # ip is the advertise ip of the host.
@@ -821,16 +843,28 @@ seedClient:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 4000 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
         requestRateLimit: 4000
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
       # peers fetch pieces using it.
       # QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks.
       # TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments.
       protocol: tcp
-      # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
-      rateLimit: 50GiB
+      # -- bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s.
+      bandwidthLimit: 50GB
+      # -- backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s.
+      backToSourceBandwidthLimit: 50GB
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 40s
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
@@ -841,30 +875,41 @@ seedClient:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-      # # ip is the listen ip of the grpc server.
-      # ip: ""
-      # # CA certificate file path for mTLS.
-      # caCert: /etc/ssl/certs/ca.crt
-      # # GRPC server certificate file path for mTLS.
-      # cert: /etc/ssl/certs/server.crt
-      # # GRPC server key file path for mTLS.
-      # key: /etc/ssl/private/server.pem
-        # -- request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s.
+        # # ip is the listen ip of the grpc server.
+        # ip: ""
+        # # CA certificate file path for mTLS.
+        # caCert: /etc/ssl/certs/ca.crt
+        # # GRPC server certificate file path for mTLS.
+        # cert: /etc/ssl/certs/server.crt
+        # # GRPC server key file path for mTLS.
+        # key: /etc/ssl/private/server.pem
+        #
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
         requestRateLimit: 4000
-    # # Client configuration for remote peer's upload server.
-    # client:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # GRPC client certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # GRPC client key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
+      # # Client configuration for remote peer's upload server.
+      # client:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # GRPC client certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/client.crt
+      #   # GRPC client key file path for mTLS.
+      #   key: /etc/ssl/private/client.pem
       #
-      # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s.
-      rateLimit: 50GiB
+      # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
+      bandwidthLimit: 50GB
     manager:
       # -- addr is manager address.
-      addr: ""
+      addr: ''
     # # CA certificate file path for mTLS.
     # caCert: /etc/ssl/certs/ca.crt
     # # GRPC client certificate file path for mTLS.
@@ -882,9 +927,9 @@ seedClient:
       # dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.
       #
       # Behavior upon timeout:
-      #   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
+      # - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
       #     from the source.
-      #   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
+      # - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
       #
       # **Important Considerations Regarding Timeout Triggers**:
       # This timeout isn't solely for the scheduler's direct response. It can also be triggered
@@ -898,9 +943,9 @@ seedClient:
       # To prevent premature timeouts, `schedule_timeout` should be configured to a value
       # greater than the maximum expected time for the *entire scheduling interaction*.
       # This includes:
-      #   1. The scheduler's own processing and response time.
-      #   2. The time taken by the client to download any initial pieces and download all pieces finished,
-      #      as this communication is part of the scheduling phase.
+      # 1. The scheduler's own processing and response time.
+      # 2. The time taken by the client to download any initial pieces and download all pieces finished,
+      #    as this communication is part of the scheduling phase.
       #
       # Setting this value too low can lead to `TokioStreamElapsed` errors even if the
       # network and scheduler are functioning correctly but the combined interaction time
@@ -939,13 +984,22 @@ seedClient:
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
-      writePieceTimeout: 30s
+      writePieceTimeout: 360s
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
       policy:
-        # -- taskTTL is the ttl of the task.
+        # -- Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon
+        # will delete the task cache.
         taskTTL: 720h
+        # -- Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None
+        # in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the
+        # persistent task's ttl.
+        persistentTaskTTL: 24h
+        # -- Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache
+        # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
+        # persistent_cache_task_ttl as the persistent cache task's ttl.
+        persistentCacheTaskTTL: 24h
         # # distThreshold optionally defines a specific disk capacity to be used as the base for
         # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
         # #
@@ -1013,7 +1067,7 @@ seedClient:
       # the request will use P2P technology to distribute the content. If the value is "false",
       # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
-        - regex: "blobs/sha256.*"
+        - regex: 'blobs/sha256.*'
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1041,9 +1095,9 @@ seedClient:
       # If the value is "true", the range request will prefetch the entire file.
       # If the value is "false", the range request will fetch the range content.
       prefetch: true
-      # -- prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s.
+      # -- prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s.
       # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
-      prefetchRateLimit: 5GiB
+      prefetchBandwidthLimit: 10GB
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
     health:
@@ -1068,7 +1122,7 @@ seedClient:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -1087,12 +1141,33 @@ seedClient:
       # -- cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After
       # this duration, the cached redirect target will expire and be re-resolved.
       cacheTemporaryRedirectTTL: 600s
+      # -- Put concurrent chunk count specifies the maximum number of chunks to upload in parallel
+      # to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization,
+      # but increase memory usage and backend load. Lower values reduce resource consumption but may
+      # underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits.
+      putConcurrentChunkCount: 16
+      # -- Put chunk size specifies the size of each chunk when uploading data to backend storage.
+      # Larger chunks reduce the total number of requests and API overhead, but require more memory
+      # for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide
+      # faster initial response, but increase request overhead and API costs. Choose based on your
+      # network conditions, available memory, and backend pricing/performance characteristics.
+      putChunkSize: 8MiB
+      # -- Put timeout specifies the maximum duration allowed for uploading a single object
+      # (potentially consisting of multiple chunks) to the backend storage. If the upload
+      # does not complete within this time window, the operation will be canceled and
+      # treated as a failure.
+      putTimeout: 900s
+    network:
+      # -- enableIPv6 specifies whether to enable IPv6 networking.
+      enableIPv6: false
   metrics:
     # -- Enable seed client metrics.
     enable: true
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -1146,21 +1221,21 @@ client:
   # -- Client name.
   name: client
   # -- Override scheduler name.
-  nameOverride: ""
+  nameOverride: ''
   # -- Override scheduler fullname.
-  fullnameOverride: ""
+  fullnameOverride: ''
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
-  maxProcs: ""
+  maxProcs: ''
   image:
     # -- Image registry.
     registry: docker.io
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.1.6
+    tag: v1.2.19
     # -- Image digest.
-    digest: ""
+    digest: ''
     # -- Image pull policy.
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
@@ -1177,13 +1252,13 @@ client:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: "0"
-      memory: "0"
+      cpu: '0'
+      memory: '0'
     limits:
-      cpu: "4"
-      memory: "8Gi"
+      cpu: '4'
+      memory: '8Gi'
   # -- Pod priorityClassName.
-  priorityClassName: ""
+  priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
   # -- Pod terminationGracePeriodSeconds.
@@ -1206,11 +1281,11 @@ client:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: "0"
-        memory: "0"
+        cpu: '0'
+        memory: '0'
       limits:
-        cpu: "2"
-        memory: "4Gi"
+        cpu: '2'
+        memory: '4Gi'
     image:
       # -- Image registry.
       registry: docker.io
@@ -1219,9 +1294,11 @@ client:
       # -- Image tag.
       tag: latest
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
+  # --  Extra environment variables for pod.
+  extraEnvVars: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: storage
@@ -1245,9 +1322,9 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.1.6
+      tag: v1.2.19
       # -- Image digest.
-      digest: ""
+      digest: ''
       # -- Image pull policy.
       pullPolicy: IfNotPresent
     config:
@@ -1277,48 +1354,48 @@ client:
           registries:
             - hostNamespace: docker.io
               serverAddr: https://index.docker.io
-              capabilities: ["pull", "resolve"]
+              capabilities: ['pull', 'resolve']
               skipVerify: true
               # ca: []
             - hostNamespace: ghcr.io
               serverAddr: https://ghcr.io
-              capabilities: ["pull", "resolve"]
+              capabilities: ['pull', 'resolve']
               skipVerify: true
               # ca: []
         # crio:
-          # # -- configPath is the path of cri-o registries's configuration file.
-          # configPath: /etc/containers/registries.conf
-          # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          # registries:
-            # - prefix: docker.io
-              # location: docker.io
-            # - prefix: ghcr.io
-              # location: ghcr.io
+        # # -- configPath is the path of cri-o registries's configuration file.
+        # configPath: /etc/containers/registries.conf
+        # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+        # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+        # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+        # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+        # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+        # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+        # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+        # registries:
+        # - prefix: docker.io
+        # location: docker.io
+        # - prefix: ghcr.io
+        # location: ghcr.io
         # podman:
-          # # -- configPath is the path of cri-o registries's configuration file.
-          # configPath: /etc/containers/registries.conf
-          # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
-          # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
-          # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
-          # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
-          # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
-          # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
-          # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
-          # registries:
-            # - prefix: docker.io
-              # location: docker.io
-            # - prefix: ghcr.io
-              # location: ghcr.io
+        # # -- configPath is the path of cri-o registries's configuration file.
+        # configPath: /etc/containers/registries.conf
+        # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
+        # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
+        # unqualifiedSearchRegistries: ["registry.fedoraproject.org", "registry.access.redhat.com", "docker.io"]
+        # # -- registries is the list of cri-o registries, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#namespaced-registry-settings.
+        # # prefix is the prefix of the user-specified image name, refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#choosing-a-registry-toml-table.
+        # # location accepts the same format as the prefix field, and specifies the physical location of the prefix-rooted namespace,
+        # # refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#remapping-and-mirroring-registries.
+        # registries:
+        # - prefix: docker.io
+        # location: docker.io
+        # - prefix: ghcr.io
+        # location: ghcr.io
         # docker:
-          # # -- configPath is the path of docker configuration file where the proxy addr will be set.
-          # # Refer to https://docs.docker.com/engine/daemon/proxy/
-          # configPath: /etc/docker/daemon.json
+        # # -- configPath is the path of docker configuration file where the proxy addr will be set.
+        # # Refer to https://docs.docker.com/engine/daemon/proxy/
+        # configPath: /etc/docker/daemon.json
   config:
     # -- console prints log.
     console: true
@@ -1333,9 +1410,9 @@ client:
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
       # idc is the idc of the host.
-      idc: ""
+      idc: ''
       # location is the location of the host.
-      location: ""
+      location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
     # # ip is the advertise ip of the host.
@@ -1353,10 +1430,22 @@ client:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- request_rate_limit is the rate limit of the download request in the download grpc server, default is 4000 req/s.
-        requestRateLimit: 4000
-      # -- rateLimit is the default rate limit of the download speed in GiB/Mib/Kib per second, default is 50GiB/s.
-      rateLimit: 50GiB
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 50 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 50
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 500.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 500
+      # -- bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s.
+      bandwidthLimit: 50GB
+      # -- backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s.
+      backToSourceBandwidthLimit: 50GB
       # --  pieceTimeout is the timeout for downloading a piece from source.
       pieceTimeout: 360s
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
@@ -1367,32 +1456,43 @@ client:
       server:
         # -- port is the port to the grpc server.
         port: 4000
-      # # ip is the listen ip of the grpc server.
-      # ip: ""
-      # # CA certificate file path for mTLS.
-      # caCert: /etc/ssl/certs/ca.crt
-      # # GRPC server certificate file path for mTLS.
-      # cert: /etc/ssl/certs/server.crt
-      # # GRPC server key file path for mTLS.
-      # key: /etc/ssl/private/server.pem
-        # -- request_rate_limit is the rate limit of the upload request in the upload grpc server, default is 4000 req/s.
-        requestRateLimit: 4000
-    # # Client configuration for remote peer's upload server.
-    # client:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # GRPC client certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # GRPC client key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
+        # # ip is the listen ip of the grpc server.
+        # ip: ""
+        # # CA certificate file path for mTLS.
+        # caCert: /etc/ssl/certs/ca.crt
+        # # GRPC server certificate file path for mTLS.
+        # cert: /etc/ssl/certs/server.crt
+        # # GRPC server key file path for mTLS.
+        # key: /etc/ssl/private/server.pem
+        #
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 200 req/s.
+        #
+        # This limit applies to the total number of gRPC requests per second, including:
+        # - Multiple requests within a single connection.
+        # - Single requests across different connections.
+        requestRateLimit: 200
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        #
+        # This controls the capacity of the bounded channel used to queue
+        # incoming gRPC requests before they are processed. If the buffer is full,
+        # new requests will return a `RESOURCE_EXHAUSTED` error.
+        requestbufferSize: 1000
+      # # Client configuration for remote peer's upload server.
+      # client:
+      #   # CA certificate file path for mTLS.
+      #   caCert: /etc/ssl/certs/ca.crt
+      #   # GRPC client certificate file path for mTLS.
+      #   cert: /etc/ssl/certs/client.crt
+      #   # GRPC client key file path for mTLS.
+      #   key: /etc/ssl/private/client.pem
       #
       # -- disableShared indicates whether disable to share data with other peers.
       disableShared: false
-      # -- rateLimit is the default rate limit of the upload speed in GiB/Mib/Kib per second, default is 50GiB/s.
-      rateLimit: 50GiB
+      # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
+      bandwidthLimit: 50GB
     manager:
       # -- addr is manager address.
-      addr: ""
+      addr: ''
     # # CA certificate file path for mTLS.
     # caCert: /etc/ssl/certs/ca.crt
     # # GRPC client certificate file path for mTLS.
@@ -1410,9 +1510,9 @@ client:
       # dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.
       #
       # Behavior upon timeout:
-      #   - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
+      # - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly
       #     from the source.
-      #   - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
+      # - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.
       #
       # **Important Considerations Regarding Timeout Triggers**:
       # This timeout isn't solely for the scheduler's direct response. It can also be triggered
@@ -1426,9 +1526,9 @@ client:
       # To prevent premature timeouts, `schedule_timeout` should be configured to a value
       # greater than the maximum expected time for the *entire scheduling interaction*.
       # This includes:
-      #   1. The scheduler's own processing and response time.
-      #   2. The time taken by the client to download any initial pieces and download all pieces finished,
-      #      as this communication is part of the scheduling phase.
+      # 1. The scheduler's own processing and response time.
+      # 2. The time taken by the client to download any initial pieces and download all pieces finished,
+      #    as this communication is part of the scheduling phase.
       #
       # Setting this value too low can lead to `TokioStreamElapsed` errors even if the
       # network and scheduler are functioning correctly but the combined interaction time
@@ -1469,8 +1569,17 @@ client:
       # -- interval is the interval to do gc.
       interval: 900s
       policy:
-        # -- taskTTL is the ttl of the task.
+        # -- Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon
+        # will delete the task cache.
         taskTTL: 720h
+        # -- Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None
+        # in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the
+        # persistent task's ttl.
+        persistentTaskTTL: 24h
+        # -- Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache
+        # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
+        # persistent_cache_task_ttl as the persistent cache task's ttl.
+        persistentCacheTaskTTL: 24h
         # # distThreshold optionally defines a specific disk capacity to be used as the base for
         # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
         # #
@@ -1538,7 +1647,7 @@ client:
       # the request will use P2P technology to distribute the content. If the value is "false",
       # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
       rules:
-        - regex: "blobs/sha256.*"
+        - regex: 'blobs/sha256.*'
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1566,9 +1675,9 @@ client:
       # If the value is "true", the range request will prefetch the entire file.
       # If the value is "false", the range request will fetch the range content.
       prefetch: true
-      # -- prefetchRateLimit is the rate limit of prefetching in GiB/Mib/Kib per second, default is 5GiB/s.
+      # -- prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s.
       # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
-      prefetchRateLimit: 5GiB
+      prefetchBandwidthLimit: 10GB
       # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
       readBufferSize: 4194304
     health:
@@ -1593,7 +1702,7 @@ client:
       # -- Protocol specifies the communication protocol for the tracing server.
       # Supported values: "http", "https", "grpc" (default: None).
       # This determines how tracing logs are transmitted to the server.
-      protocol: ""
+      protocol: ''
       # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
       # endpoint: ""
       # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
@@ -1612,12 +1721,33 @@ client:
       # -- cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After
       # this duration, the cached redirect target will expire and be re-resolved.
       cacheTemporaryRedirectTTL: 600s
+      # -- Put concurrent chunk count specifies the maximum number of chunks to upload in parallel
+      # to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization,
+      # but increase memory usage and backend load. Lower values reduce resource consumption but may
+      # underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits.
+      putConcurrentChunkCount: 16
+      # -- Put chunk size specifies the size of each chunk when uploading data to backend storage.
+      # Larger chunks reduce the total number of requests and API overhead, but require more memory
+      # for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide
+      # faster initial response, but increase request overhead and API costs. Choose based on your
+      # network conditions, available memory, and backend pricing/performance characteristics.
+      putChunkSize: 8MiB
+      # -- Put timeout specifies the maximum duration allowed for uploading a single object
+      # (potentially consisting of multiple chunks) to the backend storage. If the upload
+      # does not complete within this time window, the operation will be canceled and
+      # treated as a failure.
+      putTimeout: 900s
+    network:
+      # -- enableIPv6 specifies whether to enable IPv6 networking.
+      enableIPv6: false
   metrics:
     # -- Enable client metrics.
     enable: true
     service:
       # -- Service type.
       type: ClusterIP
+      # -- Service clusterIP.
+      clusterIP: ''
       # -- Service labels.
       labels: {}
       # -- Service annotations.
@@ -1679,12 +1809,12 @@ mysql:
   image:
     repository: bitnamilegacy/mysql
   # -- Cluster domain.
-  clusterDomain: "cluster.local"
+  clusterDomain: 'cluster.local'
   # -- Running GORM migration.
   migrate: true
   auth:
     # -- Mysql hostname.
-    host: ""
+    host: ''
     # -- Mysql root password.
     rootPassword: dragonfly-root
     # -- Mysql username.
@@ -1718,7 +1848,7 @@ redis:
   image:
     repository: bitnamilegacy/redis
   # -- Cluster domain.
-  clusterDomain: "cluster.local"
+  clusterDomain: 'cluster.local'
   auth:
     # -- Enable password authentication.
     enabled: true
@@ -1733,20 +1863,116 @@ redis:
 externalRedis:
   # -- External redis server addresses.
   addrs:
-    - "redis.example.com:6379"
+    - 'redis.example.com:6379'
   # -- External redis sentinel master name.
-  masterName: ""
+  masterName: ''
   # -- External redis username.
-  username: ""
+  username: ''
   # -- External redis password.
-  password: ""
+  password: ''
   # -- External redis sentinel addresses.
-  sentinelUsername: ""
+  sentinelUsername: ''
   # -- External redis sentinel password.
-  sentinelPassword: ""
+  sentinelPassword: ''
   # -- External redis db.
   db: 0
   # -- External redis broker db.
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+
+injector:
+  # -- Enable injector.
+  enable: false
+  # -- Number of Pods to launch.
+  replicas: 2
+  image:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/injector
+    # -- Image tag.
+    tag: latest
+    # -- Image digest.
+    digest: ''
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    # @default -- `[]` (defaults to global.imagePullSecrets).
+    pullSecrets: []
+  # -- Pod resource requests and limits.
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+    limits:
+      cpu: '2'
+      memory: '4Gi'
+  # -- Pod priorityClassName.
+  priorityClassName: ''
+  # -- Node labels for pod assignment.
+  nodeSelector: {}
+  # -- Pod terminationGracePeriodSeconds.
+  terminationGracePeriodSeconds: 10
+  # -- List of node taints to tolerate.
+  tolerations: []
+  # -- Pod affinity.
+  affinity: {}
+  # -- Pod annotations.
+  podAnnotations: {}
+  # -- Pod labels.
+  podLabels: {}
+  # -- Deployment annotations.
+  deploymentAnnotations: {}
+  # -- Extra environment variables for pod.
+  extraEnvVars: []
+  # -- Extra volumes for injector.
+  extraVolumes: []
+  # -- Extra volumeMounts for injector.
+  extraVolumeMounts: []
+  # -- initContainerImage is the image configuration for the init container
+  # that will be injected into target pods.
+  initContainerImage:
+    # -- Image registry.
+    registry: docker.io
+    # -- Image repository.
+    repository: dragonflyoss/client
+    # -- Image tag. Should align with the version of Dragonfly client and seed client.
+    tag: v1.2.19
+    # -- Image digest.
+    digest: ''
+    # -- Image pull policy.
+    pullPolicy: IfNotPresent
+    # -- Image pull secrets.
+    pullSecrets: []
+  webhook:
+    # -- failurePolicy defines how unrecognized errors and timeout errors
+    # from the admission webhook are handled. Allowed values are "Ignore" or "Fail".
+    failurePolicy: Ignore
+    # -- namespaceSelector determines which namespaces the webhook applies to.
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - cert-manager
+  # -- certManager configuration for webhook TLS certificates.
+  # cert-manager must be installed in the cluster.
+  certManager:
+    # -- Enable cert-manager integration for automatic TLS certificate management.
+    enable: true
+    # -- Issuer configuration.
+    issuer:
+      # -- Issuer name. Leave empty to use auto-created self-signed issuer.
+      name: ''
+      # -- Issuer kind (Issuer or ClusterIssuer).
+      kind: Issuer
+      # -- Create a self-signed issuer. If set to false, you must provide an existing issuer.
+      create: true
+  metrics:
+    # -- Enable injector metrics.
+    enable: false
+    service:
+      # -- Metrics service port.
+      port: 8443

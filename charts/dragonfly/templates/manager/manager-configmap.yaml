@@ -24,6 +24,15 @@ data:
         port:
           start: {{ .Values.manager.grpcPort }}
           end: {{ .Values.manager.grpcPort }}
+        requestRateLimit: {{ .Values.manager.config.server.grpc.requestRateLimit }}
+      {{- with .Values.manager.config.server.grpc.tls }}
+      {{- if and . .caCert .cert .key }}
+      tls:
+        caCert: {{ .caCert }}
+        cert: {{ .cert }}
+        key: {{ .key }}
+      {{- end }}
+      {{- end }}
       workHome: {{ .Values.manager.config.server.workHome }}
       logLevel: {{ .Values.manager.config.server.logLevel }}
       logDir: {{ .Values.manager.config.server.logDir }}

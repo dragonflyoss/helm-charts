@@ -154,6 +154,17 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.client.maxProcs }}
         {{- end }}
+        {{- if .Values.client.extraEnvVars }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.client.extraEnvVars "context" $) | nindent 8 }}
+        {{- end }}
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: {{ .Values.client.config.upload.server.port }}
           protocol: TCP
@@ -169,16 +180,18 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}"]
-          initialDelaySeconds: 5
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+          initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 5
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"

@@ -73,9 +73,9 @@ spec:
         image: {{ template "seedClient.initContainer.image" . }}
         imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
         {{- if .Values.manager.enable }}
-        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.restPort }}; do echo waiting for manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.manager.grpcPort }}; do echo waiting for manager; sleep 2; done;']
         {{- else }}
-        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.restPort }}; do echo waiting for external manager; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ .Values.externalManager.host }} && nc -vz {{ .Values.externalManager.host }} {{ .Values.externalManager.grpcPort }}; do echo waiting for external manager; sleep 2; done;']
         {{- end }}
         resources:
 {{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
@@ -95,6 +95,17 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.seedClient.maxProcs }}
         {{- end }}
+        {{- if .Values.seedClient.extraEnvVars }}
+        {{- include "common.tplvalues.render" (dict "value" .Values.seedClient.extraEnvVars "context" $) | nindent 8 }}
+        {{- end }}
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - containerPort: {{ .Values.seedClient.config.upload.server.port }}
           protocol: TCP
@@ -112,16 +123,18 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}"]
-          initialDelaySeconds: 5
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+          initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 10
+          failureThreshold: 5
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
