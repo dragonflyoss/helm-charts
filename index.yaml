@@ -3,6 +3,67 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump webhook version to v0.1.0.
+        - Bump client version to v1.3.0.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.4.3
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.4.3
+        - name: client
+          image: dragonflyoss/client:v1.3.0
+        - name: seed-client
+          image: dragonflyoss/client:v1.3.0
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.3.0
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.4.3
+    created: "2026-04-07T07:09:11.593860302Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: a953aff98c2b1f179eefc1796302d7be9240ab8f3f4c95f36416a367a425968d
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.6.20/dragonfly-1.6.20.tgz
+    version: 1.6.20
+  - annotations:
+      artifacthub.io/changes: |
         - Bump mysql to v11.1.20.
       artifacthub.io/images: |
         - name: manager
@@ -19363,4 +19424,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-04-03T09:50:55.407938528Z"
+generated: "2026-04-07T07:09:11.59520524Z"
