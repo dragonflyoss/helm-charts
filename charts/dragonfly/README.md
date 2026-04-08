@@ -586,6 +586,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
 | seedClient.persistence.annotations | object | `{}` | Persistence annotations. |
 | seedClient.persistence.enable | bool | `true` | Enable persistence for seed peer. |
+| seedClient.persistence.hostPath | object | `{}` | Use hostPath volume for persistence storage. When hostPath is configured, other persistence settings (such as size, accessModes, storageClass, etc.) will be ignored. |
 | seedClient.persistence.size | string | `"100Gi"` | Persistence persistence size. |
 | seedClient.podAnnotations | object | `{}` | Pod annotations. |
 | seedClient.podLabels | object | `{}` | Pod labels. |
@@ -598,7 +599,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.service.nodePort | string | `""` | Service nodePort. |
 | seedClient.service.type | string | `"ClusterIP"` | Service type. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
-| seedClient.storageHostPath | object | `{}` | Use hostPath volume for seed client storage. This is useful for dedicated physical machine deployments in cloud environments. When storageHostPath is configured, persistence settings are ignored. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
