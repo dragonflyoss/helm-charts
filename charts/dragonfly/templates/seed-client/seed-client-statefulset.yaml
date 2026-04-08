@@ -150,11 +150,16 @@ spec:
       {{- if not (.Values.seedClient.persistence.enable) }}
       - name: storage
         emptyDir: {}
+      {{- else if .Values.seedClient.persistence.hostPath }}
+      - name: storage
+        hostPath:
+          path: {{ .Values.seedClient.persistence.hostPath.path }}
+          type: {{ .Values.seedClient.persistence.hostPath.type | default "DirectoryOrCreate" }}
       {{- end }}
       {{- if .Values.seedClient.extraVolumes }}
       {{- toYaml .Values.seedClient.extraVolumes | nindent 6 }}
       {{- end }}
-  {{- if .Values.seedClient.persistence.enable }}
+  {{- if and .Values.seedClient.persistence.enable (not .Values.seedClient.persistence.hostPath) }}
   volumeClaimTemplates:
     - metadata:
         name: storage

@@ -789,6 +789,10 @@ seedClient:
   persistence:
     # -- Enable persistence for seed peer.
     enable: true
+    # -- Use hostPath volume for persistence storage.
+    # When hostPath is configured, other persistence settings
+    # (such as size, accessModes, storageClass, etc.) will be ignored.
+    hostPath: {}
     # -- Persistence annotations.
     annotations: {}
     # -- Persistence access modes.

@@ -586,6 +586,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.persistence.accessModes | list | `["ReadWriteOnce"]` | Persistence access modes. |
 | seedClient.persistence.annotations | object | `{}` | Persistence annotations. |
 | seedClient.persistence.enable | bool | `true` | Enable persistence for seed peer. |
+| seedClient.persistence.hostPath | object | `{}` | Use hostPath volume for persistence storage. When hostPath is configured, other persistence settings (such as size, accessModes, storageClass, etc.) will be ignored. |
 | seedClient.persistence.size | string | `"100Gi"` | Persistence persistence size. |
 | seedClient.podAnnotations | object | `{}` | Pod annotations. |
 | seedClient.podLabels | object | `{}` | Pod labels. |
