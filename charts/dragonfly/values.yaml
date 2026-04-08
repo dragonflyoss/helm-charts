@@ -786,6 +786,13 @@ seedClient:
   extraVolumeMounts:
     - name: logs
       mountPath: /var/log/dragonfly/dfdaemon/
+  # -- Use hostPath volume for seed client storage.
+  # This is useful for dedicated physical machine deployments in cloud environments.
+  # When storageHostPath is configured, persistence settings are ignored.
+  storageHostPath: {}
+  # storageHostPath:
+  #   path: /data/dragonfly
+  #   type: DirectoryOrCreate
   persistence:
     # -- Enable persistence for seed peer.
     enable: true

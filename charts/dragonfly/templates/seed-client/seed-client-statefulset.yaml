@@ -147,9 +147,16 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.seedClient.fullname" . }}
-      {{- if not (.Values.seedClient.persistence.enable) }}
+      {{- if not .Values.seedClient.persistence.enable }}
+      {{- if .Values.seedClient.storageHostPath }}
+      - name: storage
+        hostPath:
+          path: {{ .Values.seedClient.storageHostPath.path }}
+          type: {{ .Values.seedClient.storageHostPath.type | default "DirectoryOrCreate" }}
+      {{- else }}
       - name: storage
         emptyDir: {}
+      {{- end }}
       {{- end }}
       {{- if .Values.seedClient.extraVolumes }}
       {{- toYaml .Values.seedClient.extraVolumes | nindent 6 }}
