@@ -250,6 +250,15 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.password | string | `"dragonfly"` | External mysql password. |
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
+| externalPostgres.database | string | `"manager"` | External postgres database name. |
+| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. When enabled, the manager mounts a config-rendered emptyDir instead of the ConfigMap directly. Use manager.extraInitContainers to copy and patch the config (e.g. inject credentials from a Kubernetes Secret):  manager:   extraInitContainers:     - name: inject-pg-credentials       image: busybox:latest       command:         - sh         - -c         - |           sed "s/__PG_USER__/$PG_USER/g; s/__PG_PASSWORD__/$PG_PASSWORD/g" \             /etc/dragonfly-template/manager.yaml > /etc/dragonfly/manager.yaml       env:         - name: PG_USER           valueFrom:             secretKeyRef:               name: my-postgres-secret               key: username         - name: PG_PASSWORD           valueFrom:             secretKeyRef:               name: my-postgres-secret               key: password       volumeMounts:         - name: config           mountPath: /etc/dragonfly-template         - name: config-rendered           mountPath: /etc/dragonfly |
+| externalPostgres.host | string | `nil` | External postgres hostname. |
+| externalPostgres.migrate | bool | `true` | Running GORM migration. |
+| externalPostgres.password | string | `"dragonfly"` | External postgres password. Set to a placeholder (e.g. __PG_PASSWORD__) when using an extraInitContainers to inject credentials from a Secret. |
+| externalPostgres.port | int | `5432` | External postgres port. |
+| externalPostgres.sslMode | string | `"disable"` | External postgres SSL mode. |
+| externalPostgres.timezone | string | `"UTC"` | External postgres timezone. |
+| externalPostgres.username | string | `"dragonfly"` | External postgres username. Set to a placeholder (e.g. __PG_USER__) when using an extraInitContainers to inject credentials from a Secret. |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
@@ -337,6 +346,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
 | manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| manager.extraInitContainers | list | `[]` | Extra init containers for manager. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
