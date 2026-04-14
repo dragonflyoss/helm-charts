@@ -27,6 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
+    - Add hostPort support for client DaemonSet when hostNetwork is disabled.
+    - Add client.waitForScheduler toggle.
     - Add optional privileged sysctl init container for client and seed client.
     - Declare client and seed client affinity values.
     - Fix client daemonset annotations misspelled as statefulset annotations.
