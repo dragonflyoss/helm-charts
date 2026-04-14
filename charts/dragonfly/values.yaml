@@ -1222,6 +1222,10 @@ seedClient:
 client:
   # -- Enable client.
   enable: true
+  # -- Wait for scheduler to be ready before starting client.
+  # Disable on clusters where hostNetwork pods cannot reach ClusterIP
+  # services (e.g. Cilium VXLAN tunnel mode).
+  waitForScheduler: true
   # -- Client name.
   name: client
   # -- Override scheduler name.

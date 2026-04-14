@@ -72,7 +72,7 @@ spec:
 {{ toYaml .Values.client.hostAliases | indent 8 }}
       {{- end }}
       initContainers:
-      {{- if .Values.scheduler.enable }}
+      {{- if and .Values.scheduler.enable .Values.client.waitForScheduler }}
       - name: wait-for-scheduler
         image: {{ template "client.initContainer.image" . }}
         imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
@@ -167,6 +167,14 @@ spec:
               fieldPath: metadata.name
         ports:
         - containerPort: {{ .Values.client.config.upload.server.port }}
+          {{- if not .Values.client.hostNetwork }}
+          hostPort: {{ .Values.client.config.upload.server.port }}
+          {{- end }}
+          protocol: TCP
+        - containerPort: {{ .Values.client.config.proxy.server.port }}
+          {{- if not .Values.client.hostNetwork }}
+          hostPort: {{ .Values.client.config.proxy.server.port }}
+          {{- end }}
           protocol: TCP
         - containerPort: {{ .Values.client.config.health.server.port }}
           protocol: TCP
@@ -175,8 +183,14 @@ spec:
         - containerPort: {{ .Values.client.config.stats.server.port }}
           protocol: TCP
         - containerPort: {{ .Values.client.config.storage.server.tcpPort }}
+          {{- if not .Values.client.hostNetwork }}
+          hostPort: {{ .Values.client.config.storage.server.tcpPort }}
+          {{- end }}
           protocol: TCP
         - containerPort: {{ .Values.client.config.storage.server.quicPort }}
+          {{- if not .Values.client.hostNetwork }}
+          hostPort: {{ .Values.client.config.storage.server.quicPort }}
+          {{- end }}
           protocol: TCP
         readinessProbe:
           exec:

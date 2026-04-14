@@ -240,6 +240,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{"rollingUpdate":{"maxSurge":0,"maxUnavailable":20},"type":"RollingUpdate"}` | Update strategy for replicas. |
+| client.waitForScheduler | bool | `true` | Wait for scheduler to be ready before starting client. Disable on clusters where hostNetwork pods cannot reach ClusterIP services (e.g. Cilium VXLAN tunnel mode). |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `nil` | External manager hostname. |
