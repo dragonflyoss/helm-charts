@@ -80,6 +80,13 @@ manager:
   extraEnvVars: []
   # -- Extra init containers for manager.
   extraInitContainers: []
+  # -- When true, mount an emptyDir at /etc/dragonfly instead of the raw
+  # ConfigMap. An entry in manager.extraInitContainers is then expected to
+  # render the final manager.yaml into that emptyDir (e.g. by reading the raw
+  # ConfigMap from an extraVolumeMounts path and substituting credentials
+  # pulled from a Kubernetes Secret via env vars). See the externalPostgres
+  # section below for an end-to-end example.
+  renderConfig: false
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
@@ -1856,11 +1863,15 @@ externalMysql:
 
 externalPostgres:
   # -- Enable external PostgreSQL instead of MySQL.
-  # When enabled, the manager mounts a config-rendered emptyDir instead of the
-  # ConfigMap directly. Use manager.extraInitContainers to copy and patch the
-  # config (e.g. inject credentials from a Kubernetes Secret):
+  # Static credentials can be provided via externalPostgres.username /
+  # externalPostgres.password below (they will be rendered directly into the
+  # ConfigMap). To inject credentials from a Kubernetes Secret instead, set
+  # manager.renderConfig: true and provide an entry in
+  # manager.extraInitContainers that substitutes placeholders into the
+  # rendered config:
   #
   # manager:
+  #   renderConfig: true
   #   extraInitContainers:
   #     - name: inject-pg-credentials
   #       image: busybox:latest
@@ -1892,10 +1903,10 @@ externalPostgres:
   # -- External postgres hostname.
   host:
   # -- External postgres username. Set to a placeholder (e.g. __PG_USER__) when
-  # using an extraInitContainers to inject credentials from a Secret.
+  # manager.renderConfig is enabled and credentials are injected from a Secret.
   username: dragonfly
   # -- External postgres password. Set to a placeholder (e.g. __PG_PASSWORD__) when
-  # using an extraInitContainers to inject credentials from a Secret.
+  # manager.renderConfig is enabled and credentials are injected from a Secret.
   password: dragonfly
   # -- External postgres database name.
   database: manager
