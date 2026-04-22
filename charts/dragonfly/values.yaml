@@ -39,7 +39,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.4.4-beta.0
+    tag: v2.4.4-rc.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -335,7 +335,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.4.4-beta.0
+    tag: v2.4.4-rc.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -720,7 +720,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.2
+    tag: v1.3.6
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1237,7 +1237,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.2
+    tag: v1.3.6
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1326,7 +1326,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.3.2
+      tag: v1.3.6
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1344,7 +1344,13 @@ client:
         containerd:
           # -- configPath is the path of containerd configuration file.
           configPath: /etc/containerd/config.toml
-          # -- registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
+          # -- Proxy all registries enables a catch-all `_default/hosts.toml` entry so that any
+          # registry not explicitly listed in `registries` is still proxied through dfdaemon.
+          # The dfdaemon infers the upstream registry from the `ns=` query parameter that
+          # containerd appends when using a `_default` fallback mirror. Explicitly configured
+          # registries continue to use their own `hosts.toml` and take precedence.
+          proxyAllRegistries: true
+          # -- Registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced,
           # refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace
           # portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server
           # for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field.
@@ -1942,7 +1948,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.3.2
+    tag: v1.3.6
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
