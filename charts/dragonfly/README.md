@@ -235,6 +235,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
+| client.proxy.server.ip | string | `"127.0.0.1"` | When hostNetwork is false, the host IP to bind the proxy hostPort to. Defaults to 127.0.0.1 so the HTTP proxy is only reachable from runtimes on the same node (e.g. containerd). Set to "0.0.0.0" to bind all node interfaces. |
 | client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |

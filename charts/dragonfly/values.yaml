@@ -1257,6 +1257,13 @@ client:
   hostIPC: true
   # -- hostNetwork specify if host network should be enabled for peer pod.
   hostNetwork: true
+  proxy:
+    server:
+      # -- When hostNetwork is false, the host IP to bind the proxy hostPort to.
+      # Defaults to 127.0.0.1 so the HTTP proxy is only reachable from runtimes
+      # on the same node (e.g. containerd). Set to "0.0.0.0" to bind all node
+      # interfaces.
+      ip: 127.0.0.1
   # -- Pod resource requests and limits.
   resources:
     requests:
