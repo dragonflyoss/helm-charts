@@ -253,6 +253,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
+| client.proxy.server.ip | string | `"127.0.0.1"` | When hostNetwork is false, the host IP to bind the proxy hostPort to. Defaults to 127.0.0.1 so the HTTP proxy is only reachable from runtimes on the same node (e.g. containerd). Set to "0.0.0.0" to bind all node interfaces. |
 | client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | client.sysctlInit.enable | bool | `false` | Enable a privileged init container that sets host sysctls, following the pattern of the Elasticsearch and OpenSearch charts. Requires hostNetwork for host-wide network sysctls, and is rejected in PodSecurity `restricted` namespaces. |
 | client.sysctlInit.sysctls | object | `{"net.core.rmem_max":"16777216","net.core.wmem_max":"16777216"}` | Sysctls to set, sized for the socket buffers by default. |
