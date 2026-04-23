@@ -251,7 +251,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
 | externalPostgres.database | string | `"manager"` | External postgres database name. |
-| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap).  To inject credentials from a Kubernetes Secret instead see extraInitContainers |
+| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap). To inject credentials from a Kubernetes Secret instead see extraInitContainers |
 | externalPostgres.host | string | `nil` | External postgres hostname. |
 | externalPostgres.migrate | bool | `true` | Running GORM migration. |
 | externalPostgres.password | string | `"dragonfly"` | External postgres password. Set to a placeholder (e.g. __PG_PASSWORD__) when manager.renderConfig is enabled and credentials are injected from a Secret. |

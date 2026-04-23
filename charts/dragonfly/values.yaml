@@ -1893,7 +1893,7 @@ externalMysql:
 
 externalPostgres:
   # -- Enable external PostgreSQL instead of MySQL.
-  # Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap). 
+  # Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap).
   # To inject credentials from a Kubernetes Secret instead see extraInitContainers
   enable: false
   # -- Running GORM migration.
