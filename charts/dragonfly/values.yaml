@@ -82,8 +82,7 @@ manager:
   # ConfigMap. An entry in manager.extraInitContainers is then expected to
   # render the final manager.yaml into that emptyDir (e.g. by reading the raw
   # ConfigMap from an extraVolumeMounts path and substituting credentials
-  # pulled from a Kubernetes Secret via env vars). See the externalPostgres
-  # section below for an end-to-end example.
+  # pulled from a Kubernetes Secret via env vars). See below for an example.
   renderConfig: false
   # -- Extra init containers for manager.
   # To inject credentials from a Kubernetes Secret, set
