@@ -128,6 +128,7 @@ helm delete dragonfly --namespace dragonfly-system
 |-----|------|---------|-------------|
 | client.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | client.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| client.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
 | client.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
 | client.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
 | client.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
@@ -193,7 +194,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.3.6"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.3.8"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
@@ -209,7 +210,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.3.6"` | Image tag. |
+| client.image.tag | string | `"v1.3.8"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -282,13 +283,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.3.6"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.3.8"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.3.6"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.3.8"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -495,6 +496,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | seedClient.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| seedClient.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
 | seedClient.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
 | seedClient.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
 | seedClient.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
@@ -561,7 +563,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.3.6"` | Image tag. |
+| seedClient.image.tag | string | `"v1.3.8"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
