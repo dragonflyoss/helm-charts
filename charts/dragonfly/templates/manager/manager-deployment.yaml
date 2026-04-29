@@ -71,7 +71,8 @@ spec:
       {{- if .Values.global.templateConfig }}
       - name: config-template
         image: {{ template "manager.initContainer.image" . }}
-        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
+        # TODO: parametrize image with envsubsts
+        imagePullPolicy: docker.io/tomkukral/tool
         command: ["sh", "-c", "envsubst < /config/manager.yaml > /config-tmp/manager.yaml"]
         volumeMounts:
         - name: config-tmp
