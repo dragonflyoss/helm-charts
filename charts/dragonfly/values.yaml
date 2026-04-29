@@ -1305,12 +1305,18 @@ client:
   extraEnvVars: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
+    - name: socket-dir
+      hostPath:
+        path: /var/run/dragonfly
+        type: DirectoryOrCreate
     - name: storage
       emptyDir: {}
     - name: logs
       emptyDir: {}
   # -- Extra volumeMounts for dfdaemon.
   extraVolumeMounts:
+    - name: socket-dir
+      mountPath: /var/run/dragonfly
     - name: storage
       mountPath: /var/lib/dragonfly/
     - name: logs
