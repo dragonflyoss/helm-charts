@@ -19,6 +19,10 @@ global:
   # -- Global storageClass for Persistent Volume(s).
   storageClass: ''
 
+  # -- template (envsubst) configuration file by init-container
+  # it allows to pass secrets from env vars instead of hardcoding to config
+  templateConfig: false
+
 manager:
   # -- Enable manager.
   enable: true
