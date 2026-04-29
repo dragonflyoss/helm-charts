@@ -80,7 +80,7 @@ spec:
           mountPath: /config
         resources: 
           {{- toYaml .Values.manager.initContainer.resources | nindent 10 }}
-        envs:
+        env:
         {{- if .Values.manager.extraEnvVars }}
         {{- include "common.tplvalues.render" (dict "value" .Values.manager.extraEnvVars "context" $) | nindent 8 }}
         {{- end }}
