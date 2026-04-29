@@ -108,17 +108,17 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.scheduler.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.scheduler.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 5
           periodSeconds: 15
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.scheduler.healthProbe.timeoutSeconds }}
           failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.scheduler.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.scheduler.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 15
           periodSeconds: 15
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.scheduler.healthProbe.timeoutSeconds }}
           failureThreshold: 5
       volumes:
       - name: config

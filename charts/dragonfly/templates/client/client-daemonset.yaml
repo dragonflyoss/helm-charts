@@ -180,17 +180,17 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout={{ .Values.client.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.client.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.client.healthProbe.timeoutSeconds }}
           failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.client.config.download.server.socketPath }}", "-connect-timeout={{ .Values.client.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.client.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.client.healthProbe.timeoutSeconds }}
           failureThreshold: 5
         volumeMounts:
         - name: config

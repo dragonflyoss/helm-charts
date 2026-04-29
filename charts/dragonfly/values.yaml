@@ -90,6 +90,13 @@ manager:
   restPort: 8080
   # -- GRPC service port.
   grpcPort: 65003
+  healthProbe:
+    # -- GRPC health probe connect timeout.
+    connectTimeout: 5s
+    # -- GRPC health probe rpc timeout.
+    rpcTimeout: 5s
+    # -- GRPC health probe timeout seconds.
+    timeoutSeconds: 10
   service:
     # -- Service type.
     type: ClusterIP
@@ -384,6 +391,13 @@ scheduler:
   statefulsetAnnotations: {}
   # -- Pod containerPort.
   containerPort: 8002
+  healthProbe:
+    # -- GRPC health probe connect timeout.
+    connectTimeout: 5s
+    # -- GRPC health probe rpc timeout.
+    rpcTimeout: 5s
+    # -- GRPC health probe timeout seconds.
+    timeoutSeconds: 10
   # --  Extra environment variables for pod.
   extraEnvVars: []
   # -- Extra volumes for scheduler.
@@ -714,6 +728,13 @@ seedClient:
   maxProcs: ''
   # -- Number of Pods to launch.
   replicas: 3
+  healthProbe:
+    # -- GRPC health probe connect timeout.
+    connectTimeout: 5s
+    # -- GRPC health probe rpc timeout.
+    rpcTimeout: 5s
+    # -- GRPC health probe timeout seconds.
+    timeoutSeconds: 10
   image:
     # -- Image registry.
     registry: docker.io
@@ -1231,6 +1252,13 @@ client:
   # -- maxProcs Limits the number of operating system threads that can execute user-level.
   # Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime.
   maxProcs: ''
+  healthProbe:
+    # -- GRPC health probe connect timeout.
+    connectTimeout: 5s
+    # -- GRPC health probe rpc timeout.
+    rpcTimeout: 5s
+    # -- GRPC health probe timeout seconds.
+    timeoutSeconds: 10
   image:
     # -- Image registry.
     registry: docker.io

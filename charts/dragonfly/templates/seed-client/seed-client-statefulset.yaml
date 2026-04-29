@@ -123,17 +123,17 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.seedClient.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.seedClient.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 10
           periodSeconds: 30
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.seedClient.healthProbe.timeoutSeconds }}
           failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.seedClient.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.seedClient.healthProbe.rpcTimeout }}"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 10
+          timeoutSeconds: {{ .Values.seedClient.healthProbe.timeoutSeconds }}
           failureThreshold: 5
         volumeMounts:
         - name: config
