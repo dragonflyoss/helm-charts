@@ -18,7 +18,9 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.seedClient.service.type }}
-  clusterIP: {{ .Values.seedClient.service.clusterIP }}
+  {{- with .Values.seedClient.service.clusterIP }}
+  clusterIP: {{ . }}
+  {{- end }}
   ports:
     - port: {{ .Values.seedClient.config.proxy.server.port }}
       name: http-proxy

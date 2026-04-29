@@ -18,7 +18,9 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.scheduler.service.type }}
-  clusterIP: {{ .Values.scheduler.service.clusterIP }}
+  {{- with .Values.scheduler.service.clusterIP }}
+  clusterIP: {{ . }}
+  {{- end }}
   ports:
     - port: {{ .Values.scheduler.config.server.port }}
       name: grpc
