@@ -116,20 +116,18 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}"]
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.readinessProbe.successThreshold }}
-          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.manager.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.manager.healthProbe.rpcTimeout }}"]
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: {{ .Values.manager.healthProbe.timeoutSeconds }}
+          failureThreshold: 3
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}"]
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.livenessProbe.successThreshold }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.manager.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.manager.healthProbe.rpcTimeout }}"]
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: {{ .Values.manager.healthProbe.timeoutSeconds }}
+          failureThreshold: 5
       volumes:
       - name: config
         configMap:
