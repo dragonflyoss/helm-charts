@@ -1851,6 +1851,65 @@ externalMysql:
   database: manager
   # -- External mysql port.
   port: 3306
+  # -- Use existing secret for MySQL credentials.
+  # The secret must contain keys: username, password
+  # Optional keys: host, port, database
+  existingSecret:
+    # -- Enable using existing secret for MySQL credentials.
+    enabled: false
+    # -- Name of the existing secret containing MySQL credentials.
+    name: ""
+    # -- Key in the secret containing the username.
+    usernameKey: "username"
+    # -- Key in the secret containing the password.
+    passwordKey: "password"
+    # -- Key in the secret containing the host (optional, falls back to externalMysql.host).
+    hostKey: ""
+    # -- Key in the secret containing the port (optional, falls back to externalMysql.port).
+    portKey: ""
+    # -- Key in the secret containing the database name (optional, falls back to externalMysql.database).
+    databaseKey: ""
+
+# -- External PostgreSQL configuration.
+# Use this when you have an external PostgreSQL database instead of MySQL.
+# Note: Set mysql.enable=false when using externalPostgres.
+externalPostgres:
+  # -- Enable external PostgreSQL (mutually exclusive with externalMysql.host).
+  enable: false
+  # -- Running GORM migration.
+  migrate: true
+  # -- External PostgreSQL hostname.
+  host: ""
+  # -- External PostgreSQL username.
+  username: dragonfly
+  # -- External PostgreSQL password.
+  password: dragonfly
+  # -- External PostgreSQL database name.
+  database: manager
+  # -- External PostgreSQL port.
+  port: 5432
+  # -- PostgreSQL SSL mode (disable, require, verify-ca, verify-full).
+  sslMode: disable
+  # -- Use existing secret for PostgreSQL credentials.
+  # The secret must contain keys: username, password
+  # Optional keys: host, port, database, sslMode
+  existingSecret:
+    # -- Enable using existing secret for PostgreSQL credentials.
+    enabled: false
+    # -- Name of the existing secret containing PostgreSQL credentials.
+    name: ""
+    # -- Key in the secret containing the username.
+    usernameKey: "username"
+    # -- Key in the secret containing the password.
+    passwordKey: "password"
+    # -- Key in the secret containing the host (optional, falls back to externalPostgres.host).
+    hostKey: ""
+    # -- Key in the secret containing the port (optional, falls back to externalPostgres.port).
+    portKey: ""
+    # -- Key in the secret containing the database name (optional, falls back to externalPostgres.database).
+    databaseKey: ""
+    # -- Key in the secret containing the SSL mode (optional, falls back to externalPostgres.sslMode).
+    sslModeKey: ""
 
 redis:
   # -- Enable redis cluster with docker container.
@@ -1890,6 +1949,36 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+  # -- Use existing secret for Redis credentials.
+  # The secret must contain keys as specified below.
+  existingSecret:
+    # -- Enable using existing secret for Redis credentials.
+    enabled: false
+    # -- Name of the existing secret containing Redis credentials.
+    name: ""
+    # -- Key in the secret containing the password.
+    passwordKey: "password"
+    # -- Key in the secret containing the username (optional).
+    usernameKey: ""
+    # -- Key in the secret containing the sentinel password (optional).
+    sentinelPasswordKey: ""
+    # -- Key in the secret containing the sentinel username (optional).
+    sentinelUsernameKey: ""
+
+# -- Use an existing secret for the entire manager configuration.
+# When enabled, the chart will NOT generate a ConfigMap for the manager.
+# Instead, it will mount the specified secret as the manager configuration.
+# This allows you to manage sensitive credentials (database passwords, etc.)
+# outside of Helm values and keep them in a Kubernetes Secret.
+existingConfigSecret:
+  # -- Enable using an existing secret for manager configuration.
+  # When true, you must create a secret with the full manager.yaml content.
+  enabled: false
+  # -- Name of the existing secret containing the manager configuration.
+  # The secret must have a key named 'manager.yaml' with the full configuration.
+  name: ""
+  # -- Key in the secret containing the manager.yaml configuration.
+  key: "manager.yaml"
 
 injector:
   # -- Enable injector.

@@ -38,7 +38,7 @@ We recommend read the details about [Kubernetes with Dragonfly](https://d7y.io/d
 
 ### Install with custom configuration
 
-Create the `values.yaml` configuration file. It is recommended to use external redis and mysql instead of containers. This example uses external mysql and redis.
+Create the `values.yaml` configuration file. It is recommended to use external redis and mysql/postgres instead of containers. This example uses external mysql and redis.
 
 ```yaml
 mysql:
@@ -60,6 +60,124 @@ externalRedis:
     - redis.example.com:6379
   password: dragonfly
 ```
+
+### Install with external PostgreSQL (instead of MySQL)
+
+Create the `values.yaml` configuration file. This example uses external PostgreSQL and Redis.
+
+```yaml
+mysql:
+  enable: false
+
+externalPostgres:
+  enable: true
+  migrate: true
+  host: postgres-host
+  username: dragonfly
+  password: dragonfly
+  database: manager
+  port: 5432
+  sslMode: require
+
+redis:
+  enable: false
+
+externalRedis:
+  addrs:
+    - redis.example.com:6379
+  password: dragonfly
+```
+
+### Install with secure credentials using Kubernetes Secrets
+
+For production environments, it's recommended to use Kubernetes Secrets instead of passing credentials directly in values.yaml. This approach keeps credentials out of:
+- Helm release history (`helm get values`)
+- GitOps repositories
+- Terraform state files
+- Audit logs
+
+#### Option 1: Using existingSecret for individual services
+
+First, create Kubernetes Secrets for your credentials:
+
+```bash
+# Create secret for PostgreSQL credentials
+kubectl create secret generic dragonfly-postgres-credentials \
+  --namespace dragonfly-system \
+  --from-literal=username=dragonfly \
+  --from-literal=password=your-secure-password \
+  --from-literal=host=postgres-host \
+  --from-literal=port=5432 \
+  --from-literal=database=manager
+
+# Create secret for Redis credentials
+kubectl create secret generic dragonfly-redis-credentials \
+  --namespace dragonfly-system \
+  --from-literal=password=your-redis-password
+```
+
+Then reference these secrets in your `values.yaml`. The chart uses sensible default key names (`username`, `password`, `host`, `port`, `database`), so you only need to specify the secret name:
+
+```yaml
+mysql:
+  enable: false
+
+externalPostgres:
+  enable: true
+  migrate: true
+  sslMode: require
+  existingSecret:
+    enabled: true
+    name: "dragonfly-postgres-credentials"
+    # Keys default to: username, password, host, port, database
+    # Override only if your secret uses different key names
+
+redis:
+  enable: false
+
+externalRedis:
+  addrs:
+    - redis.example.com:6379
+  existingSecret:
+    enabled: true
+    name: "dragonfly-redis-credentials"
+    # Key defaults to: password
+```
+
+#### Option 2: Using existingConfigSecret for complete configuration override
+
+For maximum flexibility, you can provide the entire manager configuration via a Secret. This is useful when:
+- You want to manage the complete configuration outside of Helm
+- You're using external secret management tools (Vault, External Secrets Operator, etc.)
+- You need to inject credentials via Terraform or other infrastructure tools
+
+First, create a Secret containing the full manager.yaml configuration:
+
+```bash
+kubectl create secret generic dragonfly-manager-config \
+  --namespace dragonfly-system \
+  --from-file=manager.yaml=/path/to/your/manager.yaml
+```
+
+Then reference this secret in your `values.yaml`:
+
+```yaml
+existingConfigSecret:
+  enabled: true
+  name: "dragonfly-manager-config"
+  key: "manager.yaml"
+
+mysql:
+  enable: false
+
+redis:
+  enable: false
+```
+
+When `existingConfigSecret.enabled` is true:
+- The chart will NOT generate a ConfigMap for the manager
+- Instead, it will mount the specified Secret as the manager configuration
+- The manager deployment will use the `MANAGER_CONFIG` environment variable to load the custom config path
 
 Install dragonfly chart with release name `dragonfly`:
 
@@ -250,6 +368,29 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.password | string | `"dragonfly"` | External mysql password. |
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
+| externalMysql.existingSecret.enabled | bool | `false` | Enable using existing secret for MySQL credentials. |
+| externalMysql.existingSecret.name | string | `""` | Name of the existing secret containing MySQL credentials. |
+| externalMysql.existingSecret.usernameKey | string | `"username"` | Key in the secret containing the username. |
+| externalMysql.existingSecret.passwordKey | string | `"password"` | Key in the secret containing the password. |
+| externalMysql.existingSecret.hostKey | string | `""` | Key in the secret containing the host (optional). |
+| externalMysql.existingSecret.portKey | string | `""` | Key in the secret containing the port (optional). |
+| externalMysql.existingSecret.databaseKey | string | `""` | Key in the secret containing the database name (optional). |
+| externalPostgres.enable | bool | `false` | Enable external PostgreSQL (mutually exclusive with externalMysql.host). |
+| externalPostgres.migrate | bool | `true` | Running GORM migration. |
+| externalPostgres.host | string | `""` | External PostgreSQL hostname. |
+| externalPostgres.username | string | `"dragonfly"` | External PostgreSQL username. |
+| externalPostgres.password | string | `"dragonfly"` | External PostgreSQL password. |
+| externalPostgres.database | string | `"manager"` | External PostgreSQL database name. |
+| externalPostgres.port | int | `5432` | External PostgreSQL port. |
+| externalPostgres.sslMode | string | `"disable"` | PostgreSQL SSL mode (disable, require, verify-ca, verify-full). |
+| externalPostgres.existingSecret.enabled | bool | `false` | Enable using existing secret for PostgreSQL credentials. |
+| externalPostgres.existingSecret.name | string | `""` | Name of the existing secret containing PostgreSQL credentials. |
+| externalPostgres.existingSecret.usernameKey | string | `"username"` | Key in the secret containing the username. |
+| externalPostgres.existingSecret.passwordKey | string | `"password"` | Key in the secret containing the password. |
+| externalPostgres.existingSecret.hostKey | string | `""` | Key in the secret containing the host (optional). |
+| externalPostgres.existingSecret.portKey | string | `""` | Key in the secret containing the port (optional). |
+| externalPostgres.existingSecret.databaseKey | string | `""` | Key in the secret containing the database name (optional). |
+| externalPostgres.existingSecret.sslModeKey | string | `""` | Key in the secret containing the SSL mode (optional). |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
@@ -259,6 +400,15 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.sentinelPassword | string | `""` | External redis sentinel password. |
 | externalRedis.sentinelUsername | string | `""` | External redis sentinel addresses. |
 | externalRedis.username | string | `""` | External redis username. |
+| externalRedis.existingSecret.enabled | bool | `false` | Enable using existing secret for Redis credentials. |
+| externalRedis.existingSecret.name | string | `""` | Name of the existing secret containing Redis credentials. |
+| externalRedis.existingSecret.passwordKey | string | `"password"` | Key in the secret containing the password. |
+| externalRedis.existingSecret.usernameKey | string | `""` | Key in the secret containing the username (optional). |
+| externalRedis.existingSecret.sentinelPasswordKey | string | `""` | Key in the secret containing the sentinel password (optional). |
+| externalRedis.existingSecret.sentinelUsernameKey | string | `""` | Key in the secret containing the sentinel username (optional). |
+| existingConfigSecret.enabled | bool | `false` | Enable using an existing secret for manager configuration. |
+| existingConfigSecret.name | string | `""` | Name of the existing secret containing the manager configuration. |
+| existingConfigSecret.key | string | `"manager.yaml"` | Key in the secret containing the manager.yaml configuration. |
 | fullnameOverride | string | `""` | Override dragonfly fullname. |
 | global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |
 | global.imageRegistry | string | `""` | Global Docker image registry. |

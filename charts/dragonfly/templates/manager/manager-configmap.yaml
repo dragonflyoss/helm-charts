@@ -1,4 +1,5 @@
 {{- if .Values.manager.enable }}
+{{- if not .Values.existingConfigSecret.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -41,6 +42,30 @@ data:
     auth:
 {{ toYaml .Values.manager.config.auth | indent 6 }}
     database:
+      {{- if .Values.externalPostgres.enable }}
+      {{- /* PostgreSQL configuration */}}
+      postgres:
+        {{- if and .Values.externalPostgres.existingSecret.enabled .Values.externalPostgres.existingSecret.name }}
+        {{- /* When using existingSecret, credentials will be injected via environment variables */}}
+        {{- /* The manager binary should support DRAGONFLY_POSTGRES_* env vars for credential override */}}
+        user: ${DRAGONFLY_POSTGRES_USER}
+        password: ${DRAGONFLY_POSTGRES_PASSWORD}
+        host: {{ if .Values.externalPostgres.existingSecret.hostKey }}${DRAGONFLY_POSTGRES_HOST}{{ else }}{{ .Values.externalPostgres.host }}{{ end }}
+        port: {{ if .Values.externalPostgres.existingSecret.portKey }}${DRAGONFLY_POSTGRES_PORT}{{ else }}{{ .Values.externalPostgres.port }}{{ end }}
+        dbname: {{ if .Values.externalPostgres.existingSecret.databaseKey }}${DRAGONFLY_POSTGRES_DBNAME}{{ else }}{{ .Values.externalPostgres.database }}{{ end }}
+        sslMode: {{ if .Values.externalPostgres.existingSecret.sslModeKey }}${DRAGONFLY_POSTGRES_SSLMODE}{{ else }}{{ .Values.externalPostgres.sslMode }}{{ end }}
+        migrate: {{ .Values.externalPostgres.migrate }}
+        {{- else }}
+        user: {{ .Values.externalPostgres.username }}
+        password: {{ .Values.externalPostgres.password }}
+        host: {{ .Values.externalPostgres.host }}
+        port: {{ .Values.externalPostgres.port }}
+        dbname: {{ .Values.externalPostgres.database }}
+        sslMode: {{ .Values.externalPostgres.sslMode }}
+        migrate: {{ .Values.externalPostgres.migrate }}
+        {{- end }}
+      {{- else }}
+      {{- /* MySQL configuration (default) */}}
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
@@ -49,6 +74,14 @@ data:
         port: {{ .Values.mysql.primary.service.port }}
         dbname: {{ .Values.mysql.auth.database }}
         migrate: {{ .Values.mysql.migrate }}
+        {{- else if and .Values.externalMysql.existingSecret.enabled .Values.externalMysql.existingSecret.name }}
+        {{- /* When using existingSecret, credentials will be injected via environment variables */}}
+        user: ${DRAGONFLY_MYSQL_USER}
+        password: ${DRAGONFLY_MYSQL_PASSWORD}
+        host: {{ if .Values.externalMysql.existingSecret.hostKey }}${DRAGONFLY_MYSQL_HOST}{{ else }}{{ .Values.externalMysql.host }}{{ end }}
+        port: {{ if .Values.externalMysql.existingSecret.portKey }}${DRAGONFLY_MYSQL_PORT}{{ else }}{{ .Values.externalMysql.port }}{{ end }}
+        dbname: {{ if .Values.externalMysql.existingSecret.databaseKey }}${DRAGONFLY_MYSQL_DBNAME}{{ else }}{{ .Values.externalMysql.database }}{{ end }}
+        migrate: {{ .Values.externalMysql.migrate }}
         {{- else }}
         user: {{ .Values.externalMysql.username }}
         password: {{ .Values.externalMysql.password }}
@@ -57,11 +90,23 @@ data:
         dbname: {{ .Values.externalMysql.database }}
         migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
+      {{- end }}
       redis:
         {{- if .Values.redis.enable }}
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
+        {{- else if and .Values.externalRedis.existingSecret.enabled .Values.externalRedis.existingSecret.name }}
+        addrs:
+{{ toYaml .Values.externalRedis.addrs | indent 10 }}
+        masterName: {{ .Values.externalRedis.masterName }}
+        username: {{ if .Values.externalRedis.existingSecret.usernameKey }}${DRAGONFLY_REDIS_USERNAME}{{ else }}{{ .Values.externalRedis.username }}{{ end }}
+        password: ${DRAGONFLY_REDIS_PASSWORD}
+        sentinelUsername: {{ if .Values.externalRedis.existingSecret.sentinelUsernameKey }}${DRAGONFLY_REDIS_SENTINEL_USERNAME}{{ else }}{{ .Values.externalRedis.sentinelUsername }}{{ end }}
+        sentinelPassword: {{ if .Values.externalRedis.existingSecret.sentinelPasswordKey }}${DRAGONFLY_REDIS_SENTINEL_PASSWORD}{{ else }}{{ .Values.externalRedis.sentinelPassword }}{{ end }}
+        db: {{ .Values.externalRedis.db }}
+        brokerDB: {{ .Values.externalRedis.brokerDB }}
+        backendDB: {{ .Values.externalRedis.backendDB }}
         {{- else }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
@@ -87,4 +132,5 @@ data:
     pprofPort: {{ .Values.manager.config.pprofPort }}
     tracing:
 {{ toYaml .Values.manager.config.tracing | indent 6 }}
+{{- end }}
 {{- end }}

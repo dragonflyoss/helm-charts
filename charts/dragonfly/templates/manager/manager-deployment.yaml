@@ -31,7 +31,11 @@ spec:
 {{ toYaml .Values.manager.podLabels | indent 8 }}
         {{- end }}
       annotations:
+        {{- if .Values.existingConfigSecret.enabled }}
+        checksum/secret: {{ .Values.existingConfigSecret.name | sha256sum }}
+        {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
+        {{- end }}
       {{- if .Values.manager.podAnnotations }}
 {{ toYaml .Values.manager.podAnnotations | indent 8 }}
       {{- end }}
@@ -96,6 +100,115 @@ spec:
         - name: GOMAXPROCS
           value: {{ .Values.manager.maxProcs }}
         {{- end }}
+        {{- /* PostgreSQL secret environment variables */}}
+        {{- if and .Values.externalPostgres.enable .Values.externalPostgres.existingSecret.enabled .Values.externalPostgres.existingSecret.name }}
+        - name: DRAGONFLY_POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.usernameKey }}
+        - name: DRAGONFLY_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.passwordKey }}
+        {{- if .Values.externalPostgres.existingSecret.hostKey }}
+        - name: DRAGONFLY_POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.hostKey }}
+        {{- end }}
+        {{- if .Values.externalPostgres.existingSecret.portKey }}
+        - name: DRAGONFLY_POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.portKey }}
+        {{- end }}
+        {{- if .Values.externalPostgres.existingSecret.databaseKey }}
+        - name: DRAGONFLY_POSTGRES_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.databaseKey }}
+        {{- end }}
+        {{- if .Values.externalPostgres.existingSecret.sslModeKey }}
+        - name: DRAGONFLY_POSTGRES_SSLMODE
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret.name }}
+              key: {{ .Values.externalPostgres.existingSecret.sslModeKey }}
+        {{- end }}
+        {{- end }}
+        {{- /* MySQL secret environment variables */}}
+        {{- if and (not .Values.externalPostgres.enable) .Values.externalMysql.existingSecret.enabled .Values.externalMysql.existingSecret.name }}
+        - name: DRAGONFLY_MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret.name }}
+              key: {{ .Values.externalMysql.existingSecret.usernameKey }}
+        - name: DRAGONFLY_MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret.name }}
+              key: {{ .Values.externalMysql.existingSecret.passwordKey }}
+        {{- if .Values.externalMysql.existingSecret.hostKey }}
+        - name: DRAGONFLY_MYSQL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret.name }}
+              key: {{ .Values.externalMysql.existingSecret.hostKey }}
+        {{- end }}
+        {{- if .Values.externalMysql.existingSecret.portKey }}
+        - name: DRAGONFLY_MYSQL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret.name }}
+              key: {{ .Values.externalMysql.existingSecret.portKey }}
+        {{- end }}
+        {{- if .Values.externalMysql.existingSecret.databaseKey }}
+        - name: DRAGONFLY_MYSQL_DBNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret.name }}
+              key: {{ .Values.externalMysql.existingSecret.databaseKey }}
+        {{- end }}
+        {{- end }}
+        {{- /* Redis secret environment variables */}}
+        {{- if and (not .Values.redis.enable) .Values.externalRedis.existingSecret.enabled .Values.externalRedis.existingSecret.name }}
+        - name: DRAGONFLY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret.name }}
+              key: {{ .Values.externalRedis.existingSecret.passwordKey }}
+        {{- if .Values.externalRedis.existingSecret.usernameKey }}
+        - name: DRAGONFLY_REDIS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret.name }}
+              key: {{ .Values.externalRedis.existingSecret.usernameKey }}
+        {{- end }}
+        {{- if .Values.externalRedis.existingSecret.sentinelPasswordKey }}
+        - name: DRAGONFLY_REDIS_SENTINEL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret.name }}
+              key: {{ .Values.externalRedis.existingSecret.sentinelPasswordKey }}
+        {{- end }}
+        {{- if .Values.externalRedis.existingSecret.sentinelUsernameKey }}
+        - name: DRAGONFLY_REDIS_SENTINEL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret.name }}
+              key: {{ .Values.externalRedis.existingSecret.sentinelUsernameKey }}
+        {{- end }}
+        {{- end }}
+        {{- /* Override config path when using existingConfigSecret */}}
+        {{- if .Values.existingConfigSecret.enabled }}
+        - name: MANAGER_CONFIG
+          value: "/etc/dragonfly/{{ .Values.existingConfigSecret.key }}"
+        {{- end }}
         {{- if .Values.manager.extraEnvVars }}
         {{- include "common.tplvalues.render" (dict "value" .Values.manager.extraEnvVars "context" $) | nindent 8 }}
         {{- end }}
@@ -130,11 +243,19 @@ spec:
           failureThreshold: 5
       volumes:
       - name: config
+        {{- if .Values.existingConfigSecret.enabled }}
+        secret:
+          secretName: {{ .Values.existingConfigSecret.name }}
+          items:
+          - key: {{ .Values.existingConfigSecret.key }}
+            path: manager.yaml
+        {{- else }}
         configMap:
           name: {{ template "dragonfly.manager.fullname" . }}
           items:
           - key: manager.yaml
             path: manager.yaml
+        {{- end }}
       {{- if .Values.manager.extraVolumes }}
       {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
       {{- end }}
