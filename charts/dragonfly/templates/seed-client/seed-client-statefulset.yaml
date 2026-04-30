@@ -123,18 +123,20 @@ spec:
           protocol: TCP
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.seedClient.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.seedClient.healthProbe.rpcTimeout }}"]
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: {{ .Values.seedClient.healthProbe.timeoutSeconds }}
-          failureThreshold: 3
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}"]
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.seedClient.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.seedClient.healthProbe.rpcTimeout }}"]
-          initialDelaySeconds: 15
-          periodSeconds: 30
-          timeoutSeconds: {{ .Values.seedClient.healthProbe.timeoutSeconds }}
-          failureThreshold: 5
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}"]
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
