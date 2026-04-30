@@ -31,7 +31,9 @@ spec:
 {{ toYaml .Values.manager.podLabels | indent 8 }}
         {{- end }}
       annotations:
+        {{- if not .Values.manager.existingConfigSecret }}
         checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
+        {{- end }}
       {{- if .Values.manager.podAnnotations }}
 {{ toYaml .Values.manager.podAnnotations | indent 8 }}
       {{- end }}
@@ -130,11 +132,19 @@ spec:
           failureThreshold: 5
       volumes:
       - name: config
+        {{- if .Values.manager.existingConfigSecret }}
+        secret:
+          secretName: {{ .Values.manager.existingConfigSecret }}
+          items:
+          - key: manager.yaml
+            path: manager.yaml
+        {{- else }}
         configMap:
           name: {{ template "dragonfly.manager.fullname" . }}
           items:
           - key: manager.yaml
             path: manager.yaml
+        {{- end }}
       {{- if .Values.manager.extraVolumes }}
       {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
       {{- end }}
