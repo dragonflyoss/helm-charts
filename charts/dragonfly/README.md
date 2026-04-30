@@ -127,10 +127,9 @@ externalPostgres:
   migrate: true
   sslMode: require
   existingSecret:
-    enabled: true
     name: "dragonfly-postgres-credentials"
-    # Keys default to: username, password, host, port, database
-    # Override only if your secret uses different key names
+    # Keys default to: username, password
+    # Optional keys: host, port, database (falls back to values above if not in secret)
 
 redis:
   enable: false
@@ -139,7 +138,6 @@ externalRedis:
   addrs:
     - redis.example.com:6379
   existingSecret:
-    enabled: true
     name: "dragonfly-redis-credentials"
     # Key defaults to: password
 ```
@@ -163,9 +161,8 @@ Then reference this secret in your `values.yaml`:
 
 ```yaml
 existingConfigSecret:
-  enabled: true
   name: "dragonfly-manager-config"
-  key: "manager.yaml"
+  key: "manager.yaml"  # optional, defaults to manager.yaml
 
 mysql:
   enable: false
@@ -174,7 +171,7 @@ redis:
   enable: false
 ```
 
-When `existingConfigSecret.enabled` is true:
+When `existingConfigSecret.name` is set:
 - The chart will NOT generate a ConfigMap for the manager
 - Instead, it will mount the specified Secret as the manager configuration
 - The manager deployment will use the `MANAGER_CONFIG` environment variable to load the custom config path

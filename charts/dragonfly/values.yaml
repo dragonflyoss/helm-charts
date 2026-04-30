@@ -1855,9 +1855,8 @@ externalMysql:
   # The secret must contain keys: username, password
   # Optional keys: host, port, database
   existingSecret:
-    # -- Enable using existing secret for MySQL credentials.
-    enabled: false
     # -- Name of the existing secret containing MySQL credentials.
+    # If set, credentials will be read from this secret instead of values above.
     name: ""
     # -- Key in the secret containing the username.
     usernameKey: "username"
@@ -1894,9 +1893,8 @@ externalPostgres:
   # The secret must contain keys: username, password
   # Optional keys: host, port, database, sslMode
   existingSecret:
-    # -- Enable using existing secret for PostgreSQL credentials.
-    enabled: false
     # -- Name of the existing secret containing PostgreSQL credentials.
+    # If set, credentials will be read from this secret instead of values above.
     name: ""
     # -- Key in the secret containing the username.
     usernameKey: "username"
@@ -1952,9 +1950,8 @@ externalRedis:
   # -- Use existing secret for Redis credentials.
   # The secret must contain keys as specified below.
   existingSecret:
-    # -- Enable using existing secret for Redis credentials.
-    enabled: false
     # -- Name of the existing secret containing Redis credentials.
+    # If set, credentials will be read from this secret instead of values above.
     name: ""
     # -- Key in the secret containing the password.
     passwordKey: "password"
@@ -1966,16 +1963,13 @@ externalRedis:
     sentinelUsernameKey: ""
 
 # -- Use an existing secret for the entire manager configuration.
-# When enabled, the chart will NOT generate a ConfigMap for the manager.
+# When set, the chart will NOT generate a ConfigMap for the manager.
 # Instead, it will mount the specified secret as the manager configuration.
 # This allows you to manage sensitive credentials (database passwords, etc.)
 # outside of Helm values and keep them in a Kubernetes Secret.
 existingConfigSecret:
-  # -- Enable using an existing secret for manager configuration.
-  # When true, you must create a secret with the full manager.yaml content.
-  enabled: false
   # -- Name of the existing secret containing the manager configuration.
-  # The secret must have a key named 'manager.yaml' with the full configuration.
+  # If set, you must create a secret with the full manager.yaml content.
   name: ""
   # -- Key in the secret containing the manager.yaml configuration.
   key: "manager.yaml"

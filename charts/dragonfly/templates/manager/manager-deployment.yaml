@@ -31,7 +31,7 @@ spec:
 {{ toYaml .Values.manager.podLabels | indent 8 }}
         {{- end }}
       annotations:
-        {{- if .Values.existingConfigSecret.enabled }}
+        {{- if .Values.existingConfigSecret.name }}
         checksum/secret: {{ .Values.existingConfigSecret.name | sha256sum }}
         {{- else }}
         checksum/config: {{ include (print $.Template.BasePath "/manager/manager-configmap.yaml") . | sha256sum }}
@@ -101,7 +101,7 @@ spec:
           value: {{ .Values.manager.maxProcs }}
         {{- end }}
         {{- /* PostgreSQL secret environment variables */}}
-        {{- if and .Values.externalPostgres.enable .Values.externalPostgres.existingSecret.enabled .Values.externalPostgres.existingSecret.name }}
+        {{- if and .Values.externalPostgres.enable .Values.externalPostgres.existingSecret.name }}
         - name: DRAGONFLY_POSTGRES_USER
           valueFrom:
             secretKeyRef:
@@ -142,7 +142,7 @@ spec:
         {{- end }}
         {{- end }}
         {{- /* MySQL secret environment variables */}}
-        {{- if and (not .Values.externalPostgres.enable) .Values.externalMysql.existingSecret.enabled .Values.externalMysql.existingSecret.name }}
+        {{- if and (not .Values.externalPostgres.enable) .Values.externalMysql.existingSecret.name }}
         - name: DRAGONFLY_MYSQL_USER
           valueFrom:
             secretKeyRef:
@@ -176,7 +176,7 @@ spec:
         {{- end }}
         {{- end }}
         {{- /* Redis secret environment variables */}}
-        {{- if and (not .Values.redis.enable) .Values.externalRedis.existingSecret.enabled .Values.externalRedis.existingSecret.name }}
+        {{- if and (not .Values.redis.enable) .Values.externalRedis.existingSecret.name }}
         - name: DRAGONFLY_REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -205,7 +205,7 @@ spec:
         {{- end }}
         {{- end }}
         {{- /* Override config path when using existingConfigSecret */}}
-        {{- if .Values.existingConfigSecret.enabled }}
+        {{- if .Values.existingConfigSecret.name }}
         - name: MANAGER_CONFIG
           value: "/etc/dragonfly/{{ .Values.existingConfigSecret.key }}"
         {{- end }}
@@ -243,7 +243,7 @@ spec:
           failureThreshold: 5
       volumes:
       - name: config
-        {{- if .Values.existingConfigSecret.enabled }}
+        {{- if .Values.existingConfigSecret.name }}
         secret:
           secretName: {{ .Values.existingConfigSecret.name }}
           items:
