@@ -336,6 +336,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.tracing.protocol | string | `"grpc"` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `true` | Enable manager. |
+| manager.existingConfigSecret | string | `""` | Name of an existing Secret containing the full manager.yaml config. When set, the chart will NOT generate a ConfigMap and will mount this Secret at /etc/dragonfly instead. The Secret must have a key named "manager.yaml" containing the complete configuration. This allows you to manage the entire config externally (e.g., via External Secrets Operator, Sealed Secrets, or manual creation). |
 | manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
