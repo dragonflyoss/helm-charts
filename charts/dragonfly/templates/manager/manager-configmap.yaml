@@ -1,4 +1,5 @@
 {{- if .Values.manager.enable }}
+{{- if not .Values.manager.existingConfigSecret }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -87,4 +88,5 @@ data:
     pprofPort: {{ .Values.manager.config.pprofPort }}
     tracing:
 {{ toYaml .Values.manager.config.tracing | indent 6 }}
+{{- end }}
 {{- end }}

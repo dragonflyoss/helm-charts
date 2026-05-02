@@ -78,6 +78,13 @@ manager:
   deploymentAnnotations: {}
   # --  Extra environment variables for pod.
   extraEnvVars: []
+  # -- Name of an existing Secret containing the full manager.yaml config.
+  # When set, the chart will NOT generate a ConfigMap and will mount this
+  # Secret at /etc/dragonfly instead. The Secret must have a key named
+  # "manager.yaml" containing the complete configuration.
+  # This allows you to manage the entire config externally (e.g., via
+  # External Secrets Operator, Sealed Secrets, or manual creation).
+  existingConfigSecret: ""
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
