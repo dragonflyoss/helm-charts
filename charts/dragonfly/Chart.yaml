@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add readinessProbe and livenessProbe for services.
+    - Centralize health probe configuration into global readinessProbe and livenessProbe settings, and fix GRPC health probe timeout parameter format.
 
   artifacthub.io/links: |
     - name: Chart Source
