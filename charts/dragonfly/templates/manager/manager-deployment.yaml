@@ -116,18 +116,20 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
-          initialDelaySeconds: 5
-          periodSeconds: 15
-          timeoutSeconds: 10
-          failureThreshold: 3
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          timeoutSeconds: 10
-          failureThreshold: 5
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
       volumes:
       - name: config
         configMap:

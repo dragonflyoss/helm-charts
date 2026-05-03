@@ -301,6 +301,7 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
 | injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | namespaceSelector determines which namespaces the webhook applies to. |
+| livenessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":15,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' liveness probe. |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
@@ -404,6 +405,7 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
 | namespaceOverride | string | `""` | Override dragonfly namespace. |
+| readinessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":10,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' readiness probe. |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |

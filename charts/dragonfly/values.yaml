@@ -19,6 +19,24 @@ global:
   # -- Global storageClass for Persistent Volume(s).
   storageClass: ''
 
+# -- Configure extra options for containers' liveness probe.
+livenessProbe:
+  enable: true
+  initialDelaySeconds: 15
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 2
+  successThreshold: 1
+
+# -- Configure extra options for containers' readiness probe.
+readinessProbe:
+  enable: true
+  initialDelaySeconds: 10
+  periodSeconds: 30
+  timeoutSeconds: 3
+  failureThreshold: 2
+  successThreshold: 1
+
 manager:
   # -- Enable manager.
   enable: true
