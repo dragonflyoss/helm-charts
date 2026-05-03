@@ -108,18 +108,20 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.scheduler.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.scheduler.healthProbe.rpcTimeout }}"]
-          initialDelaySeconds: 5
-          periodSeconds: 15
-          timeoutSeconds: {{ .Values.scheduler.healthProbe.timeoutSeconds }}
-          failureThreshold: 3
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.scheduler.healthProbe.connectTimeout }}", "-rpc-timeout={{ .Values.scheduler.healthProbe.rpcTimeout }}"]
-          initialDelaySeconds: 15
-          periodSeconds: 15
-          timeoutSeconds: {{ .Values.scheduler.healthProbe.timeoutSeconds }}
-          failureThreshold: 5
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
       volumes:
       - name: config
         configMap:

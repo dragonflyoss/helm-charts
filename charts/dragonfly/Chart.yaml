@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Make GRPC health probe timeouts configurable for manager, scheduler, seedClient, and client.
+    - Add readinessProbe and livenessProbe for services.
 
   artifacthub.io/links: |
     - name: Chart Source

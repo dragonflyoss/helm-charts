@@ -200,9 +200,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
-| client.healthProbe.connectTimeout | string | `"5s"` | GRPC health probe connect timeout. |
-| client.healthProbe.rpcTimeout | string | `"5s"` | GRPC health probe rpc timeout. |
-| client.healthProbe.timeoutSeconds | int | `10` | GRPC health probe timeout seconds. |
 | client.hostAliases | list | `[]` | Host Aliases. |
 | client.hostIPC | bool | `true` | hostIPC specify if host IPC should be enabled for peer pod. |
 | client.hostNetwork | bool | `true` | hostNetwork specify if host network should be enabled for peer pod. |
@@ -304,6 +301,7 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
 | injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | namespaceSelector determines which namespaces the webhook applies to. |
+| livenessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":15,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' liveness probe. |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
@@ -344,9 +342,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
 | manager.grpcPort | int | `65003` | GRPC service port. |
-| manager.healthProbe.connectTimeout | string | `"5s"` | GRPC health probe connect timeout. |
-| manager.healthProbe.rpcTimeout | string | `"5s"` | GRPC health probe rpc timeout. |
-| manager.healthProbe.timeoutSeconds | int | `10` | GRPC health probe timeout seconds. |
 | manager.hostAliases | list | `[]` | Host Aliases. |
 | manager.hostNetwork | bool | `false` | hostNetwork specify if host network should be enabled. |
 | manager.image.digest | string | `""` | Image digest. |
@@ -410,6 +405,7 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
 | namespaceOverride | string | `""` | Override dragonfly namespace. |
+| readinessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":10,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' readiness probe. |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
@@ -454,9 +450,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
 | scheduler.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for scheduler. |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname. |
-| scheduler.healthProbe.connectTimeout | string | `"5s"` | GRPC health probe connect timeout. |
-| scheduler.healthProbe.rpcTimeout | string | `"5s"` | GRPC health probe rpc timeout. |
-| scheduler.healthProbe.timeoutSeconds | int | `10` | GRPC health probe timeout seconds. |
 | scheduler.hostAliases | list | `[]` | Host Aliases. |
 | scheduler.hostNetwork | bool | `false` | hostNetwork specify if host network should be enabled. |
 | scheduler.image.digest | string | `""` | Image digest. |
@@ -563,9 +556,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
-| seedClient.healthProbe.connectTimeout | string | `"5s"` | GRPC health probe connect timeout. |
-| seedClient.healthProbe.rpcTimeout | string | `"5s"` | GRPC health probe rpc timeout. |
-| seedClient.healthProbe.timeoutSeconds | int | `10` | GRPC health probe timeout seconds. |
 | seedClient.hostAliases | list | `[]` | Host Aliases. |
 | seedClient.hostNetwork | bool | `false` | hostNetwork specify if host network should be enabled. |
 | seedClient.image.digest | string | `""` | Image digest. |
