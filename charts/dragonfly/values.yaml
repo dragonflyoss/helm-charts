@@ -86,6 +86,20 @@ manager:
   extraVolumeMounts:
     - name: logs
       mountPath: /var/log/dragonfly/manager
+  # -- Startup probe configuration. Allows the container time to start before
+  # liveness and readiness probes are evaluated. Useful for slow boots driven
+  # by database migrations, peer discovery, or cache hydration.
+  startupProbe:
+    # -- Enable startup probe.
+    enable: false
+    # -- Initial delay before the first probe.
+    initialDelaySeconds: 0
+    # -- Period (in seconds) between probe attempts.
+    periodSeconds: 5
+    # -- Probe timeout (in seconds).
+    timeoutSeconds: 5
+    # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+    failureThreshold: 60
   # -- REST service port.
   restPort: 8080
   # -- GRPC service port.
@@ -394,6 +408,20 @@ scheduler:
   extraVolumeMounts:
     - name: logs
       mountPath: /var/log/dragonfly/scheduler
+  # -- Startup probe configuration. Allows the container time to start before
+  # liveness and readiness probes are evaluated. Useful when scheduler boot is
+  # slowed by manager registration or peer discovery.
+  startupProbe:
+    # -- Enable startup probe.
+    enable: false
+    # -- Initial delay before the first probe.
+    initialDelaySeconds: 0
+    # -- Period (in seconds) between probe attempts.
+    periodSeconds: 5
+    # -- Probe timeout (in seconds).
+    timeoutSeconds: 5
+    # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+    failureThreshold: 60
   initContainer:
     # -- Pod resource requests and limits.
     resources:
@@ -786,6 +814,20 @@ seedClient:
   extraVolumeMounts:
     - name: logs
       mountPath: /var/log/dragonfly/dfdaemon/
+  # -- Startup probe configuration. Allows the container time to start before
+  # liveness and readiness probes are evaluated. Useful when dfdaemon warm-up
+  # is slow due to peer discovery or cache hydration.
+  startupProbe:
+    # -- Enable startup probe.
+    enable: false
+    # -- Initial delay before the first probe.
+    initialDelaySeconds: 0
+    # -- Period (in seconds) between probe attempts.
+    periodSeconds: 5
+    # -- Probe timeout (in seconds).
+    timeoutSeconds: 5
+    # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+    failureThreshold: 60
   persistence:
     # -- Enable persistence for seed peer.
     enable: true
@@ -1315,6 +1357,20 @@ client:
       mountPath: /var/lib/dragonfly/
     - name: logs
       mountPath: /var/log/dragonfly/dfdaemon/
+  # -- Startup probe configuration. Allows the container time to start before
+  # liveness and readiness probes are evaluated. Useful when dfdaemon warm-up
+  # is slow due to peer discovery or cache hydration.
+  startupProbe:
+    # -- Enable startup probe.
+    enable: false
+    # -- Initial delay before the first probe.
+    initialDelaySeconds: 0
+    # -- Period (in seconds) between probe attempts.
+    periodSeconds: 5
+    # -- Probe timeout (in seconds).
+    timeoutSeconds: 5
+    # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+    failureThreshold: 60
   dfinit:
     # -- Enable dfinit to override configuration of container runtime.
     enable: false
