@@ -19,23 +19,47 @@ global:
   # -- Global storageClass for Persistent Volume(s).
   storageClass: ''
 
-# -- Configure extra options for containers' liveness probe.
-livenessProbe:
-  enable: true
-  initialDelaySeconds: 15
-  periodSeconds: 30
+startupProbe:
+  # -- Enable startup probe.
+  enable: false
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 0
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 5
+  # -- Probe timeout (in seconds).
   timeoutSeconds: 3
-  failureThreshold: 2
+  # -- Success threshold for startup probe. Must be 1 for startup probes.
   successThreshold: 1
+  # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+  failureThreshold: 60
 
-# -- Configure extra options for containers' readiness probe.
-readinessProbe:
+livenessProbe:
+  # -- Enable liveness probe.
   enable: true
-  initialDelaySeconds: 10
-  periodSeconds: 30
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 15
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 10
+  # -- Probe timeout (in seconds).
   timeoutSeconds: 3
-  failureThreshold: 2
+  # -- Success threshold for liveness probe. Must be 1 for liveness probes.
   successThreshold: 1
+  # -- Failure threshold before the container is restarted. Total time before restart = initialDelaySeconds + (periodSeconds * failureThreshold).
+  failureThreshold: 2
+
+readinessProbe:
+  # -- Enable readiness probe.
+  enable: true
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 10
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 10
+  # -- Probe timeout (in seconds).
+  timeoutSeconds: 3
+  # -- Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes.
+  successThreshold: 1
+  # -- Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold).
+  failureThreshold: 2
 
 manager:
   # -- Enable manager.
@@ -738,7 +762,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1154,6 +1178,9 @@ seedClient:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1255,7 +1282,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1344,7 +1371,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.3.6
+      tag: v1.3.8
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1740,6 +1767,9 @@ client:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1966,7 +1996,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.

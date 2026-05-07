@@ -128,6 +128,7 @@ helm delete dragonfly --namespace dragonfly-system
 |-----|------|---------|-------------|
 | client.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | client.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| client.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
 | client.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
 | client.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
 | client.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
@@ -193,7 +194,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.3.6"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.3.8"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
@@ -209,7 +210,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.3.6"` | Image tag. |
+| client.image.tag | string | `"v1.3.8"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -282,13 +283,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.3.6"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.3.8"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.3.6"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.3.8"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -301,7 +302,12 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
 | injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | namespaceSelector determines which namespaces the webhook applies to. |
-| livenessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":15,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' liveness probe. |
+| livenessProbe.enable | bool | `true` | Enable liveness probe. |
+| livenessProbe.failureThreshold | int | `2` | Failure threshold before the container is restarted. Total time before restart = initialDelaySeconds + (periodSeconds * failureThreshold). |
+| livenessProbe.initialDelaySeconds | int | `15` | Initial delay before the first probe. |
+| livenessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
+| livenessProbe.successThreshold | int | `1` | Success threshold for liveness probe. Must be 1 for liveness probes. |
+| livenessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
@@ -405,7 +411,12 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
 | namespaceOverride | string | `""` | Override dragonfly namespace. |
-| readinessProbe | object | `{"enable":true,"failureThreshold":2,"initialDelaySeconds":10,"periodSeconds":30,"successThreshold":1,"timeoutSeconds":3}` | Configure extra options for containers' readiness probe. |
+| readinessProbe.enable | bool | `true` | Enable readiness probe. |
+| readinessProbe.failureThreshold | int | `2` | Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold). |
+| readinessProbe.initialDelaySeconds | int | `10` | Initial delay before the first probe. |
+| readinessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
+| readinessProbe.successThreshold | int | `1` | Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes. |
+| readinessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
@@ -497,6 +508,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
 | seedClient.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | seedClient.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
+| seedClient.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
 | seedClient.config.backend.putChunkSize | string | `"8MiB"` | Put chunk size specifies the size of each chunk when uploading data to backend storage. Larger chunks reduce the total number of requests and API overhead, but require more memory for buffering and may delay upload start. Smaller chunks reduce memory footprint and provide faster initial response, but increase request overhead and API costs. Choose based on your network conditions, available memory, and backend pricing/performance characteristics. |
 | seedClient.config.backend.putConcurrentChunkCount | int | `16` | Put concurrent chunk count specifies the maximum number of chunks to upload in parallel to backend storage. Higher values can improve upload throughput by maximizing bandwidth utilization, but increase memory usage and backend load. Lower values reduce resource consumption but may underutilize available bandwidth. Tune based on your network capacity and backend concurrency limits. |
 | seedClient.config.backend.putTimeout | string | `"900s"` | Put timeout specifies the maximum duration allowed for uploading a single object (potentially consisting of multiple chunks) to the backend storage. If the upload does not complete within this time window, the operation will be canceled and treated as a failure. |
@@ -563,7 +575,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.3.6"` | Image tag. |
+| seedClient.image.tag | string | `"v1.3.8"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -605,6 +617,12 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
+| startupProbe.enable | bool | `false` | Enable startup probe. |
+| startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
+| startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
+| startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
+| startupProbe.successThreshold | int | `1` | Success threshold for startup probe. Must be 1 for startup probes. |
+| startupProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 
 ## Chart dependencies
 

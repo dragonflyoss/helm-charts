@@ -106,6 +106,16 @@ spec:
         {{- if .Values.scheduler.extraVolumeMounts }}
         {{- toYaml .Values.scheduler.extraVolumeMounts | nindent 8 }}
         {{- end }}
+        {{- if .Values.startupProbe.enable }}
+        startupProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.startupProbe.successThreshold }}
+          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+        {{- end }}
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]

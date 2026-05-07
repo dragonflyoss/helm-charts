@@ -121,6 +121,16 @@ spec:
           protocol: TCP
         - containerPort: {{ .Values.seedClient.config.storage.server.quicPort }}
           protocol: TCP
+        {{- if .Values.startupProbe.enable }}
+        startupProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.startupProbe.successThreshold }}
+          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+        {{- end }}
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]

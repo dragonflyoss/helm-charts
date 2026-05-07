@@ -82,6 +82,17 @@ spec:
         - containerPort: 9443
           name: webhook-server
           protocol: TCP
+        {{- if .Values.startupProbe.enable }}
+        startupProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.startupProbe.successThreshold }}
+          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /readyz
