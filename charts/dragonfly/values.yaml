@@ -720,7 +720,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1136,6 +1136,9 @@ seedClient:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1237,7 +1240,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1326,7 +1329,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.3.6
+      tag: v1.3.8
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1722,6 +1725,9 @@ client:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1948,7 +1954,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.3.6
+    tag: v1.3.8
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
