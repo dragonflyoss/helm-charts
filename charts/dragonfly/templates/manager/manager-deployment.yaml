@@ -128,6 +128,15 @@ spec:
           periodSeconds: 15
           timeoutSeconds: 10
           failureThreshold: 5
+        {{- if .Values.manager.startupProbe.enable }}
+        startupProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+          initialDelaySeconds: {{ .Values.manager.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.manager.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.manager.startupProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.manager.startupProbe.failureThreshold }}
+        {{- end }}
       volumes:
       - name: config
         configMap:

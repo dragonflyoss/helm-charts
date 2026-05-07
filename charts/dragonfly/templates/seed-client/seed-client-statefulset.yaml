@@ -135,6 +135,15 @@ spec:
           periodSeconds: 30
           timeoutSeconds: 10
           failureThreshold: 5
+        {{- if .Values.seedClient.startupProbe.enable }}
+        startupProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
+          initialDelaySeconds: {{ .Values.seedClient.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.seedClient.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.seedClient.startupProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.seedClient.startupProbe.failureThreshold }}
+        {{- end }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
