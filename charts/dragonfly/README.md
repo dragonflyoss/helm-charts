@@ -237,12 +237,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
 | client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| client.startupProbe | object | `{"enable":false,"failureThreshold":60,"initialDelaySeconds":0,"periodSeconds":5,"timeoutSeconds":5}` | Startup probe configuration. Allows the container time to start before liveness and readiness probes are evaluated. Useful when dfdaemon warm-up is slow due to peer discovery or cache hydration. |
-| client.startupProbe.enable | bool | `false` | Enable startup probe. |
-| client.startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
-| client.startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
-| client.startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
-| client.startupProbe.timeoutSeconds | int | `5` | Probe timeout (in seconds). |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -308,6 +302,12 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
 | injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | namespaceSelector determines which namespaces the webhook applies to. |
+| livenessProbe.enable | bool | `true` | Enable liveness probe. |
+| livenessProbe.failureThreshold | int | `2` | Failure threshold before the container is restarted. Total time before restart = initialDelaySeconds + (periodSeconds * failureThreshold). |
+| livenessProbe.initialDelaySeconds | int | `15` | Initial delay before the first probe. |
+| livenessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
+| livenessProbe.successThreshold | int | `1` | Success threshold for liveness probe. Must be 1 for liveness probes. |
+| livenessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 | manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
@@ -396,12 +396,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.nodePort | string | `""` | Service nodePort. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
-| manager.startupProbe | object | `{"enable":false,"failureThreshold":60,"initialDelaySeconds":0,"periodSeconds":5,"timeoutSeconds":5}` | Startup probe configuration. Allows the container time to start before liveness and readiness probes are evaluated. Useful for slow boots driven by database migrations, peer discovery, or cache hydration. |
-| manager.startupProbe.enable | bool | `false` | Enable startup probe. |
-| manager.startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
-| manager.startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
-| manager.startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
-| manager.startupProbe.timeoutSeconds | int | `5` | Probe timeout (in seconds). |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -417,6 +411,12 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.primary.service.port | int | `3306` | Mysql port. |
 | nameOverride | string | `""` | Override dragonfly name. |
 | namespaceOverride | string | `""` | Override dragonfly namespace. |
+| readinessProbe.enable | bool | `true` | Enable readiness probe. |
+| readinessProbe.failureThreshold | int | `2` | Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold). |
+| readinessProbe.initialDelaySeconds | int | `10` | Initial delay before the first probe. |
+| readinessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
+| readinessProbe.successThreshold | int | `1` | Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes. |
+| readinessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
@@ -502,12 +502,6 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.nodePort | string | `""` | Service nodePort. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
-| scheduler.startupProbe | object | `{"enable":false,"failureThreshold":60,"initialDelaySeconds":0,"periodSeconds":5,"timeoutSeconds":5}` | Startup probe configuration. Allows the container time to start before liveness and readiness probes are evaluated. Useful when scheduler boot is slowed by manager registration or peer discovery. |
-| scheduler.startupProbe.enable | bool | `false` | Enable startup probe. |
-| scheduler.startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
-| scheduler.startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
-| scheduler.startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
-| scheduler.startupProbe.timeoutSeconds | int | `5` | Probe timeout (in seconds). |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -619,16 +613,16 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.service.labels | object | `{}` | Service labels. |
 | seedClient.service.nodePort | string | `""` | Service nodePort. |
 | seedClient.service.type | string | `"ClusterIP"` | Service type. |
-| seedClient.startupProbe | object | `{"enable":false,"failureThreshold":60,"initialDelaySeconds":0,"periodSeconds":5,"timeoutSeconds":5}` | Startup probe configuration. Allows the container time to start before liveness and readiness probes are evaluated. Useful when dfdaemon warm-up is slow due to peer discovery or cache hydration. |
-| seedClient.startupProbe.enable | bool | `false` | Enable startup probe. |
-| seedClient.startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
-| seedClient.startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
-| seedClient.startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
-| seedClient.startupProbe.timeoutSeconds | int | `5` | Probe timeout (in seconds). |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |
+| startupProbe.enable | bool | `false` | Enable startup probe. |
+| startupProbe.failureThreshold | int | `60` | Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold. |
+| startupProbe.initialDelaySeconds | int | `0` | Initial delay before the first probe. |
+| startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
+| startupProbe.successThreshold | int | `1` | Success threshold for startup probe. Must be 1 for startup probes. |
+| startupProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 
 ## Chart dependencies
 
