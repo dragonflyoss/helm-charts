@@ -31,6 +31,19 @@ data:
         sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
+        {{- with .Values.externalRedis.tls }}
+        {{- if or .insecureSkipVerify .caCert }}
+        tls:
+          {{- if .caCert }}
+          caCert: {{ .caCert }}
+          {{- end }}
+          {{- if and .cert .key }}
+          cert: {{ .cert }}
+          key: {{ .key }}
+          {{- end }}
+          insecureSkipVerify: {{ .insecureSkipVerify }}
+        {{- end }}
+        {{- end }}
         {{- end }}
     dynconfig:
 {{ toYaml .Values.scheduler.config.dynconfig | indent 6 }}
@@ -63,6 +76,19 @@ data:
         sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
+        {{- with .Values.externalRedis.tls }}
+        {{- if or .insecureSkipVerify .caCert }}
+        tls:
+          {{- if .caCert }}
+          caCert: {{ .caCert }}
+          {{- end }}
+          {{- if and .cert .key }}
+          cert: {{ .cert }}
+          key: {{ .key }}
+          {{- end }}
+          insecureSkipVerify: {{ .insecureSkipVerify }}
+        {{- end }}
+        {{- end }}
         {{- end }}
     storage:
 {{ toYaml .Values.scheduler.config.storage | indent 6 }}
