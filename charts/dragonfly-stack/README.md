@@ -234,6 +234,11 @@ helm delete dragonfly --namespace dragonfly-system
 | dragonfly.externalRedis.db | int | `0` | External redis db. |
 | dragonfly.externalRedis.masterName | string | `""` | External redis sentinel master name. |
 | dragonfly.externalRedis.password | string | `""` | External redis password. |
+| dragonfly.externalRedis.tls | object | `{"caCert":"","cert":"","insecureSkipVerify":false,"key":""}` | TLS client configuration for external redis connection. |
+| dragonfly.externalRedis.tls.caCert | string | `""` | caCert is the CA certificate file path for redis TLS handshake. |
+| dragonfly.externalRedis.tls.cert | string | `""` | cert is the client certificate file path for redis TLS handshake. |
+| dragonfly.externalRedis.tls.insecureSkipVerify | bool | `false` | insecureSkipVerify controls whether the client verifies the server's certificate chain and hostname. |
+| dragonfly.externalRedis.tls.key | string | `""` | key is the client key file path for redis TLS handshake. |
 | dragonfly.externalRedis.username | string | `""` | External redis username. |
 | dragonfly.manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
 | dragonfly.manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
