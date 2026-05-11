@@ -213,3 +213,25 @@ Return the proper image name (for the injector image)
 {{- define "injector.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
 {{- end -}}
+
+{{/*
+Compute the effective probe block by merging a per-component override over the global block.
+A component field takes precedence whenever the key is present in the component block,
+including explicit zero values (0, false, ""). Keys absent from the component block fall
+back to the global block.
+Usage: include "dragonfly.probe.effective" (dict "global" .Values.startupProbe "component" .Values.client.startupProbe)
+Returns: YAML for the effective probe block, consumable via fromYaml.
+*/}}
+{{- define "dragonfly.probe.effective" -}}
+{{- $g := .global -}}
+{{- $c := .component | default (dict) -}}
+{{- $r := dict -}}
+{{- range $k, $v := $g -}}
+  {{- if hasKey $c $k -}}
+    {{- $_ := set $r $k (index $c $k) -}}
+  {{- else -}}
+    {{- $_ := set $r $k $v -}}
+  {{- end -}}
+{{- end -}}
+{{- $r | toYaml -}}
+{{- end -}}

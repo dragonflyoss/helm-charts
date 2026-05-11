@@ -109,6 +109,12 @@ manager:
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
   tolerations: []
+  # -- Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it.
+  startupProbe: {}
+  # -- Optional per-component readinessProbe override. Same semantics as `startupProbe` above.
+  readinessProbe: {}
+  # -- Optional per-component livenessProbe override. Same semantics as `startupProbe` above.
+  livenessProbe: {}
   # -- Pod annotations.
   podAnnotations: {}
   # -- Pod labels.
@@ -416,6 +422,12 @@ scheduler:
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
   tolerations: []
+  # -- Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it.
+  startupProbe: {}
+  # -- Optional per-component readinessProbe override. Same semantics as `startupProbe` above.
+  readinessProbe: {}
+  # -- Optional per-component livenessProbe override. Same semantics as `startupProbe` above.
+  livenessProbe: {}
   # -- Pod annotations.
   podAnnotations: {}
   # -- Pod labels.
@@ -790,6 +802,12 @@ seedClient:
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
   tolerations: []
+  # -- Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it.
+  startupProbe: {}
+  # -- Optional per-component readinessProbe override. Same semantics as `startupProbe` above.
+  readinessProbe: {}
+  # -- Optional per-component livenessProbe override. Same semantics as `startupProbe` above.
+  livenessProbe: {}
   # -- Pod annotations.
   podAnnotations: {}
   # -- Pod labels.
@@ -1314,6 +1332,12 @@ client:
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
   tolerations: []
+  # -- Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it.
+  startupProbe: {}
+  # -- Optional per-component readinessProbe override. Same semantics as `startupProbe` above.
+  readinessProbe: {}
+  # -- Optional per-component livenessProbe override. Same semantics as `startupProbe` above.
+  livenessProbe: {}
   # -- Pod annotations.
   podAnnotations: {}
   # -- Pod labels.
@@ -1974,6 +1998,12 @@ injector:
   terminationGracePeriodSeconds: 10
   # -- List of node taints to tolerate.
   tolerations: []
+  # -- Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it.
+  startupProbe: {}
+  # -- Optional per-component readinessProbe override. Same semantics as `startupProbe` above.
+  readinessProbe: {}
+  # -- Optional per-component livenessProbe override. Same semantics as `startupProbe` above.
+  livenessProbe: {}
   # -- Pod affinity.
   affinity: {}
   # -- Pod annotations.
