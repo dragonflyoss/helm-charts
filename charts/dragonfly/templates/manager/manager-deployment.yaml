@@ -114,32 +114,35 @@ spec:
         {{- if .Values.manager.extraVolumeMounts }}
         {{- toYaml .Values.manager.extraVolumeMounts | nindent 8 }}
         {{- end }}
-        {{- if .Values.startupProbe.enable }}
+        {{- $startupProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.startupProbe "component" .Values.manager.startupProbe)) }}
+        {{- if $startupProbe.enable }}
         startupProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"]
-          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.startupProbe.successThreshold }}
-          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ $startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ $startupProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ $startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ $startupProbe.periodSeconds }}
+          timeoutSeconds: {{ $startupProbe.timeoutSeconds }}
+          successThreshold: {{ $startupProbe.successThreshold }}
+          failureThreshold: {{ $startupProbe.failureThreshold }}
         {{- end }}
+        {{- $readinessProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.readinessProbe "component" .Values.manager.readinessProbe)) }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.readinessProbe.successThreshold }}
-          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ $readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ $readinessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ $readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ $readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ $readinessProbe.timeoutSeconds }}
+          successThreshold: {{ $readinessProbe.successThreshold }}
+          failureThreshold: {{ $readinessProbe.failureThreshold }}
+        {{- $livenessProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.livenessProbe "component" .Values.manager.livenessProbe)) }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"]
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.livenessProbe.successThreshold }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.manager.grpcPort }}", "-connect-timeout={{ $livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ $livenessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ $livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ $livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ $livenessProbe.timeoutSeconds }}
+          successThreshold: {{ $livenessProbe.successThreshold }}
+          failureThreshold: {{ $livenessProbe.failureThreshold }}
       volumes:
       - name: config
         configMap:

@@ -217,6 +217,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | client.initContainer.image.tag | string | `"latest"` | Image tag. |
 | client.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| client.livenessProbe | object | `{}` | Optional per-component livenessProbe override. Same semantics as `startupProbe` above. |
 | client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | client.metrics.enable | bool | `true` | Enable client metrics. |
 | client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -236,7 +237,9 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
+| client.readinessProbe | object | `{}` | Optional per-component readinessProbe override. Same semantics as `startupProbe` above. |
 | client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| client.startupProbe | object | `{}` | Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it. |
 | client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -290,14 +293,17 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
 | injector.initContainerImage.tag | string | `"v1.3.8"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.livenessProbe | object | `{}` | Optional per-component livenessProbe override. Same semantics as `startupProbe` above. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
 | injector.podAnnotations | object | `{}` | Pod annotations. |
 | injector.podLabels | object | `{}` | Pod labels. |
 | injector.priorityClassName | string | `""` | Pod priorityClassName. |
+| injector.readinessProbe | object | `{}` | Optional per-component readinessProbe override. Same semantics as `startupProbe` above. |
 | injector.replicas | int | `2` | Number of Pods to launch. |
 | injector.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| injector.startupProbe | object | `{}` | Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it. |
 | injector.terminationGracePeriodSeconds | int | `10` | Pod terminationGracePeriodSeconds. |
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
@@ -369,6 +375,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | manager.initContainer.image.tag | string | `"latest"` | Image tag. |
 | manager.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| manager.livenessProbe | object | `{}` | Optional per-component livenessProbe override. Same semantics as `startupProbe` above. |
 | manager.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | manager.metrics.enable | bool | `true` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -388,6 +395,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.podAnnotations | object | `{}` | Pod annotations. |
 | manager.podLabels | object | `{}` | Pod labels. |
 | manager.priorityClassName | string | `""` | Pod priorityClassName. |
+| manager.readinessProbe | object | `{}` | Optional per-component readinessProbe override. Same semantics as `startupProbe` above. |
 | manager.replicas | int | `3` | Number of Pods to launch. |
 | manager.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | manager.restPort | int | `8080` | REST service port. |
@@ -396,6 +404,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.service.labels | object | `{}` | Service labels. |
 | manager.service.nodePort | string | `""` | Service nodePort. |
 | manager.service.type | string | `"ClusterIP"` | Service type. |
+| manager.startupProbe | object | `{}` | Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it. |
 | manager.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -475,6 +484,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | scheduler.initContainer.image.tag | string | `"latest"` | Image tag. |
 | scheduler.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| scheduler.livenessProbe | object | `{}` | Optional per-component livenessProbe override. Same semantics as `startupProbe` above. |
 | scheduler.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | scheduler.metrics.enable | bool | `true` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
@@ -495,6 +505,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.podAnnotations | object | `{}` | Pod annotations. |
 | scheduler.podLabels | object | `{}` | Pod labels. |
 | scheduler.priorityClassName | string | `""` | Pod priorityClassName. |
+| scheduler.readinessProbe | object | `{}` | Optional per-component readinessProbe override. Same semantics as `startupProbe` above. |
 | scheduler.replicas | int | `3` | Number of Pods to launch. |
 | scheduler.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | scheduler.service.annotations | object | `{}` | Service annotations. |
@@ -502,6 +513,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.service.labels | object | `{}` | Service labels. |
 | scheduler.service.nodePort | string | `""` | Service nodePort. |
 | scheduler.service.type | string | `"ClusterIP"` | Service type. |
+| scheduler.startupProbe | object | `{}` | Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -582,6 +594,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | seedClient.initContainer.image.tag | string | `"latest"` | Image tag. |
 | seedClient.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| seedClient.livenessProbe | object | `{}` | Optional per-component livenessProbe override. Same semantics as `startupProbe` above. |
 | seedClient.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedClient.metrics.enable | bool | `true` | Enable seed client metrics. |
 | seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -606,6 +619,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.podAnnotations | object | `{}` | Pod annotations. |
 | seedClient.podLabels | object | `{}` | Pod labels. |
 | seedClient.priorityClassName | string | `""` | Pod priorityClassName. |
+| seedClient.readinessProbe | object | `{}` | Optional per-component readinessProbe override. Same semantics as `startupProbe` above. |
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
 | seedClient.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
 | seedClient.service.annotations | object | `{}` | Service annotations. |
@@ -613,6 +627,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.service.labels | object | `{}` | Service labels. |
 | seedClient.service.nodePort | string | `""` | Service nodePort. |
 | seedClient.service.type | string | `"ClusterIP"` | Service type. |
+| seedClient.startupProbe | object | `{}` | Optional per-component startupProbe override. Fields set here take precedence over the top-level `startupProbe` block; unspecified fields fall back to it. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |

@@ -82,35 +82,38 @@ spec:
         - containerPort: 9443
           name: webhook-server
           protocol: TCP
-        {{- if .Values.startupProbe.enable }}
+        {{- $startupProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.startupProbe "component" .Values.injector.startupProbe)) }}
+        {{- if $startupProbe.enable }}
         startupProbe:
           httpGet:
             path: /readyz
             port: 8081
-          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.startupProbe.successThreshold }}
-          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+          initialDelaySeconds: {{ $startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ $startupProbe.periodSeconds }}
+          timeoutSeconds: {{ $startupProbe.timeoutSeconds }}
+          successThreshold: {{ $startupProbe.successThreshold }}
+          failureThreshold: {{ $startupProbe.failureThreshold }}
         {{- end }}
+        {{- $readinessProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.readinessProbe "component" .Values.injector.readinessProbe)) }}
         readinessProbe:
           httpGet:
             path: /readyz
             port: 8081
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.readinessProbe.successThreshold }}
-          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          initialDelaySeconds: {{ $readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ $readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ $readinessProbe.timeoutSeconds }}
+          successThreshold: {{ $readinessProbe.successThreshold }}
+          failureThreshold: {{ $readinessProbe.failureThreshold }}
+        {{- $livenessProbe := fromYaml (include "dragonfly.probe.effective" (dict "global" .Values.livenessProbe "component" .Values.injector.livenessProbe)) }}
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8081
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-          successThreshold: {{ .Values.livenessProbe.successThreshold }}
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          initialDelaySeconds: {{ $livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ $livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ $livenessProbe.timeoutSeconds }}
+          successThreshold: {{ $livenessProbe.successThreshold }}
+          failureThreshold: {{ $livenessProbe.failureThreshold }}
         resources:
 {{ toYaml .Values.injector.resources | indent 10 }}
         {{- if .Values.injector.extraEnvVars }}
