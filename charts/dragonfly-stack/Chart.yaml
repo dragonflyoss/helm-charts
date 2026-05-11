@@ -3,7 +3,7 @@ name: dragonfly-stack
 description: Collects Dragonfly component and Nydus component into a single chart to provide a complete solution for the Dragonfly stack.
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 0.1.3
+version: 0.1.2
 appVersion: 2.1.49
 keywords:
   - dragonfly-stack
@@ -31,7 +31,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add externalRedis TLS client configuration support.
+    - Rename repo Dragonfly2 to dragonfly.
 
   artifacthub.io/links: |
     - name: Chart Source
