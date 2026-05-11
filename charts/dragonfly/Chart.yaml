@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.6.26
-appVersion: 2.4.4-rc.1
+version: 1.6.27
+appVersion: 2.4.4-rc.2
 keywords:
   - dragonfly
   - d7y
@@ -27,7 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Centralize health probe configuration into global readinessProbe and livenessProbe settings, and fix GRPC health probe timeout parameter format.
+    - Bump dragonfly version to v2.4.4-rc.2.
+    - Add externalRedis TLS client configuration support.
 
   artifacthub.io/links: |
     - name: Chart Source
