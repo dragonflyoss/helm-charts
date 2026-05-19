@@ -177,7 +177,7 @@ spec:
         - containerPort: {{ .Values.client.config.storage.server.tcpPort }}
           protocol: TCP
         - containerPort: {{ .Values.client.config.storage.server.quicPort }}
-          protocol: TCP
+          protocol: UDP
         {{- if .Values.startupProbe.enable }}
         startupProbe:
           exec:

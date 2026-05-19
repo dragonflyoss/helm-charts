@@ -120,7 +120,7 @@ spec:
         - containerPort: {{ .Values.seedClient.config.storage.server.tcpPort }}
           protocol: TCP
         - containerPort: {{ .Values.seedClient.config.storage.server.quicPort }}
-          protocol: TCP
+          protocol: UDP
         {{- if .Values.startupProbe.enable }}
         startupProbe:
           exec:
