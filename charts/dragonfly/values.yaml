@@ -1841,6 +1841,11 @@ mysql:
     username: dragonfly
     # -- Mysql password.
     password: dragonfly
+    # -- Existing secret name containing the mysql password. When set with global.templateConfig=true,
+    # the password is injected via MYSQL_PASSWORD env var rather than hardcoded in the configmap.
+    existingSecret: ''
+    # -- Key in the existing secret that holds the mysql password.
+    existingSecretPasswordKey: 'mysql-password'
     # -- Mysql database name.
     database: manager
   primary:
@@ -1857,6 +1862,11 @@ externalMysql:
   username: dragonfly
   # -- External mysql password.
   password: dragonfly
+  # -- Existing secret name containing the external mysql password. When set with global.templateConfig=true,
+  # the password is injected via MYSQL_PASSWORD env var rather than hardcoded in the configmap.
+  existingSecret: ''
+  # -- Key in the existing secret that holds the external mysql password.
+  existingSecretPasswordKey: 'mysql-password'
   # -- External mysql database name.
   database: manager
   # -- External mysql port.
@@ -1874,6 +1884,11 @@ redis:
     enabled: true
     # -- Redis password.
     password: dragonfly
+    # -- Existing secret name containing the redis password. When set with global.templateConfig=true,
+    # the password is injected via REDIS_PASSWORD env var rather than hardcoded in the configmap.
+    existingSecret: ''
+    # -- Key in the existing secret that holds the redis password.
+    existingSecretPasswordKey: 'redis-password'
   master:
     service:
       ports:
@@ -1890,6 +1905,11 @@ externalRedis:
   username: ''
   # -- External redis password.
   password: ''
+  # -- Existing secret name containing the external redis password. When set with global.templateConfig=true,
+  # the password is injected via REDIS_PASSWORD env var rather than hardcoded in the configmap.
+  existingSecret: ''
+  # -- Key in the existing secret that holds the external redis password.
+  existingSecretPasswordKey: 'redis-password'
   # -- External redis sentinel addresses.
   sentinelUsername: ''
   # -- External redis sentinel password.

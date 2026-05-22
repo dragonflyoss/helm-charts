@@ -213,3 +213,35 @@ Return the proper image name (for the injector image)
 {{- define "injector.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
 {{- end -}}
+
+{{/*
+Generate MYSQL_PASSWORD env var from existingSecret or inline value.
+Usage: include "dragonfly.mysqlPasswordEnv" (dict "auth" .Values.mysql.auth "external" .Values.externalMysql "redisEnable" .Values.redis.enable "mysqlEnable" .Values.mysql.enable)
+Caller passes the resolved auth map: dict "password" <val> "existingSecret" <name> "existingSecretPasswordKey" <key>
+*/}}
+{{- define "dragonfly.mysqlPasswordEnv" -}}
+- name: MYSQL_PASSWORD
+{{- if .existingSecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .existingSecret }}
+      key: {{ default "mysql-password" .existingSecretPasswordKey }}
+{{- else }}
+  value: {{ .password | quote }}
+{{- end }}
+{{- end -}}
+
+{{/*
+Generate REDIS_PASSWORD env var from existingSecret or inline value.
+*/}}
+{{- define "dragonfly.redisPasswordEnv" -}}
+- name: REDIS_PASSWORD
+{{- if .existingSecret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .existingSecret }}
+      key: {{ default "redis-password" .existingSecretPasswordKey }}
+{{- else }}
+  value: {{ .password | quote }}
+{{- end }}
+{{- end -}}

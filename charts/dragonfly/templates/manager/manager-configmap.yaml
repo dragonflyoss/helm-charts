@@ -44,14 +44,14 @@ data:
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
-        password: {{ .Values.mysql.auth.password }}
+        password: {{ if .Values.global.templateConfig }}${MYSQL_PASSWORD}{{ else }}{{ .Values.mysql.auth.password }}{{ end }}
         host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.mysql.primary.service.port }}
         dbname: {{ .Values.mysql.auth.database }}
         migrate: {{ .Values.mysql.migrate }}
         {{- else }}
         user: {{ .Values.externalMysql.username }}
-        password: {{ .Values.externalMysql.password }}
+        password: {{ if .Values.global.templateConfig }}${MYSQL_PASSWORD}{{ else }}{{ .Values.externalMysql.password }}{{ end }}
         host: {{ .Values.externalMysql.host }}
         port: {{ .Values.externalMysql.port }}
         dbname: {{ .Values.externalMysql.database }}
@@ -61,13 +61,13 @@ data:
         {{- if .Values.redis.enable }}
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
-        password: {{ .Values.redis.auth.password }}
+        password: {{ if .Values.global.templateConfig }}${REDIS_PASSWORD}{{ else }}{{ .Values.redis.auth.password }}{{ end }}
         {{- else }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
         masterName: {{ .Values.externalRedis.masterName }}
         username: {{ .Values.externalRedis.username }}
-        password: {{ .Values.externalRedis.password }}
+        password: {{ if .Values.global.templateConfig }}${REDIS_PASSWORD}{{ else }}{{ .Values.externalRedis.password }}{{ end }}
         sentinelUsername: {{ .Values.externalRedis.sentinelUsername }}
         sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
         db: {{ .Values.externalRedis.db }}
