@@ -81,18 +81,26 @@ spec:
           mountPath: /config
         resources:
           {{- toYaml .Values.manager.initContainer.resources | nindent 10 }}
-        env:
+        envFrom:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host) }}
-        {{- include "dragonfly.mysqlPasswordEnv" (dict "password" .Values.mysql.auth.password "existingSecret" .Values.mysql.auth.existingSecret "existingSecretPasswordKey" .Values.mysql.auth.existingSecretPasswordKey) | nindent 8 }}
-        {{- else }}
-        {{- include "dragonfly.mysqlPasswordEnv" (dict "password" .Values.externalMysql.password "existingSecret" .Values.externalMysql.existingSecret "existingSecretPasswordKey" .Values.externalMysql.existingSecretPasswordKey) | nindent 8 }}
+        {{- if .Values.mysql.auth.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.mysql.auth.existingSecret) | nindent 8 }}
+        {{- end }}
+        {{- else if .Values.externalMysql.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.externalMysql.existingSecret) | nindent 8 }}
         {{- end }}
         {{- if .Values.redis.enable }}
-        {{- include "dragonfly.redisPasswordEnv" (dict "password" .Values.redis.auth.password "existingSecret" .Values.redis.auth.existingSecret "existingSecretPasswordKey" .Values.redis.auth.existingSecretPasswordKey) | nindent 8 }}
-        {{- else }}
-        {{- include "dragonfly.redisPasswordEnv" (dict "password" .Values.externalRedis.password "existingSecret" .Values.externalRedis.existingSecret "existingSecretPasswordKey" .Values.externalRedis.existingSecretPasswordKey) | nindent 8 }}
+        {{- if .Values.redis.auth.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.redis.auth.existingSecret) | nindent 8 }}
+        {{- end }}
+        {{- else if .Values.externalRedis.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.externalRedis.existingSecret) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.manager.config.auth.jwt.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.manager.config.auth.jwt.existingSecret) | nindent 8 }}
         {{- end }}
         {{- if .Values.manager.extraEnvVars }}
+        env:
         {{- include "common.tplvalues.render" (dict "value" .Values.manager.extraEnvVars "context" $) | nindent 8 }}
         {{- end }}
       {{- end }}

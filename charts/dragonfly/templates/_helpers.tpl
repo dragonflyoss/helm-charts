@@ -215,33 +215,10 @@ Return the proper image name (for the injector image)
 {{- end -}}
 
 {{/*
-Generate MYSQL_PASSWORD env var from existingSecret or inline value.
-Usage: include "dragonfly.mysqlPasswordEnv" (dict "auth" .Values.mysql.auth "external" .Values.externalMysql "redisEnable" .Values.redis.enable "mysqlEnable" .Values.mysql.enable)
-Caller passes the resolved auth map: dict "password" <val> "existingSecret" <name> "existingSecretPasswordKey" <key>
+Generate an envFrom secretRef entry for an existing secret.
+Usage: include "dragonfly.envFromSecret" (dict "secretName" <name>)
 */}}
-{{- define "dragonfly.mysqlPasswordEnv" -}}
-- name: MYSQL_PASSWORD
-{{- if .existingSecret }}
-  valueFrom:
-    secretKeyRef:
-      name: {{ .existingSecret }}
-      key: {{ default "mysql-password" .existingSecretPasswordKey }}
-{{- else }}
-  value: {{ .password | quote }}
-{{- end }}
-{{- end -}}
-
-{{/*
-Generate REDIS_PASSWORD env var from existingSecret or inline value.
-*/}}
-{{- define "dragonfly.redisPasswordEnv" -}}
-- name: REDIS_PASSWORD
-{{- if .existingSecret }}
-  valueFrom:
-    secretKeyRef:
-      name: {{ .existingSecret }}
-      key: {{ default "redis-password" .existingSecretPasswordKey }}
-{{- else }}
-  value: {{ .password | quote }}
-{{- end }}
+{{- define "dragonfly.envFromSecret" -}}
+- secretRef:
+    name: {{ .secretName }}
 {{- end -}}

@@ -183,6 +183,11 @@ manager:
         # encoded base64 of dragonfly.
         # Please change the key in production.
         key: 'ZHJhZ29uZmx5Cg=='
+        # -- existingSecret is the name of an existing Kubernetes Secret containing the JWT signing key.
+        # When set, the key field is ignored and the secret value is used instead.
+        existingSecret: ''
+        # -- existingSecretKey is the key within the existing secret that holds the JWT signing key.
+        existingSecretKey: 'JWT_KEY'
         # -- Timeout is duration that a jwt token is valid,
         # default duration is two days.
         timeout: 48h
@@ -1845,7 +1850,7 @@ mysql:
     # the password is injected via MYSQL_PASSWORD env var rather than hardcoded in the configmap.
     existingSecret: ''
     # -- Key in the existing secret that holds the mysql password.
-    existingSecretPasswordKey: 'mysql-password'
+    existingSecretKey: 'MYSQL_PASSWORD'
     # -- Mysql database name.
     database: manager
   primary:
@@ -1866,7 +1871,7 @@ externalMysql:
   # the password is injected via MYSQL_PASSWORD env var rather than hardcoded in the configmap.
   existingSecret: ''
   # -- Key in the existing secret that holds the external mysql password.
-  existingSecretPasswordKey: 'mysql-password'
+  existingSecretKey: 'MYSQL_PASSWORD'
   # -- External mysql database name.
   database: manager
   # -- External mysql port.
@@ -1888,7 +1893,7 @@ redis:
     # the password is injected via REDIS_PASSWORD env var rather than hardcoded in the configmap.
     existingSecret: ''
     # -- Key in the existing secret that holds the redis password.
-    existingSecretPasswordKey: 'redis-password'
+    existingSecretKey: 'REDIS_PASSWORD'
   master:
     service:
       ports:
@@ -1909,7 +1914,7 @@ externalRedis:
   # the password is injected via REDIS_PASSWORD env var rather than hardcoded in the configmap.
   existingSecret: ''
   # -- Key in the existing secret that holds the external redis password.
-  existingSecretPasswordKey: 'redis-password'
+  existingSecretKey: 'REDIS_PASSWORD'
   # -- External redis sentinel addresses.
   sentinelUsername: ''
   # -- External redis sentinel password.

@@ -81,13 +81,16 @@ spec:
           mountPath: /config
         resources:
           {{- toYaml .Values.scheduler.initContainer.resources | nindent 10 }}
-        env:
+        envFrom:
         {{- if .Values.redis.enable }}
-        {{- include "dragonfly.redisPasswordEnv" (dict "password" .Values.redis.auth.password "existingSecret" .Values.redis.auth.existingSecret "existingSecretPasswordKey" .Values.redis.auth.existingSecretPasswordKey) | nindent 8 }}
-        {{- else }}
-        {{- include "dragonfly.redisPasswordEnv" (dict "password" .Values.externalRedis.password "existingSecret" .Values.externalRedis.existingSecret "existingSecretPasswordKey" .Values.externalRedis.existingSecretPasswordKey) | nindent 8 }}
+        {{- if .Values.redis.auth.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.redis.auth.existingSecret) | nindent 8 }}
+        {{- end }}
+        {{- else if .Values.externalRedis.existingSecret }}
+        {{- include "dragonfly.envFromSecret" (dict "secretName" .Values.externalRedis.existingSecret) | nindent 8 }}
         {{- end }}
         {{- if .Values.scheduler.extraEnvVars }}
+        env:
         {{- include "common.tplvalues.render" (dict "value" .Values.scheduler.extraEnvVars "context" $) | nindent 8 }}
         {{- end }}
       {{- end }}
