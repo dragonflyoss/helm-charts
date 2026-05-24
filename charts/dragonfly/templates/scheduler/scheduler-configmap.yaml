@@ -35,11 +35,11 @@ data:
         {{- if or .insecureSkipVerify .caCert }}
         tls:
           {{- if .caCert }}
-          caCert: {{ .caCert }}
+          caCert: {{ .caCert | quote }}
           {{- end }}
           {{- if and .cert .key }}
-          cert: {{ .cert }}
-          key: {{ .key }}
+          cert: {{ .cert | quote }}
+          key: {{ .key | quote }}
           {{- end }}
           insecureSkipVerify: {{ .insecureSkipVerify }}
         {{- end }}
@@ -80,11 +80,11 @@ data:
         {{- if or .insecureSkipVerify .caCert }}
         tls:
           {{- if .caCert }}
-          caCert: {{ .caCert }}
+          caCert: {{ .caCert | quote }}
           {{- end }}
           {{- if and .cert .key }}
-          cert: {{ .cert }}
-          key: {{ .key }}
+          cert: {{ .cert | quote }}
+          key: {{ .key | quote }}
           {{- end }}
           insecureSkipVerify: {{ .insecureSkipVerify }}
         {{- end }}
