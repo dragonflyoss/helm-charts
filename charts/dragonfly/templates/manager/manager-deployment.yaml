@@ -73,7 +73,7 @@ spec:
         # TODO: parametrize image with envsubsts
         image: docker.io/tomkukral/tool
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
-        command: ["sh", "-c", "envsubst < /config/manager.yaml | tee /config-tmp/manager.yaml"]
+        command: ["sh", "-c", "envsubst < /config/manager.yaml > /config-tmp/manager.yaml"]
         volumeMounts:
         - name: config-tmp
           mountPath: /config-tmp
