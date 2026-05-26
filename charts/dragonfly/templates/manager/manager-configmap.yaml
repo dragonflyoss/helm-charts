@@ -39,7 +39,11 @@ data:
       cacheDir: {{ .Values.manager.config.server.cacheDir }}
       pluginDir: {{ .Values.manager.config.server.pluginDir }}
     auth:
-{{ toYaml .Values.manager.config.auth | indent 6 }}
+      jwt:
+        realm: {{ .Values.manager.config.auth.jwt.realm }}
+        key: {{ if and .Values.global.templateConfig .Values.manager.config.auth.jwt.existingSecret }}${JWT_KEY}{{ else }}{{ .Values.manager.config.auth.jwt.key }}{{ end }}
+        timeout: {{ .Values.manager.config.auth.jwt.timeout }}
+        maxRefresh: {{ .Values.manager.config.auth.jwt.maxRefresh }}
     database:
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
