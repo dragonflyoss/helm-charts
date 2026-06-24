@@ -81,7 +81,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.4.4-rc.1
+    tag: v2.4.4
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -377,7 +377,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.4.4-rc.1
+    tag: v2.4.4
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -762,7 +762,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.8
+    tag: v1.4.0
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -869,14 +869,14 @@ seedClient:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # -- schedulerClusterID is the ID of the cluster to which the scheduler belongs.
       # NOTE: This field is used to identify the cluster to which the scheduler belongs.
       # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
-      # idc is the idc of the host.
+      # -- idc is the idc of the host.
       idc: ''
-      # location is the location of the host.
+      # -- location is the location of the host.
       location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
@@ -885,22 +885,45 @@ seedClient:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
+      # -- BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload).
+      # When system CPU or memory usage exceeds the configured thresholds, the limiter
+      # estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds
+      # incoming requests whose in-flight count exceeds this estimate. A cooldown
+      # period prevents rapid oscillation between shedding and accepting.
+      adaptiveRateLimit:
+        # -- Number of time buckets in the rolling window for metric aggregation.
+        bucketCount: 50
+        # -- Duration of each time bucket (e.g., 200ms).
+        bucketInterval: 200ms
+        # -- CPU usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, CPU usage is ignored
+        # for overload detection.
+        cpuThreshold: 100
+        # -- Memory usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, Memory usage is ignored
+        # for overload detection.
+        memoryThreshold: 90
+        # -- Duration to continue shedding incoming requests after the first drop
+        # event, preventing rapid oscillation between shedding and accepting.
+        shedCooldown: 5s
+        # -- How often the background task collects CPU/memory usage metrics.
+        collectInterval: 3s
     download:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 400 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
-        requestRateLimit: 4000
-        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 1000.
+        requestRateLimit: 400
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 50.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 1000
+        requestbufferSize: 50
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
       # peers fetch pieces using it.
@@ -930,18 +953,18 @@ seedClient:
         # # GRPC server key file path for mTLS.
         # key: /etc/ssl/private/server.pem
         #
-        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 400 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
-        requestRateLimit: 4000
-        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        requestRateLimit: 400
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 50.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 1000
+        requestbufferSize: 50
       # # Client configuration for remote peer's upload server.
       # client:
       #   # CA certificate file path for mTLS.
@@ -1282,7 +1305,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.8
+    tag: v1.4.0
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1371,7 +1394,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.3.8
+      tag: v1.4.0
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1459,14 +1482,14 @@ client:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # -- schedulerClusterID is the ID of the cluster to which the scheduler belongs.
       # NOTE: This field is used to identify the cluster to which the scheduler belongs.
       # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
-      # idc is the idc of the host.
+      # -- idc is the idc of the host.
       idc: ''
-      # location is the location of the host.
+      # -- location is the location of the host.
       location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
@@ -1475,6 +1498,29 @@ client:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
+      # -- BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload).
+      # When system CPU or memory usage exceeds the configured thresholds, the limiter
+      # estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds
+      # incoming requests whose in-flight count exceeds this estimate. A cooldown
+      # period prevents rapid oscillation between shedding and accepting.
+      adaptiveRateLimit:
+        # -- Number of time buckets in the rolling window for metric aggregation.
+        bucketCount: 50
+        # -- Duration of each time bucket (e.g., 200ms).
+        bucketInterval: 200ms
+        # -- CPU usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, CPU usage is ignored
+        # for overload detection.
+        cpuThreshold: 100
+        # -- Memory usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, Memory usage is ignored
+        # for overload detection.
+        memoryThreshold: 90
+        # -- Duration to continue shedding incoming requests after the first drop
+        # event, preventing rapid oscillation between shedding and accepting.
+        shedCooldown: 5s
+        # -- How often the background task collects CPU/memory usage metrics.
+        collectInterval: 3s
     download:
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
@@ -1491,12 +1537,12 @@ client:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
         requestRateLimit: 50
-        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 500.
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 20.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 500
+        requestbufferSize: 20
       # -- bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
       # -- backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s.
@@ -1996,7 +2042,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.3.8
+    tag: v1.4.0
     # -- Image digest.
     digest: ''
     # -- Image pull policy.

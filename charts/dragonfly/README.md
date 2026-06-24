@@ -141,7 +141,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.download.pieceTimeout | string | `"360s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | client.config.download.server.requestRateLimit | int | `50` | requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 50 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
-| client.config.download.server.requestbufferSize | int | `500` | requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 500.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
+| client.config.download.server.requestbufferSize | int | `20` | requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 20.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
@@ -152,6 +152,9 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
 | client.config.health.server.port | int | `4003` | port is the port to the health server. |
 | client.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
+| client.config.host.idc | string | `""` | idc is the idc of the host. |
+| client.config.host.location | string | `""` | location is the location of the host. |
+| client.config.host.schedulerClusterID | int | `1` | schedulerClusterID is the ID of the cluster to which the scheduler belongs. NOTE: This field is used to identify the cluster to which the scheduler belongs. If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers. The system will automatically create a scheduler cluster with an ID of 1 by default. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.config.manager.addr | string | `""` | addr is manager address. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
@@ -168,6 +171,13 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.scheduler.enableBackToSource | bool | `true` | enableBackToSource indicates whether enable back-to-source download, when the scheduling failed. |
 | client.config.scheduler.maxScheduleCount | int | `5` | maxScheduleCount is the max count of schedule. |
 | client.config.scheduler.scheduleTimeout | string | `"3h"` | scheduleTimeout is timeout for the scheduler to respond to a scheduling request from dfdaemon, default is 3 hours.  If the scheduler's response time for a scheduling decision exceeds this timeout, dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.  Behavior upon timeout: - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly     from the source. - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.  **Important Considerations Regarding Timeout Triggers**: This timeout isn't solely for the scheduler's direct response. It can also be triggered if the overall duration of the client's interaction with the scheduler for a task (e.g., client downloading initial pieces and reporting their status back to the scheduler) exceeds `schedule_timeout`. During such client-side processing and reporting, the scheduler might be awaiting these updates before sending its comprehensive scheduling response, and this entire period is subject to the `schedule_timeout`.  **Configuration Guidance**: To prevent premature timeouts, `schedule_timeout` should be configured to a value greater than the maximum expected time for the *entire scheduling interaction*. This includes: 1. The scheduler's own processing and response time. 2. The time taken by the client to download any initial pieces and download all pieces finished,    as this communication is part of the scheduling phase.  Setting this value too low can lead to `TokioStreamElapsed` errors even if the network and scheduler are functioning correctly but the combined interaction time is longer than the configured timeout. |
+| client.config.server.adaptiveRateLimit | object | `{"bucketCount":50,"bucketInterval":"200ms","collectInterval":"3s","cpuThreshold":100,"memoryThreshold":90,"shedCooldown":"5s"}` | BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload). When system CPU or memory usage exceeds the configured thresholds, the limiter estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds incoming requests whose in-flight count exceeds this estimate. A cooldown period prevents rapid oscillation between shedding and accepting. |
+| client.config.server.adaptiveRateLimit.bucketCount | int | `50` | Number of time buckets in the rolling window for metric aggregation. |
+| client.config.server.adaptiveRateLimit.bucketInterval | string | `"200ms"` | Duration of each time bucket (e.g., 200ms). |
+| client.config.server.adaptiveRateLimit.collectInterval | string | `"3s"` | How often the background task collects CPU/memory usage metrics. |
+| client.config.server.adaptiveRateLimit.cpuThreshold | int | `100` | CPU usage percentage threshold (0–100) above which the system is considered overloaded. If threshold is 100, CPU usage is ignored for overload detection. |
+| client.config.server.adaptiveRateLimit.memoryThreshold | int | `90` | Memory usage percentage threshold (0–100) above which the system is considered overloaded. If threshold is 100, Memory usage is ignored for overload detection. |
+| client.config.server.adaptiveRateLimit.shedCooldown | string | `"5s"` | Duration to continue shedding incoming requests after the first drop event, preventing rapid oscillation between shedding and accepting. |
 | client.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
@@ -194,7 +204,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.3.8"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.4.0"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
@@ -210,7 +220,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.3.8"` | Image tag. |
+| client.image.tag | string | `"v1.4.0"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -283,13 +293,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.3.8"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.0"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.3.8"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.4.0"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -355,7 +365,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.4.4-rc.1"` | Image tag. |
+| manager.image.tag | string | `"v2.4.4"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -468,7 +478,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.4.4-rc.1"` | Image tag. |
+| scheduler.image.tag | string | `"v2.4.4"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -520,8 +530,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
-| seedClient.config.download.server.requestRateLimit | int | `4000` | requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 4000 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
-| seedClient.config.download.server.requestbufferSize | int | `1000` | requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 1000.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
+| seedClient.config.download.server.requestRateLimit | int | `400` | requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 400 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
+| seedClient.config.download.server.requestbufferSize | int | `50` | requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 50.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
@@ -532,6 +542,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
 | seedClient.config.health.server.port | int | `4003` | port is the port to the health server. |
 | seedClient.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | host is the host configuration for dfdaemon. |
+| seedClient.config.host.idc | string | `""` | idc is the idc of the host. |
+| seedClient.config.host.location | string | `""` | location is the location of the host. |
+| seedClient.config.host.schedulerClusterID | int | `1` | schedulerClusterID is the ID of the cluster to which the scheduler belongs. NOTE: This field is used to identify the cluster to which the scheduler belongs. If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers. The system will automatically create a scheduler cluster with an ID of 1 by default. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | seedClient.config.manager.addr | string | `""` | addr is manager address. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
@@ -549,6 +562,13 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.scheduler.scheduleTimeout | string | `"3h"` | scheduleTimeout is timeout for the scheduler to respond to a scheduling request from dfdaemon, default is 3 hours.  If the scheduler's response time for a scheduling decision exceeds this timeout, dfdaemon will encounter a `TokioStreamElapsed(Elapsed(()))` error.  Behavior upon timeout: - If `enable_back_to_source` is `true`, dfdaemon will attempt to download directly     from the source. - Otherwise (if `enable_back_to_source` is `false`), dfdaemon will report a download failure.  **Important Considerations Regarding Timeout Triggers**: This timeout isn't solely for the scheduler's direct response. It can also be triggered if the overall duration of the client's interaction with the scheduler for a task (e.g., client downloading initial pieces and reporting their status back to the scheduler) exceeds `schedule_timeout`. During such client-side processing and reporting, the scheduler might be awaiting these updates before sending its comprehensive scheduling response, and this entire period is subject to the `schedule_timeout`.  **Configuration Guidance**: To prevent premature timeouts, `schedule_timeout` should be configured to a value greater than the maximum expected time for the *entire scheduling interaction*. This includes: 1. The scheduler's own processing and response time. 2. The time taken by the client to download any initial pieces and download all pieces finished,    as this communication is part of the scheduling phase.  Setting this value too low can lead to `TokioStreamElapsed` errors even if the network and scheduler are functioning correctly but the combined interaction time is longer than the configured timeout. |
 | seedClient.config.seedPeer.enable | bool | `true` | enable indicates whether enable seed peer. |
 | seedClient.config.seedPeer.type | string | `"super"` | type is the type of seed peer. |
+| seedClient.config.server.adaptiveRateLimit | object | `{"bucketCount":50,"bucketInterval":"200ms","collectInterval":"3s","cpuThreshold":100,"memoryThreshold":90,"shedCooldown":"5s"}` | BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload). When system CPU or memory usage exceeds the configured thresholds, the limiter estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds incoming requests whose in-flight count exceeds this estimate. A cooldown period prevents rapid oscillation between shedding and accepting. |
+| seedClient.config.server.adaptiveRateLimit.bucketCount | int | `50` | Number of time buckets in the rolling window for metric aggregation. |
+| seedClient.config.server.adaptiveRateLimit.bucketInterval | string | `"200ms"` | Duration of each time bucket (e.g., 200ms). |
+| seedClient.config.server.adaptiveRateLimit.collectInterval | string | `"3s"` | How often the background task collects CPU/memory usage metrics. |
+| seedClient.config.server.adaptiveRateLimit.cpuThreshold | int | `100` | CPU usage percentage threshold (0–100) above which the system is considered overloaded. If threshold is 100, CPU usage is ignored for overload detection. |
+| seedClient.config.server.adaptiveRateLimit.memoryThreshold | int | `90` | Memory usage percentage threshold (0–100) above which the system is considered overloaded. If threshold is 100, Memory usage is ignored for overload detection. |
+| seedClient.config.server.adaptiveRateLimit.shedCooldown | string | `"5s"` | Duration to continue shedding incoming requests after the first drop event, preventing rapid oscillation between shedding and accepting. |
 | seedClient.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | pluginDir is the directory to store plugins. |
 | seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
@@ -561,8 +581,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | seedClient.config.upload.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
-| seedClient.config.upload.server.requestRateLimit | int | `4000` | requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
-| seedClient.config.upload.server.requestbufferSize | int | `1000` | requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
+| seedClient.config.upload.server.requestRateLimit | int | `400` | requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 400 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
+| seedClient.config.upload.server.requestbufferSize | int | `50` | requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 50.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -575,7 +595,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.3.8"` | Image tag. |
+| seedClient.image.tag | string | `"v1.4.0"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
