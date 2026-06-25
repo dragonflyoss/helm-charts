@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
     component: injector
 data:
-  config.yaml: |
+  injector.yaml: |
     initContainerImage:
 {{ toYaml .Values.injector.initContainerImage | indent 6 }}
 {{- end }}
