@@ -175,8 +175,9 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: storage
-        {{- range $key, $value := .Values.seedClient.persistence.annotations }}
-          {{ $key }}: {{ $value }}
+        {{- if .Values.seedClient.persistence.annotations }}
+        annotations:
+        {{- toYaml .Values.seedClient.persistence.annotations | nindent 10 }}
         {{- end }}
       spec:
         accessModes:
