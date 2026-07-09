@@ -1091,7 +1091,7 @@ seedClient:
       server:
         # -- port is the port to the proxy server.
         port: 4001
-        # -- requestRateLimit is the rate limit of the proxy server, default is 400 req/s.
+        # -- requestRateLimit is the rate limit of the HTTP proxy, default is 400 req/s.
         requestRateLimit: 400
       # # ip is the listen ip of the proxy server.
       # ip: ""
@@ -1705,7 +1705,7 @@ client:
       server:
         # -- port is the port to the proxy server.
         port: 4001
-        # -- requestRateLimit is the rate limit of the proxy server, default is 50 req/s.
+        # -- requestRateLimit is the rate limit of the HTTP proxy, default is 50 req/s.
         requestRateLimit: 50
       # # ip is the listen ip of the proxy server.
       # ip: ""
