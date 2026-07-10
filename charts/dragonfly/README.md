@@ -270,6 +270,11 @@ helm delete dragonfly --namespace dragonfly-system
 | externalRedis.password | string | `""` | External redis password. |
 | externalRedis.sentinelPassword | string | `""` | External redis sentinel password. |
 | externalRedis.sentinelUsername | string | `""` | External redis sentinel addresses. |
+| externalRedis.tls | object | `{"caCert":"","cert":"","insecureSkipVerify":false,"key":""}` | TLS client configuration for external redis connection. |
+| externalRedis.tls.caCert | string | `""` | caCert is the CA certificate file path for redis TLS handshake. |
+| externalRedis.tls.cert | string | `""` | cert is the client certificate file path for redis TLS handshake. |
+| externalRedis.tls.insecureSkipVerify | bool | `false` | insecureSkipVerify controls whether the client verifies the server's certificate chain and hostname. |
+| externalRedis.tls.key | string | `""` | key is the client key file path for redis TLS handshake. |
 | externalRedis.username | string | `""` | External redis username. |
 | fullnameOverride | string | `""` | Override dragonfly fullname. |
 | global.imagePullSecrets | list | `[]` | Global Docker registry secret names as an array. |

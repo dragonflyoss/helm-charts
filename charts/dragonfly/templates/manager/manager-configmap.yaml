@@ -73,6 +73,19 @@ data:
         db: {{ .Values.externalRedis.db }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}
+        {{- with .Values.externalRedis.tls }}
+        {{- if or .insecureSkipVerify .caCert }}
+        tls:
+          {{- if .caCert }}
+          caCert: {{ .caCert | quote }}
+          {{- end }}
+          {{- if and .cert .key }}
+          cert: {{ .cert | quote }}
+          key: {{ .key | quote }}
+          {{- end }}
+          insecureSkipVerify: {{ .insecureSkipVerify }}
+        {{- end }}
+        {{- end }}
         {{- end }}
     cache:
 {{ toYaml .Values.manager.config.cache | indent 6 }}

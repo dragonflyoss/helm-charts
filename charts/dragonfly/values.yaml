@@ -1988,6 +1988,17 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+  # -- TLS client configuration for external redis connection.
+  tls:
+    # -- caCert is the CA certificate file path for redis TLS handshake.
+    caCert: ''
+    # -- cert is the client certificate file path for redis TLS handshake.
+    cert: ''
+    # -- key is the client key file path for redis TLS handshake.
+    key: ''
+    # -- insecureSkipVerify controls whether the client verifies the
+    # server's certificate chain and hostname.
+    insecureSkipVerify: false
 
 injector:
   # -- Enable injector.
