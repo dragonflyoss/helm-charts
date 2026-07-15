@@ -3,6 +3,66 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Change buffer size to 512KiB.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:2.5.0
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.0
+        - name: client
+          image: dragonflyoss/client:v1.4.0
+        - name: seed-client
+          image: dragonflyoss/client:v1.4.0
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.4.0
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.0
+    created: "2026-07-15T14:10:37.039270419Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 9728784ea3fefa2fb9c18d6e66647ec1368c06127cfe6d4df4b8a6089d89b2b2
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.7.4/dragonfly-1.7.4.tgz
+    version: 1.7.4
+  - annotations:
+      artifacthub.io/changes: |
         - Add externalRedis TLS client configuration support.
       artifacthub.io/images: |
         - name: manager
@@ -20089,4 +20149,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-07-10T05:49:19.330369101Z"
+generated: "2026-07-15T14:10:37.040558853Z"
