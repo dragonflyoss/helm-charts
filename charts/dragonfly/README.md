@@ -257,18 +257,23 @@ helm delete dragonfly --namespace dragonfly-system
 | externalManager.host | string | `nil` | External manager hostname. |
 | externalManager.restPort | int | `8080` | External REST service port. |
 | externalMysql.database | string | `"manager"` | External mysql database name. |
+| externalMysql.existingSecret | string | `""` | existingSecret is the name of an existing secret containing the external mysql password. The secret must contain the key defined by existingSecretPasswordKey. When set, it takes precedence over the password field above. |
+| externalMysql.existingSecretPasswordKey | string | `"password"` | existingSecretPasswordKey is the key within existingSecret that holds the external mysql password. |
 | externalMysql.host | string | `nil` | External mysql hostname. |
 | externalMysql.migrate | bool | `true` | Running GORM migration. |
-| externalMysql.password | string | `"dragonfly"` | External mysql password. |
+| externalMysql.password | string | `"dragonfly"` | External mysql password. Ignored when existingSecret is set. |
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
 | externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
+| externalRedis.existingSecret | string | `""` | existingSecret is the name of an existing secret containing the external redis password and/or sentinel password. |
+| externalRedis.existingSecretPasswordKey | string | `"password"` | existingSecretPasswordKey is the key within existingSecret that holds the external redis password. |
+| externalRedis.existingSecretSentinelPasswordKey | string | `"sentinel-password"` | existingSecretSentinelPasswordKey is the key within existingSecret that holds the external redis sentinel password. |
 | externalRedis.masterName | string | `""` | External redis sentinel master name. |
-| externalRedis.password | string | `""` | External redis password. |
-| externalRedis.sentinelPassword | string | `""` | External redis sentinel password. |
+| externalRedis.password | string | `""` | External redis password. Ignored when existingSecret is set. |
+| externalRedis.sentinelPassword | string | `""` | External redis sentinel password. Ignored when existingSecret is set. |
 | externalRedis.sentinelUsername | string | `""` | External redis sentinel addresses. |
 | externalRedis.tls | object | `{"caCert":"","cert":"","insecureSkipVerify":false,"key":""}` | TLS client configuration for external redis connection. |
 | externalRedis.tls.caCert | string | `""` | caCert is the CA certificate file path for redis TLS handshake. |
@@ -324,7 +329,9 @@ helm delete dragonfly --namespace dragonfly-system
 | livenessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
 | livenessProbe.successThreshold | int | `1` | Success threshold for liveness probe. Must be 1 for liveness probes. |
 | livenessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
-| manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. |
+| manager.config.auth.jwt.existingSecret | string | `""` | existingSecret is the name of an existing secret containing the jwt signing key. The secret must contain the key defined by existingSecretKeyKey. When set, it takes precedence over the key field above. |
+| manager.config.auth.jwt.existingSecretKeyKey | string | `"jwt-key"` | existingSecretKeyKey is the key within existingSecret that holds the jwt signing key. |
+| manager.config.auth.jwt.key | string | `"ZHJhZ29uZmx5Cg=="` | Key is secret key used for signing, default value is encoded base64 of dragonfly. Please change the key in production. Ignored when existingSecret is set. |
 | manager.config.auth.jwt.maxRefresh | string | `"48h"` | MaxRefresh field allows clients to refresh their token until MaxRefresh has passed, default duration is two days. |
 | manager.config.auth.jwt.realm | string | `"Dragonfly"` | Realm name to display to the user, default value is Dragonfly. |
 | manager.config.auth.jwt.timeout | string | `"48h"` | Timeout is duration that a jwt token is valid, default duration is two days. |
@@ -416,9 +423,10 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.tolerations | list | `[]` | List of node taints to tolerate. |
 | manager.updateStrategy | object | `{"type":"RollingUpdate"}` | Update strategy for replicas. |
 | mysql.auth.database | string | `"manager"` | Mysql database name. |
+| mysql.auth.existingSecret | string | `""` | existingSecret is the name of an existing secret containing the mysql root and user passwords, under the fixed keys `mysql-root-password` and `mysql-password`. When set, it takes precedence over rootPassword/password above, both for the mysql pod and for the manager's own database connection. |
 | mysql.auth.host | string | `""` | Mysql hostname. |
-| mysql.auth.password | string | `"dragonfly"` | Mysql password. |
-| mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password. |
+| mysql.auth.password | string | `"dragonfly"` | Mysql password. Ignored when existingSecret is set. |
+| mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password. Ignored when existingSecret is set. |
 | mysql.auth.username | string | `"dragonfly"` | Mysql username. |
 | mysql.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | mysql.enable | bool | `true` | Enable mysql with docker container. |
@@ -434,7 +442,9 @@ helm delete dragonfly --namespace dragonfly-system
 | readinessProbe.successThreshold | int | `1` | Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes. |
 | readinessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
-| redis.auth.password | string | `"dragonfly"` | Redis password. |
+| redis.auth.existingSecret | string | `""` | existingSecret is the name of an existing secret containing the redis password. When set, it takes precedence over password above, both for the redis pod and for the manager/scheduler database connections. |
+| redis.auth.existingSecretPasswordKey | string | `"redis-password"` | existingSecretPasswordKey is the key within existingSecret that holds the redis password. |
+| redis.auth.password | string | `"dragonfly"` | Redis password. Ignored when existingSecret is set. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
 | redis.enable | bool | `true` | Enable redis cluster with docker container. |
 | redis.image.repository | string | `"bitnamilegacy/redis"` |  |

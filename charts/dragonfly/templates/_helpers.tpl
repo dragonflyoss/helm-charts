@@ -213,3 +213,48 @@ Return the proper image name (for the injector image)
 {{- define "injector.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
 {{- end -}}
+
+{{/*
+Placeholder tokens substituted into rendered manager.yaml/scheduler.yaml config files by
+"dragonfly.renderSecretsScript" below. Configmap templates emit one of these tokens, instead of
+the plaintext secret value, whenever the corresponding existingSecret value is configured.
+*/}}
+{{- define "dragonfly.secrets.mysqlPasswordPlaceholder" -}}__DRAGONFLY_MYSQL_PASSWORD__{{- end -}}
+{{- define "dragonfly.secrets.redisPasswordPlaceholder" -}}__DRAGONFLY_REDIS_PASSWORD__{{- end -}}
+{{- define "dragonfly.secrets.redisSentinelPasswordPlaceholder" -}}__DRAGONFLY_REDIS_SENTINEL_PASSWORD__{{- end -}}
+{{- define "dragonfly.secrets.jwtKeyPlaceholder" -}}__DRAGONFLY_JWT_KEY__{{- end -}}
+
+{{/*
+Shell script run by the "render-secrets" initContainer. It copies the config template (mounted
+read-only from a ConfigMap) into a writable emptyDir, then substitutes any placeholder token
+(see above) for the value of its matching environment variable. Config keys that were not backed
+by an existingSecret were rendered as plaintext directly by the ConfigMap template, so their
+placeholder never appears here and the substitution is a no-op for them.
+Placeholders are always emitted quoted (e.g. `password: "__DRAGONFLY_MYSQL_PASSWORD__"`), so a
+value is first escaped for a YAML double-quoted scalar (backslash, then double quote), and the
+result of that is then escaped again for use as a sed replacement (backslash, "/" delimiter, then
+"&"). This lets secrets contain arbitrary characters -- including ":", "#", "\" and "/" -- without
+corrupting the rendered config file. Raw, unescaped newlines within a secret are not supported.
+Usage: {{ include "dragonfly.renderSecretsScript" . | indent 12 }} under a `sh -c |` command.
+*/}}
+{{- define "dragonfly.renderSecretsScript" -}}
+set -eu
+mkdir -p /dragonfly-config
+for f in /dragonfly-config-template/*; do
+  cp "$f" /dragonfly-config/
+done
+render() {
+  placeholder="$1"
+  value="$2"
+  [ -z "$value" ] && return 0
+  yaml_escaped=$(printf '%s' "$value" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g')
+  sed_escaped=$(printf '%s' "$yaml_escaped" | sed 's/[&/\]/\\&/g')
+  for f in /dragonfly-config/*; do
+    sed -i "s/${placeholder}/${sed_escaped}/g" "$f"
+  done
+}
+render '{{ include "dragonfly.secrets.mysqlPasswordPlaceholder" . }}' "${DRAGONFLY_MYSQL_PASSWORD:-}"
+render '{{ include "dragonfly.secrets.redisPasswordPlaceholder" . }}' "${DRAGONFLY_REDIS_PASSWORD:-}"
+render '{{ include "dragonfly.secrets.redisSentinelPasswordPlaceholder" . }}' "${DRAGONFLY_REDIS_SENTINEL_PASSWORD:-}"
+render '{{ include "dragonfly.secrets.jwtKeyPlaceholder" . }}' "${DRAGONFLY_JWT_KEY:-}"
+{{- end -}}
