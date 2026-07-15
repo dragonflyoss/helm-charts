@@ -39,19 +39,35 @@ data:
       cacheDir: {{ .Values.manager.config.server.cacheDir }}
       pluginDir: {{ .Values.manager.config.server.pluginDir }}
     auth:
-{{ toYaml .Values.manager.config.auth | indent 6 }}
+      jwt:
+        realm: {{ .Values.manager.config.auth.jwt.realm }}
+        {{- if .Values.manager.config.auth.jwt.existingSecret }}
+        key: "{{ include "dragonfly.secrets.jwtKeyPlaceholder" . }}"
+        {{- else }}
+        key: {{ .Values.manager.config.auth.jwt.key }}
+        {{- end }}
+        timeout: {{ .Values.manager.config.auth.jwt.timeout }}
+        maxRefresh: {{ .Values.manager.config.auth.jwt.maxRefresh }}
     database:
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
+        {{- if .Values.mysql.auth.existingSecret }}
+        password: "{{ include "dragonfly.secrets.mysqlPasswordPlaceholder" . }}"
+        {{- else }}
         password: {{ .Values.mysql.auth.password }}
+        {{- end }}
         host: {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.mysql.primary.service.port }}
         dbname: {{ .Values.mysql.auth.database }}
         migrate: {{ .Values.mysql.migrate }}
         {{- else }}
         user: {{ .Values.externalMysql.username }}
+        {{- if .Values.externalMysql.existingSecret }}
+        password: "{{ include "dragonfly.secrets.mysqlPasswordPlaceholder" . }}"
+        {{- else }}
         password: {{ .Values.externalMysql.password }}
+        {{- end }}
         host: {{ .Values.externalMysql.host }}
         port: {{ .Values.externalMysql.port }}
         dbname: {{ .Values.externalMysql.database }}
@@ -61,15 +77,27 @@ data:
         {{- if .Values.redis.enable }}
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
+        {{- if .Values.redis.auth.existingSecret }}
+        password: "{{ include "dragonfly.secrets.redisPasswordPlaceholder" . }}"
+        {{- else }}
         password: {{ .Values.redis.auth.password }}
+        {{- end }}
         {{- else }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
         masterName: {{ .Values.externalRedis.masterName }}
         username: {{ .Values.externalRedis.username }}
+        {{- if .Values.externalRedis.existingSecret }}
+        password: "{{ include "dragonfly.secrets.redisPasswordPlaceholder" . }}"
+        {{- else }}
         password: {{ .Values.externalRedis.password }}
+        {{- end }}
         sentinelUsername: {{ .Values.externalRedis.sentinelUsername }}
+        {{- if .Values.externalRedis.existingSecret }}
+        sentinelPassword: "{{ include "dragonfly.secrets.redisSentinelPasswordPlaceholder" . }}"
+        {{- else }}
         sentinelPassword: {{ .Values.externalRedis.sentinelPassword }}
+        {{- end }}
         db: {{ .Values.externalRedis.db }}
         brokerDB: {{ .Values.externalRedis.brokerDB }}
         backendDB: {{ .Values.externalRedis.backendDB }}

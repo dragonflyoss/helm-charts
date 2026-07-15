@@ -66,7 +66,6 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable }}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
@@ -84,7 +83,65 @@ spec:
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
-      {{- end }}
+      - name: render-secrets
+        image: {{ template "manager.image" . }}
+        imagePullPolicy: {{ .Values.manager.image.pullPolicy | quote }}
+        env:
+        {{- if and .Values.mysql.enable (empty .Values.externalMysql.host) }}
+        {{- if .Values.mysql.auth.existingSecret }}
+        - name: DRAGONFLY_MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.mysql.auth.existingSecret }}
+              key: mysql-password
+        {{- end }}
+        {{- else if .Values.externalMysql.existingSecret }}
+        - name: DRAGONFLY_MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalMysql.existingSecret }}
+              key: {{ .Values.externalMysql.existingSecretPasswordKey }}
+        {{- end }}
+        {{- if .Values.redis.enable }}
+        {{- if .Values.redis.auth.existingSecret }}
+        - name: DRAGONFLY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.redis.auth.existingSecret }}
+              key: {{ .Values.redis.auth.existingSecretPasswordKey | default "redis-password" }}
+        {{- end }}
+        {{- else if .Values.externalRedis.existingSecret }}
+        - name: DRAGONFLY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret }}
+              key: {{ .Values.externalRedis.existingSecretPasswordKey }}
+        - name: DRAGONFLY_REDIS_SENTINEL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret }}
+              key: {{ .Values.externalRedis.existingSecretSentinelPasswordKey }}
+        {{- end }}
+        {{- if .Values.manager.config.auth.jwt.existingSecret }}
+        - name: DRAGONFLY_JWT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.manager.config.auth.jwt.existingSecret }}
+              key: {{ .Values.manager.config.auth.jwt.existingSecretKeyKey }}
+        {{- end }}
+        command:
+        - sh
+        - -c
+        - |
+{{ include "dragonfly.renderSecretsScript" . | indent 10 }}
+        resources:
+{{ toYaml .Values.manager.initContainer.resources | indent 10 }}
+        volumeMounts:
+        - name: config-template
+          mountPath: /dragonfly-config-template
+          readOnly: true
+        - name: config
+          mountPath: /dragonfly-config
       containers:
       - name: manager
         image: {{ template "manager.image" . }}
@@ -141,12 +198,14 @@ spec:
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
       volumes:
-      - name: config
+      - name: config-template
         configMap:
           name: {{ template "dragonfly.manager.fullname" . }}
           items:
           - key: manager.yaml
             path: manager.yaml
+      - name: config
+        emptyDir: {}
       {{- if .Values.manager.extraVolumes }}
       {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
       {{- end }}

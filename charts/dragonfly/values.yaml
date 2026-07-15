@@ -220,7 +220,14 @@ manager:
         # -- Key is secret key used for signing, default value is
         # encoded base64 of dragonfly.
         # Please change the key in production.
+        # Ignored when existingSecret is set.
         key: 'ZHJhZ29uZmx5Cg=='
+        # -- existingSecret is the name of an existing secret containing the jwt signing key.
+        # The secret must contain the key defined by existingSecretKeyKey.
+        # When set, it takes precedence over the key field above.
+        existingSecret: ''
+        # -- existingSecretKeyKey is the key within existingSecret that holds the jwt signing key.
+        existingSecretKeyKey: 'jwt-key'
         # -- Timeout is duration that a jwt token is valid,
         # default duration is two days.
         timeout: 48h
@@ -1911,6 +1918,11 @@ externalManager:
   # -- External GRPC service port.
   grpcPort: 65003
 
+# mysql is a bitnami/mysql subchart. Its own auth.existingSecret field (with the fixed
+# mysql-root-password/mysql-password keys documented at
+# https://github.com/bitnami/charts/tree/main/bitnami/mysql#credentials) is honored both by the
+# mysql pod itself and by the manager, so rootPassword/password below can be left unset and
+# never need to be committed to git.
 mysql:
   # -- Enable mysql with docker container.
   enable: true
@@ -1923,12 +1935,17 @@ mysql:
   auth:
     # -- Mysql hostname.
     host: ''
-    # -- Mysql root password.
+    # -- Mysql root password. Ignored when existingSecret is set.
     rootPassword: dragonfly-root
     # -- Mysql username.
     username: dragonfly
-    # -- Mysql password.
+    # -- Mysql password. Ignored when existingSecret is set.
     password: dragonfly
+    # -- existingSecret is the name of an existing secret containing the mysql root and user
+    # passwords, under the fixed keys `mysql-root-password` and `mysql-password`. When set, it
+    # takes precedence over rootPassword/password above, both for the mysql pod and for the
+    # manager's own database connection.
+    existingSecret: ''
     # -- Mysql database name.
     database: manager
   primary:
@@ -1943,13 +1960,23 @@ externalMysql:
   host:
   # -- External mysql username.
   username: dragonfly
-  # -- External mysql password.
+  # -- External mysql password. Ignored when existingSecret is set.
   password: dragonfly
+  # -- existingSecret is the name of an existing secret containing the external mysql password.
+  # The secret must contain the key defined by existingSecretPasswordKey.
+  # When set, it takes precedence over the password field above.
+  existingSecret: ''
+  # -- existingSecretPasswordKey is the key within existingSecret that holds the external mysql password.
+  existingSecretPasswordKey: 'password'
   # -- External mysql database name.
   database: manager
   # -- External mysql port.
   port: 3306
 
+# redis is a bitnami/redis subchart. Its own auth.existingSecret/auth.existingSecretPasswordKey
+# fields (see https://github.com/bitnami/charts/tree/main/bitnami/redis#credentials) are honored
+# both by the redis pod itself and by the manager/scheduler, so password below can be left unset
+# and never need to be committed to git.
 redis:
   # -- Enable redis cluster with docker container.
   enable: true
@@ -1960,8 +1987,14 @@ redis:
   auth:
     # -- Enable password authentication.
     enabled: true
-    # -- Redis password.
+    # -- Redis password. Ignored when existingSecret is set.
     password: dragonfly
+    # -- existingSecret is the name of an existing secret containing the redis password. When
+    # set, it takes precedence over password above, both for the redis pod and for the
+    # manager/scheduler database connections.
+    existingSecret: ''
+    # -- existingSecretPasswordKey is the key within existingSecret that holds the redis password.
+    existingSecretPasswordKey: 'redis-password'
   master:
     service:
       ports:
@@ -1976,12 +2009,20 @@ externalRedis:
   masterName: ''
   # -- External redis username.
   username: ''
-  # -- External redis password.
+  # -- External redis password. Ignored when existingSecret is set.
   password: ''
+  # -- existingSecret is the name of an existing secret containing the external redis password
+  # and/or sentinel password.
+  existingSecret: ''
+  # -- existingSecretPasswordKey is the key within existingSecret that holds the external redis password.
+  existingSecretPasswordKey: 'password'
   # -- External redis sentinel addresses.
   sentinelUsername: ''
-  # -- External redis sentinel password.
+  # -- External redis sentinel password. Ignored when existingSecret is set.
   sentinelPassword: ''
+  # -- existingSecretSentinelPasswordKey is the key within existingSecret that holds the
+  # external redis sentinel password.
+  existingSecretSentinelPasswordKey: 'sentinel-password'
   # -- External redis db.
   db: 0
   # -- External redis broker db.

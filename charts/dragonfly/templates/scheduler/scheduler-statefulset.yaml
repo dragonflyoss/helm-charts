@@ -79,6 +79,43 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
+      - name: render-secrets
+        image: {{ template "scheduler.image" . }}
+        imagePullPolicy: {{ .Values.scheduler.image.pullPolicy | quote }}
+        env:
+        {{- if .Values.redis.enable }}
+        {{- if .Values.redis.auth.existingSecret }}
+        - name: DRAGONFLY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.redis.auth.existingSecret }}
+              key: {{ .Values.redis.auth.existingSecretPasswordKey | default "redis-password" }}
+        {{- end }}
+        {{- else if .Values.externalRedis.existingSecret }}
+        - name: DRAGONFLY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret }}
+              key: {{ .Values.externalRedis.existingSecretPasswordKey }}
+        - name: DRAGONFLY_REDIS_SENTINEL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalRedis.existingSecret }}
+              key: {{ .Values.externalRedis.existingSecretSentinelPasswordKey }}
+        {{- end }}
+        command:
+        - sh
+        - -c
+        - |
+{{ include "dragonfly.renderSecretsScript" . | indent 10 }}
+        resources:
+{{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
+        volumeMounts:
+        - name: config-template
+          mountPath: /dragonfly-config-template
+          readOnly: true
+        - name: config
+          mountPath: /dragonfly-config
       containers:
       - name: scheduler
         image: {{ template "scheduler.image" . }}
@@ -133,12 +170,14 @@ spec:
           successThreshold: {{ .Values.livenessProbe.successThreshold }}
           failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
       volumes:
-      - name: config
+      - name: config-template
         configMap:
           name: {{ template "dragonfly.scheduler.fullname" . }}
           items:
           - key: scheduler.yaml
             path: scheduler.yaml
+      - name: config
+        emptyDir: {}
       {{- if .Values.scheduler.extraVolumes }}
       {{- toYaml .Values.scheduler.extraVolumes | nindent 6 }}
       {{- end }}
