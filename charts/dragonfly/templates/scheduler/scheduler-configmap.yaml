@@ -21,7 +21,7 @@ data:
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
-        {{- else }}
+        {{- else if .Values.externalRedis.addrs }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
         masterName: {{ .Values.externalRedis.masterName }}
@@ -52,7 +52,7 @@ data:
     manager:
       {{- if .Values.manager.enable }}
       addr: {{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
-      {{- else }}
+      {{- else if .Values.externalManager.host }}
       addr: {{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
       {{- end }}
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
@@ -66,7 +66,7 @@ data:
         addrs:
         - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
         password: {{ .Values.redis.auth.password }}
-        {{- else }}
+        {{- else if .Values.externalRedis.addrs }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
         masterName: {{ .Values.externalRedis.masterName }}
@@ -102,4 +102,8 @@ data:
     pprofPort: {{ .Values.scheduler.config.pprofPort }}
     tracing:
 {{ toYaml .Values.scheduler.config.tracing | indent 6 }}
+  {{- if not (include "dragonfly.manager.enable" .) }}
+  dynconfig.yaml: |-
+{{ toYaml .Values.scheduler.dynconfig | indent 4 }}
+  {{- end }}
 {{- end }}

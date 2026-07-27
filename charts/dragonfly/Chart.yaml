@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.7.4
-appVersion: 2.5.0
+version: 1.7.5
+appVersion: 2.5.1
 keywords:
   - dragonfly
   - d7y
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Change buffer size to 512KiB.
+    - Support running without the manager: deliver the local dynamic configuration (dynconfig.yaml) for the scheduler and client as ConfigMaps, add a scheduler headless service for DNS-based scheduler discovery, and disable the manager deployment by default.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -37,15 +37,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:2.5.0
+      image: dragonflyoss/manager:2.5.1
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.5.0
+      image: dragonflyoss/scheduler:v2.5.1
     - name: client
-      image: dragonflyoss/client:v1.4.0
+      image: dragonflyoss/client:v1.4.3
     - name: seed-client
-      image: dragonflyoss/client:v1.4.0
+      image: dragonflyoss/client:v1.4.3
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.4.0
+      image: dragonflyoss/dfinit:v1.4.3
     - name: injector
       image: dragonflyoss/injector:v0.1.0
 

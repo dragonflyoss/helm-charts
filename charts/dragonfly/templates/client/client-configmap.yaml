@@ -19,14 +19,13 @@ data:
 {{ toYaml .Values.client.config.download | indent 6 }}
     upload:
 {{ toYaml .Values.client.config.upload | indent 6 }}
+    {{- if .Values.manager.enable }}
     manager:
-      {{- if .Values.client.config.manager.addr }}
-      addr: {{ .Values.client.config.manager.addr }}
-      {{- else if .Values.manager.enable }}
       addr: http://{{ template "dragonfly.manager.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.manager.grpcPort }}
-      {{- else }}
+    {{- else if .Values.externalManager.host }}
+    manager:
       addr: http://{{ .Values.externalManager.host }}:{{ .Values.externalManager.grpcPort }}
-      {{- end }}
+    {{- end }}
     scheduler:
 {{ toYaml .Values.client.config.scheduler | indent 6 }}
     dynconfig:
@@ -49,4 +48,25 @@ data:
 {{ toYaml .Values.client.config.backend | indent 6 }}
     network:
 {{ toYaml .Values.client.config.network | indent 6 }}
+  {{- if not (include "dragonfly.manager.enable" .) }}
+  dynconfig.yaml: |-
+    scheduler:
+      {{- if .Values.client.dynconfig.scheduler.addr }}
+      addr: {{ .Values.client.dynconfig.scheduler.addr }}
+      {{- else }}
+      addr: {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.scheduler.config.server.port }}
+      {{- end }}
+      {{- if .Values.client.dynconfig.scheduler.addrs }}
+      addrs:
+{{ toYaml .Values.client.dynconfig.scheduler.addrs | indent 6 }}
+      {{- end }}
+    {{- if .Values.client.dynconfig.clientConfig }}
+    clientConfig:
+{{ toYaml .Values.client.dynconfig.clientConfig | indent 6 }}
+    {{- end }}
+    {{- if .Values.client.dynconfig.seedClientConfig }}
+    seedClientConfig:
+{{ toYaml .Values.client.dynconfig.seedClientConfig | indent 6 }}
+    {{- end }}
+  {{- end }}
 {{- end }}

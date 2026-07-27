@@ -17,8 +17,8 @@ metadata:
 {{ toYaml .Values.scheduler.service.annotations | indent 4 }}
 {{- end }}
 spec:
-  type: {{ .Values.scheduler.service.type }}
-  clusterIP: {{ .Values.scheduler.service.clusterIP }}
+  type: ClusterIP
+  clusterIP: None
   ports:
     - port: {{ .Values.scheduler.config.server.port }}
       name: grpc
@@ -27,9 +27,6 @@ spec:
       {{- end }}
       protocol: TCP
       targetPort: {{ .Values.scheduler.config.server.port }}
-{{- if eq .Values.scheduler.service.type "NodePort" }}
-      nodePort: {{ .Values.scheduler.service.nodePort }}
-{{- end }}
   selector:
     app: {{ template "dragonfly.fullname" . }}
     component: {{ .Values.scheduler.name }}

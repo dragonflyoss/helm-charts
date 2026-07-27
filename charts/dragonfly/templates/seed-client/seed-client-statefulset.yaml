@@ -69,6 +69,7 @@ spec:
 {{ toYaml .Values.seedClient.hostAliases | indent 8 }}
       {{- end }}
       initContainers:
+      {{- if include "dragonfly.manager.enable" . }}
       - name: wait-for-manager
         image: {{ template "seedClient.initContainer.image" . }}
         imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
@@ -79,6 +80,14 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- else if .Values.scheduler.enable }}
+      - name: wait-for-scheduler
+        image: {{ template "seedClient.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
+        resources:
+{{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- end }}
       containers:
       - name: seed-client
         image: {{ template "seedClient.image" . }}
