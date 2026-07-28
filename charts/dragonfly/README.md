@@ -156,7 +156,6 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.host.location | string | `""` | location is the location of the host. |
 | client.config.host.schedulerClusterID | int | `1` | schedulerClusterID is the ID of the cluster to which the scheduler belongs. NOTE: This field is used to identify the cluster to which the scheduler belongs. If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers. The system will automatically create a scheduler cluster with an ID of 1 by default. |
 | client.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| client.config.manager.addr | string | `""` | addr is manager address. |
 | client.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | client.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
@@ -205,8 +204,13 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.4.0"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.4.3"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
+| client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to client.config.dynconfig.refreshInterval. |
+| client.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
+| client.dynconfig.scheduler.addr | string | `""` | addr is the address of the scheduler headless service with port, resolved via DNS to discover all scheduler IPs. If empty, it defaults to the scheduler headless service address of this chart. |
+| client.dynconfig.scheduler.addrs | list | `[]` | addrs is the static list of scheduler addresses with port (e.g. ['192.168.1.10:8002']). When non-empty, it takes precedence over addr. |
+| client.dynconfig.seedClientConfig | object | `{}` | seedClientConfig is the block list configuration for clients running as seed peers. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -221,7 +225,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.4.0"` | Image tag. |
+| client.image.tag | string | `"v1.4.3"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -254,7 +258,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.updateStrategy | object | `{"rollingUpdate":{"maxSurge":0,"maxUnavailable":20},"type":"RollingUpdate"}` | Update strategy for replicas. |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
-| externalManager.host | string | `nil` | External manager hostname. |
+| externalManager.host | string | `""` | External manager hostname. |
 | externalManager.restPort | int | `8080` | External REST service port. |
 | externalMysql.database | string | `"manager"` | External mysql database name. |
 | externalMysql.host | string | `nil` | External mysql hostname. |
@@ -262,7 +266,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.password | string | `"dragonfly"` | External mysql password. |
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
-| externalRedis.addrs | list | `["redis.example.com:6379"]` | External redis server addresses. |
+| externalRedis.addrs | list | `[]` | External redis server addresses (e.g. ['redis.example.com:6379']), required when the manager is deployed and redis.enable is false. If empty, the scheduler runs without redis and disables the redis-dependent features (e.g. job). |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
 | externalRedis.db | int | `0` | External redis db. |
@@ -299,13 +303,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.0"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.3"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.4.0"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.4.3"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -358,7 +362,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.workHome | string | `""` | Work directory. |
 | manager.config.tracing.protocol | string | `"grpc"` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
-| manager.enable | bool | `true` | Enable manager. |
+| manager.enable | bool | `false` | Enable manager. |
 | manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
@@ -371,7 +375,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.5.0"` | Image tag. |
+| manager.image.tag | string | `"v2.5.1"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -421,7 +425,7 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.auth.rootPassword | string | `"dragonfly-root"` | Mysql root password. |
 | mysql.auth.username | string | `"dragonfly"` | Mysql username. |
 | mysql.clusterDomain | string | `"cluster.local"` | Cluster domain. |
-| mysql.enable | bool | `true` | Enable mysql with docker container. |
+| mysql.enable | bool | `false` | Enable mysql with docker container, only used when the manager is deployed. |
 | mysql.image.repository | string | `"bitnamilegacy/mysql"` |  |
 | mysql.migrate | bool | `true` | Running GORM migration. |
 | mysql.primary.service.port | int | `3306` | Mysql port. |
@@ -436,7 +440,7 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.auth.enabled | bool | `true` | Enable password authentication. |
 | redis.auth.password | string | `"dragonfly"` | Redis password. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain. |
-| redis.enable | bool | `true` | Enable redis cluster with docker container. |
+| redis.enable | bool | `false` | Enable redis cluster with docker container, only used when the manager is deployed. |
 | redis.image.repository | string | `"bitnamilegacy/redis"` |  |
 | redis.master.service.ports.redis | int | `6379` | Redis master service port. |
 | scheduler.config.console | bool | `true` | Console shows log on console. |
@@ -456,7 +460,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.gc.pieceDownloadTimeout | string | `"30m"` | pieceDownloadTimeout is the timeout of downloading piece. |
 | scheduler.config.scheduler.gc.taskGCInterval | string | `"30m"` | taskGCInterval is the interval of task gc. If all the peers have been reclaimed in the task, then the task will also be reclaimed. |
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `3` | retryBackToSourceLimit reaches the limit, then the peer back-to-source. |
-| scheduler.config.scheduler.retryInterval | string | `"2s"` | Retry scheduling interval. |
+| scheduler.config.scheduler.retryInterval | string | `"1s"` | Retry scheduling interval. |
 | scheduler.config.scheduler.retryLimit | int | `5` | Retry scheduling limit times. |
 | scheduler.config.seedPeer | string | `nil` |  |
 | scheduler.config.server.advertiseIP | string | `""` | Advertise ip. |
@@ -472,6 +476,15 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.workHome | string | `""` | Work directory. |
 | scheduler.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | scheduler.containerPort | int | `8002` | Pod containerPort. |
+| scheduler.dynconfig | object | `{"applications":[],"schedulerClusterClientConfig":{"loadLimit":200},"schedulerClusterConfig":{"candidateParentLimit":3,"filterParentLimit":15},"seedPeerClusterConfig":{"loadLimit":2000}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the scheduler, delivered as a ConfigMap and mounted into the same directory as scheduler.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to scheduler.config.dynconfig.refreshInterval. |
+| scheduler.dynconfig.applications | list | `[]` | applications is the applications configuration. |
+| scheduler.dynconfig.schedulerClusterClientConfig | object | `{"loadLimit":200}` | schedulerClusterClientConfig is the client configuration. |
+| scheduler.dynconfig.schedulerClusterClientConfig.loadLimit | int | `200` | loadLimit is the peer concurrent upload limit. |
+| scheduler.dynconfig.schedulerClusterConfig | object | `{"candidateParentLimit":3,"filterParentLimit":15}` | schedulerClusterConfig is the scheduler cluster configuration. |
+| scheduler.dynconfig.schedulerClusterConfig.candidateParentLimit | int | `3` | candidateParentLimit is the candidate parent limit for scheduling. |
+| scheduler.dynconfig.schedulerClusterConfig.filterParentLimit | int | `15` | filterParentLimit is the filter parent limit for scheduling. |
+| scheduler.dynconfig.seedPeerClusterConfig | object | `{"loadLimit":2000}` | seedPeerClusterConfig is the seed peer cluster configuration. |
+| scheduler.dynconfig.seedPeerClusterConfig.loadLimit | int | `2000` | loadLimit is the seed peer concurrent upload limit. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
 | scheduler.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
@@ -484,7 +497,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.5.0"` | Image tag. |
+| scheduler.image.tag | string | `"v2.5.1"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -513,11 +526,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.priorityClassName | string | `""` | Pod priorityClassName. |
 | scheduler.replicas | int | `3` | Number of Pods to launch. |
 | scheduler.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| scheduler.service | object | `{"annotations":{},"labels":{}}` | Scheduler service configuration. The scheduler service is headless, so that clients can discover all scheduler IPs via DNS. |
 | scheduler.service.annotations | object | `{}` | Service annotations. |
-| scheduler.service.clusterIP | string | `""` | Service clusterIP. |
 | scheduler.service.labels | object | `{}` | Service labels. |
-| scheduler.service.nodePort | string | `""` | Service nodePort. |
-| scheduler.service.type | string | `"ClusterIP"` | Service type. |
 | scheduler.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
@@ -552,7 +563,6 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.host.location | string | `""` | location is the location of the host. |
 | seedClient.config.host.schedulerClusterID | int | `1` | schedulerClusterID is the ID of the cluster to which the scheduler belongs. NOTE: This field is used to identify the cluster to which the scheduler belongs. If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers. The system will automatically create a scheduler cluster with an ID of 1 by default. |
 | seedClient.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
-| seedClient.config.manager.addr | string | `""` | addr is manager address. |
 | seedClient.config.metrics.server.port | int | `4002` | port is the port to the metrics server. |
 | seedClient.config.network.enableIPv6 | bool | `false` | enableIPv6 specifies whether to enable IPv6 networking. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
@@ -590,6 +600,11 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | seedClient.config.upload.server.requestRateLimit | int | `400` | requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 400 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
 | seedClient.config.upload.server.requestbufferSize | int | `50` | requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 50.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
+| seedClient.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the seed client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to seedClient.config.dynconfig.refreshInterval. |
+| seedClient.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
+| seedClient.dynconfig.scheduler.addr | string | `""` | addr is the address of the scheduler headless service with port, resolved via DNS to discover all scheduler IPs. If empty, it defaults to the scheduler headless service address of this chart. |
+| seedClient.dynconfig.scheduler.addrs | list | `[]` | addrs is the static list of scheduler addresses with port (e.g. ['192.168.1.10:8002']). When non-empty, it takes precedence over addr. |
+| seedClient.dynconfig.seedClientConfig | object | `{}` | seedClientConfig is the block list configuration for clients running as seed peers. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraEnvVars | list | `[]` | Extra environment variables for pod. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
@@ -602,7 +617,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.4.0"` | Image tag. |
+| seedClient.image.tag | string | `"v1.4.3"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

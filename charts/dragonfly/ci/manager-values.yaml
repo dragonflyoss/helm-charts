@@ -1,0 +1,8 @@
+# Chart-testing (ct lint/install) values: install with the manager stack enabled,
+# including the mysql and redis dependencies required by the manager.
+manager:
+  enable: true
+mysql:
+  enable: true
+redis:
+  enable: true

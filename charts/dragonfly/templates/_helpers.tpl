@@ -47,6 +47,18 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Return "true" if a manager is available, either deployed by this chart (manager.enable)
+or provided externally (externalManager.host). If neither is configured, the scheduler
+and client load the dynamic configuration from the local dynconfig.yaml file mounted as
+a ConfigMap instead of fetching it from the manager.
+*/}}
+{{- define "dragonfly.manager.enable" -}}
+{{- if or .Values.manager.enable .Values.externalManager.host -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified client name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

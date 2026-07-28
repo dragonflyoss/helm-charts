@@ -23,3 +23,5 @@
 .vscode/
 # Helm Docs
 README.md.gotmpl
+# Chart-testing values
+ci/
