@@ -780,7 +780,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.4.4
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1078,24 +1078,24 @@ seedClient:
         # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
         # persistent_cache_task_ttl as the persistent cache task's ttl.
         persistentCacheTaskTTL: 24h
-        # # distThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
+        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
+        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
         # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`distHighThresholdPercent`,
-        # #   `distLowThresholdPercent`) are applied relative to this specified capacity.
+        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
+        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
         # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
         # #   relative to the total actual disk space.
         # #
         # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
         # # rather than always considering the entire disk volume.
         #
-        # distThreshold: 10TiB
-        # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+        # diskThreshold: 10TiB
+        # -- diskHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
-        distHighThresholdPercent: 90
-        # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+        diskHighThresholdPercent: 90
+        # -- diskLowThresholdPercent is the low threshold percent of the disk usage.
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
-        distLowThresholdPercent: 70
+        diskLowThresholdPercent: 70
     proxy:
       server:
         # -- port is the port to the proxy server.
@@ -1335,7 +1335,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.4.4
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1424,7 +1424,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.4.4
+      tag: v1.4.7
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1702,24 +1702,24 @@ client:
         # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
         # persistent_cache_task_ttl as the persistent cache task's ttl.
         persistentCacheTaskTTL: 24h
-        # # distThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
+        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
+        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
         # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`distHighThresholdPercent`,
-        # #   `distLowThresholdPercent`) are applied relative to this specified capacity.
+        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
+        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
         # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
         # #   relative to the total actual disk space.
         # #
         # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
         # # rather than always considering the entire disk volume.
         #
-        # distThreshold: 10TiB
-        # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+        # diskThreshold: 10TiB
+        # -- diskHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
-        distHighThresholdPercent: 90
-        # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+        diskHighThresholdPercent: 90
+        # -- diskLowThresholdPercent is the low threshold percent of the disk usage.
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
-        distLowThresholdPercent: 70
+        diskLowThresholdPercent: 70
     proxy:
       server:
         # -- port is the port to the proxy server.
@@ -2096,7 +2096,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.4.4
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.

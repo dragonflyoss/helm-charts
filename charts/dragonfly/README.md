@@ -145,8 +145,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | client.config.dynconfig.refreshInterval | string | `"5m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | client.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
-| client.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
-| client.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| client.config.gc.policy.diskHighThresholdPercent | int | `90` | diskHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| client.config.gc.policy.diskLowThresholdPercent | int | `70` | diskLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | client.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_cache_task_ttl as the persistent cache task's ttl. |
 | client.config.gc.policy.persistentTaskTTL | string | `"24h"` | Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the persistent task's ttl. |
 | client.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
@@ -204,7 +204,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.4.4"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.4.7"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to client.config.dynconfig.refreshInterval. |
 | client.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
@@ -225,7 +225,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.4.4"` | Image tag. |
+| client.image.tag | string | `"v1.4.7"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -303,13 +303,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.4"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.7"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.4.4"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.4.7"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -552,8 +552,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.download.server.socketPath | string | `"/var/run/dragonfly/dfdaemon.sock"` | socketPath is the unix socket path for dfdaemon GRPC service. |
 | seedClient.config.dynconfig.refreshInterval | string | `"1m"` | refreshInterval is the interval to refresh dynamic configuration from manager. |
 | seedClient.config.gc.interval | string | `"900s"` | interval is the interval to do gc. |
-| seedClient.config.gc.policy.distHighThresholdPercent | int | `90` | distHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
-| seedClient.config.gc.policy.distLowThresholdPercent | int | `70` | distLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
+| seedClient.config.gc.policy.diskHighThresholdPercent | int | `90` | diskHighThresholdPercent is the high threshold percent of the disk usage. If the disk usage is greater than the threshold, dfdaemon will do gc. |
+| seedClient.config.gc.policy.diskLowThresholdPercent | int | `70` | diskLowThresholdPercent is the low threshold percent of the disk usage. If the disk usage is less than the threshold, dfdaemon will stop gc. |
 | seedClient.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Persistent cache task ttl is the ttl of the persistent cache task. If the persistent cache task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_cache_task_ttl as the persistent cache task's ttl. |
 | seedClient.config.gc.policy.persistentTaskTTL | string | `"24h"` | Persistent task ttl is the ttl of the persistent task. If the persistent task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use persistent_task_ttl as the persistent task's ttl. |
 | seedClient.config.gc.policy.taskTTL | string | `"720h"` | Task ttl is the ttl of the task. If the task's access time exceeds the ttl, dfdaemon will delete the task cache. |
@@ -617,7 +617,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.4.4"` | Image tag. |
+| seedClient.image.tag | string | `"v1.4.7"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
