@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.7.7
+version: 1.7.8
 appVersion: 2.5.1
 keywords:
   - dragonfly
@@ -27,8 +27,9 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Fix disk misspelled as dist in gc policy configuration.
-    - Bump client version to v1.4.7.
+    - Add optional privileged sysctl init container for client and seed client.
+    - Declare client and seed client affinity values.
+    - Fix client daemonset annotations misspelled as statefulset annotations.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

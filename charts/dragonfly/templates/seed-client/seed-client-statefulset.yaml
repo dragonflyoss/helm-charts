@@ -69,6 +69,23 @@ spec:
 {{ toYaml .Values.seedClient.hostAliases | indent 8 }}
       {{- end }}
       initContainers:
+      {{- if .Values.seedClient.sysctlInit.enable }}
+      - name: sysctl
+        image: {{ template "seedClient.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
+        securityContext:
+          # Sysctl needs privilege permission.
+          privileged: true
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          {{- range $key, $value := .Values.seedClient.sysctlInit.sysctls }}
+          sysctl -w {{ $key }}={{ $value }}
+          {{- end }}
+        resources:
+{{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- end }}
       {{- if include "dragonfly.manager.enable" . }}
       - name: wait-for-manager
         image: {{ template "seedClient.initContainer.image" . }}
