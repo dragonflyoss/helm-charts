@@ -126,6 +126,7 @@ helm delete dragonfly --namespace dragonfly-system
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| client.affinity | object | `{}` | Pod affinity. |
 | client.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | client.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
 | client.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
@@ -193,6 +194,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
 | client.config.upload.server.requestRateLimit | int | `200` | requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 200 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
 | client.config.upload.server.requestbufferSize | int | `1000` | requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
+| client.daemonsetAnnotations | object | `{}` | Daemonset annotations. |
 | client.dfinit.config.console | bool | `true` | console prints log. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
 | client.dfinit.config.containerRuntime.containerd.proxyAllRegistries | bool | `true` | Proxy all registries enables a catch-all `_default/hosts.toml` entry so that any registry not explicitly listed in `registries` is still proxied through dfdaemon. The dfdaemon infers the upstream registry from the `ns=` query parameter that containerd appends when using a `_default` fallback mirror. Explicitly configured registries continue to use their own `hosts.toml` and take precedence. |
@@ -231,7 +233,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | client.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | client.initContainer.image.tag | string | `"latest"` | Image tag. |
-| client.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| client.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | client.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | client.metrics.enable | bool | `true` | Enable client metrics. |
 | client.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -251,8 +253,9 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
-| client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
-| client.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
+| client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
+| client.sysctlInit.enable | bool | `false` | Enable a privileged init container that sets host sysctls, following the pattern of the Elasticsearch and OpenSearch charts. Requires hostNetwork for host-wide network sysctls, and is rejected in PodSecurity `restricted` namespaces. |
+| client.sysctlInit.sysctls | object | `{"net.core.rmem_max":"16777216","net.core.wmem_max":"16777216"}` | Sysctls to set, sized for the socket buffers by default. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{"rollingUpdate":{"maxSurge":0,"maxUnavailable":20},"type":"RollingUpdate"}` | Update strategy for replicas. |
@@ -317,7 +320,7 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.podLabels | object | `{}` | Pod labels. |
 | injector.priorityClassName | string | `""` | Pod priorityClassName. |
 | injector.replicas | int | `2` | Number of Pods to launch. |
-| injector.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| injector.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | injector.terminationGracePeriodSeconds | int | `10` | Pod terminationGracePeriodSeconds. |
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | failurePolicy defines how unrecognized errors and timeout errors from the admission webhook are handled. Allowed values are "Ignore" or "Fail". |
@@ -388,7 +391,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | manager.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | manager.initContainer.image.tag | string | `"latest"` | Image tag. |
-| manager.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| manager.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | manager.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | manager.metrics.enable | bool | `true` | Enable manager metrics. |
 | manager.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -409,7 +412,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.podLabels | object | `{}` | Pod labels. |
 | manager.priorityClassName | string | `""` | Pod priorityClassName. |
 | manager.replicas | int | `3` | Number of Pods to launch. |
-| manager.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| manager.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | manager.restPort | int | `8080` | REST service port. |
 | manager.service.annotations | object | `{}` | Service annotations. |
 | manager.service.clusterIP | string | `""` | Service clusterIP. |
@@ -503,7 +506,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | scheduler.initContainer.image.tag | string | `"latest"` | Image tag. |
-| scheduler.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| scheduler.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | scheduler.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | scheduler.metrics.enable | bool | `true` | Enable scheduler metrics. |
 | scheduler.metrics.enableHost | bool | `false` | Enable host metrics. |
@@ -525,7 +528,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.podLabels | object | `{}` | Pod labels. |
 | scheduler.priorityClassName | string | `""` | Pod priorityClassName. |
 | scheduler.replicas | int | `3` | Number of Pods to launch. |
-| scheduler.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| scheduler.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | scheduler.service | object | `{"annotations":{},"labels":{}}` | Scheduler service configuration. The scheduler service is headless, so that clients can discover all scheduler IPs via DNS. |
 | scheduler.service.annotations | object | `{}` | Service annotations. |
 | scheduler.service.labels | object | `{}` | Service labels. |
@@ -533,6 +536,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | scheduler.tolerations | list | `[]` | List of node taints to tolerate. |
 | scheduler.updateStrategy | object | `{}` | Update strategy for replicas. |
+| seedClient.affinity | object | `{}` | Pod affinity. |
 | seedClient.config.backend.cacheTemporaryRedirectTTL | string | `"600s"` | cacheTemporaryRedirectTTL is the TTL for cached 307 redirect URLs. After this duration, the cached redirect target will expire and be re-resolved. |
 | seedClient.config.backend.enableCacheTemporaryRedirect | bool | `true` | enableCacheTemporaryRedirect enables caching of 307 redirect URLs. Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple requests. Without caching, each piece request may trigger the same 307 redirect again, repeating the redirect flow and adding extra latency. Caching the resolved redirect URL reduces repeated redirects and improves request performance. |
 | seedClient.config.backend.maxRetries | int | `1` | The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered failed and an error will be returned. |
@@ -623,7 +627,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.initContainer.image.repository | string | `"busybox"` | Image repository. |
 | seedClient.initContainer.image.tag | string | `"latest"` | Image tag. |
-| seedClient.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| seedClient.initContainer.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | seedClient.maxProcs | string | `""` | maxProcs Limits the number of operating system threads that can execute user-level. Go code simultaneously by setting GOMAXPROCS environment variable, refer to https://golang.org/pkg/runtime. |
 | seedClient.metrics.enable | bool | `true` | Enable seed client metrics. |
 | seedClient.metrics.prometheusRule.additionalLabels | object | `{}` | Additional labels. |
@@ -649,13 +653,15 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.podLabels | object | `{}` | Pod labels. |
 | seedClient.priorityClassName | string | `""` | Pod priorityClassName. |
 | seedClient.replicas | int | `3` | Number of Pods to launch. |
-| seedClient.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"0","memory":"0"}}` | Pod resource requests and limits. |
+| seedClient.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"8","memory":"16Gi"}}` | Pod resource requests and limits. |
 | seedClient.service.annotations | object | `{}` | Service annotations. |
 | seedClient.service.clusterIP | string | `""` | Service clusterIP. |
 | seedClient.service.labels | object | `{}` | Service labels. |
 | seedClient.service.nodePort | string | `""` | Service nodePort. |
 | seedClient.service.type | string | `"ClusterIP"` | Service type. |
 | seedClient.statefulsetAnnotations | object | `{}` | Statefulset annotations. |
+| seedClient.sysctlInit.enable | bool | `false` | Enable a privileged init container that sets host sysctls, following the pattern of the Elasticsearch and OpenSearch charts. Network sysctls apply to the pod network namespace unless hostNetwork is enabled, and privileged containers are rejected in PodSecurity `restricted` namespaces. |
+| seedClient.sysctlInit.sysctls | object | `{"net.core.rmem_max":"16777216","net.core.wmem_max":"16777216"}` | Sysctls to set, sized for the QUIC socket buffers by default. |
 | seedClient.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | seedClient.tolerations | list | `[]` | List of node taints to tolerate. |
 | seedClient.updateStrategy | object | `{}` | Update strategy for replicas. |

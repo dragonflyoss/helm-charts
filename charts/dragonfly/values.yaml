@@ -96,8 +96,8 @@ manager:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '8'
       memory: '16Gi'
@@ -147,8 +147,8 @@ manager:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -392,8 +392,8 @@ scheduler:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '8'
       memory: '16Gi'
@@ -436,8 +436,8 @@ scheduler:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -795,8 +795,8 @@ seedClient:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '8'
+      memory: '16Gi'
     limits:
       cpu: '8'
       memory: '16Gi'
@@ -804,6 +804,19 @@ seedClient:
   priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
+  # -- Pod affinity.
+  affinity: {}
+  sysctlInit:
+    # -- Enable a privileged init container that sets host sysctls, following
+    # the pattern of the Elasticsearch and OpenSearch charts. Network sysctls
+    # apply to the pod network namespace unless hostNetwork is enabled, and
+    # privileged containers are rejected in PodSecurity `restricted`
+    # namespaces.
+    enable: false
+    # -- Sysctls to set, sized for the QUIC socket buffers by default.
+    sysctls:
+      net.core.rmem_max: '16777216'
+      net.core.wmem_max: '16777216'
   # -- Pod terminationGracePeriodSeconds.
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
@@ -820,8 +833,8 @@ seedClient:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -1354,8 +1367,8 @@ client:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '4'
       memory: '8Gi'
@@ -1363,6 +1376,8 @@ client:
   priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
+  # -- Pod affinity.
+  affinity: {}
   # -- Pod terminationGracePeriodSeconds.
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
@@ -1377,14 +1392,24 @@ client:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 20
-  # -- Statefulset annotations.
-  statefulsetAnnotations: {}
+  # -- Daemonset annotations.
+  daemonsetAnnotations: {}
+  sysctlInit:
+    # -- Enable a privileged init container that sets host sysctls, following
+    # the pattern of the Elasticsearch and OpenSearch charts. Requires
+    # hostNetwork for host-wide network sysctls, and is rejected in
+    # PodSecurity `restricted` namespaces.
+    enable: false
+    # -- Sysctls to set, sized for the socket buffers by default.
+    sysctls:
+      net.core.rmem_max: '16777216'
+      net.core.wmem_max: '16777216'
   initContainer:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -2061,8 +2086,8 @@ injector:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '2'
       memory: '4Gi'
