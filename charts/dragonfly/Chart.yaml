@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.7.8
+version: 1.7.9
 appVersion: 2.5.1
 keywords:
   - dragonfly
@@ -27,9 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add optional privileged sysctl init container for client and seed client.
-    - Declare client and seed client affinity values.
-    - Fix client daemonset annotations misspelled as statefulset annotations.
+    - Add opt-in JWT authentication for inter-component gRPC calls using an existing Kubernetes Secret.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

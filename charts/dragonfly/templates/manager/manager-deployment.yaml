@@ -111,6 +111,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+        - name: grpc-auth
+          mountPath: {{ .Values.grpcAuth.mountPath | quote }}
+          readOnly: true
+        {{- end }}
         {{- if .Values.manager.extraVolumeMounts }}
         {{- toYaml .Values.manager.extraVolumeMounts | nindent 8 }}
         {{- end }}
@@ -147,6 +152,17 @@ spec:
           items:
           - key: manager.yaml
             path: manager.yaml
+      {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+      - name: grpc-auth
+        secret:
+          secretName: {{ required "grpcAuth.existingSecret is required when gRPC authentication is enabled" .Values.grpcAuth.existingSecret | quote }}
+          defaultMode: 0400
+          items:
+          {{- range $index, $key := .Values.grpcAuth.keys }}
+          - key: {{ $key.secretKey | quote }}
+            path: key-{{ $index }}
+          {{- end }}
+      {{- end }}
       {{- if .Values.manager.extraVolumes }}
       {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
       {{- end }}

@@ -114,6 +114,36 @@ helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
 helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
 ```
 
+### Enable inter-component gRPC JWT authentication
+
+Authentication is disabled by default. In `disabled` mode the chart renders no gRPC authentication configuration or Secret mounts, so a normal chart and application upgrade preserves the legacy unauthenticated behavior.
+
+Use a single pre-existing Kubernetes Secret for Manager, Scheduler, Seed Client, and Client. The Secret value must contain standard Base64 text that decodes to at least 32 random bytes:
+
+```shell
+JWT_SECRET="$(openssl rand -base64 32)"
+kubectl create secret generic dragonfly-grpc-auth \
+  --namespace dragonfly-system \
+  --from-literal=secret="${JWT_SECRET}"
+unset JWT_SECRET
+```
+
+For the first authenticated rollout, use application images that support gRPC JWT authentication and set the global mode to `permissive`:
+
+```yaml
+grpcAuth:
+  mode: permissive
+  existingSecret: dragonfly-grpc-auth
+```
+
+During this rolling update, upgraded callers send JWTs and upgraded servers accept both authenticated requests and requests from Pods that have not yet been upgraded. Older servers ignore the additional gRPC metadata. After every component and external caller is upgraded, verify that authentication metrics no longer report expected business requests without credentials, then change the single global `grpcAuth.mode` to `required`.
+
+The transition from `permissive` to `required` is also safe during a rolling update: callers in both modes send JWTs, and servers in both modes accept valid JWTs. Once a cluster is running in `required` mode, later application upgrades keep that mode and use the normal one-step rolling upgrade. Roll back an enforcement change by returning to `permissive` before disabling authentication.
+
+The chart mounts the Secret read-only and writes only its file path to component ConfigMaps; it never copies secret material into Helm values or ConfigMaps. Set `requireTransportSecurity: true` only after TLS is enabled for every inter-component gRPC connection.
+
+For key rotation, add the new Base64 value as another data entry in the same Secret and append a matching item to `grpcAuth.keys`. Roll out once with the old `activeKeyID`, then switch `activeKeyID` and roll out again; keep the old entry until the maximum token lifetime and clock-skew window has elapsed.
+
 ## Uninstall
 
 Uninstall the `dragonfly` deployment:
@@ -288,6 +318,18 @@ helm delete dragonfly --namespace dragonfly-system
 | global.imageRegistry | string | `""` | Global Docker image registry. |
 | global.nodeSelector | object | `{}` | Global node labels for pod assignment. |
 | global.storageClass | string | `""` | Global storageClass for Persistent Volume(s). |
+| grpcAuth | object | `{"activeKeyID":"default","clockSkew":"30s","existingSecret":"","issuer":"dragonfly-internal","keys":[{"id":"default","secretKey":"secret"}],"maxTokenTTL":"15m","mode":"disabled","mountPath":"/etc/dragonfly/grpc-auth","refreshBefore":"1m","requireTransportSecurity":false,"tokenTTL":"10m"}` | Shared JWT authentication for inter-component gRPC calls. Disabled mode preserves the legacy behavior and renders no auth configuration or Secret mounts. For the first authenticated rollout, use permissive before required. The chart never creates or stores the key: create one Kubernetes Secret and reference it here. |
+| grpcAuth.activeKeyID | string | `"default"` | ID of the key used to sign new JWTs. |
+| grpcAuth.clockSkew | string | `"30s"` | Allowed clock skew when validating JWT timestamps. |
+| grpcAuth.existingSecret | string | `""` | Name of an existing Secret in the release namespace. Required when mode is not disabled. |
+| grpcAuth.issuer | string | `"dragonfly-internal"` | JWT issuer shared by all Dragonfly components. |
+| grpcAuth.keys | list | `[{"id":"default","secretKey":"secret"}]` | Trusted keys stored as data entries in existingSecret. Keep old and new entries during rotation. |
+| grpcAuth.maxTokenTTL | string | `"15m"` | Maximum accepted JWT lifetime. |
+| grpcAuth.mode | string | `"disabled"` | Authentication mode: disabled, permissive, or required. Permissive sends JWTs but accepts callers without one so old and new Pods can coexist during the first authenticated rolling upgrade. |
+| grpcAuth.mountPath | string | `"/etc/dragonfly/grpc-auth"` | Directory used to mount the shared key read-only. |
+| grpcAuth.refreshBefore | string | `"1m"` | Regenerate a cached token this long before expiration. |
+| grpcAuth.requireTransportSecurity | bool | `false` | Refuse to send JWTs over plaintext gRPC transports. |
+| grpcAuth.tokenTTL | string | `"10m"` | Lifetime of newly issued component JWTs. |
 | injector.affinity | object | `{}` | Pod affinity. |
 | injector.certManager | object | `{"enable":true,"issuer":{"create":true,"kind":"Issuer","name":""}}` | certManager configuration for webhook TLS certificates. cert-manager must be installed in the cluster. |
 | injector.certManager.enable | bool | `true` | Enable cert-manager integration for automatic TLS certificate management. |
