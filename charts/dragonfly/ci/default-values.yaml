@@ -1,0 +1,38 @@
+# Chart-testing (ct lint/install) values: install with the default values, which run
+# Dragonfly without the manager, and the scheduler and client load the dynamic
+# configuration from the local dynconfig.yaml file mounted as a ConfigMap.
+scheduler:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+seedClient:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+client:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+injector:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'

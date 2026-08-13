@@ -69,6 +69,24 @@ spec:
 {{ toYaml .Values.seedClient.hostAliases | indent 8 }}
       {{- end }}
       initContainers:
+      {{- if .Values.seedClient.sysctlInit.enable }}
+      - name: sysctl
+        image: {{ template "seedClient.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
+        securityContext:
+          # Sysctl needs privilege permission.
+          privileged: true
+        command:
+        - /bin/sh
+        - -cx
+        - |-
+          {{- range $key, $value := .Values.seedClient.sysctlInit.sysctls }}
+          sysctl -w {{ $key }}={{ $value }}
+          {{- end }}
+        resources:
+{{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- end }}
+      {{- if include "dragonfly.manager.enable" . }}
       - name: wait-for-manager
         image: {{ template "seedClient.initContainer.image" . }}
         imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
@@ -79,6 +97,14 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- else if .Values.scheduler.enable }}
+      - name: wait-for-scheduler
+        image: {{ template "seedClient.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.seedClient.initContainer.image.pullPolicy }}
+        command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
+        resources:
+{{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
+      {{- end }}
       containers:
       - name: seed-client
         image: {{ template "seedClient.image" . }}
@@ -120,21 +146,33 @@ spec:
         - containerPort: {{ .Values.seedClient.config.storage.server.tcpPort }}
           protocol: TCP
         - containerPort: {{ .Values.seedClient.config.storage.server.quicPort }}
-          protocol: TCP
+          protocol: UDP
+        {{- if .Values.startupProbe.enable }}
+        startupProbe:
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.startupProbe.successThreshold }}
+          failureThreshold: {{ .Values.startupProbe.failureThreshold }}
+        {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 10
-          failureThreshold: 3
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout=5s", "-rpc-timeout=5s"]
-          initialDelaySeconds: 15
-          periodSeconds: 30
-          timeoutSeconds: 10
-          failureThreshold: 5
+            command: ["/bin/grpc_health_probe", "-addr=unix://{{ .Values.seedClient.config.download.server.socketPath }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"]
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
@@ -163,8 +201,9 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: storage
-        {{- range $key, $value := .Values.seedClient.persistence.annotations }}
-          {{ $key }}: {{ $value }}
+        {{- if .Values.seedClient.persistence.annotations }}
+        annotations:
+        {{- toYaml .Values.seedClient.persistence.annotations | nindent 10 }}
         {{- end }}
       spec:
         accessModes:

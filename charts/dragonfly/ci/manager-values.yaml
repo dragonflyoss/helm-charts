@@ -1,0 +1,52 @@
+# Chart-testing (ct lint/install) values: install with the manager stack enabled,
+# including the mysql and redis dependencies required by the manager.
+manager:
+  enable: true
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+mysql:
+  enable: true
+redis:
+  enable: true
+scheduler:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+seedClient:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+client:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'
+  initContainer:
+    resources:
+      requests:
+        cpu: '0'
+        memory: '0'
+injector:
+  resources:
+    requests:
+      cpu: '0'
+      memory: '0'

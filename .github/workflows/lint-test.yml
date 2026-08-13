@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - id: filter
-        uses: dorny/paths-filter@v4.0.1
+        uses: dorny/paths-filter@v4.0.3
         with:
           filters: |
             charts:
@@ -31,7 +31,7 @@ jobs:
       - changes
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Fetch history
         run: git fetch --prune --unshallow
@@ -41,7 +41,7 @@ jobs:
         with:
           version: v3.7.2
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: 3.9
 
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check for changes
         run: |

@@ -19,9 +19,51 @@ global:
   # -- Global storageClass for Persistent Volume(s).
   storageClass: ''
 
+startupProbe:
+  # -- Enable startup probe.
+  enable: false
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 0
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 5
+  # -- Probe timeout (in seconds).
+  timeoutSeconds: 3
+  # -- Success threshold for startup probe. Must be 1 for startup probes.
+  successThreshold: 1
+  # -- Failure threshold before the container is restarted. Total startup budget = periodSeconds * failureThreshold.
+  failureThreshold: 60
+
+livenessProbe:
+  # -- Enable liveness probe.
+  enable: true
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 15
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 10
+  # -- Probe timeout (in seconds).
+  timeoutSeconds: 3
+  # -- Success threshold for liveness probe. Must be 1 for liveness probes.
+  successThreshold: 1
+  # -- Failure threshold before the container is restarted. Total time before restart = initialDelaySeconds + (periodSeconds * failureThreshold).
+  failureThreshold: 2
+
+readinessProbe:
+  # -- Enable readiness probe.
+  enable: true
+  # -- Initial delay before the first probe.
+  initialDelaySeconds: 10
+  # -- Period (in seconds) between probe attempts.
+  periodSeconds: 10
+  # -- Probe timeout (in seconds).
+  timeoutSeconds: 3
+  # -- Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes.
+  successThreshold: 1
+  # -- Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold).
+  failureThreshold: 2
+
 manager:
   # -- Enable manager.
-  enable: true
+  enable: false
   # -- Manager name.
   name: manager
   # -- Override manager name.
@@ -39,7 +81,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.4.4-rc.1
+    tag: v2.5.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -54,8 +96,8 @@ manager:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '8'
       memory: '16Gi'
@@ -144,8 +186,8 @@ manager:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -374,7 +416,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.4.4-rc.1
+    tag: v2.5.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -389,22 +431,18 @@ scheduler:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '8'
       memory: '16Gi'
+  # -- Scheduler service configuration. The scheduler service is headless, so that
+  # clients can discover all scheduler IPs via DNS.
   service:
-    # -- Service type.
-    type: ClusterIP
-    # -- Service clusterIP.
-    clusterIP: ''
     # -- Service labels.
     labels: {}
     # -- Service annotations.
     annotations: {}
-    # -- Service nodePort.
-    nodePort: ''
   # -- Pod priorityClassName.
   priorityClassName: ''
   # -- Node labels for pod assignment.
@@ -437,8 +475,8 @@ scheduler:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -504,7 +542,7 @@ scheduler:
       # -- Retry scheduling limit times.
       retryLimit: 5
       # -- Retry scheduling interval.
-      retryInterval: 2s
+      retryInterval: 1s
       gc:
         # -- pieceDownloadTimeout is the timeout of downloading piece.
         pieceDownloadTimeout: 30m
@@ -570,6 +608,28 @@ scheduler:
     network:
       # -- enableIPv6 specifies whether to enable IPv6 networking.
       enableIPv6: false
+  # -- dynconfig is the local dynamic configuration (dynconfig.yaml) for the scheduler,
+  # delivered as a ConfigMap and mounted into the same directory as scheduler.yaml.
+  # It is only used when no manager is available (manager.enable is false and
+  # externalManager.host is empty), and it is refreshed periodically according to
+  # scheduler.config.dynconfig.refreshInterval.
+  dynconfig:
+    # -- applications is the applications configuration.
+    applications: []
+    # -- seedPeerClusterConfig is the seed peer cluster configuration.
+    seedPeerClusterConfig:
+      # -- loadLimit is the seed peer concurrent upload limit.
+      loadLimit: 2000
+    # -- schedulerClusterConfig is the scheduler cluster configuration.
+    schedulerClusterConfig:
+      # -- candidateParentLimit is the candidate parent limit for scheduling.
+      candidateParentLimit: 3
+      # -- filterParentLimit is the filter parent limit for scheduling.
+      filterParentLimit: 15
+    # -- schedulerClusterClientConfig is the client configuration.
+    schedulerClusterClientConfig:
+      # -- loadLimit is the peer concurrent upload limit.
+      loadLimit: 200
   metrics:
     # -- Enable scheduler metrics.
     enable: true
@@ -759,7 +819,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -774,8 +834,8 @@ seedClient:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '8'
+      memory: '16Gi'
     limits:
       cpu: '8'
       memory: '16Gi'
@@ -783,6 +843,19 @@ seedClient:
   priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
+  # -- Pod affinity.
+  affinity: {}
+  sysctlInit:
+    # -- Enable a privileged init container that sets host sysctls, following
+    # the pattern of the Elasticsearch and OpenSearch charts. Network sysctls
+    # apply to the pod network namespace unless hostNetwork is enabled, and
+    # privileged containers are rejected in PodSecurity `restricted`
+    # namespaces.
+    enable: false
+    # -- Sysctls to set, sized for the QUIC socket buffers by default.
+    sysctls:
+      net.core.rmem_max: '16777216'
+      net.core.wmem_max: '16777216'
   # -- Pod terminationGracePeriodSeconds.
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
@@ -799,8 +872,8 @@ seedClient:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -866,14 +939,14 @@ seedClient:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # -- schedulerClusterID is the ID of the cluster to which the scheduler belongs.
       # NOTE: This field is used to identify the cluster to which the scheduler belongs.
       # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
-      # idc is the idc of the host.
+      # -- idc is the idc of the host.
       idc: ''
-      # location is the location of the host.
+      # -- location is the location of the host.
       location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
@@ -882,22 +955,45 @@ seedClient:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
+      # -- BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload).
+      # When system CPU or memory usage exceeds the configured thresholds, the limiter
+      # estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds
+      # incoming requests whose in-flight count exceeds this estimate. A cooldown
+      # period prevents rapid oscillation between shedding and accepting.
+      adaptiveRateLimit:
+        # -- Number of time buckets in the rolling window for metric aggregation.
+        bucketCount: 50
+        # -- Duration of each time bucket (e.g., 200ms).
+        bucketInterval: 200ms
+        # -- CPU usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, CPU usage is ignored
+        # for overload detection.
+        cpuThreshold: 100
+        # -- Memory usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, Memory usage is ignored
+        # for overload detection.
+        memoryThreshold: 90
+        # -- Duration to continue shedding incoming requests after the first drop
+        # event, preventing rapid oscillation between shedding and accepting.
+        shedCooldown: 5s
+        # -- How often the background task collects CPU/memory usage metrics.
+        collectInterval: 3s
     download:
       server:
         # -- socketPath is the unix socket path for dfdaemon GRPC service.
         socketPath: /var/run/dragonfly/dfdaemon.sock
-        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 400 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
-        requestRateLimit: 4000
-        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 1000.
+        requestRateLimit: 400
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 50.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 1000
+        requestbufferSize: 50
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
       # peers fetch pieces using it.
@@ -927,18 +1023,18 @@ seedClient:
         # # GRPC server key file path for mTLS.
         # key: /etc/ssl/private/server.pem
         #
-        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 4000 req/s.
+        # -- requestRateLimit is the rate limit of the upload server's request in dfdaemon, default is 400 req/s.
         #
         # This limit applies to the total number of gRPC requests per second, including:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
-        requestRateLimit: 4000
-        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.
+        requestRateLimit: 400
+        # -- requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 50.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 1000
+        requestbufferSize: 50
       # # Client configuration for remote peer's upload server.
       # client:
       #   # CA certificate file path for mTLS.
@@ -950,15 +1046,6 @@ seedClient:
       #
       # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
-    manager:
-      # -- addr is manager address.
-      addr: ''
-    # # CA certificate file path for mTLS.
-    # caCert: /etc/ssl/certs/ca.crt
-    # # GRPC client certificate file path for mTLS.
-    # cert: /etc/ssl/certs/client.crt
-    # # GRPC client key file path for mTLS.
-    # key: /etc/ssl/private/client.pem
     scheduler:
       # -- announceInterval is the interval to announce peer to the scheduler.
       # Announcer will provide the scheduler with peer information for scheduling,
@@ -1022,10 +1109,10 @@ seedClient:
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
       keep: true
-      # -- writeBufferSize is the buffer size for writing piece to disk, default is 4MiB.
-      writeBufferSize: 4194304
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
-      readBufferSize: 4194304
+      # -- writeBufferSize is the buffer size for writing piece to disk, default is 512KiB.
+      writeBufferSize: 524288
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 512KiB.
+      readBufferSize: 524288
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
       writePieceTimeout: 360s
     gc:
@@ -1043,28 +1130,30 @@ seedClient:
         # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
         # persistent_cache_task_ttl as the persistent cache task's ttl.
         persistentCacheTaskTTL: 24h
-        # # distThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
+        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
+        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
         # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`distHighThresholdPercent`,
-        # #   `distLowThresholdPercent`) are applied relative to this specified capacity.
+        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
+        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
         # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
         # #   relative to the total actual disk space.
         # #
         # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
         # # rather than always considering the entire disk volume.
         #
-        # distThreshold: 10TiB
-        # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+        # diskThreshold: 10TiB
+        # -- diskHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
-        distHighThresholdPercent: 90
-        # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+        diskHighThresholdPercent: 90
+        # -- diskLowThresholdPercent is the low threshold percent of the disk usage.
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
-        distLowThresholdPercent: 70
+        diskLowThresholdPercent: 70
     proxy:
       server:
         # -- port is the port to the proxy server.
         port: 4001
+        # -- requestRateLimit is the rate limit of the HTTP proxy, default is 400 req/s.
+        requestRateLimit: 400
       # # ip is the listen ip of the proxy server.
       # ip: ""
       # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
@@ -1141,8 +1230,8 @@ seedClient:
       # -- prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s.
       # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
       prefetchBandwidthLimit: 10GB
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
-      readBufferSize: 4194304
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 512KiB.
+      readBufferSize: 524288
     health:
       server:
         # -- port is the port to the health server.
@@ -1175,6 +1264,9 @@ seedClient:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1203,6 +1295,25 @@ seedClient:
     network:
       # -- enableIPv6 specifies whether to enable IPv6 networking.
       enableIPv6: false
+  # -- dynconfig is the local dynamic configuration (dynconfig.yaml) for the seed client,
+  # delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml.
+  # It is only used when no manager is available (manager.enable is false and
+  # externalManager.host is empty), and it is refreshed periodically according to
+  # seedClient.config.dynconfig.refreshInterval.
+  dynconfig:
+    scheduler:
+      # -- addr is the address of the scheduler headless service with port, resolved via
+      # DNS to discover all scheduler IPs. If empty, it defaults to the scheduler
+      # headless service address of this chart.
+      addr: ''
+      # -- addrs is the static list of scheduler addresses with port
+      # (e.g. ['192.168.1.10:8002']). When non-empty, it takes precedence over addr.
+      addrs: []
+    # -- clientConfig is the block list configuration for clients running as normal peers,
+    # e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }.
+    clientConfig: {}
+    # -- seedClientConfig is the block list configuration for clients running as seed peers.
+    seedClientConfig: {}
   metrics:
     # -- Enable seed client metrics.
     enable: true
@@ -1276,7 +1387,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.3.6
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1295,8 +1406,8 @@ client:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '4'
       memory: '8Gi'
@@ -1304,6 +1415,8 @@ client:
   priorityClassName: ''
   # -- Node labels for pod assignment.
   nodeSelector: {}
+  # -- Pod affinity.
+  affinity: {}
   # -- Pod terminationGracePeriodSeconds.
   terminationGracePeriodSeconds:
   # -- List of node taints to tolerate.
@@ -1318,14 +1431,24 @@ client:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 20
-  # -- Statefulset annotations.
-  statefulsetAnnotations: {}
+  # -- Daemonset annotations.
+  daemonsetAnnotations: {}
+  sysctlInit:
+    # -- Enable a privileged init container that sets host sysctls, following
+    # the pattern of the Elasticsearch and OpenSearch charts. Requires
+    # hostNetwork for host-wide network sysctls, and is rejected in
+    # PodSecurity `restricted` namespaces.
+    enable: false
+    # -- Sysctls to set, sized for the socket buffers by default.
+    sysctls:
+      net.core.rmem_max: '16777216'
+      net.core.wmem_max: '16777216'
   initContainer:
     # -- Pod resource requests and limits.
     resources:
       requests:
-        cpu: '0'
-        memory: '0'
+        cpu: '250m'
+        memory: '512Mi'
       limits:
         cpu: '2'
         memory: '4Gi'
@@ -1365,7 +1488,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.3.6
+      tag: v1.4.7
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1453,14 +1576,14 @@ client:
       level: info
     # -- host is the host configuration for dfdaemon.
     host:
-      # schedulerClusterID is the ID of the cluster to which the scheduler belongs.
+      # -- schedulerClusterID is the ID of the cluster to which the scheduler belongs.
       # NOTE: This field is used to identify the cluster to which the scheduler belongs.
       # If this flag is set, the idc, location, hostname and ip will be ignored when listing schedulers.
       # The system will automatically create a scheduler cluster with an ID of 1 by default.
       schedulerClusterID: 1
-      # idc is the idc of the host.
+      # -- idc is the idc of the host.
       idc: ''
-      # location is the location of the host.
+      # -- location is the location of the host.
       location: ''
     # # hostname is the hostname of the host.
     # hostname: ""
@@ -1469,6 +1592,29 @@ client:
     server:
       # -- pluginDir is the directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
+      # -- BBR-inspired adaptive rate limiter configuration for gRPC servers (download & upload).
+      # When system CPU or memory usage exceeds the configured thresholds, the limiter
+      # estimates capacity via `max_pass × min_rt × bucket_count / 1000` and sheds
+      # incoming requests whose in-flight count exceeds this estimate. A cooldown
+      # period prevents rapid oscillation between shedding and accepting.
+      adaptiveRateLimit:
+        # -- Number of time buckets in the rolling window for metric aggregation.
+        bucketCount: 50
+        # -- Duration of each time bucket (e.g., 200ms).
+        bucketInterval: 200ms
+        # -- CPU usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, CPU usage is ignored
+        # for overload detection.
+        cpuThreshold: 100
+        # -- Memory usage percentage threshold (0–100) above which the system is
+        # considered overloaded. If threshold is 100, Memory usage is ignored
+        # for overload detection.
+        memoryThreshold: 90
+        # -- Duration to continue shedding incoming requests after the first drop
+        # event, preventing rapid oscillation between shedding and accepting.
+        shedCooldown: 5s
+        # -- How often the background task collects CPU/memory usage metrics.
+        collectInterval: 3s
     download:
       # -- protocol that peers use to download piece, supported values: "tcp", "quic".
       # When dfdaemon acts as a parent, it announces this protocol so downstream
@@ -1485,12 +1631,12 @@ client:
         # - Multiple requests within a single connection.
         # - Single requests across different connections.
         requestRateLimit: 50
-        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 500.
+        # -- requestbufferSize is the buffer size of the download server's request channel in dfdaemon, default is 20.
         #
         # This controls the capacity of the bounded channel used to queue
         # incoming gRPC requests before they are processed. If the buffer is full,
         # new requests will return a `RESOURCE_EXHAUSTED` error.
-        requestbufferSize: 500
+        requestbufferSize: 20
       # -- bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
       # -- backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s.
@@ -1539,15 +1685,6 @@ client:
       disableShared: false
       # -- bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s.
       bandwidthLimit: 50GB
-    manager:
-      # -- addr is manager address.
-      addr: ''
-    # # CA certificate file path for mTLS.
-    # caCert: /etc/ssl/certs/ca.crt
-    # # GRPC client certificate file path for mTLS.
-    # cert: /etc/ssl/certs/client.crt
-    # # GRPC client key file path for mTLS.
-    # key: /etc/ssl/private/client.pem
     scheduler:
       # -- announceInterval is the interval to announce peer to the scheduler.
       # Announcer will provide the scheduler with peer information for scheduling,
@@ -1608,10 +1745,10 @@ client:
       dir: /var/lib/dragonfly/
       # -- keep indicates whether keep the task's metadata and content when the dfdaemon restarts.
       keep: true
-      # -- writeBufferSize is the buffer size for writing piece to disk, default is 4MiB.
-      writeBufferSize: 4194304
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
-      readBufferSize: 4194304
+      # -- writeBufferSize is the buffer size for writing piece to disk, default is 512KiB.
+      writeBufferSize: 524288
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 512KiB.
+      readBufferSize: 524288
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
       writePieceTimeout: 360s
     gc:
@@ -1629,28 +1766,30 @@ client:
         # task's ttl is None in DownloadPersistentTask grpc request, dfdaemon will use
         # persistent_cache_task_ttl as the persistent cache task's ttl.
         persistentCacheTaskTTL: 24h
-        # # distThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `distHighThresholdPercent` and `distLowThresholdPercent`.
+        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
+        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
         # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`distHighThresholdPercent`,
-        # #   `distLowThresholdPercent`) are applied relative to this specified capacity.
+        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
+        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
         # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
         # #   relative to the total actual disk space.
         # #
         # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
         # # rather than always considering the entire disk volume.
         #
-        # distThreshold: 10TiB
-        # -- distHighThresholdPercent is the high threshold percent of the disk usage.
+        # diskThreshold: 10TiB
+        # -- diskHighThresholdPercent is the high threshold percent of the disk usage.
         # If the disk usage is greater than the threshold, dfdaemon will do gc.
-        distHighThresholdPercent: 90
-        # -- distLowThresholdPercent is the low threshold percent of the disk usage.
+        diskHighThresholdPercent: 90
+        # -- diskLowThresholdPercent is the low threshold percent of the disk usage.
         # If the disk usage is less than the threshold, dfdaemon will stop gc.
-        distLowThresholdPercent: 70
+        diskLowThresholdPercent: 70
     proxy:
       server:
         # -- port is the port to the proxy server.
         port: 4001
+        # -- requestRateLimit is the rate limit of the HTTP proxy, default is 50 req/s.
+        requestRateLimit: 50
       # # ip is the listen ip of the proxy server.
       # ip: ""
       # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
@@ -1727,8 +1866,8 @@ client:
       # -- prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s.
       # The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks.
       prefetchBandwidthLimit: 10GB
-      # -- readBufferSize is the buffer size for reading piece from disk, default is 4MiB.
-      readBufferSize: 4194304
+      # -- readBufferSize is the buffer size for reading piece from disk, default is 512KiB.
+      readBufferSize: 524288
     health:
       server:
         # -- port is the port to the health server.
@@ -1761,6 +1900,9 @@ client:
     backend:
       # -- requestHeader is the user customized request header which will be applied to the request when proxying to the origin server.
       requestHeader: {}
+      # -- The maximum number of retry attempts when a chunk request to the backend storage fails. Once this limit is reached, the request will be considered
+      # failed and an error will be returned.
+      maxRetries: 1
       # -- enableCacheTemporaryRedirect enables caching of 307 redirect URLs.
       # Motivation: Dragonfly splits a download URL into multiple pieces and performs multiple
       # requests. Without caching, each piece request may trigger the same 307 redirect again,
@@ -1789,6 +1931,25 @@ client:
     network:
       # -- enableIPv6 specifies whether to enable IPv6 networking.
       enableIPv6: false
+  # -- dynconfig is the local dynamic configuration (dynconfig.yaml) for the client,
+  # delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml.
+  # It is only used when no manager is available (manager.enable is false and
+  # externalManager.host is empty), and it is refreshed periodically according to
+  # client.config.dynconfig.refreshInterval.
+  dynconfig:
+    scheduler:
+      # -- addr is the address of the scheduler headless service with port, resolved via
+      # DNS to discover all scheduler IPs. If empty, it defaults to the scheduler
+      # headless service address of this chart.
+      addr: ''
+      # -- addrs is the static list of scheduler addresses with port
+      # (e.g. ['192.168.1.10:8002']). When non-empty, it takes precedence over addr.
+      addrs: []
+    # -- clientConfig is the block list configuration for clients running as normal peers,
+    # e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }.
+    clientConfig: {}
+    # -- seedClientConfig is the block list configuration for clients running as seed peers.
+    seedClientConfig: {}
   metrics:
     # -- Enable client metrics.
     enable: true
@@ -1846,15 +2007,15 @@ client:
 
 externalManager:
   # -- External manager hostname.
-  host:
+  host: ''
   # -- External REST service port.
   restPort: 8080
   # -- External GRPC service port.
   grpcPort: 65003
 
 mysql:
-  # -- Enable mysql with docker container.
-  enable: true
+  # -- Enable mysql with docker container, only used when the manager is deployed.
+  enable: false
   image:
     repository: bitnamilegacy/mysql
   # -- Cluster domain.
@@ -1916,8 +2077,8 @@ externalPostgres:
   timezone: UTC
 
 redis:
-  # -- Enable redis cluster with docker container.
-  enable: true
+  # -- Enable redis cluster with docker container, only used when the manager is deployed.
+  enable: false
   image:
     repository: bitnamilegacy/redis
   # -- Cluster domain.
@@ -1934,9 +2095,10 @@ redis:
         redis: 6379
 
 externalRedis:
-  # -- External redis server addresses.
-  addrs:
-    - 'redis.example.com:6379'
+  # -- External redis server addresses (e.g. ['redis.example.com:6379']), required when
+  # the manager is deployed and redis.enable is false. If empty, the scheduler runs
+  # without redis and disables the redis-dependent features (e.g. job).
+  addrs: []
   # -- External redis sentinel master name.
   masterName: ''
   # -- External redis username.
@@ -1953,6 +2115,17 @@ externalRedis:
   brokerDB: 1
   # -- External redis backend db.
   backendDB: 2
+  # -- TLS client configuration for external redis connection.
+  tls:
+    # -- caCert is the CA certificate file path for redis TLS handshake.
+    caCert: ''
+    # -- cert is the client certificate file path for redis TLS handshake.
+    cert: ''
+    # -- key is the client key file path for redis TLS handshake.
+    key: ''
+    # -- insecureSkipVerify controls whether the client verifies the
+    # server's certificate chain and hostname.
+    insecureSkipVerify: false
 
 injector:
   # -- Enable injector.
@@ -1976,8 +2149,8 @@ injector:
   # -- Pod resource requests and limits.
   resources:
     requests:
-      cpu: '0'
-      memory: '0'
+      cpu: '250m'
+      memory: '512Mi'
     limits:
       cpu: '2'
       memory: '4Gi'
@@ -2011,7 +2184,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.3.6
+    tag: v1.4.7
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
