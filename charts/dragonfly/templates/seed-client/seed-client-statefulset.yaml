@@ -176,6 +176,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+        - name: grpc-auth
+          mountPath: {{ .Values.grpcAuth.mountPath | quote }}
+          readOnly: true
+        {{- end }}
         - name: storage
           mountPath: {{ .Values.seedClient.config.storage.dir }}
         {{- if .Values.seedClient.extraVolumeMounts }}
@@ -185,6 +190,17 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.seedClient.fullname" . }}
+      {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+      - name: grpc-auth
+        secret:
+          secretName: {{ required "grpcAuth.existingSecret is required when gRPC authentication is enabled" .Values.grpcAuth.existingSecret | quote }}
+          defaultMode: 0400
+          items:
+          {{- range $index, $key := .Values.grpcAuth.keys }}
+          - key: {{ $key.secretKey | quote }}
+            path: key-{{ $index }}
+          {{- end }}
+      {{- end }}
       {{- if not (.Values.seedClient.persistence.enable) }}
       - name: storage
         emptyDir: {}

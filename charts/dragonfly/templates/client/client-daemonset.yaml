@@ -224,6 +224,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: "/etc/dragonfly"
+        {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+        - name: grpc-auth
+          mountPath: {{ .Values.grpcAuth.mountPath | quote }}
+          readOnly: true
+        {{- end }}
         - name: socket-dir
           mountPath: /var/run/dragonfly
         {{- if .Values.client.extraVolumeMounts }}
@@ -233,6 +238,17 @@ spec:
       - name: config
         configMap:
           name: {{ template "dragonfly.client.fullname" . }}
+      {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+      - name: grpc-auth
+        secret:
+          secretName: {{ required "grpcAuth.existingSecret is required when gRPC authentication is enabled" .Values.grpcAuth.existingSecret | quote }}
+          defaultMode: 0400
+          items:
+          {{- range $index, $key := .Values.grpcAuth.keys }}
+          - key: {{ $key.secretKey | quote }}
+            path: key-{{ $index }}
+          {{- end }}
+      {{- end }}
       - name: socket-dir
         hostPath:
           path: /var/run/dragonfly

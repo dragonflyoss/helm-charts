@@ -61,6 +61,39 @@ readinessProbe:
   # -- Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold).
   failureThreshold: 2
 
+# -- Shared JWT authentication for inter-component gRPC calls. Disabled mode
+# preserves the legacy behavior and renders no auth configuration or Secret
+# mounts. For the first authenticated rollout, use permissive before required.
+# The chart never creates or stores the key: create one Kubernetes Secret and
+# reference it here.
+grpcAuth:
+  # -- Authentication mode: disabled, permissive, or required. Permissive sends
+  # JWTs but accepts callers without one so old and new Pods can coexist during
+  # the first authenticated rolling upgrade.
+  mode: disabled
+  # -- Name of an existing Secret in the release namespace. Required when mode is not disabled.
+  existingSecret: ''
+  # -- ID of the key used to sign new JWTs.
+  activeKeyID: default
+  # -- Trusted keys stored as data entries in existingSecret. Keep old and new entries during rotation.
+  keys:
+    - id: default
+      secretKey: secret
+  # -- Directory used to mount the shared key read-only.
+  mountPath: /etc/dragonfly/grpc-auth
+  # -- JWT issuer shared by all Dragonfly components.
+  issuer: dragonfly-internal
+  # -- Lifetime of newly issued component JWTs.
+  tokenTTL: 10m
+  # -- Maximum accepted JWT lifetime.
+  maxTokenTTL: 15m
+  # -- Allowed clock skew when validating JWT timestamps.
+  clockSkew: 30s
+  # -- Regenerate a cached token this long before expiration.
+  refreshBefore: 1m
+  # -- Refuse to send JWTs over plaintext gRPC transports.
+  requireTransportSecurity: false
+
 manager:
   # -- Enable manager.
   enable: false

@@ -212,6 +212,52 @@ Usage:
 {{- end -}}
 
 {{/*
+Render the shared inter-component gRPC JWT authentication configuration.
+*/}}
+{{- define "dragonfly.grpcAuth.config" -}}
+{{- $mode := lower .Values.grpcAuth.mode -}}
+{{- if not (has $mode (list "disabled" "permissive" "required")) -}}
+{{- fail "grpcAuth.mode must be one of disabled, permissive, or required" -}}
+{{- end -}}
+mode: {{ $mode | quote }}
+{{ if ne $mode "disabled" }}
+{{- $existingSecret := required "grpcAuth.existingSecret is required when gRPC authentication is enabled" .Values.grpcAuth.existingSecret -}}
+{{- $activeKeyID := required "grpcAuth.activeKeyID is required when gRPC authentication is enabled" .Values.grpcAuth.activeKeyID -}}
+{{- $mountPath := required "grpcAuth.mountPath is required when gRPC authentication is enabled" .Values.grpcAuth.mountPath -}}
+{{- if eq (len .Values.grpcAuth.keys) 0 -}}
+{{- fail "grpcAuth.keys must contain at least one key when gRPC authentication is enabled" -}}
+{{- end -}}
+requireTransportSecurity: {{ .Values.grpcAuth.requireTransportSecurity }}
+jwt:
+  issuer: {{ .Values.grpcAuth.issuer | quote }}
+  activeKeyID: {{ $activeKeyID | quote }}
+  tokenTTL: {{ .Values.grpcAuth.tokenTTL | quote }}
+  maxTokenTTL: {{ .Values.grpcAuth.maxTokenTTL | quote }}
+  clockSkew: {{ .Values.grpcAuth.clockSkew | quote }}
+  refreshBefore: {{ .Values.grpcAuth.refreshBefore | quote }}
+  keys:
+{{- $seen := dict -}}
+{{- $activeFound := false -}}
+{{- range $index, $key := .Values.grpcAuth.keys }}
+{{- $id := required "every grpcAuth.keys entry requires id" $key.id -}}
+{{- $secretKey := required "every grpcAuth.keys entry requires secretKey" $key.secretKey -}}
+{{- if hasKey $seen $id -}}
+{{- fail (printf "grpcAuth key id %q is duplicated" $id) -}}
+{{- end -}}
+{{- $_ := set $seen $id true -}}
+{{- if eq $id $activeKeyID -}}
+{{- $activeFound = true -}}
+{{- end }}
+    - id: {{ $id | quote }}
+      secretFile: {{ printf "%s/key-%d" (trimSuffix "/" $mountPath) $index | quote }}
+{{- end -}}
+{{- if not $activeFound -}}
+{{- fail "grpcAuth.activeKeyID must identify an entry in grpcAuth.keys" -}}
+{{- end -}}
+{{- end }}
+{{- end -}}
+
+{{/*
 Create a default fully qualified injector name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

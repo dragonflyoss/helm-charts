@@ -11,6 +11,10 @@ metadata:
     component: {{ .Values.manager.name }}
 data:
   manager.yaml: |-
+    {{- if ne (lower .Values.grpcAuth.mode) "disabled" }}
+    grpcAuth:
+{{ include "dragonfly.grpcAuth.config" . | indent 6 }}
+    {{- end }}
     server:
       rest:
         addr: :{{ .Values.manager.restPort }}
