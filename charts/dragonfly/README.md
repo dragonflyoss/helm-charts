@@ -253,12 +253,14 @@ helm delete dragonfly --namespace dragonfly-system
 | client.podAnnotations | object | `{}` | Pod annotations. |
 | client.podLabels | object | `{}` | Pod labels. |
 | client.priorityClassName | string | `""` | Pod priorityClassName. |
+| client.proxy.server.ip | string | `"127.0.0.1"` | When hostNetwork is false, the host IP to bind the proxy hostPort to. Defaults to 127.0.0.1 so the HTTP proxy is only reachable from runtimes on the same node (e.g. containerd). Set to "0.0.0.0" to bind all node interfaces. |
 | client.resources | object | `{"limits":{"cpu":"4","memory":"8Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | client.sysctlInit.enable | bool | `false` | Enable a privileged init container that sets host sysctls, following the pattern of the Elasticsearch and OpenSearch charts. Requires hostNetwork for host-wide network sysctls, and is rejected in PodSecurity `restricted` namespaces. |
 | client.sysctlInit.sysctls | object | `{"net.core.rmem_max":"16777216","net.core.wmem_max":"16777216"}` | Sysctls to set, sized for the socket buffers by default. |
 | client.terminationGracePeriodSeconds | string | `nil` | Pod terminationGracePeriodSeconds. |
 | client.tolerations | list | `[]` | List of node taints to tolerate. |
 | client.updateStrategy | object | `{"rollingUpdate":{"maxSurge":0,"maxUnavailable":20},"type":"RollingUpdate"}` | Update strategy for replicas. |
+| client.waitForScheduler | bool | `true` | Wait for scheduler to be ready before starting client. Disable on clusters where hostNetwork pods cannot reach ClusterIP services (e.g. Cilium VXLAN tunnel mode). |
 | clusterDomain | string | `"cluster.local"` | Install application cluster domain. |
 | externalManager.grpcPort | int | `65003` | External GRPC service port. |
 | externalManager.host | string | `""` | External manager hostname. |
