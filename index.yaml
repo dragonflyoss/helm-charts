@@ -3,6 +3,66 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add criPluginId field to support the cri plugin in dfinit.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.5.2-rc.0
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.2-rc.0
+        - name: client
+          image: dragonflyoss/client:v1.5.2
+        - name: seed-client
+          image: dragonflyoss/client:v1.5.2
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.5.2
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.2
+    created: "2026-08-25T16:03:40.135132512Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: ea18105d63cb5d3e37c380f08a3bc4283a4c8bc51c3fc708b6236e79edc55b59
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.8.1/dragonfly-1.8.1.tgz
+    version: 1.8.1
+  - annotations:
+      artifacthub.io/changes: |
         - Add PostgreSQL support for manager database.
         - Add optional privileged sysctl init container for client and seed client.
         - Declare client and seed client affinity values.
@@ -20455,4 +20515,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-08-25T14:49:35.691018351Z"
+generated: "2026-08-25T16:03:40.136578407Z"
