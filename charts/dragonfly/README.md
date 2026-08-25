@@ -188,6 +188,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.server.tcpPort | int | `4005` | port is the port to the tcp server. |
 | client.config.storage.writeBufferSize | int | `524288` | writeBufferSize is the buffer size for writing piece to disk, default is 512KiB. |
 | client.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
+| client.config.storage.writebackMode | string | `"async"` | writebackMode is the mode of initiating writeback of written piece ranges to disk. sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated background task and off leaves writeback to the kernel, default is async. |
 | client.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | client.config.upload.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s. |
 | client.config.upload.disableShared | bool | `false` | disableShared indicates whether disable to share data with other peers. |
@@ -206,7 +207,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.4.7"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.5.2"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to client.config.dynconfig.refreshInterval. |
 | client.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
@@ -227,7 +228,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.4.7"` | Image tag. |
+| client.image.tag | string | `"v1.5.2"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -270,14 +271,14 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
 | externalPostgres.database | string | `"manager"` | External postgres database name. |
-| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap). To inject credentials from a Kubernetes Secret instead see extraInitContainers |
+| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. |
 | externalPostgres.host | string | `nil` | External postgres hostname. |
 | externalPostgres.migrate | bool | `true` | Running GORM migration. |
-| externalPostgres.password | string | `"dragonfly"` | External postgres password. Set to a placeholder (e.g. __PG_PASSWORD__) when manager.renderConfig is enabled and credentials are injected from a Secret. |
+| externalPostgres.password | string | `"dragonfly"` | External postgres password. |
 | externalPostgres.port | int | `5432` | External postgres port. |
 | externalPostgres.sslMode | string | `"disable"` | External postgres SSL mode. |
 | externalPostgres.timezone | string | `"UTC"` | External postgres timezone. |
-| externalPostgres.username | string | `"dragonfly"` | External postgres username. Set to a placeholder (e.g. __PG_USER__) when manager.renderConfig is enabled and credentials are injected from a Secret. |
+| externalPostgres.username | string | `"dragonfly"` | External postgres username. |
 | externalRedis.addrs | list | `[]` | External redis server addresses (e.g. ['redis.example.com:6379']), required when the manager is deployed and redis.enable is false. If empty, the scheduler runs without redis and disables the redis-dependent features (e.g. job). |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |
@@ -315,13 +316,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.4.7"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.2"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.4.7"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.5.2"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -376,7 +377,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `false` | Enable manager. |
 | manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
-| manager.extraInitContainers | list | `[]` | Extra init containers for manager. To inject credentials from a Kubernetes Secret, set manager.renderConfig: true and provide an entry in manager.extraInitContainers that substitutes placeholders into the rendered config:  manager:   renderConfig: true   extraInitContainers:     - name: inject-pg-credentials       image: busybox:latest       command:         - sh         - -c         - |           sed "s/__PG_USER__/$PG_USER/g; s/__PG_PASSWORD__/$PG_PASSWORD/g" \             /etc/dragonfly-template/manager.yaml > /etc/dragonfly/manager.yaml       env:         - name: PG_USER           valueFrom:             secretKeyRef:               name: my-postgres-secret               key: username         - name: PG_PASSWORD           valueFrom:             secretKeyRef:               name: my-postgres-secret               key: password       volumeMounts:         - name: config           mountPath: /etc/dragonfly-template         - name: config-rendered           mountPath: /etc/dragonfly |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
@@ -388,7 +388,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.5.1"` | Image tag. |
+| manager.image.tag | string | `"v2.5.2-rc.0"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -421,7 +421,6 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.podAnnotations | object | `{}` | Pod annotations. |
 | manager.podLabels | object | `{}` | Pod labels. |
 | manager.priorityClassName | string | `""` | Pod priorityClassName. |
-| manager.renderConfig | bool | `false` | When true, mount an emptyDir at /etc/dragonfly instead of the raw ConfigMap. An entry in manager.extraInitContainers is then expected to render the final manager.yaml into that emptyDir (e.g. by reading the raw ConfigMap from an extraVolumeMounts path and substituting credentials pulled from a Kubernetes Secret via env vars). See below for an example. |
 | manager.replicas | int | `3` | Number of Pods to launch. |
 | manager.resources | object | `{"limits":{"cpu":"8","memory":"16Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Pod resource requests and limits. |
 | manager.restPort | int | `8080` | REST service port. |
@@ -511,7 +510,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.5.1"` | Image tag. |
+| scheduler.image.tag | string | `"v2.5.2-rc.0"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -610,6 +609,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.server.tcpPort | int | `4005` | port is the port to the tcp server. |
 | seedClient.config.storage.writeBufferSize | int | `524288` | writeBufferSize is the buffer size for writing piece to disk, default is 512KiB. |
 | seedClient.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
+| seedClient.config.storage.writebackMode | string | `"async"` | writebackMode is the mode of initiating writeback of written piece ranges to disk. sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated background task and off leaves writeback to the kernel, default is async. |
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
 | seedClient.config.upload.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the upload speed in GB/Mb/Kb per second, default is 50GB/s. |
 | seedClient.config.upload.server.port | int | `4000` | port is the port to the grpc server. |
@@ -632,7 +632,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.4.7"` | Image tag. |
+| seedClient.image.tag | string | `"v1.5.2"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

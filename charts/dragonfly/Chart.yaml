@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.7.9
-appVersion: 2.5.1
+version: 1.8.0
+appVersion: 2.5.2
 keywords:
   - dragonfly
   - d7y
@@ -28,7 +28,6 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Add PostgreSQL support for manager database.
-    - Add extra init containers support for manager.
     - Add optional privileged sysctl init container for client and seed client.
     - Declare client and seed client affinity values.
     - Fix client daemonset annotations misspelled as statefulset annotations.
@@ -41,15 +40,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:2.5.1
+      image: dragonflyoss/manager:v2.5.2-rc.0
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.5.1
+      image: dragonflyoss/scheduler:v2.5.2-rc.0
     - name: client
-      image: dragonflyoss/client:v1.4.7
+      image: dragonflyoss/client:v1.5.2
     - name: seed-client
-      image: dragonflyoss/client:v1.4.7
+      image: dragonflyoss/client:v1.5.2
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.4.7
+      image: dragonflyoss/dfinit:v1.5.2
     - name: injector
       image: dragonflyoss/injector:v0.1.0
 

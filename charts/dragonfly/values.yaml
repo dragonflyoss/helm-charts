@@ -81,7 +81,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.5.1
+    tag: v2.5.2-rc.0
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -120,45 +120,6 @@ manager:
   deploymentAnnotations: {}
   # --  Extra environment variables for pod.
   extraEnvVars: []
-  # -- When true, mount an emptyDir at /etc/dragonfly instead of the raw
-  # ConfigMap. An entry in manager.extraInitContainers is then expected to
-  # render the final manager.yaml into that emptyDir (e.g. by reading the raw
-  # ConfigMap from an extraVolumeMounts path and substituting credentials
-  # pulled from a Kubernetes Secret via env vars). See below for an example.
-  renderConfig: false
-  # -- Extra init containers for manager.
-  # To inject credentials from a Kubernetes Secret, set
-  # manager.renderConfig: true and provide an entry in manager.extraInitContainers
-  # that substitutes placeholders into the rendered config:
-  #
-  # manager:
-  #   renderConfig: true
-  #   extraInitContainers:
-  #     - name: inject-pg-credentials
-  #       image: busybox:latest
-  #       command:
-  #         - sh
-  #         - -c
-  #         - |
-  #           sed "s/__PG_USER__/$PG_USER/g; s/__PG_PASSWORD__/$PG_PASSWORD/g" \
-  #             /etc/dragonfly-template/manager.yaml > /etc/dragonfly/manager.yaml
-  #       env:
-  #         - name: PG_USER
-  #           valueFrom:
-  #             secretKeyRef:
-  #               name: my-postgres-secret
-  #               key: username
-  #         - name: PG_PASSWORD
-  #           valueFrom:
-  #             secretKeyRef:
-  #               name: my-postgres-secret
-  #               key: password
-  #       volumeMounts:
-  #         - name: config
-  #           mountPath: /etc/dragonfly-template
-  #         - name: config-rendered
-  #           mountPath: /etc/dragonfly
-  extraInitContainers: []
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
@@ -416,7 +377,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.5.1
+    tag: v2.5.2-rc.0
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -819,7 +780,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.4.7
+    tag: v1.5.2
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1115,6 +1076,10 @@ seedClient:
       readBufferSize: 524288
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
       writePieceTimeout: 360s
+      # -- writebackMode is the mode of initiating writeback of written piece ranges to disk.
+      # sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated
+      # background task and off leaves writeback to the kernel, default is async.
+      writebackMode: async
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -1387,7 +1352,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.4.7
+    tag: v1.5.2
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1488,7 +1453,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.4.7
+      tag: v1.5.2
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1751,6 +1716,10 @@ client:
       readBufferSize: 524288
       # -- writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache).
       writePieceTimeout: 360s
+      # -- writebackMode is the mode of initiating writeback of written piece ranges to disk.
+      # sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated
+      # background task and off leaves writeback to the kernel, default is async.
+      writebackMode: async
     gc:
       # -- interval is the interval to do gc.
       interval: 900s
@@ -2054,18 +2023,14 @@ externalMysql:
 
 externalPostgres:
   # -- Enable external PostgreSQL instead of MySQL.
-  # Static credentials can be provided via externalPostgres.username, externalPostgres.password below (they will be rendered directly into the ConfigMap).
-  # To inject credentials from a Kubernetes Secret instead see extraInitContainers
   enable: false
   # -- Running GORM migration.
   migrate: true
   # -- External postgres hostname.
   host:
-  # -- External postgres username. Set to a placeholder (e.g. __PG_USER__) when
-  # manager.renderConfig is enabled and credentials are injected from a Secret.
+  # -- External postgres username.
   username: dragonfly
-  # -- External postgres password. Set to a placeholder (e.g. __PG_PASSWORD__) when
-  # manager.renderConfig is enabled and credentials are injected from a Secret.
+  # -- External postgres password.
   password: dragonfly
   # -- External postgres database name.
   database: manager
@@ -2184,7 +2149,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.4.7
+    tag: v1.5.2
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
