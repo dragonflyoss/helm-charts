@@ -1471,6 +1471,12 @@ client:
         containerd:
           # -- configPath is the path of containerd configuration file.
           configPath: /etc/containerd/config.toml
+          # # -- criPluginId is the CRI plugin id owning the registry configuration, e.g. "io.containerd.grpc.v1.cri"
+          # # or "io.containerd.cri.v1.images". If not set, the plugin table present in the containerd
+          # # configuration is used, preferring "io.containerd.grpc.v1.cri" for version 2 configurations
+          # # and "io.containerd.cri.v1.images" for version 3.
+          # criPluginId: io.containerd.cri.v1.images
+          #
           # -- Proxy all registries enables a catch-all `_default/hosts.toml` entry so that any
           # registry not explicitly listed in `registries` is still proxied through dfdaemon.
           # The dfdaemon infers the upstream registry from the `ns=` query parameter that
