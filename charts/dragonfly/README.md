@@ -270,6 +270,15 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.password | string | `"dragonfly"` | External mysql password. |
 | externalMysql.port | int | `3306` | External mysql port. |
 | externalMysql.username | string | `"dragonfly"` | External mysql username. |
+| externalPostgres.database | string | `"manager"` | External postgres database name. |
+| externalPostgres.enable | bool | `false` | Enable external PostgreSQL instead of MySQL. |
+| externalPostgres.host | string | `nil` | External postgres hostname. |
+| externalPostgres.migrate | bool | `true` | Running GORM migration. |
+| externalPostgres.password | string | `"dragonfly"` | External postgres password. |
+| externalPostgres.port | int | `5432` | External postgres port. |
+| externalPostgres.sslMode | string | `"disable"` | External postgres SSL mode. |
+| externalPostgres.timezone | string | `"UTC"` | External postgres timezone. |
+| externalPostgres.username | string | `"dragonfly"` | External postgres username. |
 | externalRedis.addrs | list | `[]` | External redis server addresses (e.g. ['redis.example.com:6379']), required when the manager is deployed and redis.enable is false. If empty, the scheduler runs without redis and disables the redis-dependent features (e.g. job). |
 | externalRedis.backendDB | int | `2` | External redis backend db. |
 | externalRedis.brokerDB | int | `1` | External redis broker db. |

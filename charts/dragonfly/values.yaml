@@ -2021,6 +2021,26 @@ externalMysql:
   # -- External mysql port.
   port: 3306
 
+externalPostgres:
+  # -- Enable external PostgreSQL instead of MySQL.
+  enable: false
+  # -- Running GORM migration.
+  migrate: true
+  # -- External postgres hostname.
+  host:
+  # -- External postgres username.
+  username: dragonfly
+  # -- External postgres password.
+  password: dragonfly
+  # -- External postgres database name.
+  database: manager
+  # -- External postgres port.
+  port: 5432
+  # -- External postgres SSL mode.
+  sslMode: disable
+  # -- External postgres timezone.
+  timezone: UTC
+
 redis:
   # -- Enable redis cluster with docker container, only used when the manager is deployed.
   enable: false

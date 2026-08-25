@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.7.9
+version: 1.8.0
 appVersion: 2.5.2
 keywords:
   - dragonfly
@@ -27,7 +27,10 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add writebackMode option for dfdaemon.
+    - Add PostgreSQL support for manager database.
+    - Add optional privileged sysctl init container for client and seed client.
+    - Declare client and seed client affinity values.
+    - Fix client daemonset annotations misspelled as statefulset annotations.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

@@ -41,6 +41,19 @@ data:
     auth:
 {{ toYaml .Values.manager.config.auth | indent 6 }}
     database:
+      {{- if .Values.externalPostgres.enable }}
+      type: postgres
+      postgres:
+        user: {{ .Values.externalPostgres.username }}
+        password: {{ .Values.externalPostgres.password }}
+        host: {{ .Values.externalPostgres.host }}
+        port: {{ .Values.externalPostgres.port }}
+        dbname: {{ .Values.externalPostgres.database }}
+        sslMode: {{ .Values.externalPostgres.sslMode }}
+        timezone: {{ .Values.externalPostgres.timezone }}
+        migrate: {{ .Values.externalPostgres.migrate }}
+      {{- else }}
+      type: mysql
       mysql:
         {{- if and .Values.mysql.enable (empty .Values.externalMysql.host)}}
         user: {{ .Values.mysql.auth.username }}
@@ -57,6 +70,7 @@ data:
         dbname: {{ .Values.externalMysql.database }}
         migrate: {{ .Values.externalMysql.migrate }}
         {{- end }}
+      {{- end }}
       redis:
         {{- if .Values.redis.enable }}
         addrs:

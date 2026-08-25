@@ -66,7 +66,7 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable }}
+      {{- if or .Values.redis.enable .Values.mysql.enable .Values.externalPostgres.enable }}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
@@ -81,6 +81,14 @@ spec:
         image: {{ template "manager.initContainer.image" . }}
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "mysql" .Values.mysql.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.mysql.primary.service.port }}; do echo waiting for mysql; sleep 2; done;']
+        resources:
+{{ toYaml .Values.manager.initContainer.resources | indent 10 }}
+      {{- end }}
+      {{- if .Values.externalPostgres.enable }}
+      - name: wait-for-postgres
+        image: {{ template "manager.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
+        command: ['sh', '-c', 'until nc -vz {{ .Values.externalPostgres.host }} {{ .Values.externalPostgres.port }}; do echo waiting for postgres; sleep 2; done;']
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
