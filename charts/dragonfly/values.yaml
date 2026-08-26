@@ -1151,20 +1151,40 @@ seedClient:
       #   # password is the password for basic auth.
       #   password: "dragonfly"
       #
-      # -- rules is the list of rules for the proxy server.
-      # regex is the regex of the request url.
-      # useTLS indicates whether use tls for the proxy backend.
-      # redirect is the redirect url.
-      # filteredQueryParams is the filtered query params to generate the task id.
-      # When filter is ["Signature", "Expires", "ns"], for example:
-      # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
-      # will generate the same task id.
-      # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
-      # `X-Dragonfly-Use-P2P` header can instead of the regular expression of the rule. If the value is "true",
-      # the request will use P2P technology to distribute the content. If the value is "false",
-      # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
+      # -- rules is the list of rules for the proxy server, and the first rule whose
+      # regex matches the request url applies.
+      # - regex: the regular expression matched against the request url.
+      # - useTLS: whether to use tls when the proxy connects to the backend.
+      # - redirect: the url to redirect the request to.
+      # - filteredQueryParams: the query params ignored when generating the task id.
+      #   For example, when the filter is ["Signature", "Expires", "ns"],
+      #   http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and
+      #   http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io generate the
+      #   same task id. The default value includes the filtered query params of
+      #   s3, gcs, oss, obs and cos.
+      # - schedulingPolicy: how the download interacts with the scheduler, default is
+      #   "auto". "auto" downloads small files, whose content length is less than or
+      #   equal to the min piece length, from the source directly, skipping the
+      #   scheduler. "always" downloads through the scheduler even for small files,
+      #   so that the peer announces the task to the scheduler and other peers can
+      #   discover it as a parent. It is useful for sharing small artifacts, such as
+      #   OCI image manifests.
+      #
+      # The following `X-Dragonfly-*` request headers override the rules on a
+      # per-request basis:
+      # - `X-Dragonfly-Use-P2P`: forces P2P distribution when the url matches no
+      #   rule. If the url matches a rule, the request uses P2P distribution
+      #   regardless of the header value.
+      # - `X-Dragonfly-Scheduling-Policy`: overrides the schedulingPolicy of the
+      #   matched rule.
       rules:
         - regex: 'blobs/sha256.*'
+          schedulingPolicy: auto
+          # useTLS: false
+          # redirect: ""
+          # filteredQueryParams: []
+        - regex: 'manifests/sha256.*'
+          schedulingPolicy: auto
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1797,20 +1817,40 @@ client:
       #   # password is the password for basic auth.
       #   password: "dragonfly"
       #
-      # -- rules is the list of rules for the proxy server.
-      # regex is the regex of the request url.
-      # useTLS indicates whether use tls for the proxy backend.
-      # redirect is the redirect url.
-      # filteredQueryParams is the filtered query params to generate the task id.
-      # When filter is ["Signature", "Expires", "ns"], for example:
-      # http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io
-      # will generate the same task id.
-      # Default value includes the filtered query params of s3, gcs, oss, obs, cos.
-      # `X-Dragonfly-Use-P2P` header can instead of the regular expression of the rule. If the value is "true",
-      # the request will use P2P technology to distribute the content. If the value is "false",
-      # but url matches the regular expression in rules. The request will also use P2P technology to distribute the content.
+      # -- rules is the list of rules for the proxy server, and the first rule whose
+      # regex matches the request url applies.
+      # - regex: the regular expression matched against the request url.
+      # - useTLS: whether to use tls when the proxy connects to the backend.
+      # - redirect: the url to redirect the request to.
+      # - filteredQueryParams: the query params ignored when generating the task id.
+      #   For example, when the filter is ["Signature", "Expires", "ns"],
+      #   http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and
+      #   http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io generate the
+      #   same task id. The default value includes the filtered query params of
+      #   s3, gcs, oss, obs and cos.
+      # - schedulingPolicy: how the download interacts with the scheduler, default is
+      #   "auto". "auto" downloads small files, whose content length is less than or
+      #   equal to the min piece length, from the source directly, skipping the
+      #   scheduler. "always" downloads through the scheduler even for small files,
+      #   so that the peer announces the task to the scheduler and other peers can
+      #   discover it as a parent. It is useful for sharing small artifacts, such as
+      #   OCI image manifests.
+      #
+      # The following `X-Dragonfly-*` request headers override the rules on a
+      # per-request basis:
+      # - `X-Dragonfly-Use-P2P`: forces P2P distribution when the url matches no
+      #   rule. If the url matches a rule, the request uses P2P distribution
+      #   regardless of the header value.
+      # - `X-Dragonfly-Scheduling-Policy`: overrides the schedulingPolicy of the
+      #   matched rule.
       rules:
         - regex: 'blobs/sha256.*'
+          schedulingPolicy: auto
+          # useTLS: false
+          # redirect: ""
+          # filteredQueryParams: []
+        - regex: 'manifests/sha256.*'
+          schedulingPolicy: always
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
