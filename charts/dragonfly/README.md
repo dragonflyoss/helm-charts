@@ -136,9 +136,10 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | client.config.console | bool | `true` | console prints log. |
 | client.config.download.backToSourceBandwidthLimit | string | `"50GB"` | backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s. |
+| client.config.download.backToSourceConcurrentPieceCount | int | `8` | backToSourceConcurrentPieceCount is the number of concurrent pieces to download from source. |
 | client.config.download.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s. |
 | client.config.download.collectedPieceTimeout | string | `"360s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
-| client.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
+| client.config.download.concurrentPieceCount | int | `8` | concurrentPieceCount is the number of concurrent pieces to download. |
 | client.config.download.pieceTimeout | string | `"360s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | client.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | client.config.download.server.requestRateLimit | int | `50` | requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 50 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |
@@ -556,9 +557,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.backend.requestHeader | object | `{}` | requestHeader is the user customized request header which will be applied to the request when proxying to the origin server. |
 | seedClient.config.console | bool | `true` | console prints log. |
 | seedClient.config.download.backToSourceBandwidthLimit | string | `"50GB"` | backToSourceBandwidthLimit is the rate limit of back to source bandwidth in GB/Mb/Kb per second, default is 50GB/s. |
+| seedClient.config.download.backToSourceConcurrentPieceCount | int | `8` | backToSourceConcurrentPieceCount is the number of concurrent pieces to download from source. |
 | seedClient.config.download.bandwidthLimit | string | `"50GB"` | bandwidthLimit is the default rate limit of the download speed in GB/Mb/Kb per second, default is 50GB/s. |
 | seedClient.config.download.collectedPieceTimeout | string | `"5s"` | collected_piece_timeout is the timeout for collecting one piece from the parent in the stream. |
-| seedClient.config.download.concurrentPieceCount | int | `16` | concurrentPieceCount is the number of concurrent pieces to download. |
+| seedClient.config.download.concurrentPieceCount | int | `8` | concurrentPieceCount is the number of concurrent pieces to download. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | pieceTimeout is the timeout for downloading a piece from source. |
 | seedClient.config.download.protocol | string | `"tcp"` | protocol that peers use to download piece, supported values: "tcp", "quic". When dfdaemon acts as a parent, it announces this protocol so downstream peers fetch pieces using it. QUIC: Recommended for high-bandwidth, long-RTT, or lossy networks. TCP: Recommended for high-bandwidth, low-RTT, or local-area network (LAN) environments. |
 | seedClient.config.download.server.requestRateLimit | int | `400` | requestRateLimit is the rate limit of the download server's request in dfdaemon, default is 400 req/s.  This limit applies to the total number of gRPC requests per second, including: - Multiple requests within a single connection. - Single requests across different connections. |

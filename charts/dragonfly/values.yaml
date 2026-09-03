@@ -970,7 +970,9 @@ seedClient:
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 5s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 16
+      concurrentPieceCount: 8
+      # -- backToSourceConcurrentPieceCount is the number of concurrent pieces to download from source.
+      backToSourceConcurrentPieceCount: 8
     upload:
       server:
         # -- port is the port to the grpc server.
@@ -1637,7 +1639,9 @@ client:
       # -- collected_piece_timeout is the timeout for collecting one piece from the parent in the stream.
       collectedPieceTimeout: 360s
       # -- concurrentPieceCount is the number of concurrent pieces to download.
-      concurrentPieceCount: 16
+      concurrentPieceCount: 8
+      # -- backToSourceConcurrentPieceCount is the number of concurrent pieces to download from source.
+      backToSourceConcurrentPieceCount: 8
     upload:
       server:
         # -- port is the port to the grpc server.
