@@ -780,7 +780,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.2
+    tag: v1.5.4
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1374,7 +1374,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.2
+    tag: v1.5.4
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -2199,7 +2199,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.5.2
+    tag: v1.5.4
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
