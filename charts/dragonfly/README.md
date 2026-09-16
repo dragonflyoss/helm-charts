@@ -163,7 +163,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | client.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
 | client.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
-| client.config.proxy.readBufferSize | int | `524288` | readBufferSize is the buffer size for reading piece from disk, default is 512KiB. |
+| client.config.proxy.readBufferSize | int | `2097152` | readBufferSize is the buffer size for reading piece from disk, default is 2MiB. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | client.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>), the task ID is derived from the blob digest rather than the full URL. This enables deduplication across registries - the same blob from different registries shares one task ID, eliminating redundant downloads and storage. |
 | client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"always"}]` | rules is the list of rules for the proxy server, and the first rule whose regex matches the request url applies. - regex: the regular expression matched against the request url. - useTLS: whether to use tls when the proxy connects to the backend. - redirect: the url to redirect the request to. - filteredQueryParams: the query params ignored when generating the task id.   For example, when the filter is ["Signature", "Expires", "ns"],   http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and   http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io generate the   same task id. The default value includes the filtered query params of   s3, gcs, oss, obs and cos. - schedulingPolicy: how the download interacts with the scheduler, default is   "auto". "auto" downloads small files, whose content length is less than or   equal to the min piece length, from the source directly, skipping the   scheduler. "always" downloads through the scheduler even for small files,   so that the peer announces the task to the scheduler and other peers can   discover it as a parent. It is useful for sharing small artifacts, such as   OCI image manifests.  The following `X-Dragonfly-*` request headers override the rules on a per-request basis: - `X-Dragonfly-Use-P2P`: forces P2P distribution when the url matches no   rule. If the url matches a rule, the request uses P2P distribution   regardless of the header value. - `X-Dragonfly-Scheduling-Policy`: overrides the schedulingPolicy of the   matched rule. |
@@ -184,10 +184,10 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | client.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
-| client.config.storage.readBufferSize | int | `524288` | readBufferSize is the buffer size for reading piece from disk, default is 512KiB. |
+| client.config.storage.readBufferSize | int | `2097152` | readBufferSize is the buffer size for reading piece from disk, default is 2MiB. |
 | client.config.storage.server.quicPort | int | `4006` | port is the port to the quic server. |
 | client.config.storage.server.tcpPort | int | `4005` | port is the port to the tcp server. |
-| client.config.storage.writeBufferSize | int | `524288` | writeBufferSize is the buffer size for writing piece to disk, default is 512KiB. |
+| client.config.storage.writeBufferSize | int | `2097152` | writeBufferSize is the buffer size for writing piece to disk, default is 2MiB. |
 | client.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
 | client.config.storage.writebackMode | string | `"async"` | writebackMode is the mode of initiating writeback of written piece ranges to disk. sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated background task and off leaves writeback to the kernel, default is async. |
 | client.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
@@ -208,7 +208,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.5.2"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.5.5"` | Image tag. |
 | client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
 | client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to client.config.dynconfig.refreshInterval. |
 | client.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
@@ -229,7 +229,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.5.4"` | Image tag. |
+| client.image.tag | string | `"v1.5.5"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -317,13 +317,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.4"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.5"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.5.4"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.5.5"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -389,7 +389,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.5.2-rc.0"` | Image tag. |
+| manager.image.tag | string | `"v2.5.2"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -511,7 +511,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.5.2-rc.0"` | Image tag. |
+| scheduler.image.tag | string | `"v2.5.2"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -584,7 +584,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.proxy.disableBackToSource | bool | `false` | disableBackToSource indicates whether disable to download back-to-source when download failed. |
 | seedClient.config.proxy.prefetch | bool | `true` | prefetch pre-downloads full of the task when download with range request. `X-Dragonfly-Prefetch` header's priority is higher than prefetch in config. If the value is "true", the range request will prefetch the entire file. If the value is "false", the range request will fetch the range content. |
 | seedClient.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | prefetchBandwidthLimit is the rate limit of prefetching in GB/Mb/Kb per second, default is 10GB/s. The prefetch request has lower priority so limit the rate to avoid occupying the bandwidth impact other download tasks. |
-| seedClient.config.proxy.readBufferSize | int | `524288` | readBufferSize is the buffer size for reading piece from disk, default is 512KiB. |
+| seedClient.config.proxy.readBufferSize | int | `2097152` | readBufferSize is the buffer size for reading piece from disk, default is 2MiB. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | addr is the default address of the registry mirror. Proxy will start a registry mirror service for the client to pull the image. The client can use the default address of the registry mirror in configuration to pull the image. The `X-Dragonfly-Registry` header can instead of the default address of registry mirror. |
 | seedClient.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | enableTaskIDBasedBlobDigest indicates whether to use the blob digest for task ID calculation when downloading from OCI registries. When enabled for OCI blob URLs (e.g., /v2/<name>/blobs/sha256:<digest>), the task ID is derived from the blob digest rather than the full URL. This enables deduplication across registries - the same blob from different registries shares one task ID, eliminating redundant downloads and storage. |
 | seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"auto"}]` | rules is the list of rules for the proxy server, and the first rule whose regex matches the request url applies. - regex: the regular expression matched against the request url. - useTLS: whether to use tls when the proxy connects to the backend. - redirect: the url to redirect the request to. - filteredQueryParams: the query params ignored when generating the task id.   For example, when the filter is ["Signature", "Expires", "ns"],   http://example.com/xyz?Expires=e1&Signature=s1&ns=docker.io and   http://example.com/xyz?Expires=e2&Signature=s2&ns=docker.io generate the   same task id. The default value includes the filtered query params of   s3, gcs, oss, obs and cos. - schedulingPolicy: how the download interacts with the scheduler, default is   "auto". "auto" downloads small files, whose content length is less than or   equal to the min piece length, from the source directly, skipping the   scheduler. "always" downloads through the scheduler even for small files,   so that the peer announces the task to the scheduler and other peers can   discover it as a parent. It is useful for sharing small artifacts, such as   OCI image manifests.  The following `X-Dragonfly-*` request headers override the rules on a per-request basis: - `X-Dragonfly-Use-P2P`: forces P2P distribution when the url matches no   rule. If the url matches a rule, the request uses P2P distribution   regardless of the header value. - `X-Dragonfly-Scheduling-Policy`: overrides the schedulingPolicy of the   matched rule. |
@@ -606,10 +606,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.stats.server.port | int | `4004` | port is the port to the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | dir is the directory to store task's metadata and content. |
 | seedClient.config.storage.keep | bool | `true` | keep indicates whether keep the task's metadata and content when the dfdaemon restarts. |
-| seedClient.config.storage.readBufferSize | int | `524288` | readBufferSize is the buffer size for reading piece from disk, default is 512KiB. |
+| seedClient.config.storage.readBufferSize | int | `2097152` | readBufferSize is the buffer size for reading piece from disk, default is 2MiB. |
 | seedClient.config.storage.server.quicPort | int | `4006` | port is the port to the quic server. |
 | seedClient.config.storage.server.tcpPort | int | `4005` | port is the port to the tcp server. |
-| seedClient.config.storage.writeBufferSize | int | `524288` | writeBufferSize is the buffer size for writing piece to disk, default is 512KiB. |
+| seedClient.config.storage.writeBufferSize | int | `2097152` | writeBufferSize is the buffer size for writing piece to disk, default is 2MiB. |
 | seedClient.config.storage.writePieceTimeout | string | `"360s"` | writePieceTimeout is the timeout for writing a piece to storage(e.g., disk or cache). |
 | seedClient.config.storage.writebackMode | string | `"async"` | writebackMode is the mode of initiating writeback of written piece ranges to disk. sync awaits sync_file_range per piece write, async enqueues ranges to a dedicated background task and off leaves writeback to the kernel, default is async. |
 | seedClient.config.tracing.protocol | string | `""` | Protocol specifies the communication protocol for the tracing server. Supported values: "http", "https", "grpc" (default: None). This determines how tracing logs are transmitted to the server. |
@@ -634,7 +634,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.5.4"` | Image tag. |
+| seedClient.image.tag | string | `"v1.5.5"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |
