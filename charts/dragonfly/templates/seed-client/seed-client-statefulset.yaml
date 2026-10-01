@@ -105,6 +105,9 @@ spec:
         resources:
 {{ toYaml .Values.seedClient.initContainer.resources | indent 10 }}
       {{- end }}
+      {{- with .Values.seedClient.extraInitContainers }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       containers:
       - name: seed-client
         image: {{ template "seedClient.image" . }}

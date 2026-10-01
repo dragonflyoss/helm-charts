@@ -66,7 +66,7 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable .Values.externalPostgres.enable }}
+      {{- if or .Values.redis.enable .Values.mysql.enable .Values.externalPostgres.enable .Values.manager.extraInitContainers }}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
@@ -91,6 +91,9 @@ spec:
         command: ['sh', '-c', 'until nc -vz {{ .Values.externalPostgres.host }} {{ .Values.externalPostgres.port }}; do echo waiting for postgres; sleep 2; done;']
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
+      {{- end }}
+      {{- with .Values.manager.extraInitContainers }}
+      {{- toYaml . | nindent 6 }}
       {{- end }}
       {{- end }}
       containers:

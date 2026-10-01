@@ -217,6 +217,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dynconfig.seedClientConfig | object | `{}` | seedClientConfig is the block list configuration for clients running as seed peers. |
 | client.enable | bool | `true` | Enable client. |
 | client.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| client.extraInitContainers | list | `[]` | Extra init containers for client, rendered after the chart's built-in init containers. |
 | client.extraVolumeMounts | list | `[{"mountPath":"/var/lib/dragonfly/","name":"storage"},{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | client.extraVolumes | list | `[{"emptyDir":{},"name":"storage"},{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | client.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -309,6 +310,7 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | injector.enable | bool | `false` | Enable injector. |
 | injector.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| injector.extraInitContainers | list | `[]` | Extra init containers for injector, rendered after the chart's built-in init containers. |
 | injector.extraVolumeMounts | list | `[]` | Extra volumeMounts for injector. |
 | injector.extraVolumes | list | `[]` | Extra volumes for injector. |
 | injector.image.digest | string | `""` | Image digest. |
@@ -378,6 +380,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `false` | Enable manager. |
 | manager.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| manager.extraInitContainers | list | `[]` | Extra init containers for manager, rendered after the chart's built-in init containers. |
 | manager.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/manager","name":"logs"}]` | Extra volumeMounts for manager. |
 | manager.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for manager. |
 | manager.fullnameOverride | string | `""` | Override manager fullname. |
@@ -501,6 +504,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.dynconfig.seedPeerClusterConfig.loadLimit | int | `2000` | loadLimit is the seed peer concurrent upload limit. |
 | scheduler.enable | bool | `true` | Enable scheduler. |
 | scheduler.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| scheduler.extraInitContainers | list | `[]` | Extra init containers for scheduler, rendered after the chart's built-in init containers. |
 | scheduler.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/scheduler","name":"logs"}]` | Extra volumeMounts for scheduler. |
 | scheduler.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for scheduler. |
 | scheduler.fullnameOverride | string | `""` | Override scheduler fullname. |
@@ -624,6 +628,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.dynconfig.seedClientConfig | object | `{}` | seedClientConfig is the block list configuration for clients running as seed peers. |
 | seedClient.enable | bool | `true` | Enable seed client. |
 | seedClient.extraEnvVars | list | `[]` | Extra environment variables for pod. |
+| seedClient.extraInitContainers | list | `[]` | Extra init containers for seed client, rendered after the chart's built-in init containers. |
 | seedClient.extraVolumeMounts | list | `[{"mountPath":"/var/log/dragonfly/dfdaemon/","name":"logs"}]` | Extra volumeMounts for dfdaemon. |
 | seedClient.extraVolumes | list | `[{"emptyDir":{},"name":"logs"}]` | Extra volumes for dfdaemon. |
 | seedClient.fullnameOverride | string | `""` | Override scheduler fullname. |
