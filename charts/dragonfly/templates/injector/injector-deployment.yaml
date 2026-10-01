@@ -67,6 +67,10 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      {{- with .Values.injector.extraInitContainers }}
+      initContainers:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       containers:
       - name: manager
         image: {{ include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) }}

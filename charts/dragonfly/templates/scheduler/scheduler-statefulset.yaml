@@ -68,8 +68,9 @@ spec:
       hostAliases:
 {{ toYaml .Values.scheduler.hostAliases | indent 8 }}
       {{- end }}
-      {{- if include "dragonfly.manager.enable" . }}
+      {{- if or (include "dragonfly.manager.enable" .) .Values.scheduler.extraInitContainers }}
       initContainers:
+      {{- if include "dragonfly.manager.enable" . }}
       - name: wait-for-manager
         image: {{ template "scheduler.initContainer.image" . }}
         imagePullPolicy: {{ .Values.scheduler.initContainer.image.pullPolicy }}
@@ -80,6 +81,10 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
+      {{- end }}
+      {{- with .Values.scheduler.extraInitContainers }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
       {{- end }}
       containers:
       - name: scheduler
