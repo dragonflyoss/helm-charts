@@ -2078,10 +2078,18 @@ externalPostgres:
   migrate: true
   # -- External postgres hostname.
   host:
-  # -- External postgres username.
+  # -- External postgres username. Ignored when existingSecret is set.
   username: dragonfly
-  # -- External postgres password.
+  # -- External postgres password. Ignored when existingSecret is set.
   password: dragonfly
+  # -- Name of an existing Secret holding the postgres credentials. When set, the manager config
+  # is rendered at startup by an init container that reads the Secret, so the credentials never
+  # appear in values or in the ConfigMap.
+  existingSecret: ''
+  # -- Key in existingSecret that holds the username.
+  usernameKey: username
+  # -- Key in existingSecret that holds the password.
+  passwordKey: password
   # -- External postgres database name.
   database: manager
   # -- External postgres port.
