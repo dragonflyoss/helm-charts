@@ -136,18 +136,22 @@ spec:
         command:
         - /bin/sh
         - -cx
+        # The restart is queued with --no-block so this init container exits before the runtime
+        # goes down. A blocking restart is killed together with the runtime on some versions
+        # (observed with containerd 2.2.x): kubelet then records exit 255 and re-runs the init
+        # container forever, restarting the runtime every few minutes.
         - |-
           {{- if .Values.client.dfinit.config.containerRuntime.containerd }}
-          nsenter -t 1 -m -- systemctl restart containerd.service
+          nsenter -t 1 -m -- systemctl --no-block restart containerd.service
           echo "restart container"
           {{- else if .Values.client.dfinit.config.containerRuntime.crio }}
-          nsenter -t 1 -m -- systemctl restart crio.service
+          nsenter -t 1 -m -- systemctl --no-block restart crio.service
           echo "restart cri-o"
           {{- else if .Values.client.dfinit.config.containerRuntime.podman }}
-          nsenter -t 1 -m -- systemctl restart podman.service
+          nsenter -t 1 -m -- systemctl --no-block restart podman.service
           echo "restart podman"
           {{- else if .Values.client.dfinit.config.containerRuntime.docker }}
-          nsenter -t 1 -m -- systemctl restart docker.service
+          nsenter -t 1 -m -- systemctl --no-block restart docker.service
           echo "restart docker"
           {{- else }}
           echo "no container runtime to restart"
