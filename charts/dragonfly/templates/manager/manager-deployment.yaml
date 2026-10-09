@@ -91,6 +91,47 @@ spec:
         command: ['sh', '-c', 'until nc -vz {{ .Values.externalPostgres.host }} {{ .Values.externalPostgres.port }}; do echo waiting for postgres; sleep 2; done;']
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
+      {{- if .Values.externalPostgres.existingSecret }}
+      # Renders /etc/dragonfly/manager.yaml with the credentials from existingSecret. The manager
+      # reads its configuration file only (no environment overrides), so the Secret cannot be
+      # consumed via env on the manager container itself.
+      - name: render-config
+        image: {{ template "manager.initContainer.image" . }}
+        imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
+        env:
+        - name: DRAGONFLY_POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret }}
+              key: {{ .Values.externalPostgres.usernameKey }}
+        - name: DRAGONFLY_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.externalPostgres.existingSecret }}
+              key: {{ .Values.externalPostgres.passwordKey }}
+        command:
+        - /bin/sh
+        - -c
+        # Plain string substitution (no sed/awk metacharacter issues); single quotes in the
+        # values are doubled because the placeholders are single-quoted YAML scalars.
+        - |-
+          set -e
+          user=$(printf '%s' "$DRAGONFLY_POSTGRES_USERNAME" | sed "s/'/''/g")
+          pass=$(printf '%s' "$DRAGONFLY_POSTGRES_PASSWORD" | sed "s/'/''/g")
+          : > /etc/dragonfly-rendered/manager.yaml
+          while IFS= read -r line || [ -n "$line" ]; do
+            line=${line//__DRAGONFLY_POSTGRES_USERNAME__/$user}
+            line=${line//__DRAGONFLY_POSTGRES_PASSWORD__/$pass}
+            printf '%s\n' "$line" >> /etc/dragonfly-rendered/manager.yaml
+          done < /etc/dragonfly-template/manager.yaml
+        volumeMounts:
+        - name: config
+          mountPath: /etc/dragonfly-template
+        - name: config-rendered
+          mountPath: /etc/dragonfly-rendered
+        resources:
+{{ toYaml .Values.manager.initContainer.resources | indent 10 }}
+      {{- end }}
       {{- end }}
       {{- end }}
       containers:
@@ -117,7 +158,7 @@ spec:
           protocol: TCP
         {{- end }}
         volumeMounts:
-        - name: config
+        - name: {{ if and .Values.externalPostgres.enable .Values.externalPostgres.existingSecret }}config-rendered{{ else }}config{{ end }}
           mountPath: "/etc/dragonfly"
         {{- if .Values.manager.extraVolumeMounts }}
         {{- toYaml .Values.manager.extraVolumeMounts | nindent 8 }}
@@ -155,6 +196,10 @@ spec:
           items:
           - key: manager.yaml
             path: manager.yaml
+      {{- if and .Values.externalPostgres.enable .Values.externalPostgres.existingSecret }}
+      - name: config-rendered
+        emptyDir: {}
+      {{- end }}
       {{- if .Values.manager.extraVolumes }}
       {{- toYaml .Values.manager.extraVolumes | nindent 6 }}
       {{- end }}

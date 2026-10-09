@@ -44,8 +44,14 @@ data:
       {{- if .Values.externalPostgres.enable }}
       type: postgres
       postgres:
+        {{- if .Values.externalPostgres.existingSecret }}
+        # Rendered at startup from existingSecret by the render-config init container.
+        user: '__DRAGONFLY_POSTGRES_USERNAME__'
+        password: '__DRAGONFLY_POSTGRES_PASSWORD__'
+        {{- else }}
         user: {{ .Values.externalPostgres.username }}
         password: {{ .Values.externalPostgres.password }}
+        {{- end }}
         host: {{ .Values.externalPostgres.host }}
         port: {{ .Values.externalPostgres.port }}
         dbname: {{ .Values.externalPostgres.database }}
