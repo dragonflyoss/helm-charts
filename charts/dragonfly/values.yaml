@@ -120,6 +120,9 @@ manager:
   deploymentAnnotations: {}
   # --  Extra environment variables for pod.
   extraEnvVars: []
+  # -- Extra init containers for the manager pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
+  extraInitContainers: []
   # -- Extra volumes for manager.
   extraVolumes:
     - name: logs
@@ -424,6 +427,9 @@ scheduler:
   containerPort: 8002
   # --  Extra environment variables for pod.
   extraEnvVars: []
+  # -- Extra init containers for the scheduler pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
+  extraInitContainers: []
   # -- Extra volumes for scheduler.
   extraVolumes:
     - name: logs
@@ -851,6 +857,9 @@ seedClient:
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
   extraEnvVars: []
+  # -- Extra init containers for the seed client pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
+  extraInitContainers: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: logs
@@ -1452,6 +1461,9 @@ client:
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
   extraEnvVars: []
+  # -- Extra init containers for the client pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
+  extraInitContainers: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
     - name: storage
@@ -2187,6 +2199,9 @@ injector:
   deploymentAnnotations: {}
   # -- Extra environment variables for pod.
   extraEnvVars: []
+  # -- Extra init containers for the injector pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
+  extraInitContainers: []
   # -- Extra volumes for injector.
   extraVolumes: []
   # -- Extra volumeMounts for injector.
