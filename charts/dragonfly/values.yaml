@@ -120,7 +120,8 @@ manager:
   deploymentAnnotations: {}
   # --  Extra environment variables for pod.
   extraEnvVars: []
-  # -- Extra init containers for manager, rendered after the chart's built-in init containers.
+  # -- Extra init containers for the manager pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
   extraInitContainers: []
   # -- Extra volumes for manager.
   extraVolumes:
@@ -426,7 +427,8 @@ scheduler:
   containerPort: 8002
   # --  Extra environment variables for pod.
   extraEnvVars: []
-  # -- Extra init containers for scheduler, rendered after the chart's built-in init containers.
+  # -- Extra init containers for the scheduler pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
   extraInitContainers: []
   # -- Extra volumes for scheduler.
   extraVolumes:
@@ -855,7 +857,8 @@ seedClient:
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
   extraEnvVars: []
-  # -- Extra init containers for seed client, rendered after the chart's built-in init containers.
+  # -- Extra init containers for the seed client pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
   extraInitContainers: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
@@ -1458,7 +1461,8 @@ client:
       pullPolicy: IfNotPresent
   # --  Extra environment variables for pod.
   extraEnvVars: []
-  # -- Extra init containers for client, rendered after the chart's built-in init containers.
+  # -- Extra init containers for the client pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
   extraInitContainers: []
   # -- Extra volumes for dfdaemon.
   extraVolumes:
@@ -2195,7 +2199,8 @@ injector:
   deploymentAnnotations: {}
   # -- Extra environment variables for pod.
   extraEnvVars: []
-  # -- Extra init containers for injector, rendered after the chart's built-in init containers.
+  # -- Extra init containers for the injector pod(s), evaluated as a template
+  # and rendered after the chart's built-in init containers.
   extraInitContainers: []
   # -- Extra volumes for injector.
   extraVolumes: []

@@ -67,9 +67,9 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-      {{- with .Values.injector.extraInitContainers }}
+      {{- if .Values.injector.extraInitContainers }}
       initContainers:
-      {{- toYaml . | nindent 6 }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.injector.extraInitContainers "context" $) | nindent 6 }}
       {{- end }}
       containers:
       - name: manager

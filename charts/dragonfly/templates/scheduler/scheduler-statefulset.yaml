@@ -82,8 +82,8 @@ spec:
         resources:
 {{ toYaml .Values.scheduler.initContainer.resources | indent 10 }}
       {{- end }}
-      {{- with .Values.scheduler.extraInitContainers }}
-      {{- toYaml . | nindent 6 }}
+      {{- if .Values.scheduler.extraInitContainers }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.scheduler.extraInitContainers "context" $) | nindent 6 }}
       {{- end }}
       {{- end }}
       containers:

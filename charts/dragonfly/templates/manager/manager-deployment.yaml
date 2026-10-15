@@ -92,8 +92,8 @@ spec:
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
-      {{- with .Values.manager.extraInitContainers }}
-      {{- toYaml . | nindent 6 }}
+      {{- if .Values.manager.extraInitContainers }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.manager.extraInitContainers "context" $) | nindent 6 }}
       {{- end }}
       {{- end }}
       containers:

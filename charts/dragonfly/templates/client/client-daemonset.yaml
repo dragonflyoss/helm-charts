@@ -155,8 +155,8 @@ spec:
         resources:
 {{ toYaml .Values.client.initContainer.resources | indent 10 }}
       {{- end }}
-      {{- with .Values.client.extraInitContainers }}
-      {{- toYaml . | nindent 6 }}
+      {{- if .Values.client.extraInitContainers }}
+      {{- include "common.tplvalues.render" (dict "value" .Values.client.extraInitContainers "context" $) | nindent 6 }}
       {{- end }}
       containers:
       - name: client
