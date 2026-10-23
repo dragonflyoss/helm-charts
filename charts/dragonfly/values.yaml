@@ -187,15 +187,9 @@ manager:
       grpc:
         # -- IP address advertised to schedulers and peers for the gRPC server.
         advertiseIP: ''
-        # # GRPC server tls configuration.
-        # tls:
-        #   # CA certificate file path for mTLS.
-        #   caCert: /etc/ssl/certs/ca.crt
-        #   # Certificate file path for mTLS.
-        #   cert: /etc/ssl/certs/server.crt
-        #   # Key file path for mTLS.
-        #   key: /etc/ssl/private/server.pem
-        #
+        # -- (object) mTLS configuration of the gRPC server with the caCert, cert and key file paths.
+        # Empty serves plaintext.
+        tls: null
         # -- Maximum number of requests per second accepted by the gRPC server, counting both unary
         # requests and new stream connections.
         requestRateLimit: 4000
@@ -262,8 +256,9 @@ manager:
         tls:
           # -- Skip verification of the registry certificate chain and hostname.
           insecureSkipVerify: false
-        # # caCert is the CA certificate for preheat tls handshake, it can be path or PEM format string.
-        # caCert: ''
+        # -- (string) CA certificate used to verify the registry during preheat, as a file path or PEM
+        # string. Empty uses the system trust store.
+        caCert: null
     # -- Print logs to the console.
     console: true
     # -- Port of the pprof server, -1 disables it.
@@ -271,12 +266,12 @@ manager:
     tracing:
       # -- Protocol used to export traces, one of http, https or grpc. Empty disables tracing.
       protocol: 'grpc'
-      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      # endpoint: ""
-      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      # path: ""
-      # # headers is the grpc's headers to send with tracing log.
-      # headers: {}
+      # -- (string) Endpoint traces are exported to, e.g. localhost:4317.
+      endpoint: null
+      # -- (string) URL path traces are exported to over http or https, defaults to /v1/traces.
+      path: null
+      # -- Headers sent with every exported trace.
+      headers: {}
     network:
       # -- Enable IPv6 networking.
       enableIPv6: false
@@ -459,15 +454,9 @@ scheduler:
       listenIP: '0.0.0.0'
       # -- Port the gRPC server listens on.
       port: 8002
-      # # GRPC server tls configuration.
-      # tls:
-      #   # CA certificate file path for mTLS.
-      #   caCert: /etc/ssl/certs/ca.crt
-      #   # Certificate file path for mTLS.
-      #   cert: /etc/ssl/certs/server.crt
-      #   # Key file path for mTLS.
-      #   key: /etc/ssl/private/server.pem
-      #
+      # -- (object) mTLS configuration of the gRPC server with the caCert, cert and key file paths.
+      # Empty serves plaintext.
+      tls: null
       # -- Maximum number of requests per second accepted by the gRPC server, counting both unary
       # requests and new stream connections.
       requestRateLimit: 4000
@@ -523,23 +512,13 @@ scheduler:
       keepAlive:
         # -- Interval between keepalive messages to the manager.
         interval: 5s
-    # # GRPC client tls configuration.
-    # tls:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # Certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # Key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
+      # -- (object) mTLS configuration of the gRPC client to the manager with the caCert, cert and
+      # key file paths. Empty connects in plaintext.
+      tls: null
     seedPeer:
-    # # GRPC client tls configuration.
-    # tls:
-    #   # CA certificate file path for mTLS.
-    #   caCert: /etc/ssl/certs/ca.crt
-    #   # Certificate file path for mTLS.
-    #   cert: /etc/ssl/certs/client.crt
-    #   # Key file path for mTLS.
-    #   key: /etc/ssl/private/client.pem
+      # -- (object) mTLS configuration of the gRPC client to the seed peers with the caCert, cert
+      # and key file paths. Empty connects in plaintext.
+      tls: null
     # -- Print logs to the console.
     console: true
     # -- Port of the pprof server, -1 disables it.
@@ -547,12 +526,12 @@ scheduler:
     tracing:
       # -- Protocol used to export traces, one of http, https or grpc. Empty disables tracing.
       protocol: ''
-      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      # endpoint: ""
-      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      # path: ""
-      # # headers is the grpc's headers to send with tracing log.
-      # headers: {}
+      # -- (string) Endpoint traces are exported to, e.g. localhost:4317.
+      endpoint: null
+      # -- (string) URL path traces are exported to over http or https, defaults to /v1/traces.
+      path: null
+      # -- Headers sent with every exported trace.
+      headers: {}
     network:
       # -- Enable IPv6 networking.
       enableIPv6: false
@@ -889,10 +868,11 @@ seedClient:
       idc: ''
       # -- Location of the host.
       location: ''
-    # # hostname is the hostname of the host.
-    # hostname: ""
-    # # ip is the advertise ip of the host.
-    # ip: ""
+      # -- (string) IP address advertised to the scheduler and other peers. Empty detects it from the
+      # network interfaces.
+      ip: null
+      # hostname has no empty value in dfdaemon v1.5.10, leave it out to announce the hostname of the Pod.
+      # hostname: node-1
     server:
       # -- Directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
@@ -943,29 +923,27 @@ seedClient:
       server:
         # -- Port of the upload gRPC server, which serves pieces to other peers.
         port: 4000
-        # # ip is the listen ip of the grpc server.
-        # ip: ""
-        # # CA certificate file path for mTLS.
-        # caCert: /etc/ssl/certs/ca.crt
-        # # GRPC server certificate file path for mTLS.
-        # cert: /etc/ssl/certs/server.crt
-        # # GRPC server key file path for mTLS.
-        # key: /etc/ssl/private/server.pem
-        #
+        # -- (string) IP address the upload gRPC server listens on. Empty listens on all interfaces.
+        ip: null
+        # -- (string) CA certificate file path for mTLS. Empty serves plaintext.
+        caCert: null
+        # -- (string) Server certificate file path for mTLS.
+        cert: null
+        # -- (string) Server key file path for mTLS.
+        key: null
         # -- Maximum requests per second on the upload gRPC server, across all connections.
         requestRateLimit: 400
         # -- Capacity of the request queue of the upload gRPC server. When it is full, new requests
         # fail with RESOURCE_EXHAUSTED.
         requestbufferSize: 50
-      # # Client configuration for remote peer's upload server.
-      # client:
-      #   # CA certificate file path for mTLS.
-      #   caCert: /etc/ssl/certs/ca.crt
-      #   # GRPC client certificate file path for mTLS.
-      #   cert: /etc/ssl/certs/client.crt
-      #   # GRPC client key file path for mTLS.
-      #   key: /etc/ssl/private/client.pem
-      #
+      # -- gRPC client used to download pieces from the upload server of other peers.
+      client:
+        # -- (string) CA certificate file path for mTLS. Empty connects in plaintext.
+        caCert: null
+        # -- (string) Client certificate file path for mTLS.
+        cert: null
+        # -- (string) Client key file path for mTLS.
+        key: null
       # -- Upload bandwidth limit, in GB, MB or KB per second.
       bandwidthLimit: 50GB
     scheduler:
@@ -980,12 +958,12 @@ seedClient:
       scheduleTimeout: 3h
       # -- Maximum number of scheduling rounds per download.
       maxScheduleCount: 5
-    # # CA certificate file path for mTLS.
-    # caCert: /etc/ssl/certs/ca.crt
-    # # GRPC client certificate file path for mTLS.
-    # cert: /etc/ssl/certs/client.crt
-    # # GRPC client key file path for mTLS.
-    # key: /etc/ssl/private/client.pem
+    # -- (string) CA certificate file path for mTLS to the scheduler. Empty connects in plaintext.
+    caCert: null
+    # -- (string) Client certificate file path for mTLS to the scheduler.
+    cert: null
+    # -- (string) Client key file path for mTLS to the scheduler.
+    key: null
     seedPeer:
       # -- Register this dfdaemon as a seed peer.
       enable: true
@@ -1000,8 +978,8 @@ seedClient:
         tcpPort: 4005
         # -- Port of the QUIC storage server, which serves pieces to other peers.
         quicPort: 4006
-      # # ip is the listen ip of the storage server.
-      # ip: ""
+      # -- (string) IP address the storage servers listen on. Empty listens on all interfaces.
+      ip: null
       # -- Directory for task metadata and content.
       dir: /var/lib/dragonfly/
       # -- Keep task metadata and content across dfdaemon restarts.
@@ -1025,17 +1003,9 @@ seedClient:
         persistentTaskTTL: 24h
         # -- Default TTL of persistent cache tasks whose DownloadPersistentTask request sets none.
         persistentCacheTaskTTL: 24h
-        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
-        # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
-        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
-        # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
-        # #   relative to the total actual disk space.
-        # #
-        # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
-        # # rather than always considering the entire disk volume.
-        #
+        # diskThreshold caps the disk capacity the percentage thresholds below are applied to, so that
+        # dfdaemon manages a slice of the disk instead of the whole volume. Leave it out to use the
+        # total disk space.
         # diskThreshold: 10TiB
         # -- Disk usage percentage above which garbage collection starts.
         diskHighThresholdPercent: 90
@@ -1047,38 +1017,17 @@ seedClient:
         port: 4001
         # -- Maximum requests per second on the HTTP proxy.
         requestRateLimit: 400
-      # # ip is the listen ip of the proxy server.
-      # ip: ""
-      # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
-      # # If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
-      # # When client requests via the proxy, the client should not verify the server cert and set
-      # # insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-      # # the proxy can intercept the request by the server cert.
-      # caCert: ""
-      #
-      # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
-      # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
-      # # When client requests via the proxy, the client should not verify the server cert and set
-      # # insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-      # # the proxy can intercept the request by the server cert.
-      # caKey: ""
-      #
-      # # basic_auth is the basic auth configuration for HTTP proxy in dfdaemon. If basic_auth is not
-      # # empty, the proxy will use the basic auth to authenticate the client by Authorization
-      # # header. The value of the Authorization header is "Basic base64(username:password)", refer
-      # # to https://en.wikipedia.org/wiki/Basic_access_authentication.
-      # basicAuth:
-      #   # username is the username for basic auth.
-      #   username: "admin"
-      #   # password is the password for basic auth.
-      #   password: "dragonfly"
-      #
+      # -- (string) IP address the proxy server listens on. Empty listens on all interfaces.
+      ip: null
+      # -- (string) Root CA certificate file path, PEM format, used to sign the server certificates
+      # the proxy generates for HTTPS interception. Trust it on the clients. Empty generates a
+      # self-signed CA, and clients must skip certificate verification.
+      caCert: null
+      # -- (string) Root CA key file path, PEM format, matching caCert.
+      caKey: null
+      # -- (object) HTTP basic authentication with username and password. Clients send
+      # "Authorization: Basic base64(username:password)". Empty disables authentication.
+      basicAuth: null
       # -- Proxy rules, the first rule whose regex matches the request URL applies. regex is matched
       # against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL.
       # filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS,
@@ -1107,11 +1056,9 @@ seedClient:
         # digest instead of the full URL, so that the same blob pulled from different registries
         # shares one task and is downloaded and stored once.
         enableTaskIDBasedBlobDigest: true
-      # # cert is the client cert path with PEM format for the registry.
-      # # If registry use self-signed cert, the client should set the
-      # # cert for the registry mirror.
-      # cert: ""
-      #
+      # -- (string) Client certificate file path, PEM format, for registries with self-signed
+      # certificates.
+      cert: null
       # -- Do not fall back to the source when a proxied download fails.
       disableBackToSource: false
       # -- Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request
@@ -1126,29 +1073,29 @@ seedClient:
       server:
         # -- Port of the health server.
         port: 4003
-      # # ip is the listen ip of the health server.
-      # ip: ""
+      # -- (string) IP address the health server listens on. Empty listens on all interfaces.
+      ip: null
     metrics:
       server:
         # -- Port of the metrics server.
         port: 4002
-      # # ip is the listen ip of the metrics server.
-      # ip: ""
+      # -- (string) IP address the metrics server listens on. Empty listens on all interfaces.
+      ip: null
     stats:
       server:
         # -- Port of the stats server.
         port: 4004
-      # # ip is the listen ip of the stats server.
-      # ip: ""
+      # -- (string) IP address the stats server listens on. Empty listens on all interfaces.
+      ip: null
     tracing:
       # -- Protocol used to export traces, one of http, https or grpc. Empty disables tracing.
       protocol: ''
-      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      # endpoint: ""
-      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      # path: ""
-      # # headers is the grpc's headers to send with tracing log.
-      # headers: {}
+      # -- (string) Endpoint traces are exported to, e.g. localhost:4317.
+      endpoint: null
+      # -- Headers sent with every exported trace.
+      headers: {}
+      # path defaults to /v1/traces over http and https, set it only to override the default.
+      # path: /v1/traces
     backend:
       # -- Extra request headers sent to the origin server.
       requestHeader: {}
@@ -1386,12 +1333,11 @@ client:
           # reloads without a restart. Otherwise dfinit sets config_path to /etc/containerd/certs.d in this
           # file and containerd is restarted once.
           configPath: /etc/containerd/config.toml
-          # # -- criPluginId is the CRI plugin id owning the registry configuration, e.g. "io.containerd.grpc.v1.cri"
-          # # or "io.containerd.cri.v1.images". If not set, the plugin table present in the containerd
-          # # configuration is used, preferring "io.containerd.grpc.v1.cri" for version 2 configurations
-          # # and "io.containerd.cri.v1.images" for version 3.
-          # criPluginId: io.containerd.cri.v1.images
-          #
+          # -- (string) CRI plugin owning the registry configuration, io.containerd.grpc.v1.cri or
+          # io.containerd.cri.v1.images. Empty picks the plugin table present in config.toml,
+          # preferring io.containerd.grpc.v1.cri for version 2 configurations and
+          # io.containerd.cri.v1.images for version 3.
+          criPluginId: null
           # -- Write a catch-all _default/hosts.toml so that registries not listed in registries are
           # also proxied through dfdaemon, which infers the upstream registry from the ns= query
           # parameter containerd appends. Listed registries keep their own hosts.toml and take
@@ -1462,10 +1408,11 @@ client:
       idc: ''
       # -- Location of the host.
       location: ''
-    # # hostname is the hostname of the host.
-    # hostname: ""
-    # # ip is the advertise ip of the host.
-    # ip: ""
+      # -- (string) IP address advertised to the scheduler and other peers. Empty detects it from the
+      # network interfaces.
+      ip: null
+      # hostname has no empty value in dfdaemon v1.5.10, leave it out to announce the hostname of the Pod.
+      # hostname: node-1
     server:
       # -- Directory to store plugins.
       pluginDir: /usr/local/lib/dragonfly/plugins/dfdaemon/
@@ -1516,29 +1463,27 @@ client:
       server:
         # -- Port of the upload gRPC server, which serves pieces to other peers.
         port: 4000
-        # # ip is the listen ip of the grpc server.
-        # ip: ""
-        # # CA certificate file path for mTLS.
-        # caCert: /etc/ssl/certs/ca.crt
-        # # GRPC server certificate file path for mTLS.
-        # cert: /etc/ssl/certs/server.crt
-        # # GRPC server key file path for mTLS.
-        # key: /etc/ssl/private/server.pem
-        #
+        # -- (string) IP address the upload gRPC server listens on. Empty listens on all interfaces.
+        ip: null
+        # -- (string) CA certificate file path for mTLS. Empty serves plaintext.
+        caCert: null
+        # -- (string) Server certificate file path for mTLS.
+        cert: null
+        # -- (string) Server key file path for mTLS.
+        key: null
         # -- Maximum requests per second on the upload gRPC server, across all connections.
         requestRateLimit: 200
         # -- Capacity of the request queue of the upload gRPC server. When it is full, new requests
         # fail with RESOURCE_EXHAUSTED.
         requestbufferSize: 1000
-      # # Client configuration for remote peer's upload server.
-      # client:
-      #   # CA certificate file path for mTLS.
-      #   caCert: /etc/ssl/certs/ca.crt
-      #   # GRPC client certificate file path for mTLS.
-      #   cert: /etc/ssl/certs/client.crt
-      #   # GRPC client key file path for mTLS.
-      #   key: /etc/ssl/private/client.pem
-      #
+      # -- gRPC client used to download pieces from the upload server of other peers.
+      client:
+        # -- (string) CA certificate file path for mTLS. Empty connects in plaintext.
+        caCert: null
+        # -- (string) Client certificate file path for mTLS.
+        cert: null
+        # -- (string) Client key file path for mTLS.
+        key: null
       # -- Do not share downloaded data with other peers.
       disableShared: false
       # -- Upload bandwidth limit, in GB, MB or KB per second.
@@ -1557,12 +1502,12 @@ client:
       maxScheduleCount: 5
       # -- Download from the source when scheduling fails.
       enableBackToSource: true
-    # # CA certificate file path for mTLS.
-    # caCert: /etc/ssl/certs/ca.crt
-    # # GRPC client certificate file path for mTLS.
-    # cert: /etc/ssl/certs/client.crt
-    # # GRPC client key file path for mTLS.
-    # key: /etc/ssl/private/client.pem
+    # -- (string) CA certificate file path for mTLS to the scheduler. Empty connects in plaintext.
+    caCert: null
+    # -- (string) Client certificate file path for mTLS to the scheduler.
+    cert: null
+    # -- (string) Client key file path for mTLS to the scheduler.
+    key: null
     dynconfig:
       # -- Interval at which the dynamic configuration is refreshed from the manager.
       refreshInterval: 5m
@@ -1572,8 +1517,8 @@ client:
         tcpPort: 4005
         # -- Port of the QUIC storage server, which serves pieces to other peers.
         quicPort: 4006
-      # # ip is the listen ip of the storage server.
-      # ip: ""
+      # -- (string) IP address the storage servers listen on. Empty listens on all interfaces.
+      ip: null
       # -- Directory for task metadata and content.
       dir: /var/lib/dragonfly/
       # -- Keep task metadata and content across dfdaemon restarts.
@@ -1597,17 +1542,9 @@ client:
         persistentTaskTTL: 24h
         # -- Default TTL of persistent cache tasks whose DownloadPersistentTask request sets none.
         persistentCacheTaskTTL: 24h
-        # # diskThreshold optionally defines a specific disk capacity to be used as the base for
-        # # calculating GC trigger points with `diskHighThresholdPercent` and `diskLowThresholdPercent`.
-        # #
-        # # - If a value is provided (e.g., "500GB"), the percentage-based thresholds (`diskHighThresholdPercent`,
-        # #   `diskLowThresholdPercent`) are applied relative to this specified capacity.
-        # # - If not provided or set to 0 (the default behavior), these percentage-based thresholds are applied
-        # #   relative to the total actual disk space.
-        # #
-        # # This allows dfdaemon to effectively manage a logical portion of the disk for its cache,
-        # # rather than always considering the entire disk volume.
-        #
+        # diskThreshold caps the disk capacity the percentage thresholds below are applied to, so that
+        # dfdaemon manages a slice of the disk instead of the whole volume. Leave it out to use the
+        # total disk space.
         # diskThreshold: 10TiB
         # -- Disk usage percentage above which garbage collection starts.
         diskHighThresholdPercent: 90
@@ -1619,38 +1556,17 @@ client:
         port: 4001
         # -- Maximum requests per second on the HTTP proxy.
         requestRateLimit: 50
-      # # ip is the listen ip of the proxy server.
-      # ip: ""
-      # # caCert is the root CA cert path with PEM format for the proxy server to generate the server cert.
-      # # If ca_cert is empty, proxy will generate a smaple CA cert by rcgen::generate_simple_self_signed.
-      # # When client requests via the proxy, the client should not verify the server cert and set
-      # # insecure to true. If ca_cert is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-      # # the proxy can intercept the request by the server cert.
-      # caCert: ""
-      #
-      # # caKey is the root CA key path with PEM format for the proxy server to generate the server cert.
-      # # If ca_key is empty, proxy will generate a smaple CA key by rcgen::generate_simple_self_signed.
-      # # When client requests via the proxy, the client should not verify the server cert and set
-      # # insecure to true. If ca_key is not empty, proxy will sign the server cert with the CA cert. If openssl is installed,
-      # # you can use openssl to generate the root CA cert and make the system trust the root CA cert.
-      # # Then set the ca_cert and ca_key to the root CA cert and key path. Dfdaemon generates the server cert
-      # # and key, and signs the server cert with the root CA cert. When client requests via the proxy,
-      # # the proxy can intercept the request by the server cert.
-      # caKey: ""
-      #
-      # # basic_auth is the basic auth configuration for HTTP proxy in dfdaemon. If basic_auth is not
-      # # empty, the proxy will use the basic auth to authenticate the client by Authorization
-      # # header. The value of the Authorization header is "Basic base64(username:password)", refer
-      # # to https://en.wikipedia.org/wiki/Basic_access_authentication.
-      # basicAuth:
-      #   # username is the username for basic auth.
-      #   username: "admin"
-      #   # password is the password for basic auth.
-      #   password: "dragonfly"
-      #
+      # -- (string) IP address the proxy server listens on. Empty listens on all interfaces.
+      ip: null
+      # -- (string) Root CA certificate file path, PEM format, used to sign the server certificates
+      # the proxy generates for HTTPS interception. Trust it on the clients. Empty generates a
+      # self-signed CA, and clients must skip certificate verification.
+      caCert: null
+      # -- (string) Root CA key file path, PEM format, matching caCert.
+      caKey: null
+      # -- (object) HTTP basic authentication with username and password. Clients send
+      # "Authorization: Basic base64(username:password)". Empty disables authentication.
+      basicAuth: null
       # -- Proxy rules, the first rule whose regex matches the request URL applies. regex is matched
       # against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL.
       # filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS,
@@ -1679,11 +1595,9 @@ client:
         # digest instead of the full URL, so that the same blob pulled from different registries
         # shares one task and is downloaded and stored once.
         enableTaskIDBasedBlobDigest: true
-      # # cert is the client cert path with PEM format for the registry.
-      # # If registry use self-signed cert, the client should set the
-      # # cert for the registry mirror.
-      # cert: ""
-      #
+      # -- (string) Client certificate file path, PEM format, for registries with self-signed
+      # certificates.
+      cert: null
       # -- Do not fall back to the source when a proxied download fails.
       disableBackToSource: false
       # -- Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request
@@ -1698,29 +1612,29 @@ client:
       server:
         # -- Port of the health server.
         port: 4003
-      # # ip is the listen ip of the health server.
-      # ip: ""
+      # -- (string) IP address the health server listens on. Empty listens on all interfaces.
+      ip: null
     metrics:
       server:
         # -- Port of the metrics server.
         port: 4002
-      # # ip is the listen ip of the metrics server.
-      # ip: ""
+      # -- (string) IP address the metrics server listens on. Empty listens on all interfaces.
+      ip: null
     stats:
       server:
         # -- Port of the stats server.
         port: 4004
-      # # ip is the listen ip of the stats server.
-      # ip: ""
+      # -- (string) IP address the stats server listens on. Empty listens on all interfaces.
+      ip: null
     tracing:
       # -- Protocol used to export traces, one of http, https or grpc. Empty disables tracing.
       protocol: ''
-      # # endpoint is the endpoint to report tracing log, example: "localhost:4317".
-      # endpoint: ""
-      # # path is the path to report tracing log, example: "/v1/traces" if the protocol is "http" or "https".
-      # path: ""
-      # # headers is the grpc's headers to send with tracing log.
-      # headers: {}
+      # -- (string) Endpoint traces are exported to, e.g. localhost:4317.
+      endpoint: null
+      # -- Headers sent with every exported trace.
+      headers: {}
+      # path defaults to /v1/traces over http and https, set it only to override the default.
+      # path: /v1/traces
     backend:
       # -- Extra request headers sent to the origin server.
       requestHeader: {}

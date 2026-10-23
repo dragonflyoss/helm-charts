@@ -134,6 +134,8 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.backend.putConcurrentChunkCount | int | `16` | Number of chunks uploaded in parallel to the backend. Higher values raise throughput, memory use and backend load. |
 | client.config.backend.putTimeout | string | `"900s"` | Timeout for uploading a single object, including all of its chunks, to the backend. |
 | client.config.backend.requestHeader | object | `{}` | Extra request headers sent to the origin server. |
+| client.config.caCert | string | `nil` | CA certificate file path for mTLS to the scheduler. Empty connects in plaintext. |
+| client.config.cert | string | `nil` | Client certificate file path for mTLS to the scheduler. |
 | client.config.console | bool | `true` | Print logs to the console instead of the log files. |
 | client.config.download.backToSourceBandwidthLimit | string | `"50GB"` | Bandwidth limit for downloads from the source, in GB, MB or KB per second. |
 | client.config.download.backToSourceConcurrentPieceCount | int | `8` | Number of pieces downloaded concurrently from the source. |
@@ -152,15 +154,24 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Default TTL of persistent cache tasks whose DownloadPersistentTask request sets none. |
 | client.config.gc.policy.persistentTaskTTL | string | `"24h"` | Default TTL of persistent tasks whose DownloadPersistentTask request sets none. |
 | client.config.gc.policy.taskTTL | string | `"720h"` | Time a task is kept after its last access. |
+| client.config.health.ip | string | `nil` | IP address the health server listens on. Empty listens on all interfaces. |
 | client.config.health.server.port | int | `4003` | Port of the health server. |
-| client.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | Host information announced to the scheduler. |
+| client.config.host | object | `{"idc":"","ip":null,"location":"","schedulerClusterID":1}` | Host information announced to the scheduler. |
 | client.config.host.idc | string | `""` | IDC of the host. |
+| client.config.host.ip | string | `nil` | IP address advertised to the scheduler and other peers. Empty detects it from the network interfaces. |
 | client.config.host.location | string | `""` | Location of the host. |
 | client.config.host.schedulerClusterID | int | `1` | ID of the scheduler cluster to join. When set, idc, location, hostname and ip are ignored when listing schedulers from the manager. The manager creates a cluster with ID 1 by default. |
+| client.config.key | string | `nil` | Client key file path for mTLS to the scheduler. |
 | client.config.log.level | string | `"info"` | Log level, one of trace, debug, info, warn or error. |
+| client.config.metrics.ip | string | `nil` | IP address the metrics server listens on. Empty listens on all interfaces. |
 | client.config.metrics.server.port | int | `4002` | Port of the metrics server. |
 | client.config.network.enableIPv6 | bool | `false` | Enable IPv6 networking. |
+| client.config.proxy.basicAuth | object | `nil` | HTTP basic authentication with username and password. Clients send "Authorization: Basic base64(username:password)". Empty disables authentication. |
+| client.config.proxy.caCert | string | `nil` | Root CA certificate file path, PEM format, used to sign the server certificates the proxy generates for HTTPS interception. Trust it on the clients. Empty generates a self-signed CA, and clients must skip certificate verification. |
+| client.config.proxy.caKey | string | `nil` | Root CA key file path, PEM format, matching caCert. |
+| client.config.proxy.cert | string | `nil` | Client certificate file path, PEM format, for registries with self-signed certificates. |
 | client.config.proxy.disableBackToSource | bool | `false` | Do not fall back to the source when a proxied download fails. |
+| client.config.proxy.ip | string | `nil` | IP address the proxy server listens on. Empty listens on all interfaces. |
 | client.config.proxy.prefetch | bool | `true` | Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request header overrides it per request. |
 | client.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
 | client.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
@@ -181,8 +192,10 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.server.adaptiveRateLimit.memoryThreshold | int | `90` | Memory usage percentage above which the system counts as overloaded. 100 ignores memory usage. |
 | client.config.server.adaptiveRateLimit.shedCooldown | string | `"5s"` | Duration to keep shedding requests after the first drop, preventing oscillation. |
 | client.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | Directory to store plugins. |
+| client.config.stats.ip | string | `nil` | IP address the stats server listens on. Empty listens on all interfaces. |
 | client.config.stats.server.port | int | `4004` | Port of the stats server. |
 | client.config.storage.dir | string | `"/var/lib/dragonfly/"` | Directory for task metadata and content. |
+| client.config.storage.ip | string | `nil` | IP address the storage servers listen on. Empty listens on all interfaces. |
 | client.config.storage.keep | bool | `true` | Keep task metadata and content across dfdaemon restarts. |
 | client.config.storage.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | client.config.storage.server.quicPort | int | `4006` | Port of the QUIC storage server, which serves pieces to other peers. |
@@ -190,15 +203,26 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.storage.writeBufferSize | int | `2097152` | Buffer size for writing pieces to disk. |
 | client.config.storage.writePieceTimeout | string | `"360s"` | Timeout for writing a piece to storage. |
 | client.config.storage.writebackMode | string | `"async"` | How written piece ranges are written back to disk. sync calls sync_file_range per piece, async queues the ranges to a background task, off leaves writeback to the kernel. |
+| client.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
+| client.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
 | client.config.tracing.protocol | string | `""` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
 | client.config.upload.bandwidthLimit | string | `"50GB"` | Upload bandwidth limit, in GB, MB or KB per second. |
+| client.config.upload.client | object | `{"caCert":null,"cert":null,"key":null}` | gRPC client used to download pieces from the upload server of other peers. |
+| client.config.upload.client.caCert | string | `nil` | CA certificate file path for mTLS. Empty connects in plaintext. |
+| client.config.upload.client.cert | string | `nil` | Client certificate file path for mTLS. |
+| client.config.upload.client.key | string | `nil` | Client key file path for mTLS. |
 | client.config.upload.disableShared | bool | `false` | Do not share downloaded data with other peers. |
+| client.config.upload.server.caCert | string | `nil` | CA certificate file path for mTLS. Empty serves plaintext. |
+| client.config.upload.server.cert | string | `nil` | Server certificate file path for mTLS. |
+| client.config.upload.server.ip | string | `nil` | IP address the upload gRPC server listens on. Empty listens on all interfaces. |
+| client.config.upload.server.key | string | `nil` | Server key file path for mTLS. |
 | client.config.upload.server.port | int | `4000` | Port of the upload gRPC server, which serves pieces to other peers. |
 | client.config.upload.server.requestRateLimit | int | `200` | Maximum requests per second on the upload gRPC server, across all connections. |
 | client.config.upload.server.requestbufferSize | int | `1000` | Capacity of the request queue of the upload gRPC server. When it is full, new requests fail with RESOURCE_EXHAUSTED. |
 | client.daemonsetAnnotations | object | `{}` | DaemonSet annotations. |
 | client.dfinit.config.console | bool | `true` | Print logs to the console instead of the log files. |
 | client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. When registry.config_path is set in it, as on AKS and EKS, dfinit only writes hosts.toml under that directory, which containerd reloads without a restart. Otherwise dfinit sets config_path to /etc/containerd/certs.d in this file and containerd is restarted once. |
+| client.dfinit.config.containerRuntime.containerd.criPluginId | string | `nil` | CRI plugin owning the registry configuration, io.containerd.grpc.v1.cri or io.containerd.cri.v1.images. Empty picks the plugin table present in config.toml, preferring io.containerd.grpc.v1.cri for version 2 configurations and io.containerd.cri.v1.images for version 3. |
 | client.dfinit.config.containerRuntime.containerd.proxyAllRegistries | bool | `true` | Write a catch-all _default/hosts.toml so that registries not listed in registries are also proxied through dfdaemon, which infers the upstream registry from the ns= query parameter containerd appends. Listed registries keep their own hosts.toml and take precedence. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io","skipVerify":true},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io","skipVerify":true}]` | Registries proxied through dfdaemon, each written as hosts.toml under config_path. hostNamespace is the registry host, e.g. docker.io or ghcr.io, and serverAddr its default server. capabilities, skipVerify and ca map to the containerd hosts.toml fields, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md. |
 | client.dfinit.config.log.level | string | `"info"` | Log level, one of trace, debug, info, warn or error. |
@@ -354,7 +378,8 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.job.gc | object | `{"interval":"3h","ttl":"6h"}` | Garbage collection of finished jobs. |
 | manager.config.job.gc.interval | string | `"3h"` | Interval between job garbage collections. |
 | manager.config.job.gc.ttl | string | `"6h"` | Time a finished job is kept before it is garbage collected. |
-| manager.config.job.preheat | object | `{"registryTimeout":"1m","tls":{"insecureSkipVerify":false}}` | Preheat jobs, which download images and files into seed peers ahead of time. |
+| manager.config.job.preheat | object | `{"caCert":null,"registryTimeout":"1m","tls":{"insecureSkipVerify":false}}` | Preheat jobs, which download images and files into seed peers ahead of time. |
+| manager.config.job.preheat.caCert | string | `nil` | CA certificate used to verify the registry during preheat, as a file path or PEM string. Empty uses the system trust store. |
 | manager.config.job.preheat.registryTimeout | string | `"1m"` | Timeout for requesting the token and manifest from the registry. |
 | manager.config.job.preheat.tls.insecureSkipVerify | bool | `false` | Skip verification of the registry certificate chain and hostname. |
 | manager.config.job.rateLimit | object | `{"capacity":10,"fillInterval":"1m","quantum":10}` | Token bucket rate limit for job requests. |
@@ -369,12 +394,16 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.config.server.cacheDir | string | `""` | Directory for the dynamic configuration cache. |
 | manager.config.server.grpc.advertiseIP | string | `""` | IP address advertised to schedulers and peers for the gRPC server. |
 | manager.config.server.grpc.requestRateLimit | int | `4000` | Maximum number of requests per second accepted by the gRPC server, counting both unary requests and new stream connections. |
+| manager.config.server.grpc.tls | object | `nil` | mTLS configuration of the gRPC server with the caCert, cert and key file paths. Empty serves plaintext. |
 | manager.config.server.logDir | string | `""` | Log directory. |
 | manager.config.server.logLevel | string | `"info"` | Log level, one of debug, info, warn, error, panic or fatal. |
 | manager.config.server.pluginDir | string | `""` | Plugin directory. |
 | manager.config.server.rest.tls.cert | string | `""` | TLS certificate file path of the REST server. |
 | manager.config.server.rest.tls.key | string | `""` | TLS private key file path of the REST server. |
 | manager.config.server.workHome | string | `""` | Work directory. |
+| manager.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
+| manager.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
+| manager.config.tracing.path | string | `nil` | URL path traces are exported to over http or https, defaults to /v1/traces. |
 | manager.config.tracing.protocol | string | `"grpc"` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
 | manager.deploymentAnnotations | object | `{}` | Deployment annotations. |
 | manager.enable | bool | `false` | Deploy the manager, which serves the console and the REST and gRPC APIs and stores the cluster, scheduler, seed peer and job state. |
@@ -465,6 +494,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.host.location | string | `""` | Location the scheduler runs in. |
 | scheduler.config.manager.keepAlive.interval | string | `"5s"` | Interval between keepalive messages to the manager. |
 | scheduler.config.manager.schedulerClusterID | int | `1` | ID of the scheduler cluster in the manager that this scheduler joins. |
+| scheduler.config.manager.tls | object | `nil` | mTLS configuration of the gRPC client to the manager with the caCert, cert and key file paths. Empty connects in plaintext. |
 | scheduler.config.network.enableIPv6 | bool | `false` | Enable IPv6 networking. |
 | scheduler.config.pprofPort | int | `-1` | Port of the pprof server, -1 disables it. |
 | scheduler.config.scheduler.algorithm | string | `"default"` | Scheduling algorithm. default uses the built-in evaluator. plugin loads the compiled d7y-scheduler-plugin-evaluator.so from the plugins folder of the working directory. |
@@ -478,7 +508,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.scheduler.retryBackToSourceLimit | int | `3` | Number of failed scheduling attempts after which the peer downloads from the source. |
 | scheduler.config.scheduler.retryInterval | string | `"1s"` | Interval between scheduling attempts. |
 | scheduler.config.scheduler.retryLimit | int | `5` | Number of scheduling attempts after which scheduling fails. |
-| scheduler.config.seedPeer | string | `nil` |  |
+| scheduler.config.seedPeer.tls | object | `nil` | mTLS configuration of the gRPC client to the seed peers with the caCert, cert and key file paths. Empty connects in plaintext. |
 | scheduler.config.server.advertiseIP | string | `""` | IP address advertised to peers and the manager. |
 | scheduler.config.server.advertisePort | int | `8002` | Port advertised to peers and the manager. |
 | scheduler.config.server.cacheDir | string | `""` | Directory for the dynamic configuration cache. |
@@ -489,7 +519,11 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.config.server.pluginDir | string | `""` | Plugin directory. |
 | scheduler.config.server.port | int | `8002` | Port the gRPC server listens on. |
 | scheduler.config.server.requestRateLimit | int | `4000` | Maximum number of requests per second accepted by the gRPC server, counting both unary requests and new stream connections. |
+| scheduler.config.server.tls | object | `nil` | mTLS configuration of the gRPC server with the caCert, cert and key file paths. Empty serves plaintext. |
 | scheduler.config.server.workHome | string | `""` | Work directory. |
+| scheduler.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
+| scheduler.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
+| scheduler.config.tracing.path | string | `nil` | URL path traces are exported to over http or https, defaults to /v1/traces. |
 | scheduler.config.tracing.protocol | string | `""` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
 | scheduler.containerPort | int | `8002` | Container port of the gRPC server. |
 | scheduler.dynconfig | object | `{"applications":[],"schedulerClusterClientConfig":{"loadLimit":200},"schedulerClusterConfig":{"candidateParentLimit":3,"filterParentLimit":15},"seedPeerClusterConfig":{"loadLimit":2000}}` | Local dynamic configuration (dynconfig.yaml), delivered as a ConfigMap next to scheduler.yaml. It is used only without a manager, that is when manager.enable is false and externalManager.host is empty, and refreshed every scheduler.config.dynconfig.refreshInterval. |
@@ -558,6 +592,8 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.backend.putConcurrentChunkCount | int | `16` | Number of chunks uploaded in parallel to the backend. Higher values raise throughput, memory use and backend load. |
 | seedClient.config.backend.putTimeout | string | `"900s"` | Timeout for uploading a single object, including all of its chunks, to the backend. |
 | seedClient.config.backend.requestHeader | object | `{}` | Extra request headers sent to the origin server. |
+| seedClient.config.caCert | string | `nil` | CA certificate file path for mTLS to the scheduler. Empty connects in plaintext. |
+| seedClient.config.cert | string | `nil` | Client certificate file path for mTLS to the scheduler. |
 | seedClient.config.console | bool | `true` | Print logs to the console instead of the log files. |
 | seedClient.config.download.backToSourceBandwidthLimit | string | `"50GB"` | Bandwidth limit for downloads from the source, in GB, MB or KB per second. |
 | seedClient.config.download.backToSourceConcurrentPieceCount | int | `8` | Number of pieces downloaded concurrently from the source. |
@@ -576,15 +612,24 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.gc.policy.persistentCacheTaskTTL | string | `"24h"` | Default TTL of persistent cache tasks whose DownloadPersistentTask request sets none. |
 | seedClient.config.gc.policy.persistentTaskTTL | string | `"24h"` | Default TTL of persistent tasks whose DownloadPersistentTask request sets none. |
 | seedClient.config.gc.policy.taskTTL | string | `"720h"` | Time a task is kept after its last access. |
+| seedClient.config.health.ip | string | `nil` | IP address the health server listens on. Empty listens on all interfaces. |
 | seedClient.config.health.server.port | int | `4003` | Port of the health server. |
-| seedClient.config.host | object | `{"idc":"","location":"","schedulerClusterID":1}` | Host information announced to the scheduler. |
+| seedClient.config.host | object | `{"idc":"","ip":null,"location":"","schedulerClusterID":1}` | Host information announced to the scheduler. |
 | seedClient.config.host.idc | string | `""` | IDC of the host. |
+| seedClient.config.host.ip | string | `nil` | IP address advertised to the scheduler and other peers. Empty detects it from the network interfaces. |
 | seedClient.config.host.location | string | `""` | Location of the host. |
 | seedClient.config.host.schedulerClusterID | int | `1` | ID of the scheduler cluster to join. When set, idc, location, hostname and ip are ignored when listing schedulers from the manager. The manager creates a cluster with ID 1 by default. |
+| seedClient.config.key | string | `nil` | Client key file path for mTLS to the scheduler. |
 | seedClient.config.log.level | string | `"info"` | Log level, one of trace, debug, info, warn or error. |
+| seedClient.config.metrics.ip | string | `nil` | IP address the metrics server listens on. Empty listens on all interfaces. |
 | seedClient.config.metrics.server.port | int | `4002` | Port of the metrics server. |
 | seedClient.config.network.enableIPv6 | bool | `false` | Enable IPv6 networking. |
+| seedClient.config.proxy.basicAuth | object | `nil` | HTTP basic authentication with username and password. Clients send "Authorization: Basic base64(username:password)". Empty disables authentication. |
+| seedClient.config.proxy.caCert | string | `nil` | Root CA certificate file path, PEM format, used to sign the server certificates the proxy generates for HTTPS interception. Trust it on the clients. Empty generates a self-signed CA, and clients must skip certificate verification. |
+| seedClient.config.proxy.caKey | string | `nil` | Root CA key file path, PEM format, matching caCert. |
+| seedClient.config.proxy.cert | string | `nil` | Client certificate file path, PEM format, for registries with self-signed certificates. |
 | seedClient.config.proxy.disableBackToSource | bool | `false` | Do not fall back to the source when a proxied download fails. |
+| seedClient.config.proxy.ip | string | `nil` | IP address the proxy server listens on. Empty listens on all interfaces. |
 | seedClient.config.proxy.prefetch | bool | `true` | Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request header overrides it per request. |
 | seedClient.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
 | seedClient.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
@@ -606,8 +651,10 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.server.adaptiveRateLimit.memoryThreshold | int | `90` | Memory usage percentage above which the system counts as overloaded. 100 ignores memory usage. |
 | seedClient.config.server.adaptiveRateLimit.shedCooldown | string | `"5s"` | Duration to keep shedding requests after the first drop, preventing oscillation. |
 | seedClient.config.server.pluginDir | string | `"/usr/local/lib/dragonfly/plugins/dfdaemon/"` | Directory to store plugins. |
+| seedClient.config.stats.ip | string | `nil` | IP address the stats server listens on. Empty listens on all interfaces. |
 | seedClient.config.stats.server.port | int | `4004` | Port of the stats server. |
 | seedClient.config.storage.dir | string | `"/var/lib/dragonfly/"` | Directory for task metadata and content. |
+| seedClient.config.storage.ip | string | `nil` | IP address the storage servers listen on. Empty listens on all interfaces. |
 | seedClient.config.storage.keep | bool | `true` | Keep task metadata and content across dfdaemon restarts. |
 | seedClient.config.storage.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | seedClient.config.storage.server.quicPort | int | `4006` | Port of the QUIC storage server, which serves pieces to other peers. |
@@ -615,8 +662,18 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.storage.writeBufferSize | int | `2097152` | Buffer size for writing pieces to disk. |
 | seedClient.config.storage.writePieceTimeout | string | `"360s"` | Timeout for writing a piece to storage. |
 | seedClient.config.storage.writebackMode | string | `"async"` | How written piece ranges are written back to disk. sync calls sync_file_range per piece, async queues the ranges to a background task, off leaves writeback to the kernel. |
+| seedClient.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
+| seedClient.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
 | seedClient.config.tracing.protocol | string | `""` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
 | seedClient.config.upload.bandwidthLimit | string | `"50GB"` | Upload bandwidth limit, in GB, MB or KB per second. |
+| seedClient.config.upload.client | object | `{"caCert":null,"cert":null,"key":null}` | gRPC client used to download pieces from the upload server of other peers. |
+| seedClient.config.upload.client.caCert | string | `nil` | CA certificate file path for mTLS. Empty connects in plaintext. |
+| seedClient.config.upload.client.cert | string | `nil` | Client certificate file path for mTLS. |
+| seedClient.config.upload.client.key | string | `nil` | Client key file path for mTLS. |
+| seedClient.config.upload.server.caCert | string | `nil` | CA certificate file path for mTLS. Empty serves plaintext. |
+| seedClient.config.upload.server.cert | string | `nil` | Server certificate file path for mTLS. |
+| seedClient.config.upload.server.ip | string | `nil` | IP address the upload gRPC server listens on. Empty listens on all interfaces. |
+| seedClient.config.upload.server.key | string | `nil` | Server key file path for mTLS. |
 | seedClient.config.upload.server.port | int | `4000` | Port of the upload gRPC server, which serves pieces to other peers. |
 | seedClient.config.upload.server.requestRateLimit | int | `400` | Maximum requests per second on the upload gRPC server, across all connections. |
 | seedClient.config.upload.server.requestbufferSize | int | `50` | Capacity of the request queue of the upload gRPC server. When it is full, new requests fail with RESOURCE_EXHAUSTED. |
