@@ -198,18 +198,17 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.upload.server.requestbufferSize | int | `1000` | requestbufferSize is the buffer size of the upload server's request channel in dfdaemon, default is 1000.  This controls the capacity of the bounded channel used to queue incoming gRPC requests before they are processed. If the buffer is full, new requests will return a `RESOURCE_EXHAUSTED` error. |
 | client.daemonsetAnnotations | object | `{}` | Daemonset annotations. |
 | client.dfinit.config.console | bool | `true` | console prints log. |
-| client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. |
+| client.dfinit.config.containerRuntime.containerd.configPath | string | `"/etc/containerd/config.toml"` | configPath is the path of containerd configuration file. When registry.config_path is set in it, as on AKS and EKS, dfinit only writes hosts.toml under that directory, which containerd reloads without a restart. Otherwise dfinit sets config_path to /etc/containerd/certs.d in this file and containerd is restarted once. |
 | client.dfinit.config.containerRuntime.containerd.proxyAllRegistries | bool | `true` | Proxy all registries enables a catch-all `_default/hosts.toml` entry so that any registry not explicitly listed in `registries` is still proxied through dfdaemon. The dfdaemon infers the upstream registry from the `ns=` query parameter that containerd appends when using a `_default` fallback mirror. Explicitly configured registries continue to use their own `hosts.toml` and take precedence. |
 | client.dfinit.config.containerRuntime.containerd.registries | list | `[{"capabilities":["pull","resolve"],"hostNamespace":"docker.io","serverAddr":"https://index.docker.io","skipVerify":true},{"capabilities":["pull","resolve"],"hostNamespace":"ghcr.io","serverAddr":"https://ghcr.io","skipVerify":true}]` | Registries is the list of containerd registries. hostNamespace is the location where container images and artifacts are sourced, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#registry-host-namespace. The registry host namespace portion is [registry_host_name|IP address][:port], such as docker.io, ghcr.io, gcr.io, etc. serverAddr specifies the default server for this registry host namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#server-field. capabilities is the list of capabilities in containerd configuration, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#capabilities-field. skip_verify is the flag to skip verifying the server's certificate, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#bypass-tls-verification-example. ca (Certificate Authority Certification) can be set to a path or an array of paths each pointing to a ca file for use in authenticating with the registry namespace, refer to https://github.com/containerd/containerd/blob/main/docs/hosts.md#ca-field. |
 | client.dfinit.config.log.level | string | `"info"` | Specify the logging level [trace, debug, info, warn, error] |
 | client.dfinit.config.proxy.addr | string | `"http://127.0.0.1:4001"` | addr is the proxy server address of dfdaemon. |
-| client.dfinit.enable | bool | `false` | Enable dfinit to override configuration of container runtime. |
+| client.dfinit.enable | bool | `false` | Enable dfinit to configure the container runtime of the node to pull images through dfdaemon. |
 | client.dfinit.image.digest | string | `""` | Image digest. |
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.5.5"` | Image tag. |
-| client.dfinit.restartContainerRuntime | bool | `true` | restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted. |
+| client.dfinit.image.tag | string | `"v1.5.10"` | Image tag. |
 | client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | dynconfig is the local dynamic configuration (dynconfig.yaml) for the client, delivered as a ConfigMap and mounted into the same directory as dfdaemon.yaml. It is only used when no manager is available (manager.enable is false and externalManager.host is empty), and it is refreshed periodically according to client.config.dynconfig.refreshInterval. |
 | client.dynconfig.clientConfig | object | `{}` | clientConfig is the block list configuration for clients running as normal peers, e.g. clientConfig: { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
 | client.dynconfig.scheduler.addr | string | `""` | addr is the address of the scheduler headless service with port, resolved via DNS to discover all scheduler IPs. If empty, it defaults to the scheduler headless service address of this chart. |
@@ -230,7 +229,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.5.5"` | Image tag. |
+| client.image.tag | string | `"v1.5.10"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -319,13 +318,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.5"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.10"}` | initContainerImage is the image configuration for the init container that will be injected into target pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.5.5"` | Image tag. Should align with the version of Dragonfly client and seed client. |
+| injector.initContainerImage.tag | string | `"v1.5.10"` | Image tag. Should align with the version of Dragonfly client and seed client. |
 | injector.metrics.enable | bool | `false` | Enable injector metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -392,7 +391,7 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | manager.image.registry | string | `"docker.io"` | Image registry. |
 | manager.image.repository | string | `"dragonflyoss/manager"` | Image repository. |
-| manager.image.tag | string | `"v2.5.2"` | Image tag. |
+| manager.image.tag | string | `"v2.5.3-rc.1"` | Image tag. |
 | manager.ingress.annotations | object | `{}` | Ingress annotations. |
 | manager.ingress.className | string | `""` | Ingress class name. Requirement: kubernetes >=1.18. |
 | manager.ingress.enable | bool | `false` | Enable ingress. |
@@ -515,7 +514,7 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | scheduler.image.registry | string | `"docker.io"` | Image registry. |
 | scheduler.image.repository | string | `"dragonflyoss/scheduler"` | Image repository. |
-| scheduler.image.tag | string | `"v2.5.2"` | Image tag. |
+| scheduler.image.tag | string | `"v2.5.3-rc.1"` | Image tag. |
 | scheduler.initContainer.image.digest | string | `""` | Image digest. |
 | scheduler.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | scheduler.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -639,7 +638,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.5.5"` | Image tag. |
+| seedClient.image.tag | string | `"v1.5.10"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

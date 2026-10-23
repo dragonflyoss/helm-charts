@@ -81,7 +81,7 @@ manager:
     # -- Image repository.
     repository: dragonflyoss/manager
     # -- Image tag.
-    tag: v2.5.2
+    tag: v2.5.3-rc.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -380,7 +380,7 @@ scheduler:
     # -- Image repository.
     repository: dragonflyoss/scheduler
     # -- Image tag.
-    tag: v2.5.2
+    tag: v2.5.3-rc.1
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -786,7 +786,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.5
+    tag: v1.5.10
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1383,7 +1383,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.5
+    tag: v1.5.10
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1477,17 +1477,15 @@ client:
     - name: logs
       mountPath: /var/log/dragonfly/dfdaemon/
   dfinit:
-    # -- Enable dfinit to override configuration of container runtime.
+    # -- Enable dfinit to configure the container runtime of the node to pull images through dfdaemon.
     enable: false
-    # -- restartContainerRuntime indicates whether to restart container runtime when dfinit is enabled. it should be set to true when your first install dragonfly. If non-hot load configuration changes are made, the container runtime needs to be restarted.
-    restartContainerRuntime: true
     image:
       # -- Image registry.
       registry: docker.io
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.5.5
+      tag: v1.5.10
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1501,9 +1499,17 @@ client:
       proxy:
         # -- addr is the proxy server address of dfdaemon.
         addr: http://127.0.0.1:4001
+      # containerRuntime selects the runtime dfinit configures, exactly one of containerd, crio,
+      # podman or docker. dfinit rewrites a configuration file only when its contents changed and,
+      # when the runtime does not reload that file, creates /var/run/dragonfly/dfinit/restart-required.
+      # The restart-container-runtime init container restarts the runtime only when that sentinel
+      # exists, so an unchanged configuration never restarts the runtime.
       containerRuntime:
         containerd:
-          # -- configPath is the path of containerd configuration file.
+          # -- configPath is the path of containerd configuration file. When registry.config_path is set
+          # in it, as on AKS and EKS, dfinit only writes hosts.toml under that directory, which containerd
+          # reloads without a restart. Otherwise dfinit sets config_path to /etc/containerd/certs.d in this
+          # file and containerd is restarted once.
           configPath: /etc/containerd/config.toml
           # # -- criPluginId is the CRI plugin id owning the registry configuration, e.g. "io.containerd.grpc.v1.cri"
           # # or "io.containerd.cri.v1.images". If not set, the plugin table present in the containerd
@@ -1540,7 +1546,7 @@ client:
               skipVerify: true
               # ca: []
         # crio:
-        # # -- configPath is the path of cri-o registries's configuration file.
+        # # -- configPath is the path of cri-o registries's configuration file, rewritten by dfinit. cri-o is restarted when it changed.
         # configPath: /etc/containers/registries.conf
         # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
         # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
@@ -1555,7 +1561,7 @@ client:
         # - prefix: ghcr.io
         # location: ghcr.io
         # podman:
-        # # -- configPath is the path of cri-o registries's configuration file.
+        # # -- configPath is the path of podman registries's configuration file, rewritten by dfinit. podman is restarted when it changed.
         # configPath: /etc/containers/registries.conf
         # # -- unqualifiedSearchRegistries is an array of host[:port] registries to try when pulling an unqualified image, in order.
         # # Refer to https://github.com/containers/image/blob/main/docs/containers-registries.conf.5.md#global-settings.
@@ -1570,8 +1576,8 @@ client:
         # - prefix: ghcr.io
         # location: ghcr.io
         # docker:
-        # # -- configPath is the path of docker configuration file where the proxy addr will be set.
-        # # Refer to https://docs.docker.com/engine/daemon/proxy/
+        # # -- configPath is the path of docker configuration file where the proxy addr will be set, refer to
+        # # https://docs.docker.com/engine/daemon/proxy/. docker is restarted when it changed.
         # configPath: /etc/docker/daemon.json
   config:
     # -- console prints log.
@@ -2214,7 +2220,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag. Should align with the version of Dragonfly client and seed client.
-    tag: v1.5.5
+    tag: v1.5.10
     # -- Image digest.
     digest: ''
     # -- Image pull policy.

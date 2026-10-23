@@ -77,7 +77,6 @@ spec:
         image: {{ template "client.initContainer.image" . }}
         imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
         securityContext:
-          # Sysctl needs privilege permission.
           privileged: true
         command:
         - /bin/sh
@@ -109,6 +108,8 @@ spec:
         volumeMounts:
         - name: dfinit-config
           mountPath: "/etc/dragonfly"
+        - name: dfinit-run
+          mountPath: /var/run/dragonfly/dfinit
         {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd) }}
         - name: containerd-config-dir
           mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.containerd.configPath }}
@@ -126,34 +127,31 @@ spec:
           mountPath: {{ dir .Values.client.dfinit.config.containerRuntime.docker.configPath }}
         {{- end }}
       {{- end }}
-      {{- if and .Values.client.dfinit.enable .Values.client.dfinit.restartContainerRuntime  }}
+      {{- if .Values.client.dfinit.enable }}
       - name: restart-container-runtime
         image: {{ template "client.initContainer.image" . }}
         imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
         securityContext:
-          # nsenter need privilege permission.
           privileged: true
         command:
         - /bin/sh
         - -cx
         - |-
-          {{- if .Values.client.dfinit.config.containerRuntime.containerd }}
-          nsenter -t 1 -m -- systemctl restart containerd.service
-          echo "restart container"
-          {{- else if .Values.client.dfinit.config.containerRuntime.crio }}
-          nsenter -t 1 -m -- systemctl restart crio.service
-          echo "restart cri-o"
-          {{- else if .Values.client.dfinit.config.containerRuntime.podman }}
-          nsenter -t 1 -m -- systemctl restart podman.service
-          echo "restart podman"
-          {{- else if .Values.client.dfinit.config.containerRuntime.docker }}
-          nsenter -t 1 -m -- systemctl restart docker.service
-          echo "restart docker"
-          {{- else }}
-          echo "no container runtime to restart"
+          # dfinit creates the sentinel only when the runtime must be restarted. Remove it
+          # before restarting, the restart may kill this container and kubelet retries it.
+          sentinel=/var/run/dragonfly/dfinit/restart-required
+          [ -f "$sentinel" ] || exit 0
+          rm -f "$sentinel"
+          {{- range $runtime := list "containerd" "crio" "podman" "docker" }}
+          {{- if index $.Values.client.dfinit.config.containerRuntime $runtime }}
+          nsenter -t 1 -m -- systemctl restart {{ $runtime }}.service
+          {{- end }}
           {{- end }}
         resources:
 {{ toYaml .Values.client.initContainer.resources | indent 10 }}
+        volumeMounts:
+        - name: dfinit-run
+          mountPath: /var/run/dragonfly/dfinit
       {{- end }}
       {{- if .Values.client.extraInitContainers }}
       {{- include "common.tplvalues.render" (dict "value" .Values.client.extraInitContainers "context" $) | nindent 6 }}
@@ -244,6 +242,8 @@ spec:
       - name: dfinit-config
         configMap:
           name: {{ template "dragonfly.dfinit.fullname" . }}
+      - name: dfinit-run
+        emptyDir: {}
       {{- end }}
       {{- if and (.Values.client.dfinit.enable) (.Values.client.dfinit.config.containerRuntime.containerd) }}
       - name: containerd-config-dir
