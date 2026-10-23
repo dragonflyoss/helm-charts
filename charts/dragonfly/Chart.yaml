@@ -30,6 +30,7 @@ annotations:
     - Restart the container runtime from restart-container-runtime only when dfinit rewrote a configuration file the runtime does not reload, so nodes with containerd registry.config_path already set are no longer restarted.
     - Remove client.dfinit.restartContainerRuntime, the restart is now decided by dfinit and the value is ignored.
     - Bump Dragonfly to v2.5.3-rc.1 and Dragonfly Client to v1.5.10.
+    - Rewrite the values.yaml comments to describe what each value does in plain sentences.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
