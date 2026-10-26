@@ -3,6 +3,70 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Restart the container runtime from restart-container-runtime only when dfinit rewrote a configuration file the runtime does not reload, so nodes with containerd registry.config_path already set are no longer restarted.
+        - Remove client.dfinit.restartContainerRuntime, the restart is now decided by dfinit and the value is ignored.
+        - Bump Dragonfly to v2.5.3-rc.1 and Dragonfly Client to v1.5.10.
+        - Rewrite the values.yaml comments to describe what each value does in plain sentences.
+        - Document the optional runtime settings (listen and advertise IPs, mTLS, proxy CA, basic auth, tracing, criPluginId) as values instead of commented-out examples.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.5.3-rc.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.3-rc.1
+        - name: client
+          image: dragonflyoss/client:v1.5.10
+        - name: seed-client
+          image: dragonflyoss/client:v1.5.10
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.5.10
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2026-10-26T03:19:16.732084862Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: redis.enable
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 19.5.5
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: c0b61cf7ac7623e428d1a3769439a35b482e549d9b7f5060cfe437697c617b89
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.8.7/dragonfly-1.8.7.tgz
+    version: 1.8.7
+  - annotations:
+      artifacthub.io/changes: |
         - Add extraInitContainers for manager, scheduler, seed client, client and injector.
       artifacthub.io/images: |
         - name: manager
@@ -20815,4 +20879,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-10-15T08:21:20.958701962Z"
+generated: "2026-10-26T03:19:16.73282268Z"
