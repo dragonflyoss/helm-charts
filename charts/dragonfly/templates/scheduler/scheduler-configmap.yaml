@@ -60,6 +60,10 @@ data:
       schedulerClusterID: {{ .Values.scheduler.config.manager.schedulerClusterID }}
       keepAlive:
 {{ toYaml .Values.scheduler.config.manager.keepAlive | indent 8 }}
+      {{- with .Values.scheduler.config.manager.tls }}
+      tls:
+{{ toYaml . | indent 8 }}
+      {{- end }}
     seedPeer:
 {{ toYaml .Values.scheduler.config.seedPeer | indent 6 }}
     {{- if or .Values.redis.enable .Values.externalRedis.addrs }}

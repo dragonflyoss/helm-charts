@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.8.6
-appVersion: 2.5.2
+version: 1.8.7
+appVersion: 2.5.3
 keywords:
   - dragonfly
   - d7y
@@ -27,7 +27,11 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add extraInitContainers for manager, scheduler, seed client, client and injector.
+    - Restart the container runtime from restart-container-runtime only when dfinit rewrote a configuration file the runtime does not reload, so nodes with containerd registry.config_path already set are no longer restarted.
+    - Remove client.dfinit.restartContainerRuntime, the restart is now decided by dfinit and the value is ignored.
+    - Bump Dragonfly to v2.5.3-rc.1 and Dragonfly Client to v1.5.10.
+    - Rewrite the values.yaml comments to describe what each value does in plain sentences.
+    - Document the optional runtime settings (listen and advertise IPs, mTLS, proxy CA, basic auth, tracing, criPluginId) as values instead of commented-out examples.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -37,15 +41,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.5.2
+      image: dragonflyoss/manager:v2.5.3-rc.1
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.5.2
+      image: dragonflyoss/scheduler:v2.5.3-rc.1
     - name: client
-      image: dragonflyoss/client:v1.5.5
+      image: dragonflyoss/client:v1.5.10
     - name: seed-client
-      image: dragonflyoss/client:v1.5.5
+      image: dragonflyoss/client:v1.5.10
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.5.5
+      image: dragonflyoss/dfinit:v1.5.10
     - name: injector
       image: dragonflyoss/injector:v0.1.0
 
