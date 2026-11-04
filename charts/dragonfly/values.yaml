@@ -907,10 +907,10 @@ seedClient:
       # peers use the same one. QUIC suits high-bandwidth, long-RTT or lossy networks, TCP suits
       # low-RTT LAN environments.
       protocol: tcp
-      # -- Download bandwidth limit, in GB, MB or KB per second.
-      bandwidthLimit: 50GB
-      # -- Bandwidth limit for downloads from the source, in GB, MB or KB per second.
-      backToSourceBandwidthLimit: 50GB
+      # -- Download bandwidth limit, in GiB, MiB or KiB per second.
+      bandwidthLimit: 2GiB
+      # -- Bandwidth limit for downloads from the source, in GiB, MiB or KiB per second.
+      backToSourceBandwidthLimit: 2GiB
       # -- Timeout for downloading a piece from the source.
       pieceTimeout: 40s
       # -- Timeout for collecting one piece from the parent stream.
@@ -944,8 +944,8 @@ seedClient:
         cert: null
         # -- (string) Client key file path for mTLS.
         key: null
-      # -- Upload bandwidth limit, in GB, MB or KB per second.
-      bandwidthLimit: 50GB
+      # -- Upload bandwidth limit, in GiB, MiB or KiB per second.
+      bandwidthLimit: 2GiB
     scheduler:
       # -- Interval at which the peer announces itself to the scheduler, including CPU, memory and
       # other host information used for scheduling.
@@ -1064,9 +1064,9 @@ seedClient:
       # -- Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request
       # header overrides it per request.
       prefetch: true
-      # -- Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority,
+      # -- Bandwidth limit for prefetching, in GiB, MiB or KiB per second. Prefetching has lower priority,
       # so the limit keeps it from starving other downloads.
-      prefetchBandwidthLimit: 10GB
+      prefetchBandwidthLimit: 2GiB
       # -- Buffer size for reading pieces from disk.
       readBufferSize: 2097152
     health:
@@ -1447,10 +1447,10 @@ client:
         # -- Capacity of the request queue of the download gRPC server. When it is full, new requests
         # fail with RESOURCE_EXHAUSTED.
         requestbufferSize: 20
-      # -- Download bandwidth limit, in GB, MB or KB per second.
-      bandwidthLimit: 50GB
-      # -- Bandwidth limit for downloads from the source, in GB, MB or KB per second.
-      backToSourceBandwidthLimit: 50GB
+      # -- Download bandwidth limit, in GiB, MiB or KiB per second.
+      bandwidthLimit: 2GiB
+      # -- Bandwidth limit for downloads from the source, in GiB, MiB or KiB per second.
+      backToSourceBandwidthLimit: 2GiB
       # -- Timeout for downloading a piece from the source.
       pieceTimeout: 360s
       # -- Timeout for collecting one piece from the parent stream.
@@ -1486,8 +1486,8 @@ client:
         key: null
       # -- Do not share downloaded data with other peers.
       disableShared: false
-      # -- Upload bandwidth limit, in GB, MB or KB per second.
-      bandwidthLimit: 50GB
+      # -- Upload bandwidth limit, in GiB, MiB or KiB per second.
+      bandwidthLimit: 2GiB
     scheduler:
       # -- Interval at which the peer announces itself to the scheduler, including CPU, memory and
       # other host information used for scheduling.
@@ -1603,9 +1603,9 @@ client:
       # -- Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request
       # header overrides it per request.
       prefetch: true
-      # -- Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority,
+      # -- Bandwidth limit for prefetching, in GiB, MiB or KiB per second. Prefetching has lower priority,
       # so the limit keeps it from starving other downloads.
-      prefetchBandwidthLimit: 10GB
+      prefetchBandwidthLimit: 2GiB
       # -- Buffer size for reading pieces from disk.
       readBufferSize: 2097152
     health:

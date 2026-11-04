@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.8.7
+version: 1.8.8
 appVersion: 2.5.3
 keywords:
   - dragonfly
@@ -27,6 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
+    - Reduce the default download, back-to-source, upload and prefetch bandwidth limits to 2GiB/s.
     - Restart the container runtime from restart-container-runtime only when dfinit rewrote a configuration file the runtime does not reload, so nodes with containerd registry.config_path already set are no longer restarted.
     - Remove client.dfinit.restartContainerRuntime, the restart is now decided by dfinit and the value is ignored.
     - Bump Dragonfly to v2.5.3-rc.1 and Dragonfly Client to v1.5.10.

@@ -137,9 +137,9 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.caCert | string | `nil` | CA certificate file path for mTLS to the scheduler. Empty connects in plaintext. |
 | client.config.cert | string | `nil` | Client certificate file path for mTLS to the scheduler. |
 | client.config.console | bool | `true` | Print logs to the console instead of the log files. |
-| client.config.download.backToSourceBandwidthLimit | string | `"50GB"` | Bandwidth limit for downloads from the source, in GB, MB or KB per second. |
+| client.config.download.backToSourceBandwidthLimit | string | `"2GiB"` | Bandwidth limit for downloads from the source, in GiB, MiB or KiB per second. |
 | client.config.download.backToSourceConcurrentPieceCount | int | `8` | Number of pieces downloaded concurrently from the source. |
-| client.config.download.bandwidthLimit | string | `"50GB"` | Download bandwidth limit, in GB, MB or KB per second. |
+| client.config.download.bandwidthLimit | string | `"2GiB"` | Download bandwidth limit, in GiB, MiB or KiB per second. |
 | client.config.download.collectedPieceTimeout | string | `"360s"` | Timeout for collecting one piece from the parent stream. |
 | client.config.download.concurrentPieceCount | int | `8` | Number of pieces downloaded concurrently. |
 | client.config.download.pieceTimeout | string | `"360s"` | Timeout for downloading a piece from the source. |
@@ -173,7 +173,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.proxy.disableBackToSource | bool | `false` | Do not fall back to the source when a proxied download fails. |
 | client.config.proxy.ip | string | `nil` | IP address the proxy server listens on. Empty listens on all interfaces. |
 | client.config.proxy.prefetch | bool | `true` | Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request header overrides it per request. |
-| client.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
+| client.config.proxy.prefetchBandwidthLimit | string | `"2GiB"` | Bandwidth limit for prefetching, in GiB, MiB or KiB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
 | client.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | Default upstream registry of the registry mirror served by the proxy. A client selects another registry per request with the X-Dragonfly-Registry header. |
 | client.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | Derive the task ID of OCI blob URLs (/v2/<name>/blobs/sha256:<digest>) from the blob digest instead of the full URL, so that the same blob pulled from different registries shares one task and is downloaded and stored once. |
@@ -206,7 +206,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
 | client.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
 | client.config.tracing.protocol | string | `""` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
-| client.config.upload.bandwidthLimit | string | `"50GB"` | Upload bandwidth limit, in GB, MB or KB per second. |
+| client.config.upload.bandwidthLimit | string | `"2GiB"` | Upload bandwidth limit, in GiB, MiB or KiB per second. |
 | client.config.upload.client | object | `{"caCert":null,"cert":null,"key":null}` | gRPC client used to download pieces from the upload server of other peers. |
 | client.config.upload.client.caCert | string | `nil` | CA certificate file path for mTLS. Empty connects in plaintext. |
 | client.config.upload.client.cert | string | `nil` | Client certificate file path for mTLS. |
@@ -595,9 +595,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.caCert | string | `nil` | CA certificate file path for mTLS to the scheduler. Empty connects in plaintext. |
 | seedClient.config.cert | string | `nil` | Client certificate file path for mTLS to the scheduler. |
 | seedClient.config.console | bool | `true` | Print logs to the console instead of the log files. |
-| seedClient.config.download.backToSourceBandwidthLimit | string | `"50GB"` | Bandwidth limit for downloads from the source, in GB, MB or KB per second. |
+| seedClient.config.download.backToSourceBandwidthLimit | string | `"2GiB"` | Bandwidth limit for downloads from the source, in GiB, MiB or KiB per second. |
 | seedClient.config.download.backToSourceConcurrentPieceCount | int | `8` | Number of pieces downloaded concurrently from the source. |
-| seedClient.config.download.bandwidthLimit | string | `"50GB"` | Download bandwidth limit, in GB, MB or KB per second. |
+| seedClient.config.download.bandwidthLimit | string | `"2GiB"` | Download bandwidth limit, in GiB, MiB or KiB per second. |
 | seedClient.config.download.collectedPieceTimeout | string | `"5s"` | Timeout for collecting one piece from the parent stream. |
 | seedClient.config.download.concurrentPieceCount | int | `8` | Number of pieces downloaded concurrently. |
 | seedClient.config.download.pieceTimeout | string | `"40s"` | Timeout for downloading a piece from the source. |
@@ -631,7 +631,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.proxy.disableBackToSource | bool | `false` | Do not fall back to the source when a proxied download fails. |
 | seedClient.config.proxy.ip | string | `nil` | IP address the proxy server listens on. Empty listens on all interfaces. |
 | seedClient.config.proxy.prefetch | bool | `true` | Prefetch the whole file when a range request is proxied. The X-Dragonfly-Prefetch request header overrides it per request. |
-| seedClient.config.proxy.prefetchBandwidthLimit | string | `"10GB"` | Bandwidth limit for prefetching, in GB, MB or KB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
+| seedClient.config.proxy.prefetchBandwidthLimit | string | `"2GiB"` | Bandwidth limit for prefetching, in GiB, MiB or KiB per second. Prefetching has lower priority, so the limit keeps it from starving other downloads. |
 | seedClient.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | Default upstream registry of the registry mirror served by the proxy. A client selects another registry per request with the X-Dragonfly-Registry header. |
 | seedClient.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | Derive the task ID of OCI blob URLs (/v2/<name>/blobs/sha256:<digest>) from the blob digest instead of the full URL, so that the same blob pulled from different registries shares one task and is downloaded and stored once. |
@@ -665,7 +665,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.tracing.endpoint | string | `nil` | Endpoint traces are exported to, e.g. localhost:4317. |
 | seedClient.config.tracing.headers | object | `{}` | Headers sent with every exported trace. |
 | seedClient.config.tracing.protocol | string | `""` | Protocol used to export traces, one of http, https or grpc. Empty disables tracing. |
-| seedClient.config.upload.bandwidthLimit | string | `"50GB"` | Upload bandwidth limit, in GB, MB or KB per second. |
+| seedClient.config.upload.bandwidthLimit | string | `"2GiB"` | Upload bandwidth limit, in GiB, MiB or KiB per second. |
 | seedClient.config.upload.client | object | `{"caCert":null,"cert":null,"key":null}` | gRPC client used to download pieces from the upload server of other peers. |
 | seedClient.config.upload.client.caCert | string | `nil` | CA certificate file path for mTLS. Empty connects in plaintext. |
 | seedClient.config.upload.client.cert | string | `nil` | Client certificate file path for mTLS. |
