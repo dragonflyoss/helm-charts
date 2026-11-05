@@ -1,5 +1,8 @@
 {{- if and .Values.injector.enable .Values.injector.certManager.enable }}
 {{- $issuerKind := default "Issuer" .Values.injector.certManager.issuer.kind }}
+{{- if not (or (eq $issuerKind "Issuer") (eq $issuerKind "ClusterIssuer")) }}
+{{- fail "injector.certManager.issuer.kind must be either Issuer or ClusterIssuer" }}
+{{- end }}
 {{- if .Values.injector.certManager.issuer.create }}
 apiVersion: cert-manager.io/v1
 kind: {{ $issuerKind }}
@@ -42,5 +45,6 @@ spec:
     {{- fail "injector.certManager.issuer.name must be set when injector.certManager.issuer.create is false" }}
     {{- end }}
     kind: {{ $issuerKind }}
-  secretName: {{ template "dragonfly.fullname" . }}-injector-webhook-cert
+    group: cert-manager.io
+  secretName: {{ .Values.injector.webhookCertSecretName }}
 {{- end }}
