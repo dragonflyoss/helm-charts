@@ -1911,7 +1911,13 @@ injector:
     pullPolicy: IfNotPresent
     # -- Image pull secrets.
     pullSecrets: []
+  # -- Name of the Secret containing the webhook TLS certificate and key. cert-manager creates it when
+  # enabled; otherwise, the Secret must already exist.
+  webhookCertSecretName: webhook-server-cert
   webhook:
+    # -- Base64-encoded CA bundle for the webhook. Required when certManager.enable is false, together
+    # with an existing TLS Secret named by webhookCertSecretName.
+    caBundle: ''
     # -- How webhook errors and timeouts are handled, Ignore or Fail.
     failurePolicy: Ignore
     # -- Namespaces the webhook applies to.
@@ -1924,7 +1930,8 @@ injector:
             - cert-manager
   # -- cert-manager integration for the webhook TLS certificate. cert-manager must be installed.
   certManager:
-    # -- Let cert-manager issue and rotate the webhook certificate.
+    # -- Let cert-manager issue and rotate the webhook certificate. When false, webhookCertSecretName
+    # must reference an existing TLS Secret and webhook.caBundle must be set.
     enable: true
     # -- Issuer used for the webhook certificate.
     issuer:

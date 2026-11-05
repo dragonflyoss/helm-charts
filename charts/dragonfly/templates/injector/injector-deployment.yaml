@@ -86,6 +86,11 @@ spec:
         - containerPort: 9443
           name: webhook-server
           protocol: TCP
+        {{- if .Values.injector.metrics.enable }}
+        - containerPort: 8443
+          name: metrics
+          protocol: TCP
+        {{- end }}
         {{- if .Values.startupProbe.enable }}
         startupProbe:
           httpGet:
@@ -143,7 +148,7 @@ spec:
       {{- if or .Values.injector.certManager.enable .Values.injector.webhookCertSecretName }}
       - name: webhook-certs
         secret:
-          secretName: {{ default (printf "%s-injector-webhook-cert" (include "dragonfly.fullname" .)) .Values.injector.webhookCertSecretSecretName }}
+          secretName: {{ .Values.injector.webhookCertSecretName }}
       {{- end }}
       - name: injector-config
         configMap:
