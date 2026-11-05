@@ -177,7 +177,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | client.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | Default upstream registry of the registry mirror served by the proxy. A client selects another registry per request with the X-Dragonfly-Registry header. |
 | client.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | Derive the task ID of OCI blob URLs (/v2/<name>/blobs/sha256:<digest>) from the blob digest instead of the full URL, so that the same blob pulled from different registries shares one task and is downloaded and stored once. |
-| client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"always"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files no larger than one piece straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
+| client.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"always"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
 | client.config.proxy.server.port | int | `4001` | Port of the HTTP proxy server. |
 | client.config.proxy.server.requestRateLimit | int | `50` | Maximum requests per second on the HTTP proxy. |
 | client.config.scheduler.announceInterval | string | `"5m"` | Interval at which the peer announces itself to the scheduler, including CPU, memory and other host information used for scheduling. |
@@ -232,7 +232,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.dfinit.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.dfinit.image.registry | string | `"docker.io"` | Image registry. |
 | client.dfinit.image.repository | string | `"dragonflyoss/dfinit"` | Image repository. |
-| client.dfinit.image.tag | string | `"v1.5.10"` | Image tag. |
+| client.dfinit.image.tag | string | `"v1.5.11"` | Image tag. |
 | client.dynconfig | object | `{"clientConfig":{},"scheduler":{"addr":"","addrs":[]},"seedClientConfig":{}}` | Local dynamic configuration (dynconfig.yaml), delivered as a ConfigMap next to dfdaemon.yaml. It is used only without a manager, that is when manager.enable is false and externalManager.host is empty, and refreshed every client.config.dynconfig.refreshInterval. |
 | client.dynconfig.clientConfig | object | `{}` | Block list for normal peers, e.g. { blockList: { task: { download: { applications: [], urls: [], tags: [], priorities: [] } } } }. |
 | client.dynconfig.scheduler.addr | string | `""` | Scheduler headless Service address with port, resolved via DNS to every scheduler IP. Empty defaults to the scheduler Service of this chart. |
@@ -253,7 +253,7 @@ helm delete dragonfly --namespace dragonfly-system
 | client.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | client.image.registry | string | `"docker.io"` | Image registry. |
 | client.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| client.image.tag | string | `"v1.5.10"` | Image tag. |
+| client.image.tag | string | `"v1.5.11"` | Image tag. |
 | client.initContainer.image.digest | string | `""` | Image digest. |
 | client.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | client.initContainer.image.registry | string | `"docker.io"` | Image registry. |
@@ -342,13 +342,13 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.image.registry | string | `"docker.io"` | Image registry. |
 | injector.image.repository | string | `"dragonflyoss/injector"` | Image repository. |
 | injector.image.tag | string | `"v0.1.0"` | Image tag. |
-| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.10"}` | Image of the init container injected into the target Pods. |
+| injector.initContainerImage | object | `{"digest":"","pullPolicy":"IfNotPresent","pullSecrets":[],"registry":"docker.io","repository":"dragonflyoss/client","tag":"v1.5.11"}` | Image of the init container injected into the target Pods. |
 | injector.initContainerImage.digest | string | `""` | Image digest. |
 | injector.initContainerImage.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | injector.initContainerImage.pullSecrets | list | `[]` | Image pull secrets. |
 | injector.initContainerImage.registry | string | `"docker.io"` | Image registry. |
 | injector.initContainerImage.repository | string | `"dragonflyoss/client"` | Image repository. |
-| injector.initContainerImage.tag | string | `"v1.5.10"` | Image tag, keep it aligned with the client and seed client version. |
+| injector.initContainerImage.tag | string | `"v1.5.11"` | Image tag, keep it aligned with the client and seed client version. |
 | injector.metrics.enable | bool | `false` | Expose Prometheus metrics. |
 | injector.metrics.service.port | int | `8443` | Metrics Service port. |
 | injector.nodeSelector | object | `{}` | Node labels for pod assignment. |
@@ -635,7 +635,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | Default upstream registry of the registry mirror served by the proxy. A client selects another registry per request with the X-Dragonfly-Registry header. |
 | seedClient.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | Derive the task ID of OCI blob URLs (/v2/<name>/blobs/sha256:<digest>) from the blob digest instead of the full URL, so that the same blob pulled from different registries shares one task and is downloaded and stored once. |
-| seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"auto"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files no larger than one piece straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
+| seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"auto"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
 | seedClient.config.proxy.server.port | int | `4001` | Port of the HTTP proxy server. |
 | seedClient.config.proxy.server.requestRateLimit | int | `400` | Maximum requests per second on the HTTP proxy. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | Interval at which the peer announces itself to the scheduler, including CPU, memory and other host information used for scheduling. |
@@ -695,7 +695,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.image.pullSecrets | list | `[]` (defaults to global.imagePullSecrets). | Image pull secrets. |
 | seedClient.image.registry | string | `"docker.io"` | Image registry. |
 | seedClient.image.repository | string | `"dragonflyoss/client"` | Image repository. |
-| seedClient.image.tag | string | `"v1.5.10"` | Image tag. |
+| seedClient.image.tag | string | `"v1.5.11"` | Image tag. |
 | seedClient.initContainer.image.digest | string | `""` | Image digest. |
 | seedClient.initContainer.image.pullPolicy | string | `"IfNotPresent"` | Image pull policy. |
 | seedClient.initContainer.image.registry | string | `"docker.io"` | Image registry. |

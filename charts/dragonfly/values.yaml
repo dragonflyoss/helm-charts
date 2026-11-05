@@ -745,7 +745,7 @@ seedClient:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.10
+    tag: v1.5.11
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1032,11 +1032,11 @@ seedClient:
       # against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL.
       # filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS,
       # OSS, OBS and COS URLs that differ only in Signature and Expires share one task.
-      # schedulingPolicy is auto or always, auto downloads files no larger than one piece straight
-      # from the source, always goes through the scheduler so that even small artifacts such as OCI
-      # manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P
-      # for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched
-      # schedulingPolicy.
+      # schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB
+      # straight from the source, always goes through the scheduler so that even small artifacts
+      # such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header
+      # forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the
+      # matched schedulingPolicy.
       rules:
         - regex: 'blobs/sha256.*'
           schedulingPolicy: auto
@@ -1206,7 +1206,7 @@ client:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag.
-    tag: v1.5.10
+    tag: v1.5.11
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
@@ -1307,7 +1307,7 @@ client:
       # -- Image repository.
       repository: dragonflyoss/dfinit
       # -- Image tag.
-      tag: v1.5.10
+      tag: v1.5.11
       # -- Image digest.
       digest: ''
       # -- Image pull policy.
@@ -1571,11 +1571,11 @@ client:
       # against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL.
       # filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS,
       # OSS, OBS and COS URLs that differ only in Signature and Expires share one task.
-      # schedulingPolicy is auto or always, auto downloads files no larger than one piece straight
-      # from the source, always goes through the scheduler so that even small artifacts such as OCI
-      # manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P
-      # for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched
-      # schedulingPolicy.
+      # schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB
+      # straight from the source, always goes through the scheduler so that even small artifacts
+      # such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header
+      # forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the
+      # matched schedulingPolicy.
       rules:
         - regex: 'blobs/sha256.*'
           schedulingPolicy: auto
@@ -1904,7 +1904,7 @@ injector:
     # -- Image repository.
     repository: dragonflyoss/client
     # -- Image tag, keep it aligned with the client and seed client version.
-    tag: v1.5.10
+    tag: v1.5.11
     # -- Image digest.
     digest: ''
     # -- Image pull policy.
