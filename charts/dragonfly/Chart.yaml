@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.8.8
+version: 1.9.0
 appVersion: 2.5.3
 keywords:
   - dragonfly
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Document that the auto schedulingPolicy downloads files or ranges no larger than 16MiB straight from the source.
-    - Bump Dragonfly Client to v1.5.11.
+    - Replace the Bitnami redis subchart with the official Valkey chart (valkey-io/valkey-helm), the `redis` values move to `valkey`.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -55,7 +54,7 @@ dependencies:
     version: 11.1.20
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
-  - name: redis
-    version: 19.5.5
-    repository: https://charts.bitnami.com/bitnami
-    condition: redis.enable
+  - name: valkey
+    version: 0.12.1
+    repository: https://valkey.io/valkey-helm/
+    condition: valkey.enable

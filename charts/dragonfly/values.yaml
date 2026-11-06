@@ -1794,27 +1794,34 @@ externalPostgres:
   # -- Timezone of the external PostgreSQL.
   timezone: UTC
 
-redis:
-  # -- Deploy the Bitnami Redis subchart, only used when the manager is deployed.
+valkey:
+  # -- Deploy the Valkey subchart (valkey-io/valkey-helm), only used when the manager is deployed.
   enable: false
-  image:
-    repository: bitnamilegacy/redis
   # -- Cluster domain passed to the subchart.
   clusterDomain: 'cluster.local'
   auth:
-    # -- Require password authentication.
+    # -- Require ACL authentication.
     enabled: true
-    # -- Redis password.
-    password: dragonfly
-  master:
-    service:
-      ports:
-        # -- Redis master Service port.
-        redis: 6379
+    aclUsers:
+      default:
+        # -- ACL permissions of the default user.
+        permissions: '~* &* +@all'
+        # -- Password of the default user, used by the manager and scheduler.
+        password: dragonfly
+  dataStorage:
+    # -- Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in Valkey.
+    enabled: true
+    # -- Size of the PersistentVolumeClaim.
+    requestedSize: 8Gi
+  # -- Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts.
+  deploymentStrategy: Recreate
+  service:
+    # -- Valkey Service port.
+    port: 6379
 
 externalRedis:
   # -- Addresses of the external redis, e.g. ['redis.example.com:6379'], required when the manager is
-  # deployed and redis.enable is false. Empty runs the scheduler without redis and disables the
+  # deployed and valkey.enable is false. Empty runs the scheduler without redis and disables the
   # features that need it, such as jobs.
   addrs: []
   # -- Sentinel master name of the external redis.

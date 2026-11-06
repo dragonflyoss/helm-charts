@@ -1,3 +1,6 @@
+{{- if (default dict .Values.redis).enable }}
+{{- fail "redis.enable was removed in chart 1.9.0, set valkey.enable instead (see the Upgrading section of the README)" }}
+{{- end }}
 {{- if .Values.manager.enable }}
 1. Get the manager address by running these commands:
   export MANAGER_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ include "dragonfly.fullname" . }},release={{ .Release.Name }},component=manager" -o jsonpath={.items[0].metadata.name})
