@@ -59,6 +59,25 @@ true
 {{- end -}}
 
 {{/*
+Return the in-cluster address of the Valkey subchart Service, following the subchart's
+"valkey.fullname" naming.
+*/}}
+{{- define "dragonfly.valkey.host" -}}
+{{- $fullname := "" -}}
+{{- if .Values.valkey.fullnameOverride -}}
+{{- $fullname = .Values.valkey.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default "valkey" .Values.valkey.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- $fullname = .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $fullname = printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- printf "%s.%s.svc.%s" $fullname .Release.Namespace .Values.clusterDomain -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified client name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

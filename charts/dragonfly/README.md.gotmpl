@@ -52,7 +52,7 @@ externalMysql:
   database: manager
   port: 3306
 
-redis:
+valkey:
   enable: false
 
 externalRedis:
@@ -95,7 +95,7 @@ externalManager:
   restPort: 8080
   grpcPort: 65003
 
-redis:
+valkey:
   enable: false
 
 externalRedis:
@@ -113,6 +113,15 @@ Install dragonfly chart with release name `dragonfly`:
 helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
 helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
 ```
+
+## Upgrading
+
+### To 1.9.0
+
+The Bitnami `redis` subchart is replaced by the official [Valkey chart](https://github.com/valkey-io/valkey-helm) and the `redis` values are removed. Rendering fails while `redis.enable` is still set.
+
+- If you used the bundled Redis, set `valkey.enable: true` and move the password to `valkey.auth.aclUsers.default.password`. Valkey starts empty, data in the old Redis (job queue and results, scheduler persistent cache task metadata) is not migrated. The old Redis PVCs are kept, delete them after the upgrade with `kubectl delete pvc -n <namespace> -l app.kubernetes.io/instance=<release>,app.kubernetes.io/name=redis`.
+- `externalRedis` is unchanged and works with both Redis and Valkey.
 
 ## Uninstall
 

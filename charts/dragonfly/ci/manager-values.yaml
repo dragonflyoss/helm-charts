@@ -1,5 +1,5 @@
 # Chart-testing (ct lint/install) values: install with the manager stack enabled,
-# including the mysql and redis dependencies required by the manager.
+# including the mysql and valkey dependencies required by the manager.
 manager:
   enable: true
   resources:
@@ -13,7 +13,7 @@ manager:
         memory: '0'
 mysql:
   enable: true
-redis:
+valkey:
   enable: true
 scheduler:
   resources:

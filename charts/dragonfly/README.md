@@ -52,7 +52,7 @@ externalMysql:
   database: manager
   port: 3306
 
-redis:
+valkey:
   enable: false
 
 externalRedis:
@@ -95,7 +95,7 @@ externalManager:
   restPort: 8080
   grpcPort: 65003
 
-redis:
+valkey:
   enable: false
 
 externalRedis:
@@ -113,6 +113,15 @@ Install dragonfly chart with release name `dragonfly`:
 helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
 helm install --create-namespace --namespace dragonfly-system dragonfly dragonfly/dragonfly -f values.yaml
 ```
+
+## Upgrading
+
+### To 1.9.0
+
+The Bitnami `redis` subchart is replaced by the official [Valkey chart](https://github.com/valkey-io/valkey-helm) and the `redis` values are removed. Rendering fails while `redis.enable` is still set.
+
+- If you used the bundled Redis, set `valkey.enable: true` and move the password to `valkey.auth.aclUsers.default.password`. Valkey starts empty, data in the old Redis (job queue and results, scheduler persistent cache task metadata) is not migrated. The old Redis PVCs are kept, delete them after the upgrade with `kubectl delete pvc -n <namespace> -l app.kubernetes.io/instance=<release>,app.kubernetes.io/name=redis`.
+- `externalRedis` is unchanged and works with both Redis and Valkey.
 
 ## Uninstall
 
@@ -304,7 +313,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalPostgres.sslMode | string | `"disable"` | SSL mode of the external PostgreSQL connection. |
 | externalPostgres.timezone | string | `"UTC"` | Timezone of the external PostgreSQL. |
 | externalPostgres.username | string | `"dragonfly"` | Username of the external PostgreSQL. |
-| externalRedis.addrs | list | `[]` | Addresses of the external redis, e.g. ['redis.example.com:6379'], required when the manager is deployed and redis.enable is false. Empty runs the scheduler without redis and disables the features that need it, such as jobs. |
+| externalRedis.addrs | list | `[]` | Addresses of the external redis, e.g. ['redis.example.com:6379'], required when the manager is deployed and valkey.enable is false. Empty runs the scheduler without redis and disables the features that need it, such as jobs. |
 | externalRedis.backendDB | int | `2` | Redis database index used as the job result backend. |
 | externalRedis.brokerDB | int | `1` | Redis database index used as the job broker. |
 | externalRedis.db | int | `0` | Redis database index used for caching. |
@@ -482,12 +491,6 @@ helm delete dragonfly --namespace dragonfly-system
 | readinessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
 | readinessProbe.successThreshold | int | `1` | Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes. |
 | readinessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
-| redis.auth.enabled | bool | `true` | Require password authentication. |
-| redis.auth.password | string | `"dragonfly"` | Redis password. |
-| redis.clusterDomain | string | `"cluster.local"` | Cluster domain passed to the subchart. |
-| redis.enable | bool | `false` | Deploy the Bitnami Redis subchart, only used when the manager is deployed. |
-| redis.image.repository | string | `"bitnamilegacy/redis"` |  |
-| redis.master.service.ports.redis | int | `6379` | Redis master Service port. |
 | scheduler.config.console | bool | `true` | Print logs to the console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Interval at which the dynamic configuration is refreshed from the manager. |
 | scheduler.config.host.idc | string | `""` | IDC the scheduler runs in. |
@@ -746,10 +749,19 @@ helm delete dragonfly --namespace dragonfly-system
 | startupProbe.periodSeconds | int | `5` | Period (in seconds) between probe attempts. |
 | startupProbe.successThreshold | int | `1` | Success threshold for startup probe. Must be 1 for startup probes. |
 | startupProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
+| valkey.auth.aclUsers.default.password | string | `"dragonfly"` | Password of the default user, used by the manager and scheduler. |
+| valkey.auth.aclUsers.default.permissions | string | `"~* &* +@all"` | ACL permissions of the default user. |
+| valkey.auth.enabled | bool | `true` | Require ACL authentication. |
+| valkey.clusterDomain | string | `"cluster.local"` | Cluster domain passed to the subchart. |
+| valkey.dataStorage.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in Valkey. |
+| valkey.dataStorage.requestedSize | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
+| valkey.deploymentStrategy | string | `"Recreate"` | Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts. |
+| valkey.enable | bool | `false` | Deploy the Valkey subchart (valkey-io/valkey-helm), only used when the manager is deployed. |
+| valkey.service.port | int | `6379` | Valkey Service port. |
 
 ## Chart dependencies
 
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
-| https://charts.bitnami.com/bitnami | redis | 19.5.5 |
+| https://valkey.io/valkey-helm/ | valkey | 0.12.1 |

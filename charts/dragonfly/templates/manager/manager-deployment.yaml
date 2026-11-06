@@ -66,13 +66,13 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable .Values.externalPostgres.enable .Values.manager.extraInitContainers }}
+      {{- if or .Values.valkey.enable .Values.mysql.enable .Values.externalPostgres.enable .Values.manager.extraInitContainers }}
       initContainers:
-      {{- if .Values.redis.enable }}
-      - name: wait-for-redis
+      {{- if .Values.valkey.enable }}
+      - name: wait-for-valkey
         image: {{ template "manager.initContainer.image" . }}
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
-        command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.redis.master.service.ports.redis }}; do echo waiting for redis; sleep 2; done;']
+        command: ['sh', '-c', 'until nslookup {{ include "dragonfly.valkey.host" . }} && nc -vz {{ include "dragonfly.valkey.host" . }} {{ .Values.valkey.service.port }}; do echo waiting for valkey; sleep 2; done;']
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
       {{- end }}
