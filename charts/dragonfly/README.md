@@ -482,12 +482,15 @@ helm delete dragonfly --namespace dragonfly-system
 | readinessProbe.periodSeconds | int | `10` | Period (in seconds) between probe attempts. |
 | readinessProbe.successThreshold | int | `1` | Success threshold for readiness probe. The container will be marked as ready after this many consecutive successes. |
 | readinessProbe.timeoutSeconds | int | `3` | Probe timeout (in seconds). |
-| redis.auth.enabled | bool | `true` | Require password authentication. |
-| redis.auth.password | string | `"dragonfly"` | Redis password. |
+| redis.auth.aclUsers.default.password | string | `"dragonfly"` | Password of the default user, used by the manager and scheduler. |
+| redis.auth.aclUsers.default.permissions | string | `"~* &* +@all"` | ACL permissions of the default user. |
+| redis.auth.enabled | bool | `true` | Require ACL authentication. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain passed to the subchart. |
-| redis.enable | bool | `false` | Deploy the Bitnami Redis subchart, only used when the manager is deployed. |
-| redis.image.repository | string | `"bitnamilegacy/redis"` |  |
-| redis.master.service.ports.redis | int | `6379` | Redis master Service port. |
+| redis.dataStorage.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis. |
+| redis.dataStorage.requestedSize | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
+| redis.deploymentStrategy | string | `"Recreate"` | Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts. |
+| redis.enable | bool | `false` | Deploy Valkey through the official Valkey subchart (valkey-io/valkey-helm), only used when the manager is deployed. Every key under `redis` is passed to that subchart. |
+| redis.service.port | int | `6379` | Valkey Service port. |
 | scheduler.config.console | bool | `true` | Print logs to the console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Interval at which the dynamic configuration is refreshed from the manager. |
 | scheduler.config.host.idc | string | `""` | IDC the scheduler runs in. |
@@ -752,4 +755,4 @@ helm delete dragonfly --namespace dragonfly-system
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
-| https://charts.bitnami.com/bitnami | redis | 19.5.5 |
+| https://valkey.io/valkey-helm/ | redis(valkey) | 0.12.1 |
