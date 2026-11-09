@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.8.8
+version: 1.8.10
 appVersion: 2.5.3
 keywords:
   - dragonfly
@@ -27,8 +27,8 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Document that the auto schedulingPolicy downloads files or ranges no larger than 16MiB straight from the source.
-    - Bump Dragonfly Client to v1.5.11.
+    - Add optional injector metrics ServiceMonitor and make the injector metrics service fully configurable.
+    - Disable the injector metrics listener when injector.metrics.enable is false.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

@@ -34,7 +34,16 @@ metadata:
     component: injector
     app.kubernetes.io/name: dragonfly-injector
     control-plane: controller-manager
+    {{- if .Values.injector.metrics.service.labels }}
+{{ toYaml .Values.injector.metrics.service.labels | indent 4 }}
+    {{- end }}
+  {{- if .Values.injector.metrics.service.annotations }}
+  annotations:
+{{ toYaml .Values.injector.metrics.service.annotations | indent 4 }}
+  {{- end }}
 spec:
+  type: {{ .Values.injector.metrics.service.type }}
+  clusterIP: {{ .Values.injector.metrics.service.clusterIP }}
   ports:
   - name: https
     port: {{ .Values.injector.metrics.service.port }}

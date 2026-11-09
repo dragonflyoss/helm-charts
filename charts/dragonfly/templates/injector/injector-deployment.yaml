@@ -78,7 +78,11 @@ spec:
         command:
         - /manager
         args:
+        {{- if .Values.injector.metrics.enable }}
         - --metrics-bind-address=:8443
+        {{- else }}
+        - --metrics-bind-address=0
+        {{- end }}
         - --leader-elect
         - --health-probe-bind-address=:8081
         - --webhook-cert-path=/tmp/k8s-webhook-server/serving-certs
