@@ -1,0 +1,45 @@
+{{- if and .Values.injector.enable .Values.injector.metrics.enable .Values.injector.metrics.serviceMonitor.enable }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "dragonfly.fullname" . }}-injector
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: injector
+    app.kubernetes.io/name: dragonfly-injector
+    {{- if .Values.injector.metrics.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.injector.metrics.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+  - port: https
+    scheme: https
+    {{- if .Values.injector.metrics.serviceMonitor.interval }}
+    interval: {{ .Values.injector.metrics.serviceMonitor.interval }}
+    {{- end }}
+    {{- if .Values.injector.metrics.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ .Values.injector.metrics.serviceMonitor.scrapeTimeout }}
+    {{- end }}
+    {{- if .Values.injector.metrics.serviceMonitor.tlsConfig }}
+    tlsConfig:
+{{ toYaml .Values.injector.metrics.serviceMonitor.tlsConfig | indent 6 }}
+    {{- else }}
+    tlsConfig:
+      insecureSkipVerify: true
+    {{- end }}
+    {{- if .Values.injector.metrics.serviceMonitor.bearerTokenFile }}
+    bearerTokenFile: {{ .Values.injector.metrics.serviceMonitor.bearerTokenFile }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+    - {{ include "common.names.namespace" . }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" . }}
+      component: injector
+      app.kubernetes.io/name: dragonfly-injector
+      control-plane: controller-manager
+{{- end }}

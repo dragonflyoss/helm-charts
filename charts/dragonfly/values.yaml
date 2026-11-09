@@ -1938,5 +1938,33 @@ injector:
     # -- Expose Prometheus metrics.
     enable: false
     service:
+      # -- Metrics Service type.
+      type: ClusterIP
+      # -- Metrics Service cluster IP.
+      clusterIP: ''
       # -- Metrics Service port.
       port: 8443
+      # -- Metrics Service labels.
+      labels: {}
+      # -- Metrics Service annotations.
+      annotations: {}
+    serviceMonitor:
+      # -- Create a Prometheus Operator ServiceMonitor, refer to
+      # https://github.com/prometheus-operator/prometheus-operator.
+      # The injector's metrics endpoint is served securely with
+      # authentication and authorization (SubjectAccessReview); scraping
+      # requires a bearer token with RBAC permissions to access it.
+      enable: false
+      # -- Additional labels, e.g. to match the Prometheus selector.
+      additionalLabels: {}
+      # -- Interval at which metrics should be scraped.
+      interval: 30s
+      # -- Timeout after which the scrape is ended.
+      scrapeTimeout: 25s
+      # -- TLS configuration for the scrape. Defaults to skipping
+      # verification of the self-signed serving certificate.
+      tlsConfig: {}
+      # -- Path to a file containing a bearer token with permission to
+      # access the secured metrics endpoint (e.g. the token of a ServiceAccount
+      # bound to the injector metrics ClusterRoleBinding).
+      bearerTokenFile: ''
