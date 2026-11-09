@@ -357,7 +357,7 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.metrics.service.type | string | `"ClusterIP"` | Metrics Service type. |
 | injector.metrics.serviceMonitor.additionalLabels | object | `{}` | Additional labels, e.g. to match the Prometheus selector. |
 | injector.metrics.serviceMonitor.bearerTokenFile | string | `""` | Path to a file containing a bearer token with permission to access the secured metrics endpoint (e.g. the token of a ServiceAccount bound to the injector metrics ClusterRoleBinding). |
-| injector.metrics.serviceMonitor.enable | bool | `false` | Create a Prometheus Operator ServiceMonitor. The injector's metrics endpoint is served securely with authentication and authorization (SubjectAccessReview); scraping requires a bearer token with RBAC permissions to access it. |
+| injector.metrics.serviceMonitor.enable | bool | `false` | Create a Prometheus Operator ServiceMonitor, refer to https://github.com/prometheus-operator/prometheus-operator. The injector's metrics endpoint is served securely with authentication and authorization (SubjectAccessReview); scraping requires a bearer token with RBAC permissions to access it. |
 | injector.metrics.serviceMonitor.interval | string | `"30s"` | Interval at which metrics should be scraped. |
 | injector.metrics.serviceMonitor.scrapeTimeout | string | `"25s"` | Timeout after which the scrape is ended. |
 | injector.metrics.serviceMonitor.tlsConfig | object | `{}` | TLS configuration for the scrape. Defaults to skipping verification of the self-signed serving certificate. |
