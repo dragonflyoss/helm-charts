@@ -1775,7 +1775,7 @@ externalMysql:
   port: 3306
 
 postgres:
-  # -- Deploy the CloudPirates PostgreSQL subchart instead of MySQL, only used when the manager is deployed.
+  # -- Deploy the CloudPirates PostgreSQL subchart instead of MySQL, mutually exclusive with mysql.enable.
   enable: false
   # -- Run the GORM schema migration on manager startup.
   migrate: true
@@ -1793,13 +1793,14 @@ postgres:
   service:
     # -- PostgreSQL port.
     port: 5432
+  persistence:
+    # -- StorageClass of the PostgreSQL PVC, the subchart does not read global.storageClass.
+    storageClass: ''
 
 externalPostgres:
-  # -- Use an external PostgreSQL instead of MySQL.
-  enable: false
   # -- Run the GORM schema migration on manager startup.
   migrate: true
-  # -- Hostname of the external PostgreSQL.
+  # -- Hostname of the external PostgreSQL, the manager uses it instead of MySQL when set.
   host:
   # -- Username of the external PostgreSQL.
   username: dragonfly

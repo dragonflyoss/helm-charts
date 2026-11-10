@@ -40,18 +40,21 @@ data:
       pluginDir: {{ .Values.manager.config.server.pluginDir }}
     auth:
 {{ toYaml .Values.manager.config.auth | indent 6 }}
+{{- if and .Values.mysql.enable .Values.postgres.enable }}
+{{- fail "mysql.enable and postgres.enable are mutually exclusive, enable only one of them" }}
+{{- end }}
     database:
-      {{- if or .Values.externalPostgres.enable .Values.postgres.enable }}
+      {{- if or .Values.postgres.enable .Values.externalPostgres.host }}
       type: postgres
       postgres:
         {{- if and .Values.postgres.enable (empty .Values.externalPostgres.host) }}
-        user: {{ .Values.postgres.auth.username }}
-        password: {{ .Values.postgres.auth.password }}
+        user: {{ .Values.postgres.auth.username | quote }}
+        password: {{ .Values.postgres.auth.password | quote }}
         host: {{ .Release.Name }}-{{ default "postgres" .Values.postgres.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
         port: {{ .Values.postgres.service.port }}
-        dbname: {{ .Values.postgres.auth.database }}
-        sslMode: {{ .Values.postgres.sslMode }}
-        timezone: {{ .Values.postgres.timezone }}
+        dbname: {{ .Values.postgres.auth.database | quote }}
+        sslMode: {{ .Values.postgres.sslMode | quote }}
+        timezone: {{ .Values.postgres.timezone | quote }}
         migrate: {{ .Values.postgres.migrate }}
         {{- else }}
         user: {{ .Values.externalPostgres.username }}

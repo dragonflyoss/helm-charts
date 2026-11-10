@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.9.1
+version: 1.10.0
 appVersion: 2.5.3
 keywords:
   - dragonfly
@@ -28,6 +28,7 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Add the CloudPirates postgres subchart, enabled with `postgres.enable`, as an alternative to the mysql subchart.
+    - Remove `externalPostgres.enable`, the external PostgreSQL is used when `externalPostgres.host` is set, like `externalMysql`.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts

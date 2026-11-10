@@ -66,7 +66,7 @@ spec:
       hostAliases:
 {{ toYaml .Values.manager.hostAliases | indent 8 }}
       {{- end }}
-      {{- if or .Values.redis.enable .Values.mysql.enable .Values.postgres.enable .Values.externalPostgres.enable .Values.manager.extraInitContainers }}
+      {{- if or .Values.redis.enable .Values.mysql.enable .Values.postgres.enable .Values.externalPostgres.host .Values.manager.extraInitContainers }}
       initContainers:
       {{- if .Values.redis.enable }}
       - name: wait-for-redis
@@ -91,7 +91,7 @@ spec:
         command: ['sh', '-c', 'until nslookup {{ .Release.Name }}-{{ default "postgres" .Values.postgres.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} && nc -vz {{ .Release.Name }}-{{ default "postgres" .Values.postgres.fullname }}.{{ $.Release.Namespace }}.svc.{{ $.Values.clusterDomain }} {{ .Values.postgres.service.port }}; do echo waiting for postgres; sleep 2; done;']
         resources:
 {{ toYaml .Values.manager.initContainer.resources | indent 10 }}
-      {{- else if or .Values.externalPostgres.enable .Values.postgres.enable }}
+      {{- else if .Values.externalPostgres.host }}
       - name: wait-for-postgres
         image: {{ template "manager.initContainer.image" . }}
         imagePullPolicy: {{ .Values.manager.initContainer.image.pullPolicy }}
