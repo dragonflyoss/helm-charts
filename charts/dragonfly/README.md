@@ -296,8 +296,7 @@ helm delete dragonfly --namespace dragonfly-system
 | externalMysql.port | int | `3306` | Port of the external MySQL. |
 | externalMysql.username | string | `"dragonfly"` | Username of the external MySQL. |
 | externalPostgres.database | string | `"manager"` | Database name of the external PostgreSQL. |
-| externalPostgres.enable | bool | `false` | Use an external PostgreSQL instead of MySQL. |
-| externalPostgres.host | string | `nil` | Hostname of the external PostgreSQL. |
+| externalPostgres.host | string | `nil` | Hostname of the external PostgreSQL, the manager uses it instead of MySQL when set. |
 | externalPostgres.migrate | bool | `true` | Run the GORM schema migration on manager startup. |
 | externalPostgres.password | string | `"dragonfly"` | Password of the external PostgreSQL. |
 | externalPostgres.port | int | `5432` | Port of the external PostgreSQL. |
@@ -476,6 +475,15 @@ helm delete dragonfly --namespace dragonfly-system
 | mysql.primary.service.port | int | `3306` | MySQL port. |
 | nameOverride | string | `""` | Override the chart name used in resource names. |
 | namespaceOverride | string | `""` | Override the namespace the resources are installed into. |
+| postgres.auth.database | string | `"manager"` | PostgreSQL database name. |
+| postgres.auth.password | string | `"dragonfly"` | PostgreSQL password. |
+| postgres.auth.username | string | `"dragonfly"` | PostgreSQL username. |
+| postgres.enable | bool | `false` | Deploy the CloudPirates PostgreSQL subchart instead of MySQL, mutually exclusive with mysql.enable. |
+| postgres.migrate | bool | `true` | Run the GORM schema migration on manager startup. |
+| postgres.persistence.storageClass | string | `""` | StorageClass of the PostgreSQL PVC, the subchart does not read global.storageClass. |
+| postgres.service.port | int | `5432` | PostgreSQL port. |
+| postgres.sslMode | string | `"disable"` | SSL mode of the manager connection to PostgreSQL. |
+| postgres.timezone | string | `"UTC"` | Timezone of the manager connection to PostgreSQL. |
 | readinessProbe.enable | bool | `true` | Enable readiness probe. |
 | readinessProbe.failureThreshold | int | `2` | Failure threshold before the container is marked as not ready. Total time before marked not ready = initialDelaySeconds + (periodSeconds * failureThreshold). |
 | readinessProbe.initialDelaySeconds | int | `10` | Initial delay before the first probe. |
@@ -755,4 +763,5 @@ helm delete dragonfly --namespace dragonfly-system
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
+| https://cloudpirates-io.github.io/helm-charts | postgres | 0.22.0 |
 | https://valkey.io/valkey-helm/ | redis(valkey) | 0.12.1 |
