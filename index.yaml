@@ -3,6 +3,72 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Add the CloudPirates postgres subchart, enabled with `postgres.enable`, as an alternative to the mysql subchart.
+        - Remove `externalPostgres.enable`, the external PostgreSQL is used when `externalPostgres.host` is set, like `externalMysql`.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.5.3-rc.1
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.3-rc.1
+        - name: client
+          image: dragonflyoss/client:v1.5.11
+        - name: seed-client
+          image: dragonflyoss/client:v1.5.11
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.5.11
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2026-11-10T13:17:10.22786295Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: postgres.enable
+      name: postgres
+      repository: https://cloudpirates-io.github.io/helm-charts
+      version: 0.22.0
+    - alias: redis
+      condition: redis.enable
+      name: valkey
+      repository: https://valkey.io/valkey-helm/
+      version: 0.12.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 920e982842fd861e236d2157e5b49394d81dcb9b8f988fe8a8d759d87c2b2ef5
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.10.0/dragonfly-1.10.0.tgz
+    version: 1.10.0
+  - annotations:
+      artifacthub.io/changes: |
         - Document that the auto schedulingPolicy downloads files or ranges no larger than 16MiB straight from the source.
         - Bump Dragonfly Client to v1.5.11.
       artifacthub.io/images: |
@@ -20940,4 +21006,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-11-05T08:20:38.177531512Z"
+generated: "2026-11-10T13:17:10.228748564Z"
