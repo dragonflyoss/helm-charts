@@ -1774,6 +1774,26 @@ externalMysql:
   # -- Port of the external MySQL.
   port: 3306
 
+postgres:
+  # -- Deploy the CloudPirates PostgreSQL subchart instead of MySQL, only used when the manager is deployed.
+  enable: false
+  # -- Run the GORM schema migration on manager startup.
+  migrate: true
+  # -- SSL mode of the manager connection to PostgreSQL.
+  sslMode: disable
+  # -- Timezone of the manager connection to PostgreSQL.
+  timezone: UTC
+  auth:
+    # -- PostgreSQL username.
+    username: dragonfly
+    # -- PostgreSQL password.
+    password: dragonfly
+    # -- PostgreSQL database name.
+    database: manager
+  service:
+    # -- PostgreSQL port.
+    port: 5432
+
 externalPostgres:
   # -- Use an external PostgreSQL instead of MySQL.
   enable: false

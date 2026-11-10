@@ -70,6 +70,9 @@ jobs:
       - name: Add valkey chart repos
         run: helm repo add valkey https://valkey.io/valkey-helm/
 
+      - name: Add cloudpirates chart repos
+        run: helm repo add cloudpirates https://cloudpirates-io.github.io/helm-charts
+
       - name: Add dragonfly chart repos
         run: helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
 

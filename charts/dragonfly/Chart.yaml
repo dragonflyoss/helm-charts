@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.9.0
+version: 1.9.1
 appVersion: 2.5.3
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Replace the Bitnami redis subchart with the official Valkey chart (valkey-io/valkey-helm), still configured under `redis`.
+    - Add the CloudPirates postgres subchart, enabled with `postgres.enable`, as an alternative to the mysql subchart.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -54,6 +54,10 @@ dependencies:
     version: 11.1.20
     repository: https://charts.bitnami.com/bitnami
     condition: mysql.enable
+  - name: postgres
+    version: 0.22.0
+    repository: https://cloudpirates-io.github.io/helm-charts
+    condition: postgres.enable
   - name: valkey
     alias: redis
     version: 0.12.1
