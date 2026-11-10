@@ -67,6 +67,9 @@ jobs:
       - name: Add bitnami chart repos
         run: helm repo add bitnami https://charts.bitnami.com/bitnami
 
+      - name: Add valkey chart repos
+        run: helm repo add valkey https://valkey.io/valkey-helm/
+
       - name: Add dragonfly chart repos
         run: helm repo add dragonfly https://dragonflyoss.github.io/helm-charts/
 

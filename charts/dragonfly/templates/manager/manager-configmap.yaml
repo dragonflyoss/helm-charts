@@ -74,8 +74,8 @@ data:
       redis:
         {{- if .Values.redis.enable }}
         addrs:
-        - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}-master.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.master.service.ports.redis }}
-        password: {{ .Values.redis.auth.password }}
+        - {{ .Release.Name }}-{{ default "redis" .Values.redis.fullname }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.redis.service.port }}
+        password: {{ .Values.redis.auth.aclUsers.default.password }}
         {{- else if .Values.externalRedis.addrs }}
         addrs:
 {{ toYaml .Values.externalRedis.addrs | indent 10 }}
