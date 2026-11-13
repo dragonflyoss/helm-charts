@@ -3,8 +3,8 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.10.0
-appVersion: 2.5.3
+version: 1.10.1
+appVersion: 2.5.4
 keywords:
   - dragonfly
   - d7y
@@ -27,8 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Add the CloudPirates postgres subchart, enabled with `postgres.enable`, as an alternative to the mysql subchart.
-    - Remove `externalPostgres.enable`, the external PostgreSQL is used when `externalPostgres.host` is set, like `externalMysql`.
+    - Bump Dragonfly to v2.5.4 and Dragonfly Client to v1.5.14.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -38,15 +37,15 @@ annotations:
       url: https://github.com/dragonflyoss/client
   artifacthub.io/images: |
     - name: manager
-      image: dragonflyoss/manager:v2.5.3-rc.1
+      image: dragonflyoss/manager:v2.5.4
     - name: scheduler
-      image: dragonflyoss/scheduler:v2.5.3-rc.1
+      image: dragonflyoss/scheduler:v2.5.4
     - name: client
-      image: dragonflyoss/client:v1.5.11
+      image: dragonflyoss/client:v1.5.14
     - name: seed-client
-      image: dragonflyoss/client:v1.5.11
+      image: dragonflyoss/client:v1.5.14
     - name: dfinit
-      image: dragonflyoss/dfinit:v1.5.11
+      image: dragonflyoss/dfinit:v1.5.14
     - name: injector
       image: dragonflyoss/injector:v0.1.0
 
