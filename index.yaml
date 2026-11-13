@@ -3,6 +3,71 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump Dragonfly to v2.5.4 and Dragonfly Client to v1.5.14.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.5.4
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.4
+        - name: client
+          image: dragonflyoss/client:v1.5.14
+        - name: seed-client
+          image: dragonflyoss/client:v1.5.14
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.5.14
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.4
+    created: "2026-11-13T02:35:22.244926043Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: postgres.enable
+      name: postgres
+      repository: https://cloudpirates-io.github.io/helm-charts
+      version: 0.22.0
+    - alias: redis
+      condition: redis.enable
+      name: valkey
+      repository: https://valkey.io/valkey-helm/
+      version: 0.12.1
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: 8f9136fd977420f3cef6abc18817ee60488b19adcc9489c6cd0d0d2219c64df4
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.10.1/dragonfly-1.10.1.tgz
+    version: 1.10.1
+  - annotations:
+      artifacthub.io/changes: |
         - Add the CloudPirates postgres subchart, enabled with `postgres.enable`, as an alternative to the mysql subchart.
         - Remove `externalPostgres.enable`, the external PostgreSQL is used when `externalPostgres.host` is set, like `externalMysql`.
       artifacthub.io/images: |
@@ -21006,4 +21071,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-11-10T13:17:10.228748564Z"
+generated: "2026-11-13T02:35:22.245284634Z"
