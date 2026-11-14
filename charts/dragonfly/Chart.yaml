@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.10.1
+version: 1.10.2
 appVersion: 2.5.4
 keywords:
   - dragonfly
@@ -28,6 +28,8 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Bump Dragonfly to v2.5.4 and Dragonfly Client to v1.5.14.
+    - Fix injector webhook TLS Secret configuration and cert-manager issuer references.
+    - Add the injector metrics container port when metrics are enabled.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
