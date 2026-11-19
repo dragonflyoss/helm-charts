@@ -93,6 +93,8 @@ spec:
         image: {{ template "client.initContainer.image" . }}
         imagePullPolicy: {{ .Values.client.initContainer.image.pullPolicy }}
         command: ['sh', '-c', 'until nslookup {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} && nc -vz {{ template "dragonfly.scheduler.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }} {{ .Values.scheduler.config.server.port }}; do echo waiting for scheduler; sleep 2; done;']
+        resources:
+{{ toYaml .Values.client.initContainer.resources | indent 10 }}
       {{- end }}
       {{- if .Values.client.dfinit.enable }}
       - name: dfinit

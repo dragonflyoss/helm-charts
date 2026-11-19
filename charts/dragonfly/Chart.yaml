@@ -30,6 +30,7 @@ annotations:
     - Bump Dragonfly to v2.5.4 and Dragonfly Client to v1.5.14.
     - Fix injector webhook TLS Secret configuration and cert-manager issuer references.
     - Add the injector metrics container port when metrics are enabled.
+    - Apply client.initContainer.resources to the client wait-for-scheduler init container.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
