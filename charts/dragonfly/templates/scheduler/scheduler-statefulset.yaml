@@ -116,7 +116,7 @@ spec:
         {{- if .Values.startupProbe.enable }}
         startupProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.startupProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.startupProbe.timeoutSeconds }}s"{{ include "dragonfly.grpcHealthProbeTLSFlags" .Values.scheduler.config.server.tls }}]
           initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.startupProbe.periodSeconds }}
           timeoutSeconds: {{ .Values.startupProbe.timeoutSeconds }}
@@ -125,7 +125,7 @@ spec:
         {{- end }}
         readinessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.readinessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.readinessProbe.timeoutSeconds }}s"{{ include "dragonfly.grpcHealthProbeTLSFlags" .Values.scheduler.config.server.tls }}]
           initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
@@ -133,7 +133,7 @@ spec:
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         livenessProbe:
           exec:
-            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"]
+            command: ["/bin/grpc_health_probe", "-addr=:{{ .Values.scheduler.containerPort }}", "-connect-timeout={{ .Values.livenessProbe.timeoutSeconds }}s", "-rpc-timeout={{ .Values.livenessProbe.timeoutSeconds }}s"{{ include "dragonfly.grpcHealthProbeTLSFlags" .Values.scheduler.config.server.tls }}]
           initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
           periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}

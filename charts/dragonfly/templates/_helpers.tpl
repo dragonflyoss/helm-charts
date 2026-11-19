@@ -225,3 +225,14 @@ Return the proper image name (for the injector image)
 {{- define "injector.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
 {{- end -}}
+
+{{/*
+Return grpc_health_probe flags for an mTLS-protected gRPC server.
+Pass the TLS configuration object (caCert, cert and key file paths).
+Renders nothing when TLS is not configured, keeping probes plaintext.
+*/}}
+{{- define "dragonfly.grpcHealthProbeTLSFlags" -}}
+{{- with . }}
+{{- if and .caCert .cert .key }}, "-tls", "-tls-ca-cert={{ .caCert }}", "-tls-client-cert={{ .cert }}", "-tls-client-key={{ .key }}"{{- end }}
+{{- end }}
+{{- end -}}
