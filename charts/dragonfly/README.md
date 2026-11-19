@@ -324,7 +324,7 @@ helm delete dragonfly --namespace dragonfly-system
 | global.storageClass | string | `""` | Global StorageClass for persistent volumes. |
 | injector.affinity | object | `{}` | Pod affinity. |
 | injector.certManager | object | `{"enable":true,"issuer":{"create":true,"kind":"Issuer","name":""}}` | cert-manager integration for the webhook TLS certificate. cert-manager must be installed. |
-| injector.certManager.enable | bool | `true` | Let cert-manager issue and rotate the webhook certificate. |
+| injector.certManager.enable | bool | `true` | Let cert-manager issue and rotate the webhook certificate. When false, webhookCertSecretName must reference an existing TLS Secret and webhook.caBundle must be set. |
 | injector.certManager.issuer | object | `{"create":true,"kind":"Issuer","name":""}` | Issuer used for the webhook certificate. |
 | injector.certManager.issuer.create | bool | `true` | Create a self-signed issuer. When false, an existing issuer must be provided. |
 | injector.certManager.issuer.kind | string | `"Issuer"` | Issuer kind, Issuer or ClusterIssuer. |
@@ -358,8 +358,10 @@ helm delete dragonfly --namespace dragonfly-system
 | injector.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Container resource requests and limits. |
 | injector.terminationGracePeriodSeconds | int | `10` | Seconds the Pod is given to terminate gracefully. |
 | injector.tolerations | list | `[]` | List of node taints to tolerate. |
+| injector.webhook.caBundle | string | `""` | Base64-encoded CA bundle for the webhook. Required when certManager.enable is false, together with an existing TLS Secret named by webhookCertSecretName. |
 | injector.webhook.failurePolicy | string | `"Ignore"` | How webhook errors and timeouts are handled, Ignore or Fail. |
 | injector.webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"kubernetes.io/metadata.name","operator":"NotIn","values":["kube-system","cert-manager"]}]}` | Namespaces the webhook applies to. |
+| injector.webhookCertSecretName | string | `"webhook-server-cert"` | Name of the Secret containing the webhook TLS certificate and key. cert-manager creates it when enabled; otherwise, the Secret must already exist. |
 | livenessProbe.enable | bool | `true` | Enable liveness probe. |
 | livenessProbe.failureThreshold | int | `2` | Failure threshold before the container is restarted. Total time before restart = initialDelaySeconds + (periodSeconds * failureThreshold). |
 | livenessProbe.initialDelaySeconds | int | `15` | Initial delay before the first probe. |
