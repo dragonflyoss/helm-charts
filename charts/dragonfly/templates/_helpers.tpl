@@ -225,3 +225,35 @@ Return the proper image name (for the injector image)
 {{- define "injector.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.injector.image "global" .Values.global ) -}}
 {{- end -}}
+
+{{/*
+Renders a PodDisruptionBudget for a component.
+Usage:
+{{ include "dragonfly.podDisruptionBudget" ( dict "name" (include "dragonfly.manager.fullname" .) "component" .Values.manager.name "config" .Values.manager.podDisruptionBudget "context" $ ) }}
+Pods are selected with the app and component labels. When both minAvailable and maxUnavailable
+are set, minAvailable is used because a PodDisruptionBudget accepts only one of them.
+*/}}
+{{- define "dragonfly.podDisruptionBudget" -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .name }}
+  namespace: {{ include "common.names.namespace" .context | quote }}
+  labels:
+    app: {{ template "dragonfly.fullname" .context }}
+    release: {{ .context.Release.Name }}
+    heritage: {{ .context.Release.Service }}
+    component: {{ .component }}
+spec:
+  {{- if not (or (kindIs "invalid" .config.minAvailable) (eq (toString .config.minAvailable) "")) }}
+  minAvailable: {{ .config.minAvailable }}
+  {{- else if not (or (kindIs "invalid" .config.maxUnavailable) (eq (toString .config.maxUnavailable) "")) }}
+  maxUnavailable: {{ .config.maxUnavailable }}
+  {{- else }}
+  maxUnavailable: 1
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ template "dragonfly.fullname" .context }}
+      component: {{ .component }}
+{{- end -}}
