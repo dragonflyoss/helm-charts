@@ -114,6 +114,15 @@ manager:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  podDisruptionBudget:
+    # -- Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains.
+    enable: false
+    # -- Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence
+    # over maxUnavailable when set.
+    minAvailable: ''
+    # -- Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when
+    # neither minAvailable nor maxUnavailable is set.
+    maxUnavailable: ''
   # -- Deployment update strategy.
   updateStrategy:
     type: RollingUpdate
@@ -405,6 +414,15 @@ scheduler:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  podDisruptionBudget:
+    # -- Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains.
+    enable: false
+    # -- Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence
+    # over maxUnavailable when set.
+    minAvailable: ''
+    # -- Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when
+    # neither minAvailable nor maxUnavailable is set.
+    maxUnavailable: ''
   # -- StatefulSet update strategy.
   updateStrategy: {}
   # -- StatefulSet annotations.
@@ -788,6 +806,15 @@ seedClient:
   podAnnotations: {}
   # -- Pod labels.
   podLabels: {}
+  podDisruptionBudget:
+    # -- Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains.
+    enable: false
+    # -- Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence
+    # over maxUnavailable when set.
+    minAvailable: ''
+    # -- Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when
+    # neither minAvailable nor maxUnavailable is set.
+    maxUnavailable: ''
   # -- StatefulSet update strategy.
   updateStrategy: {}
   # -- StatefulSet annotations.

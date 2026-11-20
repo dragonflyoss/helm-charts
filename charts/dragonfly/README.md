@@ -450,6 +450,9 @@ helm delete dragonfly --namespace dragonfly-system
 | manager.nameOverride | string | `""` | Override the manager name. |
 | manager.nodeSelector | object | `{}` | Node labels for pod assignment. |
 | manager.podAnnotations | object | `{}` | Pod annotations. |
+| manager.podDisruptionBudget.enable | bool | `false` | Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains. |
+| manager.podDisruptionBudget.maxUnavailable | string | `""` | Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when neither minAvailable nor maxUnavailable is set. |
+| manager.podDisruptionBudget.minAvailable | string | `""` | Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence over maxUnavailable when set. |
 | manager.podLabels | object | `{}` | Pod labels. |
 | manager.priorityClassName | string | `""` | Pod priority class name. |
 | manager.replicas | int | `3` | Number of replicas. |
@@ -584,6 +587,9 @@ helm delete dragonfly --namespace dragonfly-system
 | scheduler.nameOverride | string | `""` | Override the scheduler name. |
 | scheduler.nodeSelector | object | `{}` | Node labels for pod assignment. |
 | scheduler.podAnnotations | object | `{}` | Pod annotations. |
+| scheduler.podDisruptionBudget.enable | bool | `false` | Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains. |
+| scheduler.podDisruptionBudget.maxUnavailable | string | `""` | Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when neither minAvailable nor maxUnavailable is set. |
+| scheduler.podDisruptionBudget.minAvailable | string | `""` | Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence over maxUnavailable when set. |
 | scheduler.podLabels | object | `{}` | Pod labels. |
 | scheduler.priorityClassName | string | `""` | Pod priority class name. |
 | scheduler.replicas | int | `3` | Number of replicas. |
@@ -736,6 +742,9 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.persistence.size | string | `"100Gi"` | PersistentVolumeClaim size. |
 | seedClient.persistence.storageClass | string | `""` | StorageClass of the PersistentVolumeClaim. Empty uses the cluster default and "-" disables dynamic provisioning. global.storageClass takes precedence when set. |
 | seedClient.podAnnotations | object | `{}` | Pod annotations. |
+| seedClient.podDisruptionBudget.enable | bool | `false` | Create a PodDisruptionBudget to limit voluntary disruptions, such as node drains. |
+| seedClient.podDisruptionBudget.maxUnavailable | string | `""` | Maximum number of Pods that can be unavailable, an integer or a percentage. Defaults to 1 when neither minAvailable nor maxUnavailable is set. |
+| seedClient.podDisruptionBudget.minAvailable | string | `""` | Minimum number of Pods that must stay available, an integer or a percentage. Takes precedence over maxUnavailable when set. |
 | seedClient.podLabels | object | `{}` | Pod labels. |
 | seedClient.priorityClassName | string | `""` | Pod priority class name. |
 | seedClient.replicas | int | `3` | Number of replicas. |

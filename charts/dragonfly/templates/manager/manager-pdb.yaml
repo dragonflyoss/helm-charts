@@ -1,0 +1,3 @@
+{{- if and .Values.manager.enable .Values.manager.podDisruptionBudget.enable }}
+{{ include "dragonfly.podDisruptionBudget" ( dict "name" (include "dragonfly.manager.fullname" .) "component" .Values.manager.name "config" .Values.manager.podDisruptionBudget "context" $ ) }}
+{{- end }}
