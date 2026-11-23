@@ -1044,7 +1044,7 @@ seedClient:
           # redirect: ""
           # filteredQueryParams: []
         - regex: 'manifests/sha256.*'
-          schedulingPolicy: auto
+          schedulingPolicy: always
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
