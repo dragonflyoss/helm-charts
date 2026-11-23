@@ -494,10 +494,10 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.auth.aclUsers.default.permissions | string | `"~* &* +@all"` | ACL permissions of the default user. |
 | redis.auth.enabled | bool | `true` | Require ACL authentication. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain passed to the subchart. |
-| redis.dataStorage.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis. |
-| redis.dataStorage.requestedSize | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
 | redis.deploymentStrategy | string | `"Recreate"` | Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts. |
 | redis.enable | bool | `false` | Deploy Valkey through the official Valkey subchart (valkey-io/valkey-helm), only used when the manager is deployed. Every key under `redis` is passed to that subchart. |
+| redis.persistence.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis. |
+| redis.persistence.size | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
 | redis.service.port | int | `6379` | Valkey Service port. |
 | scheduler.config.console | bool | `true` | Print logs to the console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Interval at which the dynamic configuration is refreshed from the manager. |
@@ -764,4 +764,4 @@ helm delete dragonfly --namespace dragonfly-system
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
 | https://cloudpirates-io.github.io/helm-charts | postgres | 0.22.0 |
-| https://valkey.io/valkey-helm/ | redis(valkey) | 0.12.1 |
+| https://valkey.io/valkey-helm/ | redis(valkey) | 1.0.0 |

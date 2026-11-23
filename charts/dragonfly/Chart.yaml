@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.10.3
+version: 1.11.0
 appVersion: 2.5.4
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Change scheduling policy to support manifest list and OCI image.
+    - Bump the Valkey subchart to 1.0.0, `redis.dataStorage` is replaced by `redis.persistence`.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
@@ -60,6 +60,6 @@ dependencies:
     condition: postgres.enable
   - name: valkey
     alias: redis
-    version: 0.12.1
+    version: 1.0.0
     repository: https://valkey.io/valkey-helm/
     condition: redis.enable
