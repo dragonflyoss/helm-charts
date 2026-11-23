@@ -3,6 +3,71 @@ entries:
   dragonfly:
   - annotations:
       artifacthub.io/changes: |
+        - Bump the Valkey subchart to 1.0.0, `redis.dataStorage` is replaced by `redis.persistence`.
+      artifacthub.io/images: |
+        - name: manager
+          image: dragonflyoss/manager:v2.5.4
+        - name: scheduler
+          image: dragonflyoss/scheduler:v2.5.4
+        - name: client
+          image: dragonflyoss/client:v1.5.14
+        - name: seed-client
+          image: dragonflyoss/client:v1.5.14
+        - name: dfinit
+          image: dragonflyoss/dfinit:v1.5.14
+        - name: injector
+          image: dragonflyoss/injector:v0.1.0
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/dragonflyoss/helm-charts
+        - name: Source
+          url: https://github.com/dragonflyoss/dragonfly
+        - name: Source
+          url: https://github.com/dragonflyoss/client
+    apiVersion: v2
+    appVersion: 2.5.4
+    created: "2026-11-23T08:04:07.587721077Z"
+    dependencies:
+    - condition: mysql.enable
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.1.20
+    - condition: postgres.enable
+      name: postgres
+      repository: https://cloudpirates-io.github.io/helm-charts
+      version: 0.22.0
+    - alias: redis
+      condition: redis.enable
+      name: valkey
+      repository: https://valkey.io/valkey-helm/
+      version: 1.0.0
+    description: Dragonfly is an intelligent P2P based image and file distribution
+      system
+    digest: f4dce45f6e43eb0b35e776a3355ad624f0afc2e774265b0bc481f8f1dce861e7
+    home: https://d7y.io/
+    icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
+    keywords:
+    - dragonfly
+    - d7y
+    - P2P
+    - image
+    maintainers:
+    - email: gaius.qi@gmail.com
+      name: gaius-qi
+    - email: aiopsclub@163.com
+      name: yxxhero
+    - email: majinjing3@gmail.com
+      name: jim3ma
+    name: dragonfly
+    sources:
+    - https://github.com/dragonflyoss/dragonfly
+    - https://github.com/dragonflyoss/client
+    type: application
+    urls:
+    - https://github.com/dragonflyoss/helm-charts/releases/download/dragonfly-1.11.0/dragonfly-1.11.0.tgz
+    version: 1.11.0
+  - annotations:
+      artifacthub.io/changes: |
         - Change scheduling policy to support manifest list and OCI image.
       artifacthub.io/images: |
         - name: manager
@@ -21201,4 +21266,4 @@ entries:
     urls:
     - https://github.com/dragonflyoss/helm-charts/releases/download/nydus-snapshotter-0.0.1/nydus-snapshotter-0.0.1.tgz
     version: 0.0.1
-generated: "2026-11-23T06:59:11.268282755Z"
+generated: "2026-11-23T08:04:07.588153919Z"
