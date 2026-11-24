@@ -28,6 +28,8 @@ sources:
 annotations:
   artifacthub.io/changes: |
     - Bump the Valkey subchart to 1.0.0, `redis.dataStorage` is replaced by `redis.persistence`.
+    - Fix injector webhook TLS Secret configuration and cert-manager issuer references.
+    - Add the injector metrics container port when metrics are enabled.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
