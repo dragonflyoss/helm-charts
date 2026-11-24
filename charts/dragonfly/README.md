@@ -496,10 +496,10 @@ helm delete dragonfly --namespace dragonfly-system
 | redis.auth.aclUsers.default.permissions | string | `"~* &* +@all"` | ACL permissions of the default user. |
 | redis.auth.enabled | bool | `true` | Require ACL authentication. |
 | redis.clusterDomain | string | `"cluster.local"` | Cluster domain passed to the subchart. |
-| redis.dataStorage.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis. |
-| redis.dataStorage.requestedSize | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
 | redis.deploymentStrategy | string | `"Recreate"` | Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts. |
 | redis.enable | bool | `false` | Deploy Valkey through the official Valkey subchart (valkey-io/valkey-helm), only used when the manager is deployed. Every key under `redis` is passed to that subchart. |
+| redis.persistence.enabled | bool | `true` | Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis. |
+| redis.persistence.size | string | `"8Gi"` | Size of the PersistentVolumeClaim. |
 | redis.service.port | int | `6379` | Valkey Service port. |
 | scheduler.config.console | bool | `true` | Print logs to the console. |
 | scheduler.config.dynconfig.refreshInterval | string | `"1m"` | Interval at which the dynamic configuration is refreshed from the manager. |
@@ -648,7 +648,7 @@ helm delete dragonfly --namespace dragonfly-system
 | seedClient.config.proxy.readBufferSize | int | `2097152` | Buffer size for reading pieces from disk. |
 | seedClient.config.proxy.registryMirror.addr | string | `"https://index.docker.io"` | Default upstream registry of the registry mirror served by the proxy. A client selects another registry per request with the X-Dragonfly-Registry header. |
 | seedClient.config.proxy.registryMirror.enableTaskIDBasedBlobDigest | bool | `true` | Derive the task ID of OCI blob URLs (/v2/<name>/blobs/sha256:<digest>) from the blob digest instead of the full URL, so that the same blob pulled from different registries shares one task and is downloaded and stored once. |
-| seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"auto"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
+| seedClient.config.proxy.rules | list | `[{"regex":"blobs/sha256.*","schedulingPolicy":"auto"},{"regex":"manifests/sha256.*","schedulingPolicy":"always"}]` | Proxy rules, the first rule whose regex matches the request URL applies. regex is matched against the URL. useTLS connects to the backend over TLS. redirect rewrites the URL. filteredQueryParams are ignored when computing the task ID, so that e.g. presigned S3, GCS, OSS, OBS and COS URLs that differ only in Signature and Expires share one task. schedulingPolicy is auto or always, auto downloads files or ranges no larger than 16MiB straight from the source, always goes through the scheduler so that even small artifacts such as OCI manifests are shared between peers. Per request, the X-Dragonfly-Use-P2P header forces P2P for URLs that match no rule and X-Dragonfly-Scheduling-Policy overrides the matched schedulingPolicy. |
 | seedClient.config.proxy.server.port | int | `4001` | Port of the HTTP proxy server. |
 | seedClient.config.proxy.server.requestRateLimit | int | `400` | Maximum requests per second on the HTTP proxy. |
 | seedClient.config.scheduler.announceInterval | string | `"1m"` | Interval at which the peer announces itself to the scheduler, including CPU, memory and other host information used for scheduling. |
@@ -766,4 +766,4 @@ helm delete dragonfly --namespace dragonfly-system
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | mysql | 11.1.20 |
 | https://cloudpirates-io.github.io/helm-charts | postgres | 0.22.0 |
-| https://valkey.io/valkey-helm/ | redis(valkey) | 0.12.1 |
+| https://valkey.io/valkey-helm/ | redis(valkey) | 1.0.0 |

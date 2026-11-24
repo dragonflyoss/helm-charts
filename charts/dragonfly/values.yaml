@@ -1044,7 +1044,7 @@ seedClient:
           # redirect: ""
           # filteredQueryParams: []
         - regex: 'manifests/sha256.*'
-          schedulingPolicy: auto
+          schedulingPolicy: always
           # useTLS: false
           # redirect: ""
           # filteredQueryParams: []
@@ -1830,11 +1830,11 @@ redis:
         permissions: '~* &* +@all'
         # -- Password of the default user, used by the manager and scheduler.
         password: dragonfly
-  dataStorage:
+  persistence:
     # -- Persist data on a PersistentVolumeClaim, the scheduler keeps persistent cache task metadata in redis.
     enabled: true
     # -- Size of the PersistentVolumeClaim.
-    requestedSize: 8Gi
+    size: 8Gi
   # -- Deployment strategy, Recreate releases the ReadWriteOnce volume before the new Pod starts.
   deploymentStrategy: Recreate
   service:
