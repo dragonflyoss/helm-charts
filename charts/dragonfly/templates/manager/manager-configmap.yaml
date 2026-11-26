@@ -57,8 +57,13 @@ data:
         timezone: {{ .Values.postgres.timezone | quote }}
         migrate: {{ .Values.postgres.migrate }}
         {{- else }}
+        {{- if .Values.externalPostgres.existingSecret }}
+        user: __EXTERNAL_POSTGRES_USERNAME__
+        password: __EXTERNAL_POSTGRES_PASSWORD__
+        {{- else }}
         user: {{ .Values.externalPostgres.username }}
         password: {{ .Values.externalPostgres.password }}
+        {{- end }}
         host: {{ .Values.externalPostgres.host }}
         port: {{ .Values.externalPostgres.port }}
         dbname: {{ .Values.externalPostgres.database }}

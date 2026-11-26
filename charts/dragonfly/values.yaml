@@ -1806,6 +1806,14 @@ externalPostgres:
   username: dragonfly
   # -- Password of the external PostgreSQL.
   password: dragonfly
+  # -- Name of an existing Secret containing the external PostgreSQL credentials.
+  # When set, `externalPostgres.username` and `externalPostgres.password` are ignored
+  # and substituted from the Secret into `manager.yaml` by an init container.
+  existingSecret: ''
+  # -- Key in `externalPostgres.existingSecret` holding the PostgreSQL username.
+  usernameKey: username
+  # -- Key in `externalPostgres.existingSecret` holding the PostgreSQL password.
+  passwordKey: password
   # -- Database name of the external PostgreSQL.
   database: manager
   # -- Port of the external PostgreSQL.
