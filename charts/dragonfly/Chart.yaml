@@ -3,7 +3,7 @@ name: dragonfly
 description: Dragonfly is an intelligent P2P based image and file distribution system
 icon: https://raw.githubusercontent.com/dragonflyoss/dragonfly/main/docs/images/logo/dragonfly.svg
 type: application
-version: 1.11.0
+version: 1.12.0
 appVersion: 2.5.4
 keywords:
   - dragonfly
@@ -27,7 +27,7 @@ sources:
 
 annotations:
   artifacthub.io/changes: |
-    - Bump the Valkey subchart to 1.0.0, `redis.dataStorage` is replaced by `redis.persistence`.
+    - Support reading `externalPostgres` credentials from an existing Secret via `externalPostgres.existingSecret`, `usernameKey`, and `passwordKey`.
   artifacthub.io/links: |
     - name: Chart Source
       url: https://github.com/dragonflyoss/helm-charts
